@@ -1,4 +1,4 @@
-package edu.nju.cinema;
+package edu.nju.cinemasystem;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
