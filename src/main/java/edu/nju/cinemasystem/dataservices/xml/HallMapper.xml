@@ -24,7 +24,7 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.Hall">
-    insert into hall (id, name, column, 
+    insert into hall (id, name, `column`,
       row, size, is_Imax, 
       is3D)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{column,jdbcType=INTEGER}, 
@@ -107,7 +107,7 @@
   <update id="updateByPrimaryKey" parameterType="edu.nju.cinemasystem.data.po.Hall">
     update hall
     set name = #{name,jdbcType=VARCHAR},
-      column = #{column,jdbcType=INTEGER},
+      `column` = #{column,jdbcType=INTEGER},
       row = #{row,jdbcType=INTEGER},
       size = #{size,jdbcType=TINYINT},
       is_Imax = #{isImax,jdbcType=TINYINT},

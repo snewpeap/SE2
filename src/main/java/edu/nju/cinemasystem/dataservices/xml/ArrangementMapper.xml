@@ -1,343 +1,118 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="edu.nju.cinemasystem.dataservices.ArrangementMapper">
-  <resultMap id="BaseResultMap" type="edu.nju.cinemasystem.data.po.Arrangement">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="start_time" jdbcType="DATE" property="startTime" />
-    <result column="end_time" jdbcType="DATE" property="endTime" />
-    <result column="fare" jdbcType="REAL" property="fare" />
-    <result column="hall_id" jdbcType="INTEGER" property="hallId" />
-    <result column="movie_id" jdbcType="INTEGER" property="movieId" />
-    <result column="visible_date" jdbcType="DATE" property="visibleDate" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, start_time, end_time, fare, hall_id, movie_id, visible_date
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from arrangement
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from arrangement
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.Arrangement">
-    insert into arrangement (id, start_time, end_time, 
-      fare, hall_id, movie_id, 
-      visible_date)
-    values (#{id,jdbcType=INTEGER}, #{startTime,jdbcType=DATE}, #{endTime,jdbcType=DATE}, 
-      #{fare,jdbcType=REAL}, #{hallId,jdbcType=INTEGER}, #{movieId,jdbcType=INTEGER}, 
-      #{visibleDate,jdbcType=DATE})
-  </insert>
-  <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.Arrangement">
-    insert into arrangement
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="startTime != null">
-        start_time,
-      </if>
-      <if test="endTime != null">
-        end_time,
-      </if>
-      <if test="fare != null">
-        fare,
-      </if>
-      <if test="hallId != null">
-        hall_id,
-      </if>
-      <if test="movieId != null">
-        movie_id,
-      </if>
-      <if test="visibleDate != null">
-        visible_date,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="startTime != null">
-        #{startTime,jdbcType=DATE},
-      </if>
-      <if test="endTime != null">
-        #{endTime,jdbcType=DATE},
-      </if>
-      <if test="fare != null">
-        #{fare,jdbcType=REAL},
-      </if>
-      <if test="hallId != null">
-        #{hallId,jdbcType=INTEGER},
-      </if>
-      <if test="movieId != null">
-        #{movieId,jdbcType=INTEGER},
-      </if>
-      <if test="visibleDate != null">
-        #{visibleDate,jdbcType=DATE},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="edu.nju.cinemasystem.data.po.Arrangement">
-    update arrangement
-    <set>
-      <if test="startTime != null">
-        start_time = #{startTime,jdbcType=DATE},
-      </if>
-      <if test="endTime != null">
-        end_time = #{endTime,jdbcType=DATE},
-      </if>
-      <if test="fare != null">
-        fare = #{fare,jdbcType=REAL},
-      </if>
-      <if test="hallId != null">
-        hall_id = #{hallId,jdbcType=INTEGER},
-      </if>
-      <if test="movieId != null">
-        movie_id = #{movieId,jdbcType=INTEGER},
-      </if>
-      <if test="visibleDate != null">
-        visible_date = #{visibleDate,jdbcType=DATE},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="edu.nju.cinemasystem.data.po.Arrangement">
-    update arrangement
-    set start_time = #{startTime,jdbcType=DATE},
-      end_time = #{endTime,jdbcType=DATE},
-      fare = #{fare,jdbcType=REAL},
-      hall_id = #{hallId,jdbcType=INTEGER},
-      movie_id = #{movieId,jdbcType=INTEGER},
-      visible_date = #{visibleDate,jdbcType=DATE}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <resultMap id="BaseResultMap" type="edu.nju.cinemasystem.data.po.Arrangement">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="start_time" jdbcType="DATE" property="startTime" />
-    <result column="end_time" jdbcType="DATE" property="endTime" />
-    <result column="fare" jdbcType="REAL" property="fare" />
-    <result column="hall_id" jdbcType="INTEGER" property="hallId" />
-    <result column="movie_id" jdbcType="INTEGER" property="movieId" />
-    <result column="visible_date" jdbcType="DATE" property="visibleDate" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, start_time, end_time, fare, hall_id, movie_id, visible_date
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from arrangement
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from arrangement
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.Arrangement">
-    insert into arrangement (id, start_time, end_time, 
-      fare, hall_id, movie_id, 
-      visible_date)
-    values (#{id,jdbcType=INTEGER}, #{startTime,jdbcType=DATE}, #{endTime,jdbcType=DATE}, 
-      #{fare,jdbcType=REAL}, #{hallId,jdbcType=INTEGER}, #{movieId,jdbcType=INTEGER}, 
-      #{visibleDate,jdbcType=DATE})
-  </insert>
-  <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.Arrangement">
-    insert into arrangement
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="startTime != null">
-        start_time,
-      </if>
-      <if test="endTime != null">
-        end_time,
-      </if>
-      <if test="fare != null">
-        fare,
-      </if>
-      <if test="hallId != null">
-        hall_id,
-      </if>
-      <if test="movieId != null">
-        movie_id,
-      </if>
-      <if test="visibleDate != null">
-        visible_date,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="startTime != null">
-        #{startTime,jdbcType=DATE},
-      </if>
-      <if test="endTime != null">
-        #{endTime,jdbcType=DATE},
-      </if>
-      <if test="fare != null">
-        #{fare,jdbcType=REAL},
-      </if>
-      <if test="hallId != null">
-        #{hallId,jdbcType=INTEGER},
-      </if>
-      <if test="movieId != null">
-        #{movieId,jdbcType=INTEGER},
-      </if>
-      <if test="visibleDate != null">
-        #{visibleDate,jdbcType=DATE},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="edu.nju.cinemasystem.data.po.Arrangement">
-    update arrangement
-    <set>
-      <if test="startTime != null">
-        start_time = #{startTime,jdbcType=DATE},
-      </if>
-      <if test="endTime != null">
-        end_time = #{endTime,jdbcType=DATE},
-      </if>
-      <if test="fare != null">
-        fare = #{fare,jdbcType=REAL},
-      </if>
-      <if test="hallId != null">
-        hall_id = #{hallId,jdbcType=INTEGER},
-      </if>
-      <if test="movieId != null">
-        movie_id = #{movieId,jdbcType=INTEGER},
-      </if>
-      <if test="visibleDate != null">
-        visible_date = #{visibleDate,jdbcType=DATE},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="edu.nju.cinemasystem.data.po.Arrangement">
-    update arrangement
-    set start_time = #{startTime,jdbcType=DATE},
-      end_time = #{endTime,jdbcType=DATE},
-      fare = #{fare,jdbcType=REAL},
-      hall_id = #{hallId,jdbcType=INTEGER},
-      movie_id = #{movieId,jdbcType=INTEGER},
-      visible_date = #{visibleDate,jdbcType=DATE}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <resultMap id="BaseResultMap" type="edu.nju.cinemasystem.data.po.Arrangement">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="start_time" jdbcType="DATE" property="startTime" />
-    <result column="end_time" jdbcType="DATE" property="endTime" />
-    <result column="fare" jdbcType="REAL" property="fare" />
-    <result column="hall_id" jdbcType="INTEGER" property="hallId" />
-    <result column="movie_id" jdbcType="INTEGER" property="movieId" />
-    <result column="visible_date" jdbcType="DATE" property="visibleDate" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, start_time, end_time, fare, hall_id, movie_id, visible_date
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from arrangement
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from arrangement
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.Arrangement">
-    insert into arrangement (id, start_time, end_time, 
-      fare, hall_id, movie_id, 
-      visible_date)
-    values (#{id,jdbcType=INTEGER}, #{startTime,jdbcType=DATE}, #{endTime,jdbcType=DATE}, 
-      #{fare,jdbcType=REAL}, #{hallId,jdbcType=INTEGER}, #{movieId,jdbcType=INTEGER}, 
-      #{visibleDate,jdbcType=DATE})
-  </insert>
-  <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.Arrangement">
-    insert into arrangement
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="startTime != null">
-        start_time,
-      </if>
-      <if test="endTime != null">
-        end_time,
-      </if>
-      <if test="fare != null">
-        fare,
-      </if>
-      <if test="hallId != null">
-        hall_id,
-      </if>
-      <if test="movieId != null">
-        movie_id,
-      </if>
-      <if test="visibleDate != null">
-        visible_date,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="startTime != null">
-        #{startTime,jdbcType=DATE},
-      </if>
-      <if test="endTime != null">
-        #{endTime,jdbcType=DATE},
-      </if>
-      <if test="fare != null">
-        #{fare,jdbcType=REAL},
-      </if>
-      <if test="hallId != null">
-        #{hallId,jdbcType=INTEGER},
-      </if>
-      <if test="movieId != null">
-        #{movieId,jdbcType=INTEGER},
-      </if>
-      <if test="visibleDate != null">
-        #{visibleDate,jdbcType=DATE},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="edu.nju.cinemasystem.data.po.Arrangement">
-    update arrangement
-    <set>
-      <if test="startTime != null">
-        start_time = #{startTime,jdbcType=DATE},
-      </if>
-      <if test="endTime != null">
-        end_time = #{endTime,jdbcType=DATE},
-      </if>
-      <if test="fare != null">
-        fare = #{fare,jdbcType=REAL},
-      </if>
-      <if test="hallId != null">
-        hall_id = #{hallId,jdbcType=INTEGER},
-      </if>
-      <if test="movieId != null">
-        movie_id = #{movieId,jdbcType=INTEGER},
-      </if>
-      <if test="visibleDate != null">
-        visible_date = #{visibleDate,jdbcType=DATE},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="edu.nju.cinemasystem.data.po.Arrangement">
-    update arrangement
-    set start_time = #{startTime,jdbcType=DATE},
-      end_time = #{endTime,jdbcType=DATE},
-      fare = #{fare,jdbcType=REAL},
-      hall_id = #{hallId,jdbcType=INTEGER},
-      movie_id = #{movieId,jdbcType=INTEGER},
-      visible_date = #{visibleDate,jdbcType=DATE}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+    <resultMap id="BaseResultMap" type="edu.nju.cinemasystem.data.po.Arrangement">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="start_time" jdbcType="DATE" property="startTime"/>
+        <result column="end_time" jdbcType="DATE" property="endTime"/>
+        <result column="fare" jdbcType="REAL" property="fare"/>
+        <result column="hall_id" jdbcType="INTEGER" property="hallId"/>
+        <result column="movie_id" jdbcType="INTEGER" property="movieId"/>
+        <result column="visible_date" jdbcType="DATE" property="visibleDate"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, start_time, end_time, fare, hall_id, movie_id, visible_date
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from arrangement
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from arrangement
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.Arrangement">
+        insert into arrangement (id, start_time, end_time,
+                                 fare, hall_id, movie_id,
+                                 visible_date)
+        values (#{id,jdbcType=INTEGER}, #{startTime,jdbcType=DATE}, #{endTime,jdbcType=DATE},
+                #{fare,jdbcType=REAL}, #{hallId,jdbcType=INTEGER}, #{movieId,jdbcType=INTEGER},
+                #{visibleDate,jdbcType=DATE})
+    </insert>
+    <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.Arrangement">
+        insert into arrangement
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="startTime != null">
+                start_time,
+            </if>
+            <if test="endTime != null">
+                end_time,
+            </if>
+            <if test="fare != null">
+                fare,
+            </if>
+            <if test="hallId != null">
+                hall_id,
+            </if>
+            <if test="movieId != null">
+                movie_id,
+            </if>
+            <if test="visibleDate != null">
+                visible_date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="startTime != null">
+                #{startTime,jdbcType=DATE},
+            </if>
+            <if test="endTime != null">
+                #{endTime,jdbcType=DATE},
+            </if>
+            <if test="fare != null">
+                #{fare,jdbcType=REAL},
+            </if>
+            <if test="hallId != null">
+                #{hallId,jdbcType=INTEGER},
+            </if>
+            <if test="movieId != null">
+                #{movieId,jdbcType=INTEGER},
+            </if>
+            <if test="visibleDate != null">
+                #{visibleDate,jdbcType=DATE},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="edu.nju.cinemasystem.data.po.Arrangement">
+        update arrangement
+        <set>
+            <if test="startTime != null">
+                start_time = #{startTime,jdbcType=DATE},
+            </if>
+            <if test="endTime != null">
+                end_time = #{endTime,jdbcType=DATE},
+            </if>
+            <if test="fare != null">
+                fare = #{fare,jdbcType=REAL},
+            </if>
+            <if test="hallId != null">
+                hall_id = #{hallId,jdbcType=INTEGER},
+            </if>
+            <if test="movieId != null">
+                movie_id = #{movieId,jdbcType=INTEGER},
+            </if>
+            <if test="visibleDate != null">
+                visible_date = #{visibleDate,jdbcType=DATE},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="edu.nju.cinemasystem.data.po.Arrangement">
+        update arrangement
+        set start_time   = #{startTime,jdbcType=DATE},
+            end_time     = #{endTime,jdbcType=DATE},
+            fare         = #{fare,jdbcType=REAL},
+            hall_id      = #{hallId,jdbcType=INTEGER},
+            movie_id     = #{movieId,jdbcType=INTEGER},
+            visible_date = #{visibleDate,jdbcType=DATE}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 </mapper>

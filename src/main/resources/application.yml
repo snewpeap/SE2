@@ -8,3 +8,5 @@ spring:
     cache: false
   jackson:
     time-zone: GMT+8
+mybatis:
+  mapper-locations: classpath:edu/nju/cinemasystem/dataservices/xml/*.xml

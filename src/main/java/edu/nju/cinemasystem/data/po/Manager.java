@@ -2,7 +2,6 @@ package edu.nju.cinemasystem.data.po;
 
 public class Manager {
     private Integer userId;
-
     private Byte root;
 
     public Integer getUserId() {
@@ -19,5 +18,13 @@ public class Manager {
 
     public void setRoot(Byte root) {
         this.root = root;
+    }
+
+    public void setRoot(boolean root) {
+        this.root = root ? (byte) 1 : (byte) 0;
+    }
+
+    public boolean isRootManager() {
+        return root == 1;
     }
 }
