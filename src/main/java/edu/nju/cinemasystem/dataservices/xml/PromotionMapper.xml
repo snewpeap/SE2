@@ -190,7 +190,7 @@
   <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.Promotion">
     insert into promotion (id, name, start_time, 
       end_time, specify_movies, target_amount, 
-      coupon_amount, coupon_expiration, descrition
+      coupon_amount, coupon_expiration, description
       )
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{startTime,jdbcType=DATE}, 
       #{endTime,jdbcType=DATE}, #{specifyMovies,jdbcType=TINYINT}, #{targetAmount,jdbcType=REAL}, 
@@ -297,7 +297,7 @@
       target_amount = #{targetAmount,jdbcType=REAL},
       coupon_amount = #{couponAmount,jdbcType=REAL},
       coupon_expiration = #{couponExpiration,jdbcType=INTEGER},
-      descrition = #{descrition,jdbcType=LONGVARCHAR}
+      description = #{descrition,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="edu.nju.cinemasystem.data.po.Promotion">

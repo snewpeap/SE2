@@ -43,7 +43,7 @@
     <result column="hall_id" jdbcType="INTEGER" property="hallId" />
   </resultMap>
   <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.ArrangementSeat">
-    insert into arrangement_seat (islocked, arrangement_id, hall_id
+    insert into arrangement_seat (is_locked, arrangement_id, hall_id
       )
     values (#{islocked,jdbcType=TINYINT}, #{arrangementId,jdbcType=INTEGER}, #{hallId,jdbcType=INTEGER}
       )

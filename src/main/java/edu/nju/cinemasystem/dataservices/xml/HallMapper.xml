@@ -138,7 +138,7 @@
   </delete>
   <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.Hall">
     insert into hall (id, name, column, 
-      row, size, isImax, 
+      row, size, is_Imax,
       is3D)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{column,jdbcType=INTEGER}, 
       #{row,jdbcType=INTEGER}, #{size,jdbcType=TINYINT}, #{isimax,jdbcType=TINYINT}, 
@@ -223,7 +223,7 @@
       column = #{column,jdbcType=INTEGER},
       row = #{row,jdbcType=INTEGER},
       size = #{size,jdbcType=TINYINT},
-      isImax = #{isimax,jdbcType=TINYINT},
+      is_Imax = #{isimax,jdbcType=TINYINT},
       is3D = #{is3d,jdbcType=TINYINT}
     where id = #{id,jdbcType=INTEGER}
   </update>
