@@ -79,6 +79,22 @@
             </plugin>
 
             <plugin>
+                <groupId>org.mybatis.generator</groupId>
+                <artifactId>mybatis-generator-maven-plugin</artifactId>
+                <version>1.3.7</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>${mysql.version}</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <overwrite>true</overwrite>
+                </configuration>
+            </plugin>
+
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
@@ -114,6 +130,9 @@
                     <include>static/**</include>
                     <include>templates/**</include>
                 </includes>
+                <excludes>
+                    <exclude>generatorConfig.xml</exclude>
+                </excludes>
                 <filtering>false</filtering>
             </resource>
         </resources>

@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.nju.cinemasystem.dataservices.PromotionMapper">
+  <resultMap id="BaseResultMap" type="edu.nju.cinemasystem.data.po.Promotion">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="start_time" jdbcType="DATE" property="startTime" />
+    <result column="end_time" jdbcType="DATE" property="endTime" />
+    <result column="specify_movies" jdbcType="TINYINT" property="specifyMovies" />
+    <result column="target_amount" jdbcType="REAL" property="targetAmount" />
+    <result column="coupon_amount" jdbcType="REAL" property="couponAmount" />
+    <result column="coupon_expiration" jdbcType="INTEGER" property="couponExpiration" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="edu.nju.cinemasystem.data.po.Promotion">
+    <result column="description" jdbcType="LONGVARCHAR" property="description" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, start_time, end_time, specify_movies, target_amount, coupon_amount, coupon_expiration
+  </sql>
+  <sql id="Blob_Column_List">
+    description
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from promotion
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from promotion
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.Promotion">
+    insert into promotion (id, name, start_time, 
+      end_time, specify_movies, target_amount, 
+      coupon_amount, coupon_expiration, description
+      )
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{startTime,jdbcType=DATE}, 
+      #{endTime,jdbcType=DATE}, #{specifyMovies,jdbcType=TINYINT}, #{targetAmount,jdbcType=REAL}, 
+      #{couponAmount,jdbcType=REAL}, #{couponExpiration,jdbcType=INTEGER}, #{description,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.Promotion">
+    insert into promotion
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="specifyMovies != null">
+        specify_movies,
+      </if>
+      <if test="targetAmount != null">
+        target_amount,
+      </if>
+      <if test="couponAmount != null">
+        coupon_amount,
+      </if>
+      <if test="couponExpiration != null">
+        coupon_expiration,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=DATE},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=DATE},
+      </if>
+      <if test="specifyMovies != null">
+        #{specifyMovies,jdbcType=TINYINT},
+      </if>
+      <if test="targetAmount != null">
+        #{targetAmount,jdbcType=REAL},
+      </if>
+      <if test="couponAmount != null">
+        #{couponAmount,jdbcType=REAL},
+      </if>
+      <if test="couponExpiration != null">
+        #{couponExpiration,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.nju.cinemasystem.data.po.Promotion">
+    update promotion
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=DATE},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=DATE},
+      </if>
+      <if test="specifyMovies != null">
+        specify_movies = #{specifyMovies,jdbcType=TINYINT},
+      </if>
+      <if test="targetAmount != null">
+        target_amount = #{targetAmount,jdbcType=REAL},
+      </if>
+      <if test="couponAmount != null">
+        coupon_amount = #{couponAmount,jdbcType=REAL},
+      </if>
+      <if test="couponExpiration != null">
+        coupon_expiration = #{couponExpiration,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="edu.nju.cinemasystem.data.po.Promotion">
+    update promotion
+    set name = #{name,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=DATE},
+      end_time = #{endTime,jdbcType=DATE},
+      specify_movies = #{specifyMovies,jdbcType=TINYINT},
+      target_amount = #{targetAmount,jdbcType=REAL},
+      coupon_amount = #{couponAmount,jdbcType=REAL},
+      coupon_expiration = #{couponExpiration,jdbcType=INTEGER},
+      description = #{description,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.nju.cinemasystem.data.po.Promotion">
+    update promotion
+    set name = #{name,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=DATE},
+      end_time = #{endTime,jdbcType=DATE},
+      specify_movies = #{specifyMovies,jdbcType=TINYINT},
+      target_amount = #{targetAmount,jdbcType=REAL},
+      coupon_amount = #{couponAmount,jdbcType=REAL},
+      coupon_expiration = #{couponExpiration,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <resultMap id="BaseResultMap" type="edu.nju.cinemasystem.data.po.Promotion">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="start_time" jdbcType="DATE" property="startTime" />
+    <result column="end_time" jdbcType="DATE" property="endTime" />
+    <result column="specify_movies" jdbcType="TINYINT" property="specifyMovies" />
+    <result column="target_amount" jdbcType="REAL" property="targetAmount" />
+    <result column="coupon_amount" jdbcType="REAL" property="couponAmount" />
+    <result column="coupon_expiration" jdbcType="INTEGER" property="couponExpiration" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="edu.nju.cinemasystem.data.po.Promotion">
+    <result column="descrition" jdbcType="LONGVARCHAR" property="descrition" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, start_time, end_time, specify_movies, target_amount, coupon_amount, coupon_expiration
+  </sql>
+  <sql id="Blob_Column_List">
+    descrition
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from promotion
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from promotion
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.Promotion">
+    insert into promotion (id, name, start_time, 
+      end_time, specify_movies, target_amount, 
+      coupon_amount, coupon_expiration, descrition
+      )
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{startTime,jdbcType=DATE}, 
+      #{endTime,jdbcType=DATE}, #{specifyMovies,jdbcType=TINYINT}, #{targetAmount,jdbcType=REAL}, 
+      #{couponAmount,jdbcType=REAL}, #{couponExpiration,jdbcType=INTEGER}, #{descrition,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.Promotion">
+    insert into promotion
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="specifyMovies != null">
+        specify_movies,
+      </if>
+      <if test="targetAmount != null">
+        target_amount,
+      </if>
+      <if test="couponAmount != null">
+        coupon_amount,
+      </if>
+      <if test="couponExpiration != null">
+        coupon_expiration,
+      </if>
+      <if test="descrition != null">
+        descrition,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=DATE},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=DATE},
+      </if>
+      <if test="specifyMovies != null">
+        #{specifyMovies,jdbcType=TINYINT},
+      </if>
+      <if test="targetAmount != null">
+        #{targetAmount,jdbcType=REAL},
+      </if>
+      <if test="couponAmount != null">
+        #{couponAmount,jdbcType=REAL},
+      </if>
+      <if test="couponExpiration != null">
+        #{couponExpiration,jdbcType=INTEGER},
+      </if>
+      <if test="descrition != null">
+        #{descrition,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.nju.cinemasystem.data.po.Promotion">
+    update promotion
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=DATE},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=DATE},
+      </if>
+      <if test="specifyMovies != null">
+        specify_movies = #{specifyMovies,jdbcType=TINYINT},
+      </if>
+      <if test="targetAmount != null">
+        target_amount = #{targetAmount,jdbcType=REAL},
+      </if>
+      <if test="couponAmount != null">
+        coupon_amount = #{couponAmount,jdbcType=REAL},
+      </if>
+      <if test="couponExpiration != null">
+        coupon_expiration = #{couponExpiration,jdbcType=INTEGER},
+      </if>
+      <if test="descrition != null">
+        descrition = #{descrition,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="edu.nju.cinemasystem.data.po.Promotion">
+    update promotion
+    set name = #{name,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=DATE},
+      end_time = #{endTime,jdbcType=DATE},
+      specify_movies = #{specifyMovies,jdbcType=TINYINT},
+      target_amount = #{targetAmount,jdbcType=REAL},
+      coupon_amount = #{couponAmount,jdbcType=REAL},
+      coupon_expiration = #{couponExpiration,jdbcType=INTEGER},
+      descrition = #{descrition,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.nju.cinemasystem.data.po.Promotion">
+    update promotion
+    set name = #{name,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=DATE},
+      end_time = #{endTime,jdbcType=DATE},
+      specify_movies = #{specifyMovies,jdbcType=TINYINT},
+      target_amount = #{targetAmount,jdbcType=REAL},
+      coupon_amount = #{couponAmount,jdbcType=REAL},
+      coupon_expiration = #{couponExpiration,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

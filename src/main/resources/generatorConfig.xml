@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <context id="se2" targetRuntime="MyBatis3">
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/cinema"
+                        userId="root"
+                        password="root">
+            <property name="nullCatalogMeansCurrent" value="true"/>
+        </jdbcConnection>
+
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <javaModelGenerator targetPackage="edu.nju.cinemasystem.data.po" targetProject=".\src\main\java\">
+            <property name="enableSubPackages" value="false"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <sqlMapGenerator targetPackage="edu.nju.cinemasystem.dataservices.xml" targetProject=".\src\main\java">
+            <property name="enableSubPackages" value="false"/>
+        </sqlMapGenerator>
+
+        <javaClientGenerator type="XMLMAPPER" targetPackage="edu.nju.cinemasystem.dataservices"
+                             targetProject=".\src\main\java">
+            <property name="enableSubPackages" value="false"/>
+        </javaClientGenerator>
+
+        <table catalog="cinema" tableName="%"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <property name="ignoreQualifiersAtRuntime" value="true"/>
+        </table>
+        <!--<table catalog="cinema" tableName="arrangement_seat"/>
+        <table catalog="cinema" tableName="coupon"/>
+        <table catalog="cinema" tableName="hall"/>
+        <table catalog="cinema" tableName="manager"/>
+        <table catalog="cinema" tableName="movie"/>
+        <table catalog="cinema" tableName="movie_like"/>
+        <table catalog="cinema" tableName="promotion"/>
+        <table catalog="cinema" tableName="recharge_record"/>
+        <table catalog="cinema" tableName="refund_strategy"/>
+        <table catalog="cinema" tableName="seat"/>
+        <table catalog="cinema" tableName="staff"/>
+        <table catalog="cinema" tableName="tickets"/>
+        <table catalog="cinema" tableName="user"/>
+        <table catalog="cinema" tableName="vipcard"/>
+        <table catalog="cinema" tableName="vipcard_recharge_reduction"/>-->
+
+    </context>
+</generatorConfiguration>
