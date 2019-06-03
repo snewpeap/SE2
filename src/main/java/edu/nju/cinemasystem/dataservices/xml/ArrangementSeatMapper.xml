@@ -37,40 +37,4 @@
       </if>
     </trim>
   </insert>
-  <resultMap id="BaseResultMap" type="edu.nju.cinemasystem.data.po.ArrangementSeat">
-    <result column="islocked" jdbcType="TINYINT" property="islocked" />
-    <result column="arrangement_id" jdbcType="INTEGER" property="arrangementId" />
-    <result column="hall_id" jdbcType="INTEGER" property="hallId" />
-  </resultMap>
-  <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.ArrangementSeat">
-    insert into arrangement_seat (is_locked, arrangement_id, hall_id
-      )
-    values (#{islocked,jdbcType=TINYINT}, #{arrangementId,jdbcType=INTEGER}, #{hallId,jdbcType=INTEGER}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.ArrangementSeat">
-    insert into arrangement_seat
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="islocked != null">
-        islocked,
-      </if>
-      <if test="arrangementId != null">
-        arrangement_id,
-      </if>
-      <if test="hallId != null">
-        hall_id,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="islocked != null">
-        #{islocked,jdbcType=TINYINT},
-      </if>
-      <if test="arrangementId != null">
-        #{arrangementId,jdbcType=INTEGER},
-      </if>
-      <if test="hallId != null">
-        #{hallId,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
 </mapper>
