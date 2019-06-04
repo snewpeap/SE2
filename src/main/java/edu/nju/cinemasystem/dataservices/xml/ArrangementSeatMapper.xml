@@ -1,38 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="edu.nju.cinemasystem.dataservices.ArrangementSeatMapper">
-    <resultMap id="BaseResultMap" type="edu.nju.cinemasystem.data.po.ArrangementSeat">
-        <result column="is_locked" jdbcType="TINYINT" property="isLocked"/>
-        <result column="arrangement_id" jdbcType="INTEGER" property="arrangementId"/>
-        <result column="hall_id" jdbcType="INTEGER" property="hallId"/>
-    </resultMap>
-    <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.ArrangementSeat">
-        insert into arrangement_seat (is_locked, arrangement_id, hall_id)
-        values (#{isLocked,jdbcType=TINYINT}, #{arrangementId,jdbcType=INTEGER}, #{hallId,jdbcType=INTEGER})
-    </insert>
-    <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.ArrangementSeat">
-        insert into arrangement_seat
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="isLocked != null">
-                is_locked,
-            </if>
-            <if test="arrangementId != null">
-                arrangement_id,
-            </if>
-            <if test="hallId != null">
-                hall_id,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="isLocked != null">
-                #{isLocked,jdbcType=TINYINT},
-            </if>
-            <if test="arrangementId != null">
-                #{arrangementId,jdbcType=INTEGER},
-            </if>
-            <if test="hallId != null">
-                #{hallId,jdbcType=INTEGER},
-            </if>
-        </trim>
-    </insert>
+  <resultMap id="BaseResultMap" type="edu.nju.cinemasystem.data.po.ArrangementSeat">
+    <result column="is_locked" jdbcType="TINYINT" property="isLocked" />
+    <result column="arrangement_id" jdbcType="INTEGER" property="arrangementId" />
+    <result column="seat_id" jdbcType="INTEGER" property="seatId" />
+  </resultMap>
+  <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.ArrangementSeat">
+    insert into arrangement_seat (is_locked, arrangement_id, seat_id
+      )
+    values (#{isLocked,jdbcType=TINYINT}, #{arrangementId,jdbcType=INTEGER}, #{seatId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.ArrangementSeat">
+    insert into arrangement_seat
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="isLocked != null">
+        is_locked,
+      </if>
+      <if test="arrangementId != null">
+        arrangement_id,
+      </if>
+      <if test="seatId != null">
+        seat_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="isLocked != null">
+        #{isLocked,jdbcType=TINYINT},
+      </if>
+      <if test="arrangementId != null">
+        #{arrangementId,jdbcType=INTEGER},
+      </if>
+      <if test="seatId != null">
+        #{seatId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
 </mapper>
