@@ -2,6 +2,7 @@ package blservices;
 
 import edu.nju.cinemasystem.Application;
 import edu.nju.cinemasystem.blservices.user.Account;
+import edu.nju.cinemasystem.data.vo.RegistryForm;
 import edu.nju.cinemasystem.data.vo.Response;
 import edu.nju.cinemasystem.data.vo.UserForm;
 import edu.nju.cinemasystem.data.vo.UserVO;
@@ -24,7 +25,7 @@ public class AccountTest {
     @Test
     @Transactional
     public void testRegister1(){
-        System.out.println("into");
+        RegistryForm registryForm = new RegistryForm();
     }
 
     @Test

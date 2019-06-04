@@ -121,6 +121,10 @@ public class Movie {
         return status;
     }
 
+    public boolean getStatusBoolean(){
+        return status==1;
+    }
+
     public void setStatus(Byte status) {
         this.status = status;
     }
