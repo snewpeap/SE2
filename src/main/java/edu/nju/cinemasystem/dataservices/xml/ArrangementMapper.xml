@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="edu.nju.cinemasystem.dataservices.ArrangementMapper">
+<mapper namespace="edu.nju.cinemasystem.dataservices.cinema.arrangement.ArrangementMapper">
     <resultMap id="BaseResultMap" type="edu.nju.cinemasystem.data.po.Arrangement">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="start_time" jdbcType="DATE" property="startTime"/>

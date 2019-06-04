@@ -1,6 +1,6 @@
-package edu.nju.cinemasystem.data.vo;
+package edu.nju.cinemasystem.data.vo.Form;
 
-public class StaffForm extends UserForm{
+public class StaffForm extends UserForm {
     private String role;
 
     public String getRole() {

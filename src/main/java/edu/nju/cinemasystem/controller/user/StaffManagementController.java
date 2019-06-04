@@ -1,8 +1,8 @@
 package edu.nju.cinemasystem.controller.user;
 
 import edu.nju.cinemasystem.blservices.user.StaffManagement;
+import edu.nju.cinemasystem.data.vo.Form.StaffForm;
 import edu.nju.cinemasystem.data.vo.Response;
-import edu.nju.cinemasystem.data.vo.StaffForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

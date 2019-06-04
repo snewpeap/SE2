@@ -3,7 +3,7 @@ package edu.nju.cinemasystem.controller.movie;
 import edu.nju.cinemasystem.blservices.movie.Movie;
 import edu.nju.cinemasystem.blservices.movie.MovieLike;
 import edu.nju.cinemasystem.blservices.movie.MovieManagement;
-import edu.nju.cinemasystem.data.vo.MovieForm;
+import edu.nju.cinemasystem.data.vo.Form.MovieForm;
 import edu.nju.cinemasystem.data.vo.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

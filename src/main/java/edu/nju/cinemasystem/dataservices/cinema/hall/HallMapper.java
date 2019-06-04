@@ -1,4 +1,4 @@
-package edu.nju.cinemasystem.dataservices;
+package edu.nju.cinemasystem.dataservices.cinema.hall;
 
 import edu.nju.cinemasystem.data.po.Hall;
 
