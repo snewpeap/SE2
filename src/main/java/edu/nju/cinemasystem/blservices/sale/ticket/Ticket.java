@@ -18,14 +18,14 @@ public interface Ticket {
      * 
      * @return
      */
-    Response payOrder(int orderID, int userID, int couponID);
+    Response payOrder(long orderID, int userID, int couponID);
 
     /**
      * TODO：完成购票，并且给用户送优惠券
      * 
      * @return
      */
-    Response payOrderByVIPCard(int orderID, int userID, int couponID);
+    Response payOrderByVIPCard(long orderID, int userID, int couponID);
 
     /**
      * TODO：获取用户的购票记录
