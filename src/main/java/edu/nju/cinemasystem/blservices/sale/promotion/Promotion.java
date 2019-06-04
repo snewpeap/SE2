@@ -13,7 +13,7 @@ public interface Promotion {
     Response publishPromotion(PromotionForm promotionForm);
 
     /**
-     * TODO: 获取所有的优惠获得
+     * TODO: 获取所有的优惠活动
      * 
      * @return
      */
