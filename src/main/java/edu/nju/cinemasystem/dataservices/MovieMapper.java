@@ -1,7 +1,11 @@
 package edu.nju.cinemasystem.dataservices;
 
 import edu.nju.cinemasystem.data.po.Movie;
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
+@Mapper
+@Repository
 public interface MovieMapper {
     int deleteByPrimaryKey(Integer id);
 

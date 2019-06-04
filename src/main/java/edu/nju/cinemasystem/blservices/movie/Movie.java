@@ -4,10 +4,16 @@ import edu.nju.cinemasystem.data.vo.Response;
 
 public interface Movie {
     /**
-     * 负数代表查询所有电影
+     * 非整数代表查询所有电影
      * @param movieID 电影ID
-     * @return 为正整数返回一部电影；为非正数返回所有电影
+     * @return 为正整数返回一部电影；为非正数返回所有电影列表
      */
     Response getMovie(int movieID);
+
+    /**
+     * 查找电影，关键字我也不知道能查到啥
+     * @param query 查询关键字
+     * @return 查到的电影列表
+     */
     Response searchMovies(String query);
 }
