@@ -15,4 +15,9 @@ public class MovieLikeImpl implements MovieLike {
     public Response unlike(int userID, int movieID) {
         return null;
     }
+
+    @Override
+    public int getLikeAmount(int movieID) {
+        return 0;
+    }
 }
