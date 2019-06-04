@@ -34,7 +34,7 @@
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
 
-        <table catalog="cinema" tableName="arrangement_seat"
+        <table catalog="cinema" tableName="tickets"
                enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false"

@@ -17,6 +17,8 @@ public class Tickets {
 
     private Float realAmount;
 
+    private Long orderid;
+
     public Integer getId() {
         return id;
     }
@@ -71,5 +73,13 @@ public class Tickets {
 
     public void setRealAmount(Float realAmount) {
         this.realAmount = realAmount;
+    }
+
+    public Long getOrderid() {
+        return orderid;
+    }
+
+    public void setOrderid(Long orderid) {
+        this.orderid = orderid;
     }
 }
