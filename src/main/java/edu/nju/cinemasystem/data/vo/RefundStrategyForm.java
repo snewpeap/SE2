@@ -3,7 +3,7 @@ package edu.nju.cinemasystem.data.vo;
 public class RefundStrategyForm {
     private Integer day;
 
-    private Byte refundable;
+    private Boolean refundable;
 
     private Float percentage;
 
@@ -15,20 +15,20 @@ public class RefundStrategyForm {
         this.day = day;
     }
 
-    public Byte getRefundable() {
-        return refundable;
-    }
-
-    public void setRefundable(Byte refundable) {
-        this.refundable = refundable;
-    }
-
     public Float getPercentage() {
         return percentage;
     }
 
     public void setPercentage(Float percentage) {
         this.percentage = percentage;
+    }
+
+    public void setRefundable(Boolean refundable) {
+        this.refundable = refundable;
+    }
+
+    public Boolean getRefundable() {
+        return refundable;
     }
 
 
