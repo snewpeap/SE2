@@ -2,7 +2,7 @@ package edu.nju.cinemasystem.controller.sale;
 
 import edu.nju.cinemasystem.blservices.sale.ticket.Manage.RefundTicketManage;
 import edu.nju.cinemasystem.blservices.sale.ticket.Ticket;
-import edu.nju.cinemasystem.data.vo.RefundStrategyForm;
+import edu.nju.cinemasystem.data.vo.Form.RefundStrategyForm;
 import edu.nju.cinemasystem.data.vo.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -39,7 +39,7 @@ public class TicketController {
 
     @PostMapping("/cancel")
     public Response cancelOrder(@RequestBody long orderId,@RequestParam int userId){
-        return ticket.cancelOrder(orderId,userId);
+        return ticket.cancelOrder(userId,orderId);
     }
 
     @PostMapping("/refund")
