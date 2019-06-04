@@ -24,7 +24,7 @@ public interface Statistics {
      * 返回值为过去7天内每天客单价
      * @return
      */
-    Response getAudiencePriceSevenDays(int days);
+    Response getAudiencePrice(int days);
 
 
     /**
