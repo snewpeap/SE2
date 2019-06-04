@@ -3,7 +3,9 @@ package edu.nju.cinemasystem.blservices.impl.movie;
 import edu.nju.cinemasystem.blservices.movie.MovieManagement;
 import edu.nju.cinemasystem.data.vo.Form.MovieForm;
 import edu.nju.cinemasystem.data.vo.Response;
+import org.springframework.stereotype.Service;
 
+@Service
 public class MovieManagementImpl implements MovieManagement {
     @Override
     public Response addMovie(MovieForm movieForm) {
