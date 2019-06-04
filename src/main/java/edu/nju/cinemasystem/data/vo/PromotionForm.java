@@ -10,7 +10,7 @@ public class PromotionForm {
 
     private Date endTime;
 
-    private Byte specifyMovies;
+    private Boolean specifyMovies;
 
     private Float targetAmount;
 
@@ -44,11 +44,11 @@ public class PromotionForm {
         this.endTime = endTime;
     }
 
-    public Byte getSpecifyMovies() {
+    public Boolean getSpecifyMovies() {
         return specifyMovies;
     }
 
-    public void setSpecifyMovies(Byte specifyMovies) {
+    public void setSpecifyMovies(Boolean specifyMovies) {
         this.specifyMovies = specifyMovies;
     }
 
