@@ -5,7 +5,7 @@ public class ArrangementSeat {
 
     private Integer arrangementId;
 
-    private Integer hallId;
+    private Integer seatId;
 
     public Byte getIsLocked() {
         return isLocked;
@@ -23,11 +23,11 @@ public class ArrangementSeat {
         this.arrangementId = arrangementId;
     }
 
-    public Integer getHallId() {
-        return hallId;
+    public Integer getSeatId() {
+        return seatId;
     }
 
-    public void setHallId(Integer hallId) {
-        this.hallId = hallId;
+    public void setSeatId(Integer seatId) {
+        this.seatId = seatId;
     }
 }
