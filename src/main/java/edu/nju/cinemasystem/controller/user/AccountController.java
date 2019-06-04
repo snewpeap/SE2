@@ -2,9 +2,9 @@ package edu.nju.cinemasystem.controller.user;
 
 import edu.nju.cinemasystem.blservices.user.Account;
 import edu.nju.cinemasystem.config.InterceptorConfiguration;
-import edu.nju.cinemasystem.data.vo.RegistryForm;
+import edu.nju.cinemasystem.data.vo.Form.RegistryForm;
+import edu.nju.cinemasystem.data.vo.Form.UserForm;
 import edu.nju.cinemasystem.data.vo.Response;
-import edu.nju.cinemasystem.data.vo.UserForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

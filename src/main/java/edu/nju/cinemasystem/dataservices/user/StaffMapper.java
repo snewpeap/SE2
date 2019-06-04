@@ -1,4 +1,4 @@
-package edu.nju.cinemasystem.dataservices;
+package edu.nju.cinemasystem.dataservices.user;
 
 import edu.nju.cinemasystem.data.po.Staff;
 import edu.nju.cinemasystem.data.po.User;

@@ -4,7 +4,7 @@ import edu.nju.cinemasystem.blservices.movie.MovieLike;
 import edu.nju.cinemasystem.data.po.Movie;
 import edu.nju.cinemasystem.data.vo.MovieVO;
 import edu.nju.cinemasystem.data.vo.Response;
-import edu.nju.cinemasystem.dataservices.MovieMapper;
+import edu.nju.cinemasystem.dataservices.movie.MovieMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
