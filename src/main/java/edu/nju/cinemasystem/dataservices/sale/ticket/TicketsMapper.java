@@ -1,4 +1,4 @@
-package edu.nju.cinemasystem.dataservices;
+package edu.nju.cinemasystem.dataservices.sale.ticket;
 
 import edu.nju.cinemasystem.data.po.Tickets;
 

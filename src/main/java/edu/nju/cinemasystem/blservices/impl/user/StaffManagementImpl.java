@@ -4,11 +4,11 @@ import edu.nju.cinemasystem.blservices.user.StaffManagement;
 import edu.nju.cinemasystem.data.po.Manager;
 import edu.nju.cinemasystem.data.po.Staff;
 import edu.nju.cinemasystem.data.po.User;
+import edu.nju.cinemasystem.data.vo.Form.StaffForm;
 import edu.nju.cinemasystem.data.vo.Response;
-import edu.nju.cinemasystem.data.vo.StaffForm;
 import edu.nju.cinemasystem.data.vo.StaffVO;
-import edu.nju.cinemasystem.dataservices.ManagerMapper;
-import edu.nju.cinemasystem.dataservices.StaffMapper;
+import edu.nju.cinemasystem.dataservices.user.ManagerMapper;
+import edu.nju.cinemasystem.dataservices.user.StaffMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

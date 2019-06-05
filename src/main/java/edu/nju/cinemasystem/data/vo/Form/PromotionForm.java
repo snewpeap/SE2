@@ -1,4 +1,4 @@
-package edu.nju.cinemasystem.data.vo;
+package edu.nju.cinemasystem.data.vo.Form;
 
 import java.util.Date;
 

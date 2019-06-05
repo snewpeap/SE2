@@ -1,4 +1,4 @@
-package edu.nju.cinemasystem.dataservices;
+package edu.nju.cinemasystem.dataservices.vip;
 
 import edu.nju.cinemasystem.data.po.VipcardRechargeReduction;
 

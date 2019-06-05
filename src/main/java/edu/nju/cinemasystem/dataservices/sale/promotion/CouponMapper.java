@@ -1,4 +1,4 @@
-package edu.nju.cinemasystem.dataservices;
+package edu.nju.cinemasystem.dataservices.sale.promotion;
 
 import edu.nju.cinemasystem.data.po.Coupon;
 
