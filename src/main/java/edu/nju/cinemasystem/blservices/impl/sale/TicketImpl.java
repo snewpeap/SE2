@@ -59,4 +59,9 @@ public class TicketImpl implements Ticket, RefundTicketManage {
     public Response modifyRefundTicketManage(RefundStrategyForm refundStrategyForm){
         return null;
     }
+
+    @Override
+    public Response getOrderByScheduleIdAndUserId(int userId, int scheduleId){
+        return null;
+    }
 }

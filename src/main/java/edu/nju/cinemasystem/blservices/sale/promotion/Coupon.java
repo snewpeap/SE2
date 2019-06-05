@@ -5,7 +5,7 @@ import edu.nju.cinemasystem.data.vo.Response;
 public interface Coupon {
 
     /**
-     * TODO：获取用户可用的所有优惠券
+     * 获取用户可用的所有优惠券
      * @param userId
      * @return
      */
