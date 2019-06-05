@@ -1,6 +1,6 @@
 package edu.nju.cinemasystem.web.interceptor;
 
-import edu.nju.cinemasystem.config.InterceptorConfiguration;
+import edu.nju.cinemasystem.web.config.InterceptorConfiguration;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;

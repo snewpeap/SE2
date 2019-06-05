@@ -1,7 +1,7 @@
 package edu.nju.cinemasystem.web.controller.user;
 
 import edu.nju.cinemasystem.blservices.user.Account;
-import edu.nju.cinemasystem.config.InterceptorConfiguration;
+import edu.nju.cinemasystem.web.config.InterceptorConfiguration;
 import edu.nju.cinemasystem.data.vo.Form.RegistryForm;
 import edu.nju.cinemasystem.data.vo.Form.UserForm;
 import edu.nju.cinemasystem.data.vo.Response;
