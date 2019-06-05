@@ -1,4 +1,4 @@
-package edu.nju.cinemasystem.controller.cinema;
+package edu.nju.cinemasystem.web.controller.cinema;
 
 import edu.nju.cinemasystem.blservices.cinema.arrangement.Arrangement;
 import edu.nju.cinemasystem.data.vo.Response;

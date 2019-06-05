@@ -1,6 +1,6 @@
 package edu.nju.cinemasystem.config;
 
-import edu.nju.cinemasystem.interceptor.SessionInterceptor;
+import edu.nju.cinemasystem.web.interceptor.SessionInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

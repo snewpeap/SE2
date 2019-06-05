@@ -1,4 +1,4 @@
-package edu.nju.cinemasystem.controller.vip;
+package edu.nju.cinemasystem.web.controller.vip;
 
 import edu.nju.cinemasystem.blservices.vip.VIPCard;
 import edu.nju.cinemasystem.blservices.vip.VIPManagement;

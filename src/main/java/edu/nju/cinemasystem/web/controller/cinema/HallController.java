@@ -1,4 +1,4 @@
-package edu.nju.cinemasystem.controller.cinema;
+package edu.nju.cinemasystem.web.controller.cinema;
 
 import edu.nju.cinemasystem.blservices.cinema.hall.HallManage;
 import edu.nju.cinemasystem.data.vo.HallForm;

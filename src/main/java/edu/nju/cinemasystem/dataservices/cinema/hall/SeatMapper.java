@@ -2,6 +2,8 @@ package edu.nju.cinemasystem.dataservices.cinema.hall;
 
 import edu.nju.cinemasystem.data.po.Seat;
 
+import java.util.List;
+
 public interface SeatMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,7 @@ public interface SeatMapper {
     int updateByPrimaryKeySelective(Seat record);
 
     int updateByPrimaryKey(Seat record);
+
+    //TODO redundant
+    List<Seat> selectByHallID(int hallID);
 }

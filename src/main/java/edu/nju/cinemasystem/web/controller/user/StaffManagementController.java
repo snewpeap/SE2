@@ -1,4 +1,4 @@
-package edu.nju.cinemasystem.controller.user;
+package edu.nju.cinemasystem.web.controller.user;
 
 import edu.nju.cinemasystem.blservices.user.StaffManagement;
 import edu.nju.cinemasystem.data.vo.Form.StaffForm;

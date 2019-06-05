@@ -1,4 +1,4 @@
-package edu.nju.cinemasystem.controller.statistics;
+package edu.nju.cinemasystem.web.controller.statistics;
 
 import edu.nju.cinemasystem.blservices.statistics.Statistics;
 import edu.nju.cinemasystem.data.vo.Response;

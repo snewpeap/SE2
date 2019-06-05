@@ -2,6 +2,8 @@ package edu.nju.cinemasystem.dataservices.sale.promotion;
 
 import edu.nju.cinemasystem.data.po.Coupon;
 
+import java.util.List;
+
 public interface CouponMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,7 @@ public interface CouponMapper {
     int updateByPrimaryKeySelective(Coupon record);
 
     int updateByPrimaryKey(Coupon record);
+
+    //TODO
+    List<Coupon> selectByUserID(int userID);
 }

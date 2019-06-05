@@ -9,4 +9,4 @@ spring:
   jackson:
     time-zone: GMT+8
 mybatis:
-  mapper-locations: classpath:edu/nju/cinemasystem/dataservices/xml/*.xml
+  mapper-locations: classpath:edu/nju/cinemasystem/dataservices/impl//xml/*.xml

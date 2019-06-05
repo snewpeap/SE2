@@ -1,4 +1,4 @@
-package edu.nju.cinemasystem.controller.user;
+package edu.nju.cinemasystem.web.controller.user;
 
 import edu.nju.cinemasystem.blservices.user.Account;
 import edu.nju.cinemasystem.config.InterceptorConfiguration;

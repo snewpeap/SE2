@@ -1,4 +1,4 @@
-package edu.nju.cinemasystem.controller.movie;
+package edu.nju.cinemasystem.web.controller.movie;
 
 import edu.nju.cinemasystem.blservices.movie.Movie;
 import edu.nju.cinemasystem.blservices.movie.MovieLike;
