@@ -2,7 +2,7 @@ package edu.nju.cinemasystem.data.po;
 
 import java.util.Date;
 
-public class Tickets {
+public class Ticket {
     private Integer id;
 
     private Integer userId;

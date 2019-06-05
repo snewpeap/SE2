@@ -7,14 +7,14 @@ public interface HallManage {
 
     /**
      * 录入影厅信息
-     * @param HallForm
+     * @param hallForm
      * @return
      */
     Response enterHallInfo(HallForm hallForm);
 
     /**
      * 修改影厅信息
-     * @param HallForm
+     * @param hallForm
      * @return
      */
     Response modifyHallInfo(HallForm hallForm);
