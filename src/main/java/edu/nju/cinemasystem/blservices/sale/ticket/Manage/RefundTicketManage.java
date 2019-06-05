@@ -6,7 +6,7 @@ import edu.nju.cinemasystem.data.vo.Response;
 public interface RefundTicketManage {
     
     /**
-     * TODO：新增退票策略
+     * 新增退票策略
      * 
      * @param refundStrategyForm
      * @return
@@ -14,7 +14,7 @@ public interface RefundTicketManage {
     Response addRefundTicketManage(RefundStrategyForm refundStrategyForm);
     
     /**
-     * TODO：修改退票策略
+     * 修改退票策略
      * 
      * @param refundStrategyForm
      * @return
