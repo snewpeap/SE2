@@ -7,15 +7,15 @@ import org.springframework.stereotype.Service;
 
 import edu.nju.cinemasystem.blservices.sale.ticket.Ticket;
 import edu.nju.cinemasystem.blservices.sale.ticket.Manage.RefundTicketManage;
-import edu.nju.cinemasystem.data.vo.RefundStrategyForm;
+import edu.nju.cinemasystem.controller.sale.TicketController;
 import edu.nju.cinemasystem.data.vo.Response;
-import edu.nju.cinemasystem.dataservices.TicketsMapper;
+import edu.nju.cinemasystem.data.vo.Form.RefundStrategyForm;
 
 @Service
 public class TicketImpl implements Ticket, RefundTicketManage {
 
     @Autowired
-    TicketsMapper TicketsMapper;
+    TicketController TicketsMapper;
     
     @Override
     public Response lockSeat(List<Integer> seatID, int userID, int arrangementID){
@@ -24,12 +24,12 @@ public class TicketImpl implements Ticket, RefundTicketManage {
     }
 
     @Override
-    public Response payOrder(int orderID, int userID, int couponID){
+    public Response payOrder(long orderID, int userID, int couponID){
         return null;
     }
     
     @Override
-    public Response payOrderByVIPCard(int orderID, int userID, int couponID){
+    public Response payOrderByVIPCard(long orderID, int userID, int couponID){
         return null;
     }
 
