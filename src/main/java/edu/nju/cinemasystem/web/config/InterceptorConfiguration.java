@@ -1,4 +1,4 @@
-package edu.nju.cinemasystem.config;
+package edu.nju.cinemasystem.web.config;
 
 import edu.nju.cinemasystem.web.interceptor.SessionInterceptor;
 import org.springframework.context.annotation.Configuration;
