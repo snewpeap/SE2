@@ -7,7 +7,7 @@ import edu.nju.cinemasystem.blservices.cinema.hall.HallManage;
 import edu.nju.cinemasystem.data.po.Hall;
 
 import edu.nju.cinemasystem.data.vo.Response;
-import edu.nju.cinemasystem.data.vo.Form.HallForm;
+import edu.nju.cinemasystem.data.vo.form.HallForm;
 import edu.nju.cinemasystem.dataservices.cinema.hall.HallMapper;
 import edu.nju.cinemasystem.util.properties.GlobalMsg;
 
