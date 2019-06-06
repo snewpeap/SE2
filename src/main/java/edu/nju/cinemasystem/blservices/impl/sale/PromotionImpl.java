@@ -1,11 +1,10 @@
 package edu.nju.cinemasystem.blservices.impl.sale;
 
-import org.springframework.stereotype.Service;
-
 import edu.nju.cinemasystem.blservices.sale.promotion.Coupon;
 import edu.nju.cinemasystem.blservices.sale.promotion.Promotion;
 import edu.nju.cinemasystem.data.vo.Response;
-import edu.nju.cinemasystem.data.vo.Form.PromotionForm;
+import edu.nju.cinemasystem.data.vo.form.PromotionForm;
+import org.springframework.stereotype.Service;
 
 @Service
 public class PromotionImpl implements Promotion, Coupon {

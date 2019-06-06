@@ -1,4 +1,4 @@
-package edu.nju.cinemasystem.data.vo.Form;
+package edu.nju.cinemasystem.data.vo.form;
 
 public class RefundStrategyForm {
     private Integer day;

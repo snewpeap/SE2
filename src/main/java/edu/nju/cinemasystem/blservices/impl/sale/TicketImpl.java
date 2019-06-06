@@ -2,9 +2,9 @@ package edu.nju.cinemasystem.blservices.impl.sale;
 
 import edu.nju.cinemasystem.blservices.sale.ticket.Manage.RefundTicketManage;
 import edu.nju.cinemasystem.blservices.sale.ticket.Ticket;
-import edu.nju.cinemasystem.data.vo.Form.RefundStrategyForm;
-import edu.nju.cinemasystem.dataservices.sale.ticket.TicketsMapper;
 import edu.nju.cinemasystem.data.vo.Response;
+import edu.nju.cinemasystem.data.vo.form.RefundStrategyForm;
+import edu.nju.cinemasystem.dataservices.sale.ticket.TicketsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

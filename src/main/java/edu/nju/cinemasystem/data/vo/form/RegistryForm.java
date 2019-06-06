@@ -1,8 +1,9 @@
-package edu.nju.cinemasystem.data.vo.Form;
+package edu.nju.cinemasystem.data.vo.form;
 
-public class UserForm {
+public class RegistryForm {
     private String name;
     private String password;
+    private String confirmPassword;
 
     public String getName() {
         return name;
@@ -18,5 +19,13 @@ public class UserForm {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 }

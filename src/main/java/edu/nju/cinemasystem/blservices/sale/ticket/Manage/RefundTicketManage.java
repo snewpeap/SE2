@@ -1,7 +1,7 @@
 package edu.nju.cinemasystem.blservices.sale.ticket.Manage;
 
-import edu.nju.cinemasystem.data.vo.Form.RefundStrategyForm;
 import edu.nju.cinemasystem.data.vo.Response;
+import edu.nju.cinemasystem.data.vo.form.RefundStrategyForm;
 
 public interface RefundTicketManage {
     

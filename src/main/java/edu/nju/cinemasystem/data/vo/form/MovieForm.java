@@ -1,4 +1,4 @@
-package edu.nju.cinemasystem.data.vo.Form;
+package edu.nju.cinemasystem.data.vo.form;
 
 import edu.nju.cinemasystem.data.vo.BaseMovieVO;
 
