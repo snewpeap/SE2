@@ -61,4 +61,17 @@ public interface Ticket {
      */
     Response getOrderByScheduleIdAndUserId(int userId, int scheduleId);
 
+    /**
+     * 获取用户的所有电影票（不包含已退的票）
+     * @param userId
+     * @return
+     */
+    Response getAllTicketsByUserId(int userId);
+
+    /**
+     * 获取用户的历史消费记录，返回订单VO
+     * @param userId
+     * @return
+     */
+    Response getHistoricalConsumptionsByUserId(int userId);
 }
