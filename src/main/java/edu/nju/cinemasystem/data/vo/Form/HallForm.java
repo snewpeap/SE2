@@ -8,7 +8,7 @@ public class HallForm{
 
     private Integer row;
 
-    private Byte size;
+    private String size;    //大，中，小
 
     private Boolean isImax;
 
@@ -38,11 +38,11 @@ public class HallForm{
         this.row = row;
     }
 
-    public Byte getSize() {
+    public String getSize() {
         return size;
     }
 
-    public void setSize(Byte size) {
+    public void setSize(String size) {
         this.size = size;
     }
 

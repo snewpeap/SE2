@@ -9,7 +9,7 @@ public class Hall {
 
     private Integer row;
 
-    private Byte size;
+    private Byte size;  //0,1,2分别是大中小
 
     private Byte isImax;
 
@@ -68,6 +68,15 @@ public class Hall {
     }
 
     public void setIs3d(Byte is3d) {
+        this.is3d = is3d;
+    }
+
+    public Hall(String name, Integer column, Integer row, Byte size, Byte isImax, Byte is3d) {
+        this.name = name;
+        this.column = column;
+        this.row = row;
+        this.size = size;
+        this.isImax = isImax;
         this.is3d = is3d;
     }
 }

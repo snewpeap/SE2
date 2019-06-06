@@ -14,7 +14,7 @@ public class HallController {
 
     @PostMapping("/add")
     public Response addHall(@RequestBody HallForm hallForm){
-        return hallManage.enterHallInfo(hallForm);
+        return hallManage.InputHallInfo(hallForm);
     }
 
     @PostMapping("/modify")

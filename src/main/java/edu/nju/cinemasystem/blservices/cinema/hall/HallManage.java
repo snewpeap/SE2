@@ -10,7 +10,7 @@ public interface HallManage {
      * @param hallForm
      * @return
      */
-    Response enterHallInfo(HallForm hallForm);
+    Response InputHallInfo(HallForm hallForm);
 
     /**
      * 修改影厅信息
