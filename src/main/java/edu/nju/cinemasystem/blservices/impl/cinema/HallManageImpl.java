@@ -1,11 +1,14 @@
 package edu.nju.cinemasystem.blservices.impl.cinema;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import edu.nju.cinemasystem.blservices.cinema.hall.HallManage;
 import edu.nju.cinemasystem.data.po.Hall;
-
+import edu.nju.cinemasystem.data.vo.HallVO;
 import edu.nju.cinemasystem.data.vo.Response;
 import edu.nju.cinemasystem.data.vo.form.HallForm;
 import edu.nju.cinemasystem.dataservices.cinema.hall.HallMapper;
@@ -44,15 +47,29 @@ public class HallManageImpl implements HallManage {
         byte isImax = (byte) (hallForm.getIsImax() ? 1 : 0);
         byte is3d = (byte)(hallForm.getIs3d()? 1 : 0);
         Hall hall = new Hall(name,column,row,size,isImax,is3d);
-        //TODO:没有捕获异常
-        hallMapper.insert(hall);
-        response = Response.success();
-        return response;
+        try {
+            hallMapper.insert(hall);
+            response = Response.success();
+            return response;
+        } catch (Exception e) {
+            e.printStackTrace();
+            response = Response.fail();
+            response.setMessage(globalMsg.getWrongParam());
+            return response;
+        }
+        
     }
 
     @Override
     public Response getAllHallInfo() {
-        return null;
+        Response response;
+        List<Hall> hallList = hallMapper.selectAll();
+        List<HallVO> hallVOs = new ArrayList<HallVO>();
+        for(Hall hall: hallList){
+            hallVOs.add(new HallVO(hall));
+        }
+        response = Response.success();
+        return response;
     }
 
     @Override
