@@ -1,4 +1,4 @@
-package edu.nju.cinemasystem.blservices.impl.sale;
+package edu.nju.cinemasystem.blservices.impl.sale.ticket;
 
 import edu.nju.cinemasystem.blservices.sale.ticket.Manage.RefundTicketManage;
 import edu.nju.cinemasystem.blservices.sale.ticket.Ticket;

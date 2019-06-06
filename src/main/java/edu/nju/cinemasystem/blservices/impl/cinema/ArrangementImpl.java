@@ -1,12 +1,16 @@
 package edu.nju.cinemasystem.blservices.impl.cinema;
 
+import edu.nju.cinemasystem.blservices.movie.ArrangementInfo;
+import edu.nju.cinemasystem.data.vo.Response;
 import org.springframework.stereotype.Service;
 
-import edu.nju.cinemasystem.blservices.cinema.arrangement.Arrangement;
-import edu.nju.cinemasystem.data.vo.Response;
-
 @Service
-public class ArrangementImpl implements Arrangement {
+public class ArrangementImpl implements
+        edu.nju.cinemasystem.blservices.cinema.arrangement.Arrangement, ArrangementInfo {
+    @Override
+    public boolean movieHasArrangement(int movieID) {
+        return false;
+    }
 
     @Override
     public Response getArrangement(int aID) {
@@ -22,5 +26,5 @@ public class ArrangementImpl implements Arrangement {
     public Response getSeatMap(int aID) {
         return null;
     }
-    
+
 }
