@@ -2,10 +2,10 @@ package edu.nju.cinemasystem.blservices.impl.user;
 
 import edu.nju.cinemasystem.blservices.user.Account;
 import edu.nju.cinemasystem.data.po.User;
-import edu.nju.cinemasystem.data.vo.Form.RegistryForm;
-import edu.nju.cinemasystem.data.vo.Form.UserForm;
 import edu.nju.cinemasystem.data.vo.Response;
 import edu.nju.cinemasystem.data.vo.UserVO;
+import edu.nju.cinemasystem.data.vo.form.RegistryForm;
+import edu.nju.cinemasystem.data.vo.form.UserForm;
 import edu.nju.cinemasystem.dataservices.user.UserMapper;
 import edu.nju.cinemasystem.util.properties.AccountMsg;
 import org.springframework.beans.factory.annotation.Autowired;

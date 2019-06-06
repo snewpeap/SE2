@@ -1,7 +1,7 @@
 package edu.nju.cinemasystem.blservices.cinema.hall;
 
-import edu.nju.cinemasystem.data.vo.Form.HallForm;
 import edu.nju.cinemasystem.data.vo.Response;
+import edu.nju.cinemasystem.data.vo.form.HallForm;
 
 public interface HallManage {
 

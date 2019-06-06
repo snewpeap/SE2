@@ -1,7 +1,7 @@
 package edu.nju.cinemasystem.blservices.sale.promotion;
 
-import edu.nju.cinemasystem.data.vo.Form.PromotionForm;
 import edu.nju.cinemasystem.data.vo.Response;
+import edu.nju.cinemasystem.data.vo.form.PromotionForm;
 
 public interface Promotion {
 

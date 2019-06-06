@@ -2,8 +2,8 @@ package edu.nju.cinemasystem.web.controller.sale;
 
 import edu.nju.cinemasystem.blservices.sale.promotion.Coupon;
 import edu.nju.cinemasystem.blservices.sale.promotion.Promotion;
-import edu.nju.cinemasystem.data.vo.Form.PromotionForm;
 import edu.nju.cinemasystem.data.vo.Response;
+import edu.nju.cinemasystem.data.vo.form.PromotionForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,8 +1,8 @@
 package edu.nju.cinemasystem.blservices.user;
 
-import edu.nju.cinemasystem.data.vo.Form.RegistryForm;
-import edu.nju.cinemasystem.data.vo.Form.UserForm;
 import edu.nju.cinemasystem.data.vo.Response;
+import edu.nju.cinemasystem.data.vo.form.RegistryForm;
+import edu.nju.cinemasystem.data.vo.form.UserForm;
 
 public interface Account {
     Response register(RegistryForm registryForm);
