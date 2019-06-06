@@ -8,9 +8,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = Application.class)
@@ -20,9 +20,52 @@ public class MovieTest {
     private MovieMapper movieMapper;
 
     @Test
-    public void testSelectByID1(){
+    public void testSelectByID(){
         Movie movie = movieMapper.selectByPrimaryKey(1);
         assertNotNull(movie);
         assertEquals(movie.getName(),"随便");
+    }
+
+    @Test
+    public void testSelectByIDFail_NoSuch(){
+        Movie movie = movieMapper.selectByPrimaryKey(0);
+        assertNull(movie);
+    }
+
+    @Test
+    public void testSelectByIDFail_Null(){
+        Movie movie = movieMapper.selectByPrimaryKey(null);
+    }
+
+    @Test
+    @Transactional
+    public void testInsertFail_hasNull(){
+        Movie movie = new Movie();
+        movie.setName("TestNull");
+        int i = movieMapper.insert(movie);
+        assertEquals(i,0);
+        throw new RuntimeException();
+    }
+
+    @Test
+    @Transactional
+    public void testInsert(){
+        Movie movie = movieMapper.selectByPrimaryKey(1);
+        movie.setId(null);
+        movie.setName("都行");
+        int i = movieMapper.insert(movie);
+        assertEquals(i,1);
+        throw new RuntimeException();
+    }
+
+    @Test
+    @Transactional
+    public void testInsertFail_MinusDuration(){
+        Movie movie = movieMapper.selectByPrimaryKey(1);
+        movie.setId(null);
+        movie.setName("有问题");
+        movie.setDuration(-1);
+        int i = movieMapper.insert(movie);
+        assertEquals(i,0);
     }
 }

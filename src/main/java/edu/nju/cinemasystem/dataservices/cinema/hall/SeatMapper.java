@@ -1,9 +1,13 @@
 package edu.nju.cinemasystem.dataservices.cinema.hall;
 
 import edu.nju.cinemasystem.data.po.Seat;
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Mapper
+@Repository
 public interface SeatMapper {
     int deleteByPrimaryKey(Integer id);
 
