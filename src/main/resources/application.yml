@@ -9,12 +9,36 @@ spring:
   jackson:
     time-zone: GMT+8
 mybatis:
-  mapper-locations: classpath:edu/nju/cinemasystem/dataservices/impl//xml/*.xml
+  mapper-locations: classpath:edu/nju/cinemasystem/dataservices/impl/xml/*.xml
 
 
 ################ 应用配置 ################
+# 全局消息 #
+global-msg:
+  operation-failed: "操作失败"
+  operation-success: "操作成功"
+  wrong-param: "参数错误"
+
+# 电影消息 #
 movie-msg:
   not-exist: "电影不存在"
   has-arrangement: "电影还有后续排片"
-  operation-success: "操作成功"
-  operation-failed: "操作失败"
+
+# 账户操作消息 #
+account-msg:
+  account-not-exist: "用户名不存在"
+  registry-name-already-exist: "用户名已经被注册"
+  password-not-confirmed: "两次输入的密码不同"
+  wrong-password: "密码错误"
+  login-success: "登录成功"
+  registry-success: "注册成功"
+  registry-failed: "注册失败"
+
+# 员工管理操作信息 #
+staff-msg:
+  add-success: "添加员工成功"
+  manager-already-exist: "管理员已存在"
+  manager-not-exist: "不存在此管理员"
+  staff-already-exist: "员工已存在"
+  staff-not-exist: "不存在此员工"
+  add-failed: "添加员工失败"

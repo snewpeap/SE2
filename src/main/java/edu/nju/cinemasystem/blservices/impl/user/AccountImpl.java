@@ -7,6 +7,7 @@ import edu.nju.cinemasystem.data.vo.Form.UserForm;
 import edu.nju.cinemasystem.data.vo.Response;
 import edu.nju.cinemasystem.data.vo.UserVO;
 import edu.nju.cinemasystem.dataservices.user.UserMapper;
+import edu.nju.cinemasystem.util.properties.AccountMsg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +16,12 @@ import javax.validation.constraints.NotNull;
 @Service
 public class AccountImpl implements Account {
     private UserMapper userMapper;
+    private AccountMsg accountMsg;
 
     @Autowired
-    public AccountImpl(UserMapper userMapper) {
+    public AccountImpl(UserMapper userMapper, AccountMsg accountMsg) {
         this.userMapper = userMapper;
+        this.accountMsg = accountMsg;
     }
 
     @Override
@@ -26,21 +29,26 @@ public class AccountImpl implements Account {
         Response response = Response.success();
         if (userMapper.selectByName(registryForm.getName()) != null) {
             response = Response.fail();
-            response.setMessage("用户名已经被注册");
+            response.setMessage(accountMsg.getRegistryNameAlreadyExist());
             return response;
         }
         if (registryForm.getPassword().equals(registryForm.getConfirmPassword())) {
             response = Response.fail();
-            response.setMessage("两次输入的密码不同");
+            response.setMessage(accountMsg.getPasswordNotConfirmed());
             return response;
         }
         User user = new User();
         user.setName(registryForm.getName());
         user.setPassword(registryForm.getPassword());
-        int id = userMapper.insert(user);
-        user = userMapper.selectByPrimaryKey(id);
-        response.setMessage("注册成功");
-        response.setContent(new UserVO(user.getId(),user.getName()));
+        if (userMapper.insert(user) == 0) {
+            response = Response.fail();
+            response.setStatusCode(500);
+            response.setMessage(accountMsg.getRegistryFailed());
+        } else {
+            user = userMapper.selectByName(registryForm.getName());
+            response.setMessage(accountMsg.getRegistrySuccess());
+            response.setContent(UserVO.assembleUserVO(user));
+        }
         return response;
     }
 
@@ -49,17 +57,15 @@ public class AccountImpl implements Account {
         Response response = Response.fail();
         User targetUser = userMapper.selectByName(userForm.getName());
         if (targetUser == null) {
-            response.setMessage("用户名不存在");
-            return response;
+            response.setMessage(accountMsg.getAccountNotExist());
+        } else if (!targetUser.getPassword().equals(userForm.getPassword())) {
+            response.setMessage(accountMsg.getWrongPassword());
+        } else {
+            UserVO user = UserVO.assembleUserVO(targetUser);
+            response = Response.success();
+            response.setMessage(accountMsg.getLoginSuccess());
+            response.setContent(user);
         }
-        if (!targetUser.getPassword().equals(userForm.getPassword())) {
-            response.setMessage("密码错误");
-            return response;
-        }
-        UserVO user = new UserVO(targetUser.getId(),targetUser.getName());
-        response = Response.success();
-        response.setMessage("登录成功");
-        response.setContent(user);
         return response;
     }
 

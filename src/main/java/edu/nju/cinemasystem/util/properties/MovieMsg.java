@@ -5,11 +5,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 @ConfigurationProperties(prefix = "movie-msg")
-public class MovieMsg {
+public class MovieMsg extends GlobalMsg{
     private String notExist;
     private String hasArrangement;
-    private String operationSuccess;
-    private String operationFailed;
 
     public String getHasArrangement() {
         return hasArrangement;
@@ -27,19 +25,4 @@ public class MovieMsg {
         this.notExist = notExist;
     }
 
-    public String getOperationSuccess() {
-        return operationSuccess;
-    }
-
-    public void setOperationSuccess(String operationSuccess) {
-        this.operationSuccess = operationSuccess;
-    }
-
-    public String getOperationFailed() {
-        return operationFailed;
-    }
-
-    public void setOperationFailed(String operationFailed) {
-        this.operationFailed = operationFailed;
-    }
 }

@@ -26,6 +26,12 @@ public class AccountTest {
     @Transactional
     public void testRegister1(){
         RegistryForm registryForm = new RegistryForm();
+        registryForm.setName("qwe");
+        registryForm.setPassword("qwe");
+        registryForm.setPassword("qwe");
+        Response response = account.register(registryForm);
+        assertTrue(response.isSuccess());
+        throw new RuntimeException();
     }
 
     @Test

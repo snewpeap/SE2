@@ -1,11 +1,13 @@
 package edu.nju.cinemasystem.data.vo;
 
+import edu.nju.cinemasystem.data.po.User;
+
 public class UserVO {
     private int ID;
     private String name;
 
-    public UserVO(int ID, String name) {
-        this.ID = ID;
+    UserVO(int id, String name) {
+        this.ID = id;
         this.name = name;
     }
 
@@ -23,5 +25,12 @@ public class UserVO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public static UserVO assembleUserVO(User user) {
+        return new UserVO(
+                user.getId(),
+                user.getName()
+        );
     }
 }
