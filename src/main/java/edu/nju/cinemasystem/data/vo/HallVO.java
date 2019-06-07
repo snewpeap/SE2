@@ -76,6 +76,7 @@ public class HallVO{
 
     public HallVO(Hall hall) {
         this.id = hall.getId();
+        this.name = hall.getName();
         this.column = hall.getColumn();
         this.row = hall.getRow();
         switch(hall.getSize()){
@@ -89,8 +90,8 @@ public class HallVO{
                 this.size = "小";
                 break;
         }
-        
-
+        this.isImax = hall.getIsImax() == 1?true:false;
+        this.is3d = hall.getIs3d() == 1? true:false;
     }
 
 }
