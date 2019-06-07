@@ -1,20 +1,20 @@
 package edu.nju.cinemasystem.blservices.cinema.hall;
 
-import edu.nju.cinemasystem.data.vo.HallForm;
 import edu.nju.cinemasystem.data.vo.Response;
+import edu.nju.cinemasystem.data.vo.form.HallForm;
 
 public interface HallManage {
 
     /**
      * 录入影厅信息
-     * @param HallForm
+     * @param hallForm
      * @return
      */
-    Response enterHallInfo(HallForm hallForm);
+    Response InputHallInfo(HallForm hallForm);
 
     /**
      * 修改影厅信息
-     * @param HallForm
+     * @param hallForm
      * @return
      */
     Response modifyHallInfo(HallForm hallForm);

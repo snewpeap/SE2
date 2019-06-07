@@ -1,7 +1,13 @@
 package edu.nju.cinemasystem.dataservices.sale.promotion;
 
 import edu.nju.cinemasystem.data.po.Promotion;
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
+@Mapper
+@Repository
 public interface PromotionMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -16,4 +22,7 @@ public interface PromotionMapper {
     int updateByPrimaryKeyWithBLOBs(Promotion record);
 
     int updateByPrimaryKey(Promotion record);
+
+    //TODO
+    List<Promotion> selectAll();
 }

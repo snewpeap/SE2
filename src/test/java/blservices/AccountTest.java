@@ -2,10 +2,10 @@ package blservices;
 
 import edu.nju.cinemasystem.Application;
 import edu.nju.cinemasystem.blservices.user.Account;
-import edu.nju.cinemasystem.data.vo.Form.RegistryForm;
-import edu.nju.cinemasystem.data.vo.Form.UserForm;
 import edu.nju.cinemasystem.data.vo.Response;
 import edu.nju.cinemasystem.data.vo.UserVO;
+import edu.nju.cinemasystem.data.vo.form.RegistryForm;
+import edu.nju.cinemasystem.data.vo.form.UserForm;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +26,12 @@ public class AccountTest {
     @Transactional
     public void testRegister1(){
         RegistryForm registryForm = new RegistryForm();
+        registryForm.setName("qwe");
+        registryForm.setPassword("qwe");
+        registryForm.setPassword("qwe");
+        Response response = account.register(registryForm);
+        assertTrue(response.isSuccess());
+        throw new RuntimeException();
     }
 
     @Test

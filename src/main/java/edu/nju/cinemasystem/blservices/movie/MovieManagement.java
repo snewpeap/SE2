@@ -1,7 +1,7 @@
 package edu.nju.cinemasystem.blservices.movie;
 
-import edu.nju.cinemasystem.data.vo.Form.MovieForm;
 import edu.nju.cinemasystem.data.vo.Response;
+import edu.nju.cinemasystem.data.vo.form.MovieForm;
 
 public interface MovieManagement {
     Response addMovie(MovieForm movieForm);

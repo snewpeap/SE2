@@ -1,17 +1,32 @@
 package edu.nju.cinemasystem.dataservices.sale.ticket;
 
-import edu.nju.cinemasystem.data.po.Tickets;
+import edu.nju.cinemasystem.data.po.Ticket;
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
+@Mapper
+@Repository
 public interface TicketsMapper {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(Tickets record);
+    int insert(Ticket record);
 
-    int insertSelective(Tickets record);
+    int insertSelective(Ticket record);
 
-    Tickets selectByPrimaryKey(Integer id);
+    Ticket selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(Tickets record);
+    int updateByPrimaryKeySelective(Ticket record);
 
-    int updateByPrimaryKey(Tickets record);
+    int updateByPrimaryKey(Ticket record);
+
+    //TODO
+    List<Ticket> selectByUserID(int userID);
+
+    //TODO
+    List<Ticket> selectByOrderID(long orderID);
+
+    //TODO
+    List<Ticket> selectBymovieID(int movieID);
 }

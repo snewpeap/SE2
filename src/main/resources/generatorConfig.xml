@@ -25,7 +25,7 @@
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
 
-        <sqlMapGenerator targetPackage="edu.nju.cinemasystem.dataservices.xml" targetProject=".\src\main\java">
+        <sqlMapGenerator targetPackage="edu.nju.cinemasystem.dataservices.impl.xml" targetProject=".\src\main\java">
             <property name="enableSubPackages" value="false"/>
         </sqlMapGenerator>
 
@@ -34,7 +34,7 @@
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
 
-        <table catalog="cinema" tableName="tickets"
+        <table catalog="cinema" tableName="movie_like"
                enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false"

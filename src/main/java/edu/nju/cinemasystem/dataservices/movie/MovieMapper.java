@@ -4,6 +4,8 @@ import edu.nju.cinemasystem.data.po.Movie;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Mapper
 @Repository
 public interface MovieMapper {
@@ -20,4 +22,7 @@ public interface MovieMapper {
     int updateByPrimaryKeyWithBLOBs(Movie record);
 
     int updateByPrimaryKey(Movie record);
+
+    //TODO
+    List<Movie> selectAll();
 }
