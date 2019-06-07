@@ -9,7 +9,7 @@ import edu.nju.cinemasystem.data.vo.ManagerMovieVO;
 import edu.nju.cinemasystem.data.vo.Response;
 import edu.nju.cinemasystem.data.vo.form.MovieForm;
 import edu.nju.cinemasystem.dataservices.movie.MovieMapper;
-import edu.nju.cinemasystem.util.properties.MovieMsg;
+import edu.nju.cinemasystem.util.properties.message.MovieMsg;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;

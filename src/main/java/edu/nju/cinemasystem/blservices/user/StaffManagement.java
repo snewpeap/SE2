@@ -34,7 +34,5 @@ public interface StaffManagement {
 
     Response removeStaff(int staffID);
 
-    Response removeManager(int staffID);
-
     Response changeRole(StaffForm staffForm);
 }

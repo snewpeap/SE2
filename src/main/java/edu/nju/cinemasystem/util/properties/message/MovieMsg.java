@@ -1,11 +1,11 @@
-package edu.nju.cinemasystem.util.properties;
+package edu.nju.cinemasystem.util.properties.message;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
 @ConfigurationProperties(prefix = "movie-msg")
-public class MovieMsg extends GlobalMsg{
+public class MovieMsg extends GlobalMsg {
     private String notExist;
     private String hasArrangement;
 

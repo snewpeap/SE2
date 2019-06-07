@@ -1,15 +1,13 @@
 package edu.nju.cinemasystem.blservices.impl.cinema;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import edu.nju.cinemasystem.blservices.cinema.hall.HallManage;
 import edu.nju.cinemasystem.data.po.Hall;
-
 import edu.nju.cinemasystem.data.vo.Response;
 import edu.nju.cinemasystem.data.vo.form.HallForm;
 import edu.nju.cinemasystem.dataservices.cinema.hall.HallMapper;
-import edu.nju.cinemasystem.util.properties.GlobalMsg;
+import edu.nju.cinemasystem.util.properties.message.GlobalMsg;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class HallManageImpl implements HallManage {

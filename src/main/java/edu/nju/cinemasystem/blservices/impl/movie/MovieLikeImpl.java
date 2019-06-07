@@ -3,18 +3,20 @@ package edu.nju.cinemasystem.blservices.impl.movie;
 import edu.nju.cinemasystem.data.po.MovieLike;
 import edu.nju.cinemasystem.data.vo.Response;
 import edu.nju.cinemasystem.dataservices.movie.MovieLikeMapper;
-import edu.nju.cinemasystem.util.properties.GlobalMsg;
-import org.springframework.beans.factory.annotation.Autowired;
+import edu.nju.cinemasystem.util.properties.message.GlobalMsg;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
 @Service
 public class MovieLikeImpl implements edu.nju.cinemasystem.blservices.movie.MovieLike {
-    @Autowired
-    private MovieLikeMapper movieLikeMapper;
-    @Autowired
-    private GlobalMsg globalMsg;
+    private final MovieLikeMapper movieLikeMapper;
+    private final GlobalMsg globalMsg;
+
+    public MovieLikeImpl(MovieLikeMapper movieLikeMapper, GlobalMsg globalMsg) {
+        this.movieLikeMapper = movieLikeMapper;
+        this.globalMsg = globalMsg;
+    }
 
     @Override
     public Response like(int userID, int movieID) {

@@ -1,11 +1,11 @@
-package edu.nju.cinemasystem.util.properties;
+package edu.nju.cinemasystem.util.properties.message;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
 @ConfigurationProperties(prefix = "account-msg")
-public class AccountMsg extends GlobalMsg{
+public class AccountMsg extends GlobalMsg {
     private String registryNameAlreadyExist;
     private String passwordNotConfirmed;
     private String accountNotExist;

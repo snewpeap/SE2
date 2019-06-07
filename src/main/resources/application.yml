@@ -42,3 +42,10 @@ staff-msg:
   staff-already-exist: "员工已存在"
   staff-not-exist: "不存在此员工"
   add-failed: "添加员工失败"
+
+# 角色名 #
+role:
+  audience: "audience"
+  staff: "staff"
+  manager: "manager"
+  root: "root"
