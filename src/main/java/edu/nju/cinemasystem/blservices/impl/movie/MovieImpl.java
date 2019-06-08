@@ -1,7 +1,8 @@
 package edu.nju.cinemasystem.blservices.impl.movie;
 
 import edu.nju.cinemasystem.blservices.movie.MovieLike;
-import edu.nju.cinemasystem.blservices.movie.SaleInfo;
+import edu.nju.cinemasystem.blservices.movie.PromotionInfo;
+import edu.nju.cinemasystem.blservices.movie.StatisticsInfo;
 import edu.nju.cinemasystem.data.po.Movie;
 import edu.nju.cinemasystem.data.vo.AudienceMovieVO;
 import edu.nju.cinemasystem.data.vo.BaseMovieVO;
@@ -18,13 +19,15 @@ import java.util.List;
 public class MovieImpl implements edu.nju.cinemasystem.blservices.movie.Movie {
     private MovieMapper movieMapper;
     private MovieLike movieLikeInfo;
-    private SaleInfo saleInfo;
+    private PromotionInfo promotionInfo;
+    private final StatisticsInfo statisticsInfo;
 
     @Autowired
-    public MovieImpl(MovieMapper movieMapper, MovieLike movieLikeInfo, SaleInfo saleInfo) {
+    public MovieImpl(MovieMapper movieMapper, MovieLike movieLikeInfo, PromotionInfo promotionInfo, StatisticsInfo statisticsInfo) {
         this.movieMapper = movieMapper;
         this.movieLikeInfo = movieLikeInfo;
-        this.saleInfo = saleInfo;
+        this.promotionInfo = promotionInfo;
+        this.statisticsInfo = statisticsInfo;
     }
 
     @Override
@@ -62,9 +65,9 @@ public class MovieImpl implements edu.nju.cinemasystem.blservices.movie.Movie {
     private AudienceMovieVO assembleAudienceMovieVO(Movie movie){
         AudienceMovieVO movieVO = (AudienceMovieVO) BaseMovieVO.assembleMovieVO(movie);
         int movieID = movieVO.getId();
-        movieVO.setJoinedPromotions(saleInfo.getJoinedPromotionOf(movieID));
+        movieVO.setJoinedPromotions(promotionInfo.getJoinedPromotionOf(movieID));
         movieVO.setLikeNum(movieLikeInfo.getLikeAmount(movieID));
-        movieVO.setHeat(saleInfo.getHeatOf(movieID));
+        movieVO.setHeat(statisticsInfo.getHeatOf(movieID));
         return movieVO;
     }
 }

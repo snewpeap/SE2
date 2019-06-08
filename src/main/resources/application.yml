@@ -43,6 +43,13 @@ staff-msg:
   staff-not-exist: "不存在此员工"
   add-failed: "添加员工失败"
 
+vip-msg:
+  add-failed: "服务器开小差了，购卡失败"
+  recharge-failed: "充值失败了呜呜呜"
+  no-v-i-p-card: "你还没有会员卡"
+  out-of-balance: "你的会员卡余额不足"
+  has-v-i-p-card: "你已经有会员卡了"
+
 # 角色名 #
 role:
   audience: "audience"

@@ -25,9 +25,7 @@
             <if test="movieId != null">
                 movie_id,
             </if>
-            <if test="date != null">
-                date,
-            </if>
+            date,
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">

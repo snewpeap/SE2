@@ -20,8 +20,9 @@ public class VipController {
     }
 
     @GetMapping("/card/buy")
+    //TODO 因为这个方法是用来添加而不是购买，建议改一下方法名和映射的url
     public Response buyVIPCard(@RequestParam int userId){
-        return vipCard.buyVIPCard(userId);
+        return vipCard.addVIPCard(userId);
     }
 
     @GetMapping("/rechargeReduction")

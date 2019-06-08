@@ -4,6 +4,7 @@ import edu.nju.cinemasystem.data.po.MovieLike;
 import edu.nju.cinemasystem.data.vo.Response;
 import edu.nju.cinemasystem.dataservices.movie.MovieLikeMapper;
 import edu.nju.cinemasystem.util.properties.message.GlobalMsg;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -13,6 +14,7 @@ public class MovieLikeImpl implements edu.nju.cinemasystem.blservices.movie.Movi
     private final MovieLikeMapper movieLikeMapper;
     private final GlobalMsg globalMsg;
 
+    @Autowired
     public MovieLikeImpl(MovieLikeMapper movieLikeMapper, GlobalMsg globalMsg) {
         this.movieLikeMapper = movieLikeMapper;
         this.globalMsg = globalMsg;

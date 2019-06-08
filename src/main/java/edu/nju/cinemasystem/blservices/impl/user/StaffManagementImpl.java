@@ -58,7 +58,7 @@ public class StaffManagementImpl implements StaffManagement {
             queryString = queryString.toLowerCase();
             if (roleProperty.getStaff().equals(queryString)) {
                 userMapper.selectAllStaff().forEach(
-                        staff -> staffList.add(assembleStaffVO(staff))//TODO 6/6写到这
+                        staff -> staffList.add(assembleStaffVO(staff))
                 );
             } else if (roleProperty.getManager().equals(queryString)) {
                 userMapper.selectAllManager().forEach(
