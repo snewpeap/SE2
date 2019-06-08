@@ -11,8 +11,8 @@
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
                         connectionURL="jdbc:mysql://localhost:3306/cinema"
-                        id="isRoot"
-                        password="isRoot">
+                        userId="root"
+                        password="root">
             <property name="nullCatalogMeansCurrent" value="true"/>
         </jdbcConnection>
 
