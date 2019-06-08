@@ -5,24 +5,31 @@
         <id column="target_amount" jdbcType="INTEGER" property="targetAmount"/>
         <result column="discount_amount" jdbcType="REAL" property="discountAmount"/>
     </resultMap>
+
     <sql id="Base_Column_List">
         target_amount, discount_amount
     </sql>
+
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from vipcard_recharge_reduction
-        where target_amount = #{targetAmount,jdbcType=INTEGER}
+        <if test="targetAmount != null">
+            where target_amount = #{targetAmount,jdbcType=INTEGER}
+        </if>
     </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
         from vipcard_recharge_reduction
         where target_amount = #{targetAmount,jdbcType=INTEGER}
     </delete>
+
     <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.VipcardRechargeReduction">
         insert into vipcard_recharge_reduction (target_amount, discount_amount)
         values (#{targetAmount,jdbcType=INTEGER}, #{discountAmount,jdbcType=REAL})
     </insert>
+
     <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.VipcardRechargeReduction">
         insert into vipcard_recharge_reduction
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -42,6 +49,7 @@
             </if>
         </trim>
     </insert>
+
     <update id="updateByPrimaryKeySelective" parameterType="edu.nju.cinemasystem.data.po.VipcardRechargeReduction">
         update vipcard_recharge_reduction
         <set>
@@ -51,6 +59,7 @@
         </set>
         where target_amount = #{targetAmount,jdbcType=INTEGER}
     </update>
+
     <update id="updateByPrimaryKey" parameterType="edu.nju.cinemasystem.data.po.VipcardRechargeReduction">
         update vipcard_recharge_reduction
         set discount_amount = #{discountAmount,jdbcType=REAL}

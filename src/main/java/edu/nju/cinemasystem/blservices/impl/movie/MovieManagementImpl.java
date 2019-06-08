@@ -10,6 +10,7 @@ import edu.nju.cinemasystem.data.vo.Response;
 import edu.nju.cinemasystem.data.vo.form.MovieForm;
 import edu.nju.cinemasystem.dataservices.movie.MovieMapper;
 import edu.nju.cinemasystem.util.properties.message.MovieMsg;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
@@ -21,6 +22,7 @@ public class MovieManagementImpl implements MovieManagement {
     private final ArrangementInfo arrangementInfo;
     private final MovieMsg movieMsg;
 
+    @Autowired
     public MovieManagementImpl(MovieMapper movieMapper, MovieLike movieLike, ArrangementInfo arrangementInfo, MovieMsg movieMsg) {
         this.movieMapper = movieMapper;
         this.movieLike = movieLike;
@@ -31,11 +33,13 @@ public class MovieManagementImpl implements MovieManagement {
     @Override
     public Response addMovie(MovieForm movieForm) {
         Response response = Response.success();
-        if (movieMapper.insert(BaseMovieVO.assembleMoviePO(movieForm))==0){
+        Movie movie = BaseMovieVO.assembleMoviePO(movieForm);
+        if (movieMapper.insert(movie)==0){
             response = Response.fail();
             response.setMessage(movieMsg.getOperationFailed());
         } else {
             response.setMessage(movieMsg.getOperationSuccess());
+            response.setContent(movieMapper.selectByPrimaryKey(movie.getId()));
         }
         return response;
     }
@@ -82,8 +86,7 @@ public class MovieManagementImpl implements MovieManagement {
             Movie movie = movieMapper.selectByPrimaryKey(movieID);
             if (movie != null) {
                 response.setStatusCode(200);
-                ManagerMovieVO movieVO = assembleManagerMovieVO(movie);
-                response.setContent(movieVO);
+                response.setContent(assembleManagerMovieVO(movie));
             } else {
                 response = Response.fail();
                 response.setStatusCode(404);

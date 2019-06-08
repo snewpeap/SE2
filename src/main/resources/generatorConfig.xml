@@ -34,7 +34,7 @@
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
 
-        <table catalog="cinema" tableName="user"
+        <table catalog="cinema" tableName="order"
                enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false"
@@ -42,7 +42,7 @@
                selectByExampleQueryId="false">
             <property name="ignoreQualifiersAtRuntime" value="true"/>
         </table>
-        <table catalog="cinema" tableName="role"
+        <!--<table catalog="cinema" tableName="role"
                enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false"
@@ -57,7 +57,7 @@
                enableSelectByExample="false"
                selectByExampleQueryId="false">
             <property name="ignoreQualifiersAtRuntime" value="true"/>
-        </table>
+        </table>-->
         <!--<table catalog="cinema" tableName="arrangement_seat"/>
         <table catalog="cinema" tableName="coupon"/>
         <table catalog="cinema" tableName="hall"/>

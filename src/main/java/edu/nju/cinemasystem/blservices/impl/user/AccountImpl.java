@@ -69,6 +69,7 @@ public class AccountImpl implements Account {
         return response;
     }
 
+    @Override
     public User getUserByID(@NotNull int ID) {
         return userMapper.selectByPrimaryKey(ID);
     }

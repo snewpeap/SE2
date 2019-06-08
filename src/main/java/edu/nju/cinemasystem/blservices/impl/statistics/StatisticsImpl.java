@@ -1,14 +1,18 @@
 package edu.nju.cinemasystem.blservices.impl.statistics;
 
-import java.util.Date;
-
-import org.springframework.stereotype.Service;
-
+import edu.nju.cinemasystem.blservices.movie.StatisticsInfo;
 import edu.nju.cinemasystem.blservices.statistics.Statistics;
 import edu.nju.cinemasystem.data.vo.Response;
+import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 @Service
-public class StatisticsImpl implements Statistics {
+public class StatisticsImpl implements Statistics, StatisticsInfo {
+    @Override
+    public double getHeatOf(int movieID) {
+        return 0;
+    }
 
     @Override
     public Response getAudiencePrice(int days) {

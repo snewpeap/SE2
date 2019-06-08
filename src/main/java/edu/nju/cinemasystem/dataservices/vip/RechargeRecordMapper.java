@@ -4,6 +4,8 @@ import edu.nju.cinemasystem.data.po.RechargeRecord;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Mapper
 @Repository
 public interface RechargeRecordMapper {
@@ -15,7 +17,9 @@ public interface RechargeRecordMapper {
 
     RechargeRecord selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(RechargeRecord record);
+    List<RechargeRecord> selectByUserID(Integer userID);
 
-    int updateByPrimaryKey(RechargeRecord record);
+    //int updateByPrimaryKeySelective(RechargeRecord record);
+
+    //int updateByPrimaryKey(RechargeRecord record);
 }

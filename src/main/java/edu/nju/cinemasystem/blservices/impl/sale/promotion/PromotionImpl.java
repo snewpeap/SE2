@@ -21,7 +21,7 @@ import java.util.*;
 @Service
 public class PromotionImpl implements
         edu.nju.cinemasystem.blservices.sale.promotion.Promotion,
-        edu.nju.cinemasystem.blservices.sale.promotion.Coupon, SaleInfo {
+        edu.nju.cinemasystem.blservices.sale.promotion.Coupon, PromotionInfo {
 
     @Autowired
     PromotionMapper promotionMapper;
@@ -53,12 +53,6 @@ public class PromotionImpl implements
         response = Response.success();
         response.setContent(promotionVOs);
         return response;
-    }
-
-    @Override
-    public double getHeatOf(int movieID) {
-        //TODO
-        return 0;
     }
 
     @Override
