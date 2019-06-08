@@ -1,6 +1,6 @@
 package edu.nju.cinemasystem.blservices.impl.sale.promotion;
 
-import edu.nju.cinemasystem.blservices.movie.SaleInfo;
+import edu.nju.cinemasystem.blservices.movie.PromotionInfo;
 import edu.nju.cinemasystem.data.po.Coupon;
 import edu.nju.cinemasystem.data.po.Promotion;
 import edu.nju.cinemasystem.data.po.PromotionHasMovie;
