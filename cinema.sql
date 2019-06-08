@@ -88,12 +88,12 @@ CREATE TABLE IF NOT EXISTS `cinema`.`arrangement`
         FOREIGN KEY (`hall_id`)
             REFERENCES `cinema`.`hall` (`id`)
             ON DELETE NO ACTION
-            ON UPDATE NO ACTION,
+            ON UPDATE CASCADE,
     CONSTRAINT `fk_arrangement_movie1`
         FOREIGN KEY (`movie_id`)
             REFERENCES `cinema`.`movie` (`id`)
             ON DELETE NO ACTION
-            ON UPDATE NO ACTION
+            ON UPDATE CASCADE
 )
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
@@ -115,8 +115,8 @@ CREATE TABLE IF NOT EXISTS `cinema`.`seat`
     CONSTRAINT `fk_seat_hall1`
         FOREIGN KEY (`hall_id`)
             REFERENCES `cinema`.`hall` (`id`)
-            ON DELETE NO ACTION
-            ON UPDATE NO ACTION
+            ON DELETE CASCADE
+            ON UPDATE CASCADE
 )
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
@@ -137,13 +137,13 @@ CREATE TABLE IF NOT EXISTS `cinema`.`arrangement_seat`
     CONSTRAINT `fk_arrangement_seat_arrangement1`
         FOREIGN KEY (`arrangement_id`)
             REFERENCES `cinema`.`arrangement` (`id`)
-            ON DELETE NO ACTION
-            ON UPDATE NO ACTION,
+            ON DELETE CASCADE
+            ON UPDATE CASCADE,
     CONSTRAINT `fk_arrangement_seat_hall1`
         FOREIGN KEY (`seat_id`)
             REFERENCES `cinema`.`seat` (`id`)
             ON DELETE NO ACTION
-            ON UPDATE NO ACTION
+            ON UPDATE CASCADE
 )
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
@@ -188,6 +188,11 @@ CREATE TABLE IF NOT EXISTS `cinema`.`user`
     AUTO_INCREMENT = 4
     DEFAULT CHARACTER SET = utf8;
 
+insert into cinema.user(name, password)
+values ('root', 'root'),
+       ('manager', 'manager'),
+       ('staff', 'staff'),
+       ('audience', 'audience');
 
 -- -----------------------------------------------------
 -- Table `cinema`.`coupon`
@@ -207,12 +212,12 @@ CREATE TABLE IF NOT EXISTS `cinema`.`coupon`
         FOREIGN KEY (`promotion_id`)
             REFERENCES `cinema`.`promotion` (`id`)
             ON DELETE NO ACTION
-            ON UPDATE NO ACTION,
+            ON UPDATE CASCADE,
     CONSTRAINT `fk_coupon_user1`
         FOREIGN KEY (`user_id`)
             REFERENCES `cinema`.`user` (`id`)
-            ON DELETE NO ACTION
-            ON UPDATE NO ACTION
+            ON DELETE CASCADE
+            ON UPDATE CASCADE
 )
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
@@ -233,13 +238,13 @@ CREATE TABLE IF NOT EXISTS `cinema`.`movie_like`
     CONSTRAINT `fk_user_has_movie_movie1`
         FOREIGN KEY (`movie_id`)
             REFERENCES `cinema`.`movie` (`id`)
-            ON DELETE NO ACTION
-            ON UPDATE NO ACTION,
+            ON DELETE CASCADE
+            ON UPDATE CASCADE,
     CONSTRAINT `fk_user_has_movie_user1`
         FOREIGN KEY (`user_id`)
             REFERENCES `cinema`.`user` (`id`)
-            ON DELETE NO ACTION
-            ON UPDATE NO ACTION
+            ON DELETE CASCADE
+            ON UPDATE CASCADE
 )
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
@@ -262,8 +267,8 @@ CREATE TABLE IF NOT EXISTS `cinema`.`recharge_record`
     CONSTRAINT `fk_recharge_record_user1`
         FOREIGN KEY (`user_id`)
             REFERENCES `cinema`.`user` (`id`)
-            ON DELETE NO ACTION
-            ON UPDATE NO ACTION
+            ON DELETE CASCADE
+            ON UPDATE CASCADE
 )
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
@@ -308,7 +313,7 @@ CREATE TABLE IF NOT EXISTS `cinema`.`tickets`
         FOREIGN KEY (`arrangement_id`)
             REFERENCES `cinema`.`arrangement` (`id`)
             ON DELETE NO ACTION
-            ON UPDATE NO ACTION,
+            ON UPDATE CASCADE,
     CONSTRAINT `fk_tickets_seat1`
         FOREIGN KEY (`seat_id`)
             REFERENCES `cinema`.`seat` (`id`)
@@ -318,7 +323,7 @@ CREATE TABLE IF NOT EXISTS `cinema`.`tickets`
         FOREIGN KEY (`user_id`)
             REFERENCES `cinema`.`user` (`id`)
             ON DELETE NO ACTION
-            ON UPDATE NO ACTION
+            ON UPDATE CASCADE
 )
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
@@ -337,8 +342,8 @@ CREATE TABLE IF NOT EXISTS `cinema`.`vipcard`
     CONSTRAINT `fk_vipcard_user1`
         FOREIGN KEY (`user_id`)
             REFERENCES `cinema`.`user` (`id`)
-            ON DELETE NO ACTION
-            ON UPDATE NO ACTION
+            ON DELETE CASCADE
+            ON UPDATE CASCADE
 )
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
@@ -374,13 +379,13 @@ CREATE TABLE IF NOT EXISTS `cinema`.`promotion_has_movie`
     CONSTRAINT `fk_promotion_has_movie_promotion1`
         FOREIGN KEY (`promotion_id`)
             REFERENCES `cinema`.`promotion` (`id`)
-            ON DELETE NO ACTION
-            ON UPDATE NO ACTION,
+            ON DELETE CASCADE
+            ON UPDATE CASCADE,
     CONSTRAINT `fk_promotion_has_movie_movie1`
         FOREIGN KEY (`movie_id`)
             REFERENCES `cinema`.`movie` (`id`)
-            ON DELETE NO ACTION
-            ON UPDATE NO ACTION
+            ON DELETE CASCADE
+            ON UPDATE CASCADE
 )
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
@@ -422,13 +427,13 @@ CREATE TABLE IF NOT EXISTS `cinema`.`user_has_role`
     CONSTRAINT `fk_user_has_role_user1`
         FOREIGN KEY (`user_id`)
             REFERENCES `cinema`.`user` (`id`)
-            ON DELETE NO ACTION
-            ON UPDATE NO ACTION,
+            ON DELETE CASCADE
+            ON UPDATE CASCADE,
     CONSTRAINT `fk_user_has_role_role1`
         FOREIGN KEY (`role_id`)
             REFERENCES `cinema`.`role` (`id`)
             ON DELETE NO ACTION
-            ON UPDATE NO ACTION
+            ON UPDATE CASCADE
 )
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;

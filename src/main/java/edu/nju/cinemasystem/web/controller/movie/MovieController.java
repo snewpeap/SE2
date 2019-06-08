@@ -3,7 +3,7 @@ package edu.nju.cinemasystem.web.controller.movie;
 import edu.nju.cinemasystem.blservices.movie.Movie;
 import edu.nju.cinemasystem.blservices.movie.MovieLike;
 import edu.nju.cinemasystem.blservices.movie.MovieManagement;
-import edu.nju.cinemasystem.blservices.movie.PromotionInfo;
+import edu.nju.cinemasystem.blservices.movie.SaleInfo;
 import edu.nju.cinemasystem.data.vo.Response;
 import edu.nju.cinemasystem.data.vo.form.MovieForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class MovieController {
     @Autowired
     private MovieManagement movieManagement;
     @Autowired
-    private PromotionInfo promotionInfo;
+    private SaleInfo saleInfo;
 
     @GetMapping("/all")
     public Response getAllMovie(){
@@ -73,6 +73,6 @@ public class MovieController {
 
 //    @GetMapping("/joinedPromotion")
 //    public Response getJoinedPromotion(@RequestParam int movieId){
-//        return promotionInfo.getJoinedPromotionOf(movieId);
+//        return saleInfo.getJoinedPromotionOf(movieId);
 //    }
 }

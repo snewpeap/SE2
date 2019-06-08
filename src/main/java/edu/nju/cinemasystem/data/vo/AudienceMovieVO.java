@@ -5,6 +5,15 @@ import java.util.List;
 public class AudienceMovieVO extends BaseMovieVO {
     private List<Integer> joinedPromotions;
     private int LikeNum;
+    private double heat;
+
+    public double getHeat() {
+        return heat;
+    }
+
+    public void setHeat(double heat) {
+        this.heat = heat;
+    }
 
     public int getLikeNum() {
         return LikeNum;
