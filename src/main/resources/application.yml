@@ -49,3 +49,13 @@ role:
   staff: "staff"
   manager: "manager"
   root: "root"
+# 管理排片操作信息 #
+arrangement-msg:
+  visible-to-audience: "排片已对观众可见"
+  arrangement-start: "排片已开始放映"
+
+# 管理sale操作信息 #
+ticket-msg:
+  balance-not-enough: "余额不足"
+  refund-strategy-exist: "该天数的购票策略已存在，只能修改"
+  refund-disable: "这张票已经不能退了"

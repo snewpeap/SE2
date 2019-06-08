@@ -30,4 +30,10 @@ public class RefundStrategy {
     public void setPercentage(Float percentage) {
         this.percentage = percentage;
     }
+
+    public RefundStrategy(Integer day, Byte refundable, Float percentage) {
+        this.day = day;
+        this.refundable = refundable;
+        this.percentage = percentage;
+    }
 }

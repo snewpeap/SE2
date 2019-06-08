@@ -1,8 +1,11 @@
-package edu.nju.cinemasystem.data.po;
+package edu.nju.cinemasystem.data.vo;
 
 import java.util.Date;
+import java.util.List;
 
-public class Promotion {
+import edu.nju.cinemasystem.data.po.Promotion;
+
+public class PromotionVO {
     private Integer id;
 
     private String name;
@@ -11,7 +14,7 @@ public class Promotion {
 
     private Date endTime;
 
-    private Byte specifyMovies;
+    private List<Integer> movieList;
 
     private Float targetAmount;
 
@@ -34,7 +37,7 @@ public class Promotion {
     }
 
     public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+        this.name = name;
     }
 
     public Date getStartTime() {
@@ -53,12 +56,12 @@ public class Promotion {
         this.endTime = endTime;
     }
 
-    public Byte getSpecifyMovies() {
-        return specifyMovies;
+    public List<Integer> getMovieList() {
+        return movieList;
     }
 
-    public void setSpecifyMovies(Byte specifyMovies) {
-        this.specifyMovies = specifyMovies;
+    public void setMovieList(List<Integer> movieList) {
+        this.movieList = movieList;
     }
 
     public Float getTargetAmount() {
@@ -90,18 +93,17 @@ public class Promotion {
     }
 
     public void setDescription(String description) {
-        this.description = description == null ? null : description.trim();
+        this.description = description;
     }
 
-    public Promotion(String name, Date startTime, Date endTime, Byte specifyMovies, Float targetAmount,
-            Float couponAmount, Integer couponExpiration, String description) {
-        this.name = name;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.specifyMovies = specifyMovies;
-        this.targetAmount = targetAmount;
-        this.couponAmount = couponAmount;
-        this.couponExpiration = couponExpiration;
-        this.description = description;
+    public PromotionVO(Promotion promotion) {
+        this.id = promotion.getId();
+        this.name = promotion.getName();
+        this.startTime = promotion.getStartTime();
+        this.endTime = promotion.getEndTime();
+        this.targetAmount = promotion.getTargetAmount();
+        this.couponAmount = promotion.getCouponAmount();
+        this.couponExpiration = promotion.getCouponExpiration();
+        this.description = promotion.getDescription();
     }
 }

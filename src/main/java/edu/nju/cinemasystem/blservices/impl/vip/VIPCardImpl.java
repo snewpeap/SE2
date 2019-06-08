@@ -24,4 +24,14 @@ public class VIPCardImpl implements edu.nju.cinemasystem.blservices.vip.VIPCard 
     public Response getRechargeHistory(int userID) {
         return null;
     }
+
+    @Override
+    public boolean reduceVIPBalance(int userID, float totalAmount) {
+        return false;
+    }
+
+    @Override
+    public void addVIPBalance(int userID, float amount) {
+
+    }
 }

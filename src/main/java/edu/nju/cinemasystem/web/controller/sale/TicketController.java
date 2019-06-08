@@ -34,7 +34,7 @@ public class TicketController {
 
     @GetMapping("/purchaseRecord")
     public Response getPurchaseRecord(@RequestParam int userId){
-        return ticket.getTicketPurchaseRecordByUser(userId);
+        return ticket.getHistoricalConsumptionsByUserId(userId);
     }
 
     @PostMapping("/cancel")

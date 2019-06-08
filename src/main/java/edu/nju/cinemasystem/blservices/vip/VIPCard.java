@@ -29,4 +29,19 @@ public interface VIPCard {
      * @return 充值记录VO列表
      */
     Response getRechargeHistory(int userID);
+
+    /**
+     * 使用会员卡付费，如果成功返回true，失败（会员卡余额不足）返回false
+     * @param userID
+     * @param totalAmount 需要扣的总额
+     * @return
+     */
+    boolean reduceVIPBalance(int userID, float totalAmount);
+
+    /**
+     * 给会员卡退款时调用
+     * @param userID
+     * @param amount 退款的总额
+     */
+    void addVIPBalance(int userID, float amount);
 }

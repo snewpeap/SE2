@@ -40,4 +40,10 @@ public class Seat {
     public void setHallId(Integer hallId) {
         this.hallId = hallId;
     }
+
+    public Seat(Integer column, Integer row, Integer hallId) {
+        this.column = column;
+        this.row = row;
+        this.hallId = hallId;
+    }
 }
