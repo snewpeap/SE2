@@ -42,4 +42,10 @@ public class Coupon {
     public void setUserId(Integer userId) {
         this.userId = userId;
     }
+
+    public Coupon(Date endTime, Integer promotionId, Integer userId) {
+        this.endTime = endTime;
+        this.promotionId = promotionId;
+        this.userId = userId;
+    }
 }

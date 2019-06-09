@@ -30,4 +30,10 @@ public class ArrangementSeat {
     public void setSeatId(Integer seatId) {
         this.seatId = seatId;
     }
+
+    public ArrangementSeat(Byte isLocked, Integer arrangementId, Integer seatId) {
+        this.isLocked = isLocked;
+        this.arrangementId = arrangementId;
+        this.seatId = seatId;
+    }
 }

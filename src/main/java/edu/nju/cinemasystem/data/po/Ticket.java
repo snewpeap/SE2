@@ -13,11 +13,11 @@ public class Ticket {
 
     private Date date;
 
-    private Byte status;
+    private Byte status; //0,1,2,3分别是未完成，已完成，已失效，已退票
 
     private Float realAmount;
 
-    private Long orderid;
+    private Long orderID;
 
     public Integer getId() {
         return id;
@@ -75,11 +75,22 @@ public class Ticket {
         this.realAmount = realAmount;
     }
 
-    public Long getOrderid() {
-        return orderid;
+    public Long getOrderID() {
+        return orderID;
     }
 
-    public void setOrderid(Long orderid) {
-        this.orderid = orderid;
+    public void setOrderID(Long orderID) {
+        this.orderID = orderID;
+    }
+
+    public Ticket(int userId, int arrangementId, int seatId, Date date, Byte status, Float realAmount,
+            Long orderID) {
+        this.userId = userId;
+        this.arrangementId = arrangementId;
+        this.seatId = seatId;
+        this.date = date;
+        this.status = status;
+        this.realAmount = realAmount;
+        this.orderID = orderID;
     }
 }

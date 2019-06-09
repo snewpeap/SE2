@@ -1,6 +1,7 @@
 package edu.nju.cinemasystem.data.vo.form;
 
 import java.util.Date;
+import java.util.List;
 
 public class PromotionForm {
     
@@ -19,6 +20,16 @@ public class PromotionForm {
     private Integer couponExpiration;
 
     private String description;
+
+    public List<Integer> getMovieIDs() {
+        return movieIDs;
+    }
+
+    public void setMovieIDs(List<Integer> movieIDs) {
+        this.movieIDs = movieIDs;
+    }
+
+    private List<Integer> movieIDs;
 
     public String getName() {
         return name;

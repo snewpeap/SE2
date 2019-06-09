@@ -69,7 +69,7 @@ public interface ArrangementMapper {
      */
     List<Arrangement> selectByHallIDAndStartDate(
             @Param("hallID") int hallID,
-            @Param("startDate") Date startDate,
+            @Param("startDate") java.util.Date startDate,
             @Param("duration") int duration
     );
 }

@@ -28,5 +28,9 @@ public class CouponVO{
     public void setDiscountAmount(Float discountAmount) {
         this.discountAmount = discountAmount;
     }
+
+    public CouponVO(int iD) {
+        ID = iD;
+    }
     
 }

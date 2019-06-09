@@ -20,4 +20,9 @@ public class PromotionHasMovie {
     public void setMovieId(Integer movieId) {
         this.movieId = movieId;
     }
+
+    public PromotionHasMovie(Integer promotionId, Integer movieId) {
+        this.promotionId = promotionId;
+        this.movieId = movieId;
+    }
 }

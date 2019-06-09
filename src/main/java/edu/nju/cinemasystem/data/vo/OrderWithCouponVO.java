@@ -4,11 +4,11 @@ import java.util.List;
 
 public class OrderWithCouponVO {
      
-    private int ID;
+    private Long ID;
     private List<TicketVO> tickets;
     private List<CouponVO> coupons;
 
-    public int getID() {
+    public Long getID() {
         return ID;
     }
 
@@ -28,9 +28,16 @@ public class OrderWithCouponVO {
         this.tickets = tickets;
     }
 
-    public void setID(int iD) {
+    public void setID(Long iD) {
         this.ID = iD;
     }
+
+    public OrderWithCouponVO(Long iD, List<TicketVO> tickets, List<CouponVO> coupons) {
+        ID = iD;
+        this.tickets = tickets;
+        this.coupons = coupons;
+    }
+    
     
 
 }

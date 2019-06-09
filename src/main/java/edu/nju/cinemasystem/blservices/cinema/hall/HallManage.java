@@ -17,7 +17,7 @@ public interface HallManage {
      * @param hallForm
      * @return
      */
-    Response modifyHallInfo(HallForm hallForm);
+    Response modifyHallInfo(HallForm hallForm, int ID);
 
     /**
      * 获得所有的影厅信息

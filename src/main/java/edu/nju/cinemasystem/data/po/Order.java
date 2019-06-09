@@ -11,7 +11,7 @@ public class Order {
 
     private Date date;
 
-    private Byte useVipcard;
+    private Byte useVipcard; //0，1，2，3分别代表银行卡支付，会员卡支付，未支付，已失效
 
     public Long getId() {
         return id;
@@ -50,6 +50,14 @@ public class Order {
     }
 
     public void setUseVipcard(Byte useVipcard) {
+        this.useVipcard = useVipcard;
+    }
+
+    public Order(Long id, Float realAmount, Float originalAmount, Date date, Byte useVipcard) {
+        this.id = id;
+        this.realAmount = realAmount;
+        this.originalAmount = originalAmount;
+        this.date = date;
         this.useVipcard = useVipcard;
     }
 }

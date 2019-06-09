@@ -4,6 +4,8 @@ import edu.nju.cinemasystem.data.po.RefundStrategy;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Mapper
 @Repository
 public interface RefundStrategyMapper {
@@ -18,4 +20,7 @@ public interface RefundStrategyMapper {
     int updateByPrimaryKeySelective(RefundStrategy record);
 
     int updateByPrimaryKey(RefundStrategy record);
+
+    //TODO
+    List<RefundStrategy> selectAllRefundStrategies();
 }

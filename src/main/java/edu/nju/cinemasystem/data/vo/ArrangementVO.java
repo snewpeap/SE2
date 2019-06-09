@@ -1,8 +1,10 @@
-package edu.nju.cinemasystem.data.po;
+package edu.nju.cinemasystem.data.vo;
 
 import java.util.Date;
 
-public class Arrangement {
+import edu.nju.cinemasystem.data.po.Arrangement;
+
+public class ArrangementVO {
     private Integer id;
 
     private Date startTime;
@@ -73,12 +75,13 @@ public class Arrangement {
         this.visibleDate = visibleDate;
     }
 
-    public Arrangement(Date startTime, Date endTime, Float fare, Integer hallId, Integer movieId, Date visibleDate) {
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.fare = fare;
-        this.hallId = hallId;
-        this.movieId = movieId;
-        this.visibleDate = visibleDate;
+    public ArrangementVO(Arrangement arrangement) {
+        this.id = arrangement.getId();
+        this.startTime = arrangement.getStartTime();
+        this.endTime = arrangement.getEndTime();
+        this.fare = arrangement.getFare();
+        this.hallId = arrangement.getHallId();
+        this.movieId = arrangement.getMovieId();
+        this.visibleDate = arrangement.getVisibleDate();
     }
 }
