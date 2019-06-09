@@ -8,7 +8,6 @@ import edu.nju.cinemasystem.blservices.sale.ticket.TicketStatistics;
 import edu.nju.cinemasystem.blservices.statistics.Statistics;
 import edu.nju.cinemasystem.data.po.Arrangement;
 import edu.nju.cinemasystem.data.po.Movie;
-import edu.nju.cinemasystem.data.po.Ticket;
 import edu.nju.cinemasystem.data.vo.*;
 import edu.nju.cinemasystem.util.properties.message.GlobalMsg;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,11 +86,15 @@ public class StatisticsImpl implements Statistics, StatisticsInfo {
                 String movieName = (String)value.get(0);
                 int audienceNum = 0;
                 List<Arrangement> oneArrangementList = (List<Arrangement>)value.get(1);
+                int seatNum = 0;
                 for(Arrangement arrangement:oneArrangementList){
                     int aID = arrangement.getId();
                     audienceNum += ticketStatistics.getNumOfTicketsByArrangement(aID);
+                    seatNum += hallManage.getSeatNumByHallID(arrangement.getHallId());
                 }
-                Double rate = audienceNum/oneArrangementList.size()/hallManage.getAverageSeatNum();
+                double averageSeatNum = (double) seatNum/ (double) oneArrangementList.size();
+                //Double rate = audienceNum/oneArrangementList.size()/hallManage.getAverageSeatNum();
+                Double rate = audienceNum/oneArrangementList.size()/averageSeatNum;
                 moviePlacingRateVOS.add(new MoviePlacingRateVO(date,movieID,rate,movieName));
             }
             response = Response.success();

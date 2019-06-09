@@ -1,6 +1,7 @@
 package edu.nju.cinemasystem.blservices.impl.cinema;
 
 import edu.nju.cinemasystem.blservices.cinema.arrangement.ArrangementManage;
+import edu.nju.cinemasystem.blservices.cinema.hall.HallManage;
 import edu.nju.cinemasystem.blservices.movie.ArrangementInfo;
 import edu.nju.cinemasystem.data.po.Arrangement;
 import edu.nju.cinemasystem.data.po.ArrangementSeat;
@@ -36,6 +37,8 @@ public class ArrangementImpl
     SeatMapper seatMapper;
     @Autowired
     ArrangementMsg arrangementMsg;
+    @Autowired
+    HallManage hallManage;
 
     @Override
     public boolean movieHasArrangement(int movieID) {
@@ -246,6 +249,22 @@ public class ArrangementImpl
     @Override
     public List<Arrangement> getArrangementsByDay(Date startDate, Date endDate) {
         return arrangementMapper.selectByDay(startDate,endDate);
+    }
+
+    @Override
+    public Date[] getStartDateAndEndDate(int ID) {
+        Arrangement arrangement = arrangementMapper.selectByPrimaryKey(ID);
+        Date[] dates = new Date[2];
+        dates[0] = arrangement.getStartTime();
+        dates[1] = arrangement.getEndTime();
+        return dates;
+    }
+
+    @Override
+    public String getHallNameByArrangementID(int ID) {
+        Arrangement arrangement = arrangementMapper.selectByPrimaryKey(ID);
+        int hallID = arrangement.getHallId();
+        return hallManage.getHallNameByID(hallID);
     }
 
     /**
