@@ -7,13 +7,12 @@ import java.util.concurrent.TimeUnit;
 
 import edu.nju.cinemasystem.data.po.Ticket;
 
-public class OrderMessage implements Delayed {
+public class DelayedTask implements Delayed {
 
-    private final long DELAY = 15 * 60 * 1000L;
     private long ID;
     private Date startTime;
     private List<Ticket> tickets;
-    
+
     @Override
     public int compareTo(Delayed o) {
         return (int) (this.getDelay(TimeUnit.MILLISECONDS) - o.getDelay(TimeUnit.MILLISECONDS));
@@ -21,6 +20,7 @@ public class OrderMessage implements Delayed {
 
     @Override
     public long getDelay(TimeUnit unit) {
+        long DELAY = 15 * 60 * 1000L;
         return unit.convert(this.startTime.getTime() + DELAY - System.currentTimeMillis(), TimeUnit.MILLISECONDS);
     }
 
@@ -48,7 +48,7 @@ public class OrderMessage implements Delayed {
         this.tickets = tickets;
     }
 
-    public OrderMessage(long iD, Date startTime, List<Ticket> tickets) {
+    DelayedTask(long iD, Date startTime, List<Ticket> tickets) {
         ID = iD;
         this.startTime = startTime;
         this.tickets = tickets;
