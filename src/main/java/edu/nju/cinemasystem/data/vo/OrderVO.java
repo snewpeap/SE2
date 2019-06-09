@@ -1,13 +1,15 @@
 package edu.nju.cinemasystem.data.vo;
 
+import java.util.Date;
 import java.util.List;
 
-public class TicketPurchaseRecord {
+public class OrderVO {
 
     private Long orderID;
     private List<TicketVO> ticketVOs;
     private float realSpend;
     private float originalSpend;
+    private Date date;
 
     public Long getOrderID() {
         return orderID;
@@ -41,10 +43,11 @@ public class TicketPurchaseRecord {
         this.originalSpend = originalSpend;
     }
 
-    public TicketPurchaseRecord(Long orderID, List<TicketVO> ticketVOs, float realSpend, float originalSpend) {
+    public OrderVO(Long orderID, List<TicketVO> ticketVOs, float realSpend, float originalSpend, Date date) {
         this.orderID = orderID;
         this.ticketVOs = ticketVOs;
         this.realSpend = realSpend;
         this.originalSpend = originalSpend;
+        this.date = date;
     }
 }

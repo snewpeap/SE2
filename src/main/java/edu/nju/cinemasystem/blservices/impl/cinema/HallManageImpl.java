@@ -112,6 +112,26 @@ public class HallManageImpl implements HallManage{
         return numOfSeat/numOfHall;
     }
 
+    @Override
+    public  int getSeatNumByHallID(int hallID){
+        Hall hall = hallMapper.selectByPrimaryKey(hallID);
+        return hall.getColumn() * hall.getRow();
+    }
+
+    @Override
+    public int[] getSeatBySeatID(int seatID) {
+        int[] seats = new int[2];
+        Seat seat = seatMapper.selectByPrimaryKey(seatID);
+        seats[0] = seat.getRow();
+        seats[1] = seat.getColumn();
+        return seats;
+    }
+
+    @Override
+    public String getHallNameByID(int ID) {
+        return hallMapper.selectByPrimaryKey(ID).getName();
+    }
+
     /**
      * 检查HallForm里的数据是否合法
      * @param hallForm

@@ -27,7 +27,30 @@ public interface HallManage {
 
     /**
      * 返回影院影厅的平均座位数
+     * @deprecated
      * @return
      */
     double getAverageSeatNum();
+
+
+    /**
+     * 返回某个影厅的座位数
+     * @param hallID
+     * @return
+     */
+    int getSeatNumByHallID(int hallID);
+
+    /**
+     * 根据座位ID，返回排和列
+     * @param seatID
+     * @return
+     */
+    int[] getSeatBySeatID(int seatID);
+
+    /**
+     * 根据影厅ID返回影厅名字
+     * @param ID
+     * @return
+     */
+    String getHallNameByID(int ID);
 }

@@ -56,6 +56,7 @@ public interface Ticket {
 
     /**
      * 获取用户的所有电影票（不包含已退的票和未完成的票）
+     * @deprecated
      * @param userId
      * @return
      */

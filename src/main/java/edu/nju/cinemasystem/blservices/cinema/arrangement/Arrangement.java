@@ -2,6 +2,8 @@ package edu.nju.cinemasystem.blservices.cinema.arrangement;
 
 import edu.nju.cinemasystem.data.vo.Response;
 
+import java.util.Date;
+
 public interface Arrangement {
     /**
      * 用排片ID查找排片，排片是不可见状态的时候返回一个错误码401
@@ -53,4 +55,18 @@ public interface Arrangement {
      * @return
      */
     int getMovieIDbyID(int ID);
+
+    /**
+     * 获取排片的开始时间和结束时间
+     * @param ID
+     * @return
+     */
+    Date[] getStartDateAndEndDate(int ID);
+
+    /**
+     * 返回排片的影厅名称
+     * @param ID
+     * @return
+     */
+    String getHallNameByArrangementID(int ID);
 }
