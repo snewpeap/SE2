@@ -21,12 +21,24 @@ public interface TicketsMapper {
 
     int updateByPrimaryKey(Ticket record);
 
-    //TODO
+    /**
+     * 通过userID获取用户的所有票
+     * @param userID 用户id
+     * @return 票列表
+     */
     List<Ticket> selectByUserID(int userID);
 
-    //TODO
+    /**
+     * 通过订单id获取该订单的所有票
+     * @param orderID 订单id
+     * @return 订单的票列表
+     */
     List<Ticket> selectByOrderID(long orderID);
 
-    //TODO
+    /**
+     * 通过电影id获取该电影的所有票，不只是已生效的
+     * @param movieID 电影id
+     * @return 电影的票列表
+     */
     List<Ticket> selectBymovieID(int movieID);
 }

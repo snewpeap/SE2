@@ -59,6 +59,5 @@ public interface SeatMapper {
      * @param hallID 影厅id
      * @return 影厅的所有座位
      */
-    //TODO redundant
     List<Seat> selectByHallID(int hallID);
 }

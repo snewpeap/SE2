@@ -44,7 +44,8 @@
                 #{is3d,jdbcType=TINYINT})
     </insert>
 
-    <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.Hall">
+    <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.Hall"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into hall
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">

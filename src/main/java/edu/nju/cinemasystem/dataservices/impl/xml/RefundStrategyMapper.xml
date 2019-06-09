@@ -6,24 +6,34 @@
         <result column="refundable" jdbcType="TINYINT" property="refundable"/>
         <result column="percentage" jdbcType="REAL" property="percentage"/>
     </resultMap>
+
     <sql id="Base_Column_List">
         day, refundable, percentage
     </sql>
+
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from refund_strategy
         where day = #{day,jdbcType=INTEGER}
     </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select *
+        from refund_strategy
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
         from refund_strategy
         where day = #{day,jdbcType=INTEGER}
     </delete>
+
     <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.RefundStrategy">
         insert into refund_strategy (day, refundable, percentage)
         values (#{day,jdbcType=INTEGER}, #{refundable,jdbcType=TINYINT}, #{percentage,jdbcType=REAL})
     </insert>
+
     <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.RefundStrategy">
         insert into refund_strategy
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -49,6 +59,7 @@
             </if>
         </trim>
     </insert>
+
     <update id="updateByPrimaryKeySelective" parameterType="edu.nju.cinemasystem.data.po.RefundStrategy">
         update refund_strategy
         <set>
@@ -61,6 +72,7 @@
         </set>
         where day = #{day,jdbcType=INTEGER}
     </update>
+
     <update id="updateByPrimaryKey" parameterType="edu.nju.cinemasystem.data.po.RefundStrategy">
         update refund_strategy
         set refundable = #{refundable,jdbcType=TINYINT},

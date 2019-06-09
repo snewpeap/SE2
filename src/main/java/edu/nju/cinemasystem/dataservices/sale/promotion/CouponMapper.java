@@ -21,6 +21,10 @@ public interface CouponMapper {
 
     int updateByPrimaryKey(Coupon record);
 
-    //TODO
+    /**
+     * 通过userID查找该用户的所有优惠券
+     * @param userID 用户id
+     * @return 他的所有优惠券
+     */
     List<Coupon> selectByUserID(int userID);
 }

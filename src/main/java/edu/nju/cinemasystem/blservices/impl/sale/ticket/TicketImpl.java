@@ -184,7 +184,7 @@ public class TicketImpl implements
     @Override
     public Response refundTicket(int userID, int ticketID) {
         Ticket ticket = ticketsMapper.selectByPrimaryKey(ticketID);
-        List<RefundStrategy> refundStrategies = refundStrategyMapper.selectAllRefundStrategies();
+        List<RefundStrategy> refundStrategies = refundStrategyMapper.selectAll();
         refundStrategies.sort((RefundStrategy r1, RefundStrategy r2) -> r2.getDay() - r1.getDay());
         Date today = new Date();
         float amount = 0;

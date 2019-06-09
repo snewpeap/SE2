@@ -7,27 +7,41 @@
         <result column="promotion_id" jdbcType="INTEGER" property="promotionId"/>
         <result column="user_id" jdbcType="INTEGER" property="id"/>
     </resultMap>
+
     <sql id="Base_Column_List">
         id, end_time, promotion_id, user_id
     </sql>
+
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from coupon
         where id = #{id,jdbcType=INTEGER}
     </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
         from coupon
         where id = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.Coupon">
+
+    <select id="selectByUserID" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from coupon
+        where user_id = #{userID,jdbcType=INTEGER}
+    </select>
+
+    <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.Coupon"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into coupon (id, end_time, promotion_id,
                             user_id)
         values (#{id,jdbcType=INTEGER}, #{endTime,jdbcType=DATE}, #{promotionId,jdbcType=INTEGER},
                 #{id,jdbcType=INTEGER})
     </insert>
-    <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.Coupon">
+
+    <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.Coupon"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into coupon
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -58,6 +72,7 @@
             </if>
         </trim>
     </insert>
+
     <update id="updateByPrimaryKeySelective" parameterType="edu.nju.cinemasystem.data.po.Coupon">
         update coupon
         <set>
@@ -73,6 +88,7 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
+
     <update id="updateByPrimaryKey" parameterType="edu.nju.cinemasystem.data.po.Coupon">
         update coupon
         set end_time     = #{endTime,jdbcType=DATE},

@@ -11,15 +11,19 @@
         <result column="coupon_amount" jdbcType="REAL" property="couponAmount"/>
         <result column="coupon_expiration" jdbcType="INTEGER" property="couponExpiration"/>
     </resultMap>
+
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="edu.nju.cinemasystem.data.po.Promotion">
         <result column="description" jdbcType="LONGVARCHAR" property="description"/>
     </resultMap>
+
     <sql id="Base_Column_List">
         id, name, start_time, end_time, specify_movies, target_amount, coupon_amount, coupon_expiration
     </sql>
+
     <sql id="Blob_Column_List">
         description
     </sql>
+
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
         select
         <include refid="Base_Column_List"/>
@@ -28,12 +32,23 @@
         from promotion
         where id = #{id,jdbcType=INTEGER}
     </select>
+
+    <select id="selectAll" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from promotion
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
         from promotion
         where id = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.Promotion">
+
+    <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.Promotion"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into promotion (id, name, start_time,
                                end_time, specify_movies, target_amount,
                                coupon_amount, coupon_expiration, description)
@@ -42,7 +57,9 @@
                 #{couponAmount,jdbcType=REAL}, #{couponExpiration,jdbcType=INTEGER},
                 #{description,jdbcType=LONGVARCHAR})
     </insert>
-    <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.Promotion">
+
+    <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.Promotion"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into promotion
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -103,6 +120,7 @@
             </if>
         </trim>
     </insert>
+
     <update id="updateByPrimaryKeySelective" parameterType="edu.nju.cinemasystem.data.po.Promotion">
         update promotion
         <set>
@@ -133,6 +151,7 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
+
     <update id="updateByPrimaryKeyWithBLOBs" parameterType="edu.nju.cinemasystem.data.po.Promotion">
         update promotion
         set name              = #{name,jdbcType=VARCHAR},
@@ -145,6 +164,7 @@
             description       = #{description,jdbcType=LONGVARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
+
     <update id="updateByPrimaryKey" parameterType="edu.nju.cinemasystem.data.po.Promotion">
         update promotion
         set name              = #{name,jdbcType=VARCHAR},

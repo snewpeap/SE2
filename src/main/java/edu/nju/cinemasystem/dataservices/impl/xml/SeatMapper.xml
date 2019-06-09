@@ -32,14 +32,16 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
-    <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.Seat">
+    <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.Seat"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into seat (id, `column`, row,
                           hall_id)
         values (#{id,jdbcType=INTEGER}, #{column,jdbcType=INTEGER}, #{row,jdbcType=INTEGER},
                 #{hallId,jdbcType=INTEGER})
     </insert>
 
-    <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.Seat">
+    <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.Seat"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into seat
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -89,9 +91,9 @@
 
     <update id="updateByPrimaryKey" parameterType="edu.nju.cinemasystem.data.po.Seat">
         update seat
-        set `column`  = #{column,jdbcType=INTEGER},
-            row     = #{row,jdbcType=INTEGER},
-            hall_id = #{hallId,jdbcType=INTEGER}
+        set `column` = #{column,jdbcType=INTEGER},
+            row      = #{row,jdbcType=INTEGER},
+            hall_id  = #{hallId,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
     </update>
 </mapper>
