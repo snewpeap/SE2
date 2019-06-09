@@ -43,4 +43,12 @@ public interface ArrangementManage {
      * @return
      */
     Response modifyVisibleDay(List<Integer> IDs, Date date);
+
+    /**
+     * 返回这两个日期内的所有排片
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    List<edu.nju.cinemasystem.data.po.Arrangement> getArrangementsByDay(Date startDate, Date endDate);
 }

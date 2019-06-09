@@ -243,6 +243,11 @@ public class ArrangementImpl
         return arrangementMapper.selectByPrimaryKey(ID).getMovieId();
     }
 
+    @Override
+    public List<Arrangement> getArrangementsByDay(Date startDate, Date endDate) {
+        return arrangementMapper.selectByDay(startDate,endDate);
+    }
+
     /**
      * 检查ArrangementForm里的参数是否合法
      * @param arrangementForm

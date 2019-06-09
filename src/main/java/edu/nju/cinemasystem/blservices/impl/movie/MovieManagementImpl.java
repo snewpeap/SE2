@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Service
 public class MovieManagementImpl implements MovieManagement {
@@ -93,6 +94,12 @@ public class MovieManagementImpl implements MovieManagement {
             }
         }
         return response;
+    }
+
+    //TODO
+    @Override
+    public List<Movie> getReleasedMovies() {
+        return null;
     }
 
     private ManagerMovieVO assembleManagerMovieVO(Movie movie) {
