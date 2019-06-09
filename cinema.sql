@@ -289,6 +289,22 @@ CREATE TABLE IF NOT EXISTS `cinema`.`refund_strategy`
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
 
+-- -----------------------------------------------------
+-- Table `cinema`.`order`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `cinema`.`order`;
+
+CREATE TABLE IF NOT EXISTS `cinema`.`order`
+(
+    `id`              BIGINT(20)     NOT NULL,
+    `real_amount`     FLOAT UNSIGNED NOT NULL,
+    `original_amount` FLOAT UNSIGNED NOT NULL,
+    `date`            DATE           NOT NULL,
+    `use_VIPcard`     TINYINT(4)     NOT NULL,
+    PRIMARY KEY (`id`)
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8;
 
 -- -----------------------------------------------------
 -- Table `cinema`.`tickets`
@@ -323,6 +339,11 @@ CREATE TABLE IF NOT EXISTS `cinema`.`tickets`
         FOREIGN KEY (`user_id`)
             REFERENCES `cinema`.`user` (`id`)
             ON DELETE NO ACTION
+            ON UPDATE CASCADE,
+    CONSTRAINT `fk_tickets_order1`
+        FOREIGN KEY (`orderID`)
+            REFERENCES `cinema`.`order` (`id`)
+            ON DELETE CASCADE
             ON UPDATE CASCADE
 )
     ENGINE = InnoDB

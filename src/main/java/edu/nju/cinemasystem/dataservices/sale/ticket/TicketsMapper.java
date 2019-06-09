@@ -42,9 +42,13 @@ public interface TicketsMapper {
      * @param movieID 电影id
      * @return 电影的票列表
      */
-    List<Ticket> selectBymovieID(int movieID);
+    List<Ticket> selectByMovieID(int movieID);
 
-    //TODO
+    /**
+     * 通过排片id获得排片的票（可能是所有状态的）
+     * @param arrangementID 排片id
+     * @return 票
+     */
     List<Ticket> selectByArrangementID(int arrangementID);
 
     /**
