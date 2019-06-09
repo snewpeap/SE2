@@ -72,4 +72,7 @@ public interface ArrangementMapper {
             @Param("startDate") java.util.Date startDate,
             @Param("duration") int duration
     );
+
+    //TODO 返回这两个日期内的所有排片
+    List<Arrangement> selectByDay(java.util.Date startDay, java.util.Date endDay);
 }

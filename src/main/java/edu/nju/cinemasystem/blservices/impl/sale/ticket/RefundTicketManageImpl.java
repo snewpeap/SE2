@@ -1,5 +1,6 @@
 package edu.nju.cinemasystem.blservices.impl.sale.ticket;
 
+import edu.nju.cinemasystem.blservices.sale.ticket.RefundTicketManage;
 import edu.nju.cinemasystem.data.po.RefundStrategy;
 import edu.nju.cinemasystem.data.vo.Response;
 import edu.nju.cinemasystem.data.vo.form.RefundStrategyForm;
@@ -11,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RefundTicketManageImpl implements edu.nju.cinemasystem.blservices.sale.ticket.Manage.RefundTicketManage {
+public class RefundTicketManageImpl implements RefundTicketManage {
 
     @Autowired
     RefundStrategyMapper refundStrategyMapper;

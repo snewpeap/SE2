@@ -1,6 +1,6 @@
 package edu.nju.cinemasystem.web.controller.sale;
 
-import edu.nju.cinemasystem.blservices.sale.ticket.Manage.RefundTicketManage;
+import edu.nju.cinemasystem.blservices.sale.ticket.RefundTicketManage;
 import edu.nju.cinemasystem.blservices.sale.ticket.Ticket;
 import edu.nju.cinemasystem.data.vo.Response;
 import edu.nju.cinemasystem.data.vo.form.RefundStrategyForm;

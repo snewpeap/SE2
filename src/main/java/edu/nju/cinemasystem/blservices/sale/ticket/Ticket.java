@@ -1,5 +1,6 @@
 package edu.nju.cinemasystem.blservices.sale.ticket;
 
+import java.util.Date;
 import java.util.List;
 
 import edu.nju.cinemasystem.data.vo.Response;

@@ -4,6 +4,7 @@ import edu.nju.cinemasystem.data.po.Ticket;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Mapper
@@ -41,4 +42,7 @@ public interface TicketsMapper {
      * @return 电影的票列表
      */
     List<Ticket> selectBymovieID(int movieID);
+
+    //TODO 返回这两个日期内的票
+    List<Ticket> selectByDate(Date startDate, Date endDate);
 }
