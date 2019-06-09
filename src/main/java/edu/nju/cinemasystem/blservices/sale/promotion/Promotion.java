@@ -8,14 +8,14 @@ public interface Promotion {
     /**
      * 发布优惠活动
      * 
-     * @return
+     * @return 是否成功
      */
     Response publishPromotion(PromotionForm promotionForm);
 
     /**
      * 获取所有的优惠活动
      * 
-     * @return
+     * @return List<PromotionVO>
      */
     Response getAllPromotions();
 

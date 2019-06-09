@@ -10,45 +10,45 @@ public interface ArrangementManage {
 
     /**
      *  添加排片信息
-     * @param arrangementForm
-     * @return
+     * @param arrangementForm 排片信息表单
+     * @return 是否成功
      */
     Response addArrangement(ArrangementForm arrangementForm);
 
     /**
      * 修改排片信息
-     * @param arrangementForm
-     * @return
+     * @param arrangementForm 排片信息表单
+     * @return 是否成功
      */
     Response modifyArrangement(ArrangementForm arrangementForm, int ID);
 
     /**
      * 删除排片信息
-     * @param ID
-     * @return
+     * @param ID 排片ID
+     * @return 是否成功
      */
     Response removeArrangement(int ID);
 
     /**
      * 根据影厅查看排片信息
-     * @param hallID
-     * @return
+     * @param hallID 影厅ID
+     * @return List<ArrangementVO>
      */
     Response getArrangementsByHallID(int hallID, Date startDate);
 
     /**
      * 批量修改排片可见时间
-     * @param IDs
-     * @param date
-     * @return
+     * @param IDs 排片ID
+     * @param date 日期
+     * @return 是否成功
      */
     Response modifyVisibleDay(List<Integer> IDs, Date date);
 
     /**
      * 返回这两个日期内的所有排片
-     * @param startDate
-     * @param endDate
-     * @return
+     * @param startDate 开始时间
+     * @param endDate 结束时间
+     * @return 排片List
      */
     List<edu.nju.cinemasystem.data.po.Arrangement> getArrangementsByDay(Date startDate, Date endDate);
 }

@@ -162,6 +162,8 @@ public class TicketImpl implements
         List<Ticket> tickets = ticketsMapper.selectByOrderID(orderID);
         for (Ticket ticket : tickets) {
             ticketsMapper.deleteByPrimaryKey(ticket.getId());
+            int seatID = ticket.getSeatId();
+            arrangement.changeArrangementSeatStatus(ticket.getArrangementId(),seatID,(byte)0);
         }
         orderMapper.deleteByPrimaryKey(orderID);
         for (DelayedTask or : delayQueue) {
@@ -197,6 +199,10 @@ public class TicketImpl implements
         if (order.getUseVipcard() == (byte) 1) {
             vipCard.addVIPBalance(ticket.getUserId(), amount);
         }
+        ticket.setStatus((byte)3);
+        int seatID = ticket.getSeatId();
+        arrangement.changeArrangementSeatStatus(ticket.getArrangementId(),seatID,(byte)0);
+        ticketsMapper.updateByPrimaryKeySelective(ticket);
         response = Response.success();
         response.setMessage(globalMsg.getOperationSuccess());
         return response;
