@@ -33,4 +33,7 @@ public interface TicketsMapper {
 
     //TODO 返回这两个日期内的票
     List<Ticket> selectByDate(Date startDate, Date endDate);
+
+    //TODO
+    List<Ticket> selectByArrangementID(int arrangementID);
 }

@@ -10,4 +10,20 @@ public interface TicketStatistics {
      * @return
      */
     float getAudiencePriceByDay(Date startDate, Date endDate);
+
+    /**
+     * 获取某场排片的票的数量
+     * @param arrangementID
+     * @return
+     */
+    int getNumOfTicketsByArrangement(int arrangementID);
+
+    /**
+     * 获取某段时间内电影的票房
+     * @param movieID
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    float getBoxOfficeByMovieIDAndDay(int movieID, Date startDate, Date endDate);
 }
