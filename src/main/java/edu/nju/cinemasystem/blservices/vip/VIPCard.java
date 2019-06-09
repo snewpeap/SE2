@@ -45,7 +45,7 @@ public interface VIPCard {
      */
     void addVIPBalance(int userID, float amount);
 
-    Response deposit(int userID, double amount);
+    Response deposit(int userID, float amount);
 
-    Response pay(int userID, double amount);
+    Response pay(int userID, float amount);
 }

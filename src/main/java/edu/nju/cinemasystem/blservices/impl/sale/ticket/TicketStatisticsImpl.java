@@ -3,7 +3,6 @@ package edu.nju.cinemasystem.blservices.impl.sale.ticket;
 import edu.nju.cinemasystem.blservices.cinema.arrangement.Arrangement;
 import edu.nju.cinemasystem.blservices.cinema.arrangement.ArrangementManage;
 import edu.nju.cinemasystem.blservices.sale.ticket.TicketStatistics;
-
 import edu.nju.cinemasystem.data.po.Ticket;
 import edu.nju.cinemasystem.dataservices.sale.ticket.TicketsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,7 +70,7 @@ public class TicketStatisticsImpl implements TicketStatistics {
 
     @Override
     public float getTotalBoxOfficeByMovieID(int movieID) {
-        List<Ticket> tickets = ticketsMapper.selectBymovieID(movieID);
+        List<Ticket> tickets = ticketsMapper.selectByMovieID(movieID);
         float totalBoxOffice = 0;
         for (Ticket ticket:tickets){
             totalBoxOffice += arrangement.getFareByID(ticket.getArrangementId());
