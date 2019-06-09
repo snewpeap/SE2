@@ -1,40 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="edu.nju.cinemasystem.dataservices.cinema.arrangement.ArrangementSeatMapper">
-  <resultMap id="BaseResultMap" type="edu.nju.cinemasystem.data.po.ArrangementSeat">
-    <result column="is_locked" jdbcType="TINYINT" property="isLocked" />
-    <result column="arrangement_id" jdbcType="INTEGER" property="arrangementId" />
-    <result column="seat_id" jdbcType="INTEGER" property="seatId" />
-  </resultMap>
-  <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.ArrangementSeat">
-    insert into arrangement_seat (is_locked, arrangement_id, seat_id
-      )
-    values (#{isLocked,jdbcType=TINYINT}, #{arrangementId,jdbcType=INTEGER}, #{seatId,jdbcType=INTEGER}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.ArrangementSeat">
-    insert into arrangement_seat
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="isLocked != null">
-        is_locked,
-      </if>
-      <if test="arrangementId != null">
-        arrangement_id,
-      </if>
-      <if test="seatId != null">
-        seat_id,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="isLocked != null">
-        #{isLocked,jdbcType=TINYINT},
-      </if>
-      <if test="arrangementId != null">
-        #{arrangementId,jdbcType=INTEGER},
-      </if>
-      <if test="seatId != null">
-        #{seatId,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
+    <resultMap id="BaseResultMap" type="edu.nju.cinemasystem.data.po.ArrangementSeat">
+        <result column="is_locked" jdbcType="TINYINT" property="isLocked"/>
+        <result column="arrangement_id" jdbcType="INTEGER" property="arrangementId"/>
+        <result column="seat_id" jdbcType="INTEGER" property="seatId"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.ArrangementSeat">
+        insert into arrangement_seat (is_locked, arrangement_id, seat_id)
+        values (#{isLocked,jdbcType=TINYINT}, #{arrangementId,jdbcType=INTEGER}, #{seatId,jdbcType=INTEGER})
+    </insert>
+
+    <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.ArrangementSeat">
+        insert into arrangement_seat
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="isLocked != null">
+                is_locked,
+            </if>
+            <if test="arrangementId != null">
+                arrangement_id,
+            </if>
+            <if test="seatId != null">
+                seat_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="isLocked != null">
+                #{isLocked,jdbcType=TINYINT},
+            </if>
+            <if test="arrangementId != null">
+                #{arrangementId,jdbcType=INTEGER},
+            </if>
+            <if test="seatId != null">
+                #{seatId,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateSeatStatus" parameterType="edu.nju.cinemasystem.data.po.ArrangementSeat">
+        update arrangement_seat
+        set is_locked = #{isLocked}
+        where seat_id = #{seatId}
+          and arrangement_id = #{arrangementId}
+    </update>
+
+    <delete id="delete" parameterType="edu.nju.cinemasystem.data.po.ArrangementSeat">
+        delete
+        from arrangement_seat
+        where arrangement_id = #{arrangementId}
+          and seat_id = #{seatId}
+    </delete>
+
+    <select id="selectByArrangementID" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select *
+        from arrangement_seat
+        where arrangement_id = #{arrangementId}
+    </select>
+
+    <select id="select" parameterType="edu.nju.cinemasystem.data.po.ArrangementSeat" resultMap="BaseResultMap">
+        select *
+        from arrangement_seat
+        where arrangement_id = #{arrangementId}
+          and seat_id = #{seatId}
+    </select>
 </mapper>

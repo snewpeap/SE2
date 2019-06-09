@@ -10,21 +10,43 @@
         <result column="movie_id" jdbcType="INTEGER" property="movieId"/>
         <result column="visible_date" jdbcType="DATE" property="visibleDate"/>
     </resultMap>
+
     <sql id="Base_Column_List">
         id, start_time, end_time, fare, hall_id, movie_id, visible_date
     </sql>
+
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from arrangement
         where id = #{id,jdbcType=INTEGER}
     </select>
+
+    <select id="selectByMovieID" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from arrangement
+        where movie_id = #{movieID,jdbcType=INTEGER}
+        and start_time >= now()
+        and start_time >= visible_date
+    </select>
+
+    <select id="selectByHallIDAndStartDate" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from arrangement
+        where hall_id=#{hallID}
+        and start_time between date(#{startDate}) and date_add(date(#{startDate}),interval #{duration} day)
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
         from arrangement
         where id = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.Arrangement">
+
+    <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.Arrangement"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into arrangement (id, start_time, end_time,
                                  fare, hall_id, movie_id,
                                  visible_date)
@@ -32,7 +54,9 @@
                 #{fare,jdbcType=REAL}, #{hallId,jdbcType=INTEGER}, #{movieId,jdbcType=INTEGER},
                 #{visibleDate,jdbcType=DATE})
     </insert>
-    <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.Arrangement">
+
+    <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.Arrangement"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into arrangement
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -81,6 +105,7 @@
             </if>
         </trim>
     </insert>
+
     <update id="updateByPrimaryKeySelective" parameterType="edu.nju.cinemasystem.data.po.Arrangement">
         update arrangement
         <set>
@@ -105,6 +130,7 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
+
     <update id="updateByPrimaryKey" parameterType="edu.nju.cinemasystem.data.po.Arrangement">
         update arrangement
         set start_time   = #{startTime,jdbcType=DATE},

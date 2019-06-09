@@ -18,8 +18,8 @@ public class HallController {
     }
 
     @PostMapping("/modify")
-    public Response updateHall(@RequestBody HallForm hallForm){
-        return hallManage.modifyHallInfo(hallForm);
+    public Response updateHall(@RequestBody HallForm hallForm, @RequestParam int ID){
+        return hallManage.modifyHallInfo(hallForm,ID);
     }
 
     @GetMapping("/get")

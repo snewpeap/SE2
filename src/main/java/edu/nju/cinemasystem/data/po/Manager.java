@@ -1,30 +1,21 @@
 package edu.nju.cinemasystem.data.po;
 
-public class Manager {
-    private Integer userId;
-    private Byte root;
+public class Manager extends User {
+    private Integer isRoot;
 
-    public Integer getUserId() {
-        return userId;
+    public Integer getIsRoot() {
+        return isRoot;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public Byte getRoot() {
-        return root;
-    }
-
-    public void setRoot(Byte root) {
-        this.root = root;
+    public void setIsRoot(Integer isRoot) {
+        this.isRoot = isRoot;
     }
 
     public void setRoot(boolean root) {
-        this.root = root ? (byte) 1 : (byte) 0;
+        this.isRoot = root ? 1 : 0;
     }
 
     public boolean isRootManager() {
-        return root == 1;
+        return isRoot == 1;
     }
 }

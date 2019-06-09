@@ -6,29 +6,43 @@
         <result column="original_amount" jdbcType="REAL" property="originalAmount"/>
         <result column="discount_amount" jdbcType="REAL" property="discountAmount"/>
         <result column="date" jdbcType="DATE" property="date"/>
-        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="user_id" jdbcType="INTEGER" property="id"/>
     </resultMap>
+
     <sql id="Base_Column_List">
         id, original_amount, discount_amount, date, user_id
     </sql>
+
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from recharge_record
         where id = #{id,jdbcType=INTEGER}
     </select>
+
+    <select id="selectByUserID" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from recharge_record
+        where user_id = #{userID,jdbcType=INTEGER}
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
         from recharge_record
         where id = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.RechargeRecord">
+
+    <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.RechargeRecord"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into recharge_record (id, original_amount, discount_amount,
                                      date, user_id)
         values (#{id,jdbcType=INTEGER}, #{originalAmount,jdbcType=REAL}, #{discountAmount,jdbcType=REAL},
-                #{date,jdbcType=DATE}, #{userId,jdbcType=INTEGER})
+                #{date,jdbcType=DATE}, #{id,jdbcType=INTEGER})
     </insert>
-    <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.RechargeRecord">
+
+    <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.RechargeRecord"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into recharge_record
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -43,7 +57,7 @@
             <if test="date != null">
                 date,
             </if>
-            <if test="userId != null">
+            <if test="id != null">
                 user_id,
             </if>
         </trim>
@@ -60,12 +74,13 @@
             <if test="date != null">
                 #{date,jdbcType=DATE},
             </if>
-            <if test="userId != null">
-                #{userId,jdbcType=INTEGER},
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="edu.nju.cinemasystem.data.po.RechargeRecord">
+
+    <!--<update id="updateByPrimaryKeySelective" parameterType="edu.nju.cinemasystem.data.po.RechargeRecord">
         update recharge_record
         <set>
             <if test="originalAmount != null">
@@ -77,18 +92,19 @@
             <if test="date != null">
                 date = #{date,jdbcType=DATE},
             </if>
-            <if test="userId != null">
-                user_id = #{userId,jdbcType=INTEGER},
+            <if test="id != null">
+                user_id = #{id,jdbcType=INTEGER},
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
+
     <update id="updateByPrimaryKey" parameterType="edu.nju.cinemasystem.data.po.RechargeRecord">
         update recharge_record
         set original_amount = #{originalAmount,jdbcType=REAL},
             discount_amount = #{discountAmount,jdbcType=REAL},
             date            = #{date,jdbcType=DATE},
-            user_id         = #{userId,jdbcType=INTEGER}
+            user_id         = #{id,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
-    </update>
+    </update>-->
 </mapper>

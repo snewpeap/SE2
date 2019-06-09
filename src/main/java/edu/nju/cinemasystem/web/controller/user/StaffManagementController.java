@@ -35,7 +35,7 @@ public class StaffManagementController {
 
     @PostMapping("/removeManager")
     public Response removeManager(@RequestParam int staffId){
-        return staffManagement.removeManager(staffId);
+        return staffManagement.removeStaff(staffId);
     }
 
     @PostMapping("/changeRole")

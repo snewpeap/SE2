@@ -62,4 +62,16 @@ public class Response {
         response.setSuccess(true);
         return response;
     }
+
+    public static Response fail(String message){
+        Response response = fail();
+        response.setMessage(message);
+        return response;
+    }
+
+    public static Response success(String message){
+        Response response = success();
+        response.setMessage(message);
+        return response;
+    }
 }

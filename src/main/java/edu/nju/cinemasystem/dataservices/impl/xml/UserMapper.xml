@@ -7,8 +7,25 @@
         <result column="password" jdbcType="VARCHAR" property="password"/>
     </resultMap>
 
+    <resultMap id="StaffMap" type="edu.nju.cinemasystem.data.po.User">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+    </resultMap>
+
+    <resultMap id="ManagerMap" type="edu.nju.cinemasystem.data.po.Manager">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="is_root" jdbcType="INTEGER" property="isRoot"/>
+    </resultMap>
+
     <sql id="Base_Column_List">
         id, name, password
+    </sql>
+
+    <sql id="Manager_Column">
+        id, name, password, is_root
     </sql>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -23,6 +40,18 @@
         <include refid="Base_Column_List"/>
         from user
         where name = #{name}
+    </select>
+
+    <select id="selectAllStaff" resultMap="StaffMap">
+        select
+        <include refid="Base_Column_List"/>
+        from staff_view
+    </select>
+
+    <select id="selectAllManager" resultMap="ManagerMap">
+        select
+        <include refid="Manager_Column"/>
+        from manager_view
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">

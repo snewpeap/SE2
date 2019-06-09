@@ -7,7 +7,7 @@ import edu.nju.cinemasystem.data.vo.UserVO;
 import edu.nju.cinemasystem.data.vo.form.RegistryForm;
 import edu.nju.cinemasystem.data.vo.form.UserForm;
 import edu.nju.cinemasystem.dataservices.user.UserMapper;
-import edu.nju.cinemasystem.util.properties.AccountMsg;
+import edu.nju.cinemasystem.util.properties.message.AccountMsg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -69,6 +69,7 @@ public class AccountImpl implements Account {
         return response;
     }
 
+    @Override
     public User getUserByID(@NotNull int ID) {
         return userMapper.selectByPrimaryKey(ID);
     }

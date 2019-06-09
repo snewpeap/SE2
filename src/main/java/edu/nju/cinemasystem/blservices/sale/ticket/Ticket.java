@@ -1,5 +1,6 @@
 package edu.nju.cinemasystem.blservices.sale.ticket;
 
+import java.util.Date;
 import java.util.List;
 
 import edu.nju.cinemasystem.data.vo.Response;
@@ -28,14 +29,6 @@ public interface Ticket {
     Response payOrderByVIPCard(long orderID, int userID, int couponID);
 
     /**
-     * 获取用户的购票记录
-     * 
-     * @param userID
-     * @return
-     */
-    Response getTicketPurchaseRecordByUser(int userID);
-
-    /**
      * 取消订单
      * 
      * @param userID
@@ -57,12 +50,12 @@ public interface Ticket {
      * 获取用户在该排片的订单
      * @param userId
      * @param scheduleId
-     * @return
+     * @return orderWithCouponVO, 如果里面的List<TicketVO> == null 则说明用户之前没有未完成订单
      */
     Response getOrderByScheduleIdAndUserId(int userId, int scheduleId);
 
     /**
-     * 获取用户的所有电影票（不包含已退的票）
+     * 获取用户的所有电影票（不包含已退的票和未完成的票）
      * @param userId
      * @return
      */

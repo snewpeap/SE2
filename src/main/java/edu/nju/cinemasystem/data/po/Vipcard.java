@@ -5,6 +5,10 @@ public class Vipcard {
 
     private Float balance;
 
+    public Vipcard(Integer userId) {
+        this.userId = userId;
+    }
+
     public Integer getUserId() {
         return userId;
     }

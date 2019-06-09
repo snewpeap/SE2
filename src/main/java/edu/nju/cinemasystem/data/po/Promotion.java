@@ -92,4 +92,16 @@ public class Promotion {
     public void setDescription(String description) {
         this.description = description == null ? null : description.trim();
     }
+
+    public Promotion(String name, Date startTime, Date endTime, Byte specifyMovies, Float targetAmount,
+            Float couponAmount, Integer couponExpiration, String description) {
+        this.name = name;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.specifyMovies = specifyMovies;
+        this.targetAmount = targetAmount;
+        this.couponAmount = couponAmount;
+        this.couponExpiration = couponExpiration;
+        this.description = description;
+    }
 }

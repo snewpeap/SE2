@@ -15,16 +15,20 @@
         <result column="start_date" jdbcType="DATE" property="startDate"/>
         <result column="status" jdbcType="TINYINT" property="status"/>
     </resultMap>
+
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="edu.nju.cinemasystem.data.po.Movie">
         <result column="description" jdbcType="LONGVARCHAR" property="description"/>
     </resultMap>
+
     <sql id="Base_Column_List">
         id, name, poster, director, screen_writer, starring, type, country, language, duration,
         start_date, status
     </sql>
+
     <sql id="Blob_Column_List">
         description
     </sql>
+
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
         select
         <include refid="Base_Column_List"/>
@@ -33,11 +37,20 @@
         from movie
         where id = #{id,jdbcType=INTEGER}
     </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>,
+        <include refid="Blob_Column_List"/>
+        from movie
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
         from movie
         where id = #{id,jdbcType=INTEGER}
     </delete>
+
     <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.Movie">
         insert into movie (id, name, poster,
                            director, screen_writer, starring,
@@ -50,6 +63,7 @@
                 #{duration,jdbcType=INTEGER}, #{startDate,jdbcType=DATE}, #{status,jdbcType=TINYINT},
                 #{description,jdbcType=LONGVARCHAR})
     </insert>
+
     <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.Movie">
         insert into movie
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -135,6 +149,7 @@
             </if>
         </trim>
     </insert>
+
     <update id="updateByPrimaryKeySelective" parameterType="edu.nju.cinemasystem.data.po.Movie">
         update movie
         <set>
@@ -177,6 +192,7 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
+
     <update id="updateByPrimaryKeyWithBLOBs" parameterType="edu.nju.cinemasystem.data.po.Movie">
         update movie
         set name          = #{name,jdbcType=VARCHAR},
@@ -193,6 +209,7 @@
             description   = #{description,jdbcType=LONGVARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
+
     <update id="updateByPrimaryKey" parameterType="edu.nju.cinemasystem.data.po.Movie">
         update movie
         set name          = #{name,jdbcType=VARCHAR},
