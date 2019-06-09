@@ -26,4 +26,11 @@ public interface TicketStatistics {
      * @return
      */
     float getBoxOfficeByMovieIDAndDay(int movieID, Date startDate, Date endDate);
+
+    /**
+     * 返回某部电影总票房
+     * @param movieID
+     * @return
+     */
+    float getTotalBoxOfficeByMovieID(int movieID);
 }

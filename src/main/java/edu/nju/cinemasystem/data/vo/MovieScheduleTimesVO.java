@@ -1,6 +1,6 @@
 package edu.nju.cinemasystem.data.vo;
 
-public class MovieScheduleTimes {
+public class MovieScheduleTimesVO {
 
     private Integer movieId;
     /**
@@ -9,7 +9,7 @@ public class MovieScheduleTimes {
     private Integer times;
     private String name;
 
-    public MovieScheduleTimes(Integer movieId, Integer times, String name) {
+    public MovieScheduleTimesVO(Integer movieId, Integer times, String name) {
         this.movieId = movieId;
         this.times = times;
         this.name = name;

@@ -55,12 +55,26 @@ public class TicketStatisticsImpl implements TicketStatistics {
 
     @Override
     public float getBoxOfficeByMovieIDAndDay(int movieID, Date startDate, Date endDate) {
-        List<Ticket> tickets = ticketsMapper.selectByDate(startDate, endDate);
+        List<edu.nju.cinemasystem.data.po.Arrangement> arrangements = arrangementManage.getArrangementsByDay(startDate,endDate);
+        List<Ticket> tickets = new ArrayList<>();
+        arrangements.forEach(arrangement1 -> {
+            tickets.addAll(ticketsMapper.selectByArrangementID(arrangement1.getId()));
+        });
         float totalBoxOffice = 0;
         for(Ticket ticket:tickets){
             if(ticket.getStatus()==(byte)1 && arrangement.getMovieIDbyID(ticket.getArrangementId()) == movieID){
                totalBoxOffice += arrangement.getFareByID(ticket.getArrangementId());
             }
+        }
+        return totalBoxOffice;
+    }
+
+    @Override
+    public float getTotalBoxOfficeByMovieID(int movieID) {
+        List<Ticket> tickets = ticketsMapper.selectBymovieID(movieID);
+        float totalBoxOffice = 0;
+        for (Ticket ticket:tickets){
+            totalBoxOffice += arrangement.getFareByID(ticket.getArrangementId());
         }
         return totalBoxOffice;
     }
