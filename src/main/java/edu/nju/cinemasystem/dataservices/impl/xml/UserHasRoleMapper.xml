@@ -5,18 +5,22 @@
         <id column="user_id" jdbcType="INTEGER" property="id"/>
         <id column="role_id" jdbcType="INTEGER" property="roleId"/>
     </resultMap>
+
     <select id="selectByUserID" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select user_id, role_id from user_has_role where user_id=#{userID};
     </select>
+
     <delete id="deleteByUserID" parameterType="java.lang.Integer">
         delete
         from user_has_role
         where user_id = #{userID}
     </delete>
+
     <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.UserHasRoleKey">
         insert into user_has_role (user_id, role_id)
         values (#{id,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER})
     </insert>
+
     <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.UserHasRoleKey">
         insert into user_has_role
         <trim prefix="(" suffix=")" suffixOverrides=",">
