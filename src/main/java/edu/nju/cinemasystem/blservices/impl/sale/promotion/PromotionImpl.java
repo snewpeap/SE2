@@ -26,29 +26,35 @@ public class PromotionImpl implements
         PromotionInfo,
         VIPCouponBusiness {
 
-    @Autowired
+    private final
     PromotionMapper promotionMapper;
-    @Autowired
+    private final
     PromotionHasMovieMapper promotionHasMovieMapper;
-    @Autowired
+    private final
     GlobalMsg globalMsg;
-    @Autowired
+    private final
     CouponMapper couponMapper;
+
+    @Autowired
+    public PromotionImpl(PromotionMapper promotionMapper, PromotionHasMovieMapper promotionHasMovieMapper, GlobalMsg globalMsg, CouponMapper couponMapper) {
+        this.promotionMapper = promotionMapper;
+        this.promotionHasMovieMapper = promotionHasMovieMapper;
+        this.globalMsg = globalMsg;
+        this.couponMapper = couponMapper;
+    }
 
     @Override
     public Response getAllPromotions() {
         List<Promotion> promotions = promotionMapper.selectAll();
         Response response;
-        List<PromotionVO> promotionVOs = new ArrayList<PromotionVO>();
+        List<PromotionVO> promotionVOs = new ArrayList<>();
         for (Promotion promotion : promotions) {
             PromotionVO promotionVO = new PromotionVO(promotion);
             if (promotion.getSpecifyMovies() == 1) {
                 List<PromotionHasMovie> promotionHasMovies = promotionHasMovieMapper
                         .selectByPromotionID(promotion.getId());
-                List<Integer> movieList = new ArrayList<Integer>();
-                promotionHasMovies.stream().forEach(promotionHasMovie -> {
-                    movieList.add(promotionHasMovie.getMovieId());
-                });
+                List<Integer> movieList = new ArrayList<>();
+                promotionHasMovies.forEach(promotionHasMovie -> movieList.add(promotionHasMovie.getMovieId()));
                 promotionVO.setMovieList(movieList);
             }
             promotionVOs.add(promotionVO);
@@ -61,10 +67,8 @@ public class PromotionImpl implements
     @Override
     public List<Integer> getJoinedPromotionOf(int movieID) {
         List<PromotionHasMovie> promotionHasMovies = promotionHasMovieMapper.selectByMovieID(movieID);
-        List<Integer> promotionIDs = new ArrayList<Integer>();
-        promotionHasMovies.stream().forEach(promotionHasMovie -> {
-            promotionIDs.add(promotionHasMovie.getPromotionId());
-        });
+        List<Integer> promotionIDs = new ArrayList<>();
+        promotionHasMovies.forEach(promotionHasMovie -> promotionIDs.add(promotionHasMovie.getPromotionId()));
         return promotionIDs;
     }
 
@@ -86,9 +90,7 @@ public class PromotionImpl implements
             int promotionID = promotion.getId();
             if (promotionForm.getSpecifyMovies()) {
                 List<Integer> movieIDs = promotionForm.getMovieIDs();
-                movieIDs.stream().forEach(movieID -> {
-                    promotionHasMovieMapper.insertSelective(new PromotionHasMovie(promotionID, movieID));
-                });
+                movieIDs.forEach(movieID -> promotionHasMovieMapper.insertSelective(new PromotionHasMovie(promotionID, movieID)));
             }
             response = Response.success();
             response.setMessage(globalMsg.getOperationSuccess());
@@ -110,25 +112,19 @@ public class PromotionImpl implements
     @Override
     public List<CouponVO> getAvailableCouponsByUserAndTickets(int userId, float totalAmount) {
         List<CouponVO> couponVOs = getAllAvailableCouponsByUser(userId);
-        Iterator<CouponVO> it = couponVOs.iterator();
-        while (it.hasNext()) {
-            CouponVO couponVO = it.next();
-            if (couponVO.getTargetAmount() > totalAmount) {
-                it.remove();
-            }
-        }
+        couponVOs.removeIf(couponVO -> couponVO.getTargetAmount() > totalAmount);
         return couponVOs;
     }
 
     /**
      * 获取用户所有能用的优惠券
      *
-     * @param userId
+     * @param userId 用户ID
      * @return List<CouponVO>
      */
     private List<CouponVO> getAllAvailableCouponsByUser(int userId) {
         List<Coupon> coupons = couponMapper.selectByUserID(userId);
-        List<CouponVO> couponVOs = new ArrayList<CouponVO>();
+        List<CouponVO> couponVOs = new ArrayList<>();
         Date date = new Date();
         for (Coupon coupon : coupons) {
             if (date.compareTo(coupon.getEndTime()) < 0) {
@@ -154,7 +150,7 @@ public class PromotionImpl implements
     @Override
     public void sendCouponsToUser(int userID, int movieID) {
         List<Promotion> allPromotions = promotionMapper.selectAll();
-        List<Promotion> availablePromotions = new ArrayList<Promotion>();
+        List<Promotion> availablePromotions = new ArrayList<>();
         Date date = new Date();
         for (Promotion promotion : allPromotions) {
             if (promotion.getSpecifyMovies() == (byte) 0 &&
@@ -163,10 +159,8 @@ public class PromotionImpl implements
             }
         }
         List<PromotionHasMovie> promotionHasMovies = promotionHasMovieMapper.selectByMovieID(movieID);
-        List<Integer> promotionIDs = new ArrayList<Integer>();
-        promotionHasMovies.stream().forEach(promotionHasMovie -> {
-            promotionIDs.add(promotionHasMovie.getPromotionId());
-        });
+        List<Integer> promotionIDs = new ArrayList<>();
+        promotionHasMovies.forEach(promotionHasMovie -> promotionIDs.add(promotionHasMovie.getPromotionId()));
         for (int ID : promotionIDs) {
             Promotion promotion = promotionMapper.selectByPrimaryKey(ID);
             if (date.compareTo(promotion.getStartTime()) >= 0 && date.compareTo(promotion.getEndTime()) <= 0) {
@@ -189,7 +183,35 @@ public class PromotionImpl implements
     }
 
     @Override
-    public void presentCouponTo(int userID, List<Integer> couponIDs) throws ServiceException {
-        //TODO
+    public void presentCouponTo(int userID, List<Integer> promotionIDs) throws ServiceException {
+        List<Integer> success = new ArrayList<>();
+        for (int ID : promotionIDs){
+            Promotion promotion = promotionMapper.selectByPrimaryKey(ID);
+            Date endTime = addDate(new Date(),promotion.getCouponExpiration());
+            Coupon coupon = new Coupon(endTime,ID,userID);
+            int i = couponMapper.insertSelective(coupon);
+            if(i != 0){
+                success.add(ID);
+            }else {
+                ServiceException serviceException = new ServiceException();
+                serviceException.setFail(ID);
+                serviceException.setSuccessList(success);
+                throw serviceException;
+            }
+        }
+    }
+
+    /**
+     * 给指定的日期加上天数
+     *
+     * @param date 指定的日期
+     * @param day 天数
+     * @return 增加天数后的日期
+     */
+    private Date addDate(Date date, int day) {
+        long time = date.getTime();
+        long delayTime = day * 24 * 60 * 60 * 1000L;
+        time += delayTime;
+        return new Date(time);
     }
 }

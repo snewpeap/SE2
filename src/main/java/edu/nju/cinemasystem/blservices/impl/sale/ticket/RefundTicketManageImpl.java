@@ -14,33 +14,34 @@ import org.springframework.stereotype.Service;
 @Service
 public class RefundTicketManageImpl implements RefundTicketManage {
 
-    @Autowired
+    private final
     RefundStrategyMapper refundStrategyMapper;
-    @Autowired
+    private final
     TicketMsg ticketMsg;
-    @Autowired
+    private final
     GlobalMsg globalMsg;
+
+    @Autowired
+    public RefundTicketManageImpl(RefundStrategyMapper refundStrategyMapper, TicketMsg ticketMsg, GlobalMsg globalMsg) {
+        this.refundStrategyMapper = refundStrategyMapper;
+        this.ticketMsg = ticketMsg;
+        this.globalMsg = globalMsg;
+    }
 
     @Override
     public Response addRefundTicketManage(RefundStrategyForm refundStrategyForm) {
         Response response;
         int days = refundStrategyForm.getDay();
-        if(refundStrategyMapper.selectByPrimaryKey(days) != null){
+        if (refundStrategyMapper.selectByPrimaryKey(days) != null) {
             response = Response.fail();
             response.setMessage(ticketMsg.getRefundStrategyExist());
             return response;
         }
-        byte refundable = refundStrategyForm.getRefundable()? (byte)1 : (byte)0;
+        byte refundable = refundStrategyForm.getRefundable() ? (byte) 1 : (byte) 0;
         float percentage = refundStrategyForm.getPercentage();
-        try {
-            refundStrategyMapper.insert(new RefundStrategy(days,refundable,percentage));
-            response = Response.success();
-            response.setMessage(globalMsg.getOperationSuccess());
-        }catch (Exception e){
-            e.printStackTrace();
-            response = Response.fail();
-            response.setMessage(globalMsg.getOperationFailed());
-        }
+        refundStrategyMapper.insert(new RefundStrategy(days, refundable, percentage));
+        response = Response.success();
+        response.setMessage(globalMsg.getOperationSuccess());
         return response;
     }
 
@@ -48,17 +49,11 @@ public class RefundTicketManageImpl implements RefundTicketManage {
     public Response modifyRefundTicketManage(RefundStrategyForm refundStrategyForm) {
         Response response;
         int days = refundStrategyForm.getDay();
-        byte refundable = refundStrategyForm.getRefundable()? (byte)1 : (byte)0;
+        byte refundable = refundStrategyForm.getRefundable() ? (byte) 1 : (byte) 0;
         float percentage = refundStrategyForm.getPercentage();
-        try {
-            refundStrategyMapper.updateByPrimaryKeySelective(new RefundStrategy(days,refundable,percentage));
-            response = Response.success();
-            response.setMessage(globalMsg.getOperationSuccess());
-        }catch (Exception e){
-            e.printStackTrace();
-            response = Response.fail();
-            response.setMessage(globalMsg.getWrongParam());
-        }
+        refundStrategyMapper.updateByPrimaryKeySelective(new RefundStrategy(days, refundable, percentage));
+        response = Response.success();
+        response.setMessage(globalMsg.getOperationSuccess());
         return response;
     }
 }

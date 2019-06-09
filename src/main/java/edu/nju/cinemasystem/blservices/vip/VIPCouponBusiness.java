@@ -10,8 +10,8 @@ public interface VIPCouponBusiness {
      * 如果赠送过程出现问题，抛出ServiceException
      *
      * @param userID 用户id
-     * @param couponIDs 优惠券id列表
+     * @param promotionIDs 活动id列表
      * @throws ServiceException 赠送失败时，在异常信息中分别指明赠送成功和失败的优惠券id
      */
-    void presentCouponTo(int userID, List<Integer> couponIDs) throws ServiceException;
+    void presentCouponTo(int userID, List<Integer> promotionIDs) throws ServiceException;
 }
