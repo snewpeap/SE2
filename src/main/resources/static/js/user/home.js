@@ -146,7 +146,7 @@ $(document).ready(function () {
         for (var i = 0;i<newestList.length;i++){
             newMovie +=
                 "<div class=\"item\">" + "<div class=\"w3l-movie-gride-agile w3l-movie-gride-slider \">" +
-                "<a href=\"single.html\" class=\"hvr-sweep-to-bottom\"><img src=\" "+ newestList[i].image +"\" title=\"Movies Pro\" class=\"img-responsive\" alt=\" \" />" +
+                "<a href=\"viewMovieDetail.html\" class=\"hvr-sweep-to-bottom\"><img src=\" "+ newestList[i].image +"\" title=\"Movies Pro\" class=\"img-responsive\" alt=\" \" />" +
                 "<div class=\"w3l-action-icon\"><i class=\"fa fa-play-circle-o\" aria-hidden=\"true\"></i></div></a>" +
                 "<div class=\"mid-1 agileits_w3layouts_mid_1_home\">" +
                 "<div class=\"w3l-movie-text\">" +
