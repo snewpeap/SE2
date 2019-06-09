@@ -24,6 +24,7 @@ public class AccountController {
     public Response login(@RequestBody UserForm userForm, HttpSession session){
         Response userResponse = account.login(userForm);
         if(userResponse.getContent() != null) {
+            System.out.println("找到了");
             session.setAttribute(InterceptorConfiguration.SESSION_KEY, userForm);
         }
         return userResponse;

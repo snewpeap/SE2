@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Date;
 
 @RestController
-@RequestMapping("/statistics")
+@RequestMapping("/manage/statistics")
 public class StatisticsController {
     @Autowired
     private Statistics statistics;
