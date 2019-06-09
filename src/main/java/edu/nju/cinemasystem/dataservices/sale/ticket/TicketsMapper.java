@@ -44,6 +44,9 @@ public interface TicketsMapper {
      */
     List<Ticket> selectBymovieID(int movieID);
 
+    //TODO
+    List<Ticket> selectByArrangementID(int arrangementID);
+
     /**
      * 查询在这两个日期内（晚于startDate的0时，早于endDate的0时）的票
      * @param startDate 起始时间

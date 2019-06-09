@@ -24,4 +24,10 @@ public interface HallManage {
      * @return
      */
     Response getAllHallInfo();
+
+    /**
+     * 返回影院影厅的平均座位数
+     * @return
+     */
+    double getAverageSeatNum();
 }

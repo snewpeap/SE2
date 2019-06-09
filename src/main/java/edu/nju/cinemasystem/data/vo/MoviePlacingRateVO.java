@@ -64,5 +64,10 @@ public class MoviePlacingRateVO {
         this.movieName = movieName;
     }
 
-
+    public MoviePlacingRateVO(Date date, Integer movieId, Double rate, String movieName) {
+        this.date = date;
+        this.movieId = movieId;
+        this.rate = rate;
+        this.movieName = movieName;
+    }
 }

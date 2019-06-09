@@ -105,6 +105,13 @@ public class HallManageImpl implements HallManage{
         }
     }
 
+    @Override
+    public double getAverageSeatNum() {
+        double numOfHall = hallMapper.selectAll().size();
+        double numOfSeat = seatMapper.selectAll().size();
+        return numOfSeat/numOfHall;
+    }
+
     /**
      * 检查HallForm里的数据是否合法
      * @param hallForm
