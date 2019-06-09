@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -96,10 +97,11 @@ public class MovieManagementImpl implements MovieManagement {
         return response;
     }
 
-    //TODO
     @Override
     public List<Movie> getReleasedMovies() {
-        return null;
+        List<Movie> movies = movieMapper.selectAll();
+        movies.removeIf(movie -> movie.getStartDate().after(new Date()));
+        return movies;
     }
 
     private ManagerMovieVO assembleManagerMovieVO(Movie movie) {

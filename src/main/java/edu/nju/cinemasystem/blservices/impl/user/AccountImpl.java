@@ -30,7 +30,7 @@ public class AccountImpl implements Account {
         if (userMapper.selectByName(registryForm.getName()) != null) {
             return Response.fail(accountMsg.getRegistryNameAlreadyExist());
         }
-        if (registryForm.getPassword().equals(registryForm.getConfirmPassword())) {
+        if (!registryForm.getPassword().equals(registryForm.getConfirmPassword())) {
             return Response.fail(accountMsg.getPasswordNotConfirmed());
         }
         User user = new User();

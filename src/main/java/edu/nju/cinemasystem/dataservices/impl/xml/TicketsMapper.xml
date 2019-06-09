@@ -56,6 +56,13 @@
         WHERE a.movie_id = #{movieID}
     </select>
 
+    <select id="selectByDate" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tickets
+        where date between #{startDate,jdbcType=DATE} and #{endDate,jdbcType=DATE}
+    </select>
+
     <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.Ticket"
             useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into tickets (id, user_id, arrangement_id,

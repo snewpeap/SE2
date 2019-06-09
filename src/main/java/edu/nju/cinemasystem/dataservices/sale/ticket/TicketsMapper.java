@@ -2,6 +2,7 @@ package edu.nju.cinemasystem.dataservices.sale.ticket;
 
 import edu.nju.cinemasystem.data.po.Ticket;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -43,6 +44,12 @@ public interface TicketsMapper {
      */
     List<Ticket> selectBymovieID(int movieID);
 
-    //TODO 返回这两个日期内的票
-    List<Ticket> selectByDate(Date startDate, Date endDate);
+    /**
+     * 查询在这两个日期内（晚于startDate的0时，早于endDate的0时）的票
+     * @param startDate 起始时间
+     * @param endDate 结束时间
+     * @return 匹配的票
+     */
+    @Deprecated
+    List<Ticket> selectByDate(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 }
