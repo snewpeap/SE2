@@ -72,13 +72,13 @@ public class VIPCardImpl implements edu.nju.cinemasystem.blservices.vip.VIPCard 
     }
 
     @Override
-    public Response deposit(int userID, double amount) {
+    public Response deposit(int userID, float amount) {
         Response response = Response.success();
         Vipcard vipcard = vipcardMapper.selectByPrimaryKey(userID);
         if (vipcard == null) {
             return Response.fail(vipMsg.getNoVIPCard());
         }
-        vipcard.setBalance(vipcard.getBalance() + (float) amount);
+        vipcard.setBalance(vipcard.getBalance() + amount);
         if (vipcardMapper.updateByPrimaryKeySelective(vipcard) == 0) {
             response = Response.fail(vipMsg.getOperationFailed());
             response.setStatusCode(500);
@@ -89,13 +89,13 @@ public class VIPCardImpl implements edu.nju.cinemasystem.blservices.vip.VIPCard 
     }
 
     @Override
-    public Response pay(int userID, double amount) {
+    public Response pay(int userID, float amount) {
         Response response = Response.success();
         Vipcard vipcard = vipcardMapper.selectByPrimaryKey(userID);
         if (vipcard == null) {
             return Response.fail(vipMsg.getNoVIPCard());
         }
-        float balanceAfterPayment = vipcard.getBalance() - (float) amount;
+        float balanceAfterPayment = vipcard.getBalance() - amount;
         if (balanceAfterPayment < 0) {
             response = Response.fail();
             response.setMessage(vipMsg.getOutOfBalance());

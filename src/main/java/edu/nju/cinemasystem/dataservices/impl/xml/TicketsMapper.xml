@@ -63,6 +63,13 @@
         where date between #{startDate,jdbcType=DATE} and #{endDate,jdbcType=DATE}
     </select>
 
+    <select id="selectByArrangementID" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tickets
+        where arrangement_id = #{arrangementID}
+    </select>
+
     <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.Ticket"
             useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into tickets (id, user_id, arrangement_id,

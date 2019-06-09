@@ -26,6 +26,11 @@
         where hall_id = #{hallID}
     </select>
 
+    <select id="selectAll" resultMap="BaseResultMap">
+        select *
+        from seat;
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
         from seat

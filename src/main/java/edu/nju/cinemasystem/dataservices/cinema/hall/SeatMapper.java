@@ -61,6 +61,9 @@ public interface SeatMapper {
      */
     List<Seat> selectByHallID(int hallID);
 
-    //TODO 返回所有座位（好吧我只是想要个数）
+    /**
+     * 返回所有座位
+     * @return 所有座位
+     */
     List<Seat> selectAll();
 }
