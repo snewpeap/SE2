@@ -21,6 +21,10 @@ public interface RefundStrategyMapper {
 
     int updateByPrimaryKey(RefundStrategy record);
 
-    //TODO
-    List<RefundStrategy> selectAllRefundStrategies();
+    /**
+     * 获取所有退票策略
+     *
+     * @return 所有退票策略列表
+     */
+    List<RefundStrategy> selectAll();
 }

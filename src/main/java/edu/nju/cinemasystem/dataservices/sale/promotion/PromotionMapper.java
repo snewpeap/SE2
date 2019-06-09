@@ -23,6 +23,9 @@ public interface PromotionMapper {
 
     int updateByPrimaryKey(Promotion record);
 
-    //TODO
+    /**
+     * 获取所有优惠活动
+     * @return 所有优惠活动列表
+     */
     List<Promotion> selectAll();
 }

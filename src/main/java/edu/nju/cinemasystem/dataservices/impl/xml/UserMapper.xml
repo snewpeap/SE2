@@ -60,12 +60,14 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
-    <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.User">
+    <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.User"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into user (id, name, password)
         values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR})
     </insert>
 
-    <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.User">
+    <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.User"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into user
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">

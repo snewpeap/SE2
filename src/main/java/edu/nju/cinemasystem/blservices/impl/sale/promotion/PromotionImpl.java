@@ -1,6 +1,7 @@
 package edu.nju.cinemasystem.blservices.impl.sale.promotion;
 
 import edu.nju.cinemasystem.blservices.movie.PromotionInfo;
+import edu.nju.cinemasystem.blservices.vip.VIPCouponBusiness;
 import edu.nju.cinemasystem.data.po.Coupon;
 import edu.nju.cinemasystem.data.po.Promotion;
 import edu.nju.cinemasystem.data.po.PromotionHasMovie;
@@ -11,8 +12,8 @@ import edu.nju.cinemasystem.data.vo.form.PromotionForm;
 import edu.nju.cinemasystem.dataservices.sale.promotion.CouponMapper;
 import edu.nju.cinemasystem.dataservices.sale.promotion.PromotionHasMovieMapper;
 import edu.nju.cinemasystem.dataservices.sale.promotion.PromotionMapper;
+import edu.nju.cinemasystem.util.exception.ServiceException;
 import edu.nju.cinemasystem.util.properties.message.GlobalMsg;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,9 @@ import java.util.*;
 @Service
 public class PromotionImpl implements
         edu.nju.cinemasystem.blservices.sale.promotion.Promotion,
-        edu.nju.cinemasystem.blservices.sale.promotion.Coupon, PromotionInfo {
+        edu.nju.cinemasystem.blservices.sale.promotion.Coupon,
+        PromotionInfo,
+        VIPCouponBusiness {
 
     @Autowired
     PromotionMapper promotionMapper;
@@ -81,9 +84,9 @@ public class PromotionImpl implements
         try {
             promotionMapper.insert(promotion);
             int promotionID = promotion.getId();
-            if(promotionForm.getSpecifyMovies()){
+            if (promotionForm.getSpecifyMovies()) {
                 List<Integer> movieIDs = promotionForm.getMovieIDs();
-                movieIDs.stream().forEach(movieID->{
+                movieIDs.stream().forEach(movieID -> {
                     promotionHasMovieMapper.insertSelective(new PromotionHasMovie(promotionID, movieID));
                 });
             }
@@ -108,9 +111,9 @@ public class PromotionImpl implements
     public List<CouponVO> getAvailableCouponsByUserAndTickets(int userId, float totalAmount) {
         List<CouponVO> couponVOs = getAllAvailableCouponsByUser(userId);
         Iterator<CouponVO> it = couponVOs.iterator();
-        while(it.hasNext()){
+        while (it.hasNext()) {
             CouponVO couponVO = it.next();
-            if(couponVO.getTargetAmount()>totalAmount){
+            if (couponVO.getTargetAmount() > totalAmount) {
                 it.remove();
             }
         }
@@ -119,10 +122,11 @@ public class PromotionImpl implements
 
     /**
      * 获取用户所有能用的优惠券
+     *
      * @param userId
      * @return List<CouponVO>
      */
-    private List<CouponVO> getAllAvailableCouponsByUser(int userId){
+    private List<CouponVO> getAllAvailableCouponsByUser(int userId) {
         List<Coupon> coupons = couponMapper.selectByUserID(userId);
         List<CouponVO> couponVOs = new ArrayList<CouponVO>();
         Date date = new Date();
@@ -142,7 +146,7 @@ public class PromotionImpl implements
     public void removeCouponByID(int ID) {
         try {
             couponMapper.deleteByPrimaryKey(ID);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -152,29 +156,29 @@ public class PromotionImpl implements
         List<Promotion> allPromotions = promotionMapper.selectAll();
         List<Promotion> availablePromotions = new ArrayList<Promotion>();
         Date date = new Date();
-        for (Promotion promotion: allPromotions){
-            if(promotion.getSpecifyMovies()==(byte)0 &&
-                    date.compareTo(promotion.getStartTime()) >= 0 && date.compareTo(promotion.getEndTime()) <=0){
+        for (Promotion promotion : allPromotions) {
+            if (promotion.getSpecifyMovies() == (byte) 0 &&
+                    date.compareTo(promotion.getStartTime()) >= 0 && date.compareTo(promotion.getEndTime()) <= 0) {
                 availablePromotions.add(promotion);
             }
         }
         List<PromotionHasMovie> promotionHasMovies = promotionHasMovieMapper.selectByMovieID(movieID);
         List<Integer> promotionIDs = new ArrayList<Integer>();
-        promotionHasMovies.stream().forEach(promotionHasMovie ->{
+        promotionHasMovies.stream().forEach(promotionHasMovie -> {
             promotionIDs.add(promotionHasMovie.getPromotionId());
         });
-        for(int ID:promotionIDs){
+        for (int ID : promotionIDs) {
             Promotion promotion = promotionMapper.selectByPrimaryKey(ID);
-            if(date.compareTo(promotion.getStartTime())>=0&&date.compareTo(promotion.getEndTime())<=0){
+            if (date.compareTo(promotion.getStartTime()) >= 0 && date.compareTo(promotion.getEndTime()) <= 0) {
                 availablePromotions.add(promotion);
             }
         }
-        for(Promotion promotion:availablePromotions){
+        for (Promotion promotion : availablePromotions) {
             Calendar c = Calendar.getInstance();
             c.setTime(date);
             c.add(Calendar.DATE, promotion.getCouponExpiration());
             Date endTime = c.getTime();
-            Coupon coupon = new Coupon(endTime,promotion.getId(),userID);
+            Coupon coupon = new Coupon(endTime, promotion.getId(), userID);
             couponMapper.insertSelective(coupon);
         }
     }
@@ -182,5 +186,10 @@ public class PromotionImpl implements
     @Override
     public float getCouponAmountByID(int ID) {
         return promotionMapper.selectByPrimaryKey(couponMapper.selectByPrimaryKey(ID).getPromotionId()).getCouponAmount();
+    }
+
+    @Override
+    public void presentCouponTo(int userID, List<Integer> couponIDs) throws ServiceException {
+        //TODO
     }
 }

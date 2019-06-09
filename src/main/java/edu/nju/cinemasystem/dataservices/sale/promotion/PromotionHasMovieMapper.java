@@ -15,9 +15,17 @@ public interface PromotionHasMovieMapper {
 
     int insertSelective(PromotionHasMovie record);
 
-    //TODO
-    List<PromotionHasMovie> selectByPromotionID(int PromotionID);
+    /**
+     * 通过优惠活动id来查找优惠活动包含的所有电影
+     * @param promotionID 优惠活动id
+     * @return 该活动包含的所有电影ID
+     */
+    List<PromotionHasMovie> selectByPromotionID(int promotionID);
 
-    //TODO
+    /**
+     * 通过电影id来查找它参与的所有活动
+     * @param movieID 电影id
+     * @return 电影参与的所有优惠活动
+     */
     List<PromotionHasMovie> selectByMovieID(int movieID);
 }

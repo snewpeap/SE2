@@ -51,7 +51,8 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
-    <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.Movie">
+    <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.Movie"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into movie (id, name, poster,
                            director, screen_writer, starring,
                            type, country, language,
@@ -64,7 +65,8 @@
                 #{description,jdbcType=LONGVARCHAR})
     </insert>
 
-    <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.Movie">
+    <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.Movie"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into movie
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">

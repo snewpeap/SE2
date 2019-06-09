@@ -2,6 +2,7 @@ package edu.nju.cinemasystem.blservices.impl.sale.ticket;
 
 import edu.nju.cinemasystem.blservices.cinema.arrangement.Arrangement;
 import edu.nju.cinemasystem.blservices.sale.promotion.Coupon;
+import edu.nju.cinemasystem.blservices.vip.SalesInfo;
 import edu.nju.cinemasystem.blservices.vip.VIPCard;
 import edu.nju.cinemasystem.data.po.Order;
 import edu.nju.cinemasystem.data.po.RefundStrategy;
@@ -11,21 +12,20 @@ import edu.nju.cinemasystem.dataservices.sale.OrderMapper;
 import edu.nju.cinemasystem.dataservices.sale.ticket.RefundStrategyMapper;
 import edu.nju.cinemasystem.dataservices.sale.ticket.TicketsMapper;
 import edu.nju.cinemasystem.util.properties.message.ArrangementMsg;
-
-import edu.nju.cinemasystem.util.properties.message.TicketMsg;
 import edu.nju.cinemasystem.util.properties.message.GlobalMsg;
-
+import edu.nju.cinemasystem.util.properties.message.TicketMsg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.concurrent.DelayQueue;
 import java.util.concurrent.Executors;
 
-import javax.annotation.PostConstruct;
-
 @Service
-public class TicketImpl implements edu.nju.cinemasystem.blservices.sale.ticket.Ticket{
+public class TicketImpl implements
+        edu.nju.cinemasystem.blservices.sale.ticket.Ticket,
+        SalesInfo {
 
     @Autowired
     TicketsMapper ticketsMapper;
@@ -184,7 +184,7 @@ public class TicketImpl implements edu.nju.cinemasystem.blservices.sale.ticket.T
     @Override
     public Response refundTicket(int userID, int ticketID) {
         Ticket ticket = ticketsMapper.selectByPrimaryKey(ticketID);
-        List<RefundStrategy> refundStrategies = refundStrategyMapper.selectAllRefundStrategies();
+        List<RefundStrategy> refundStrategies = refundStrategyMapper.selectAll();
         refundStrategies.sort((RefundStrategy r1, RefundStrategy r2) -> r2.getDay() - r1.getDay());
         Date today = new Date();
         float amount = 0;
@@ -279,6 +279,12 @@ public class TicketImpl implements edu.nju.cinemasystem.blservices.sale.ticket.T
         Response response = Response.success();
         response.setContent(ticketPurchaseRecords);
         return response;
+    }
+
+    @Override
+    public float getConsumption(int userID) {
+        //TODO
+        return 0;
     }
 
     /**

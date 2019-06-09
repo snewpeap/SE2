@@ -65,8 +65,7 @@ public class StaffManagementImpl implements StaffManagement {
                         manager -> staffList.add(assembleManagerVO(manager))
                 );
             } else {
-                response = Response.fail();
-                response.setMessage(staffMsg.getWrongParam() + ':' + queryString);
+                return Response.fail(staffMsg.getWrongParam() + ':' + queryString);
             }
         }
         response.setContent(staffList);
@@ -84,22 +83,18 @@ public class StaffManagementImpl implements StaffManagement {
     public Response addStaff(StaffForm staffForm) {
         Response response = Response.success();
         if (userMapper.selectStaffByName(staffForm.getName()) != null) {
-            response = Response.fail();
-            response.setMessage(staffMsg.getStaffAlreadyExist() + ':' + staffForm.getName());
-            return response;
+            return Response.fail(staffMsg.getStaffAlreadyExist() + ':' + staffForm.getName());
         }
         User staffAccount = assembleStaffAccount(staffForm);
         if (userMapper.insert(staffAccount) == 0) {
-            response = Response.fail();
-            response.setMessage(staffMsg.getRegistryFailed());
+            response = Response.fail(staffMsg.getRegistryFailed());
         } else {
             staffAccount = userMapper.selectStaffByName(staffAccount.getName());
             UserHasRoleKey uhr = new UserHasRoleKey();
             uhr.setUserId(staffAccount.getId());
             uhr.setRoleId(roleMapper.selectRoleIDByName(roleProperty.getStaff()));
             if (userHasRoleMapper.insert(uhr) == 0) {
-                response = Response.fail();
-                response.setMessage(staffMsg.getAddFailed());
+                response = Response.fail(staffMsg.getAddFailed());
             } else {
                 response.setMessage(staffMsg.getAddSuccess());
                 response.setContent(assembleStaffVO((Staff) staffAccount));
@@ -119,22 +114,18 @@ public class StaffManagementImpl implements StaffManagement {
     public Response addManager(StaffForm staffForm) {
         Response response = Response.success();
         if (userMapper.selectManagerByName(staffForm.getName()) != null) {
-            response = Response.fail();
-            response.setMessage(staffMsg.getManagerAlreadyExist() + ':' + staffForm.getName());
-            return response;
+            return Response.fail(staffMsg.getManagerAlreadyExist() + ':' + staffForm.getName());
         }
+
         User managerAccount = assembleStaffAccount(staffForm);
-        //TODO
         if (userMapper.insert(managerAccount) == 0) {
-            response = Response.fail();
-            response.setMessage(staffMsg.getRegistryFailed());
+            response = Response.fail(staffMsg.getRegistryFailed());
         } else {
             UserHasRoleKey uhr = new UserHasRoleKey();
             uhr.setUserId(managerAccount.getId());
             uhr.setRoleId(roleMapper.selectRoleIDByName(roleProperty.getManager()));
             if (userHasRoleMapper.insert(uhr) == 0) {
-                response = Response.fail();
-                response.setMessage(staffMsg.getAddFailed());
+                response = Response.fail(staffMsg.getAddFailed());
             } else {
                 response.setMessage(staffMsg.getAddSuccess());
                 response.setContent(assembleManagerVO((Manager) managerAccount));
@@ -145,17 +136,14 @@ public class StaffManagementImpl implements StaffManagement {
 
     @Override
     public Response removeStaff(int staffID) {
-        Response response = Response.success();
         if (userHasRoleMapper.selectByUserID(staffID) == null) {
-            response = Response.fail();
-            response.setMessage(staffMsg.getStaffNotExist());
-            return response;
+            return Response.fail(staffMsg.getStaffNotExist());
         }
         if (userHasRoleMapper.deleteByUserID(staffID) == 0) {
-            response = Response.fail();
-            response.setMessage(staffMsg.getOperationFailed());
+            return Response.fail(staffMsg.getOperationFailed());
+        } else {
+            return Response.success();
         }
-        return response;
     }
 
     @Override

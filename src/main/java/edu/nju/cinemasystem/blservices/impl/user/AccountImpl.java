@@ -28,24 +28,18 @@ public class AccountImpl implements Account {
     public Response register(@NotNull RegistryForm registryForm) {
         Response response = Response.success();
         if (userMapper.selectByName(registryForm.getName()) != null) {
-            response = Response.fail();
-            response.setMessage(accountMsg.getRegistryNameAlreadyExist());
-            return response;
+            return Response.fail(accountMsg.getRegistryNameAlreadyExist());
         }
-        if (registryForm.getPassword().equals(registryForm.getConfirmPassword())) {
-            response = Response.fail();
-            response.setMessage(accountMsg.getPasswordNotConfirmed());
-            return response;
+        if (!registryForm.getPassword().equals(registryForm.getConfirmPassword())) {
+            return Response.fail(accountMsg.getPasswordNotConfirmed());
         }
         User user = new User();
         user.setName(registryForm.getName());
         user.setPassword(registryForm.getPassword());
         if (userMapper.insert(user) == 0) {
-            response = Response.fail();
-            response.setStatusCode(500);
-            response.setMessage(accountMsg.getRegistryFailed());
+            response = Response.fail(accountMsg.getRegistryFailed());
         } else {
-            user = userMapper.selectByName(registryForm.getName());
+            user = userMapper.selectByPrimaryKey(user.getId());
             response.setMessage(accountMsg.getRegistrySuccess());
             response.setContent(UserVO.assembleUserVO(user));
         }
@@ -54,15 +48,14 @@ public class AccountImpl implements Account {
 
     @Override
     public Response login(@NotNull UserForm userForm) {
-        Response response = Response.fail();
+        Response response = Response.success();
         User targetUser = userMapper.selectByName(userForm.getName());
         if (targetUser == null) {
-            response.setMessage(accountMsg.getAccountNotExist());
+            Response.fail(accountMsg.getAccountNotExist());
         } else if (!targetUser.getPassword().equals(userForm.getPassword())) {
-            response.setMessage(accountMsg.getWrongPassword());
+            Response.fail(accountMsg.getWrongPassword());
         } else {
             UserVO user = UserVO.assembleUserVO(targetUser);
-            response = Response.success();
             response.setMessage(accountMsg.getLoginSuccess());
             response.setContent(user);
         }
