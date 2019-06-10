@@ -3,14 +3,14 @@ package edu.nju.cinemasystem.web.controller.movie;
 import edu.nju.cinemasystem.blservices.movie.Movie;
 import edu.nju.cinemasystem.blservices.movie.MovieLike;
 import edu.nju.cinemasystem.blservices.movie.MovieManagement;
-import edu.nju.cinemasystem.blservices.movie.PromotionInfo;
 import edu.nju.cinemasystem.data.vo.Response;
 import edu.nju.cinemasystem.data.vo.form.MovieForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+
 @RestController
-@RequestMapping("/movie")
 public class MovieController {
     @Autowired
     private Movie movie;
@@ -18,61 +18,56 @@ public class MovieController {
     private MovieLike movieLike;
     @Autowired
     private MovieManagement movieManagement;
-    @Autowired
-    private PromotionInfo promotionInfo;
 
-    @GetMapping("/all")
+    @GetMapping("/user/movie/all")
     public Response getAllMovie(){
         return movie.getMovie(0);
     }
     
-    @GetMapping("/get/{movieId}")
+    @GetMapping("/user/movie/get/{movieId}")
     public Response getOneMovie(@PathVariable int movieId){
         return movie.getMovie(movieId);
     }
     
-    @GetMapping("/search")
+    @GetMapping("/user/movie/search")
     public Response searchMovies(@RequestParam String query){
         return movie.searchMovies(query);
     }
     
-    @PostMapping("/like/{movieId}")
-    public Response likeMovie(@RequestParam int userId,@PathVariable int movieId){
+    @PostMapping("/user/movie/like/{movieId}")
+    public Response likeMovie(@PathVariable int movieId,HttpSession session){
+        int userId = Integer.parseInt(String.valueOf(session.getAttribute("id")));
         return movieLike.like(userId,movieId);
     }
     
-    @PostMapping("/unlike/{movieId}")
-    public Response unlikeMovie(@RequestParam int userId,@PathVariable int movieId){
+    @PostMapping("/user/movie/unlike/{movieId}")
+    public Response unlikeMovie(HttpSession session,@PathVariable int movieId){
+        int userId = Integer.parseInt(String.valueOf(session.getAttribute("id")));
         return movieLike.unlike(userId,movieId);
     }
     
-    @PostMapping("/add")
+    @PostMapping("/manage/movie/add")
     public Response addMovie(@RequestBody MovieForm movieForm){
         return movieManagement.addMovie(movieForm);
     }
     
-    @PostMapping("/modify")
+    @PostMapping("/manage/movie/modify")
     public Response modifyMovie(@RequestBody MovieForm movieForm){
         return movieManagement.modifyMovie(movieForm);
     }
     
-    @PostMapping("/remove")
+    @PostMapping("/manage/movie/remove")
     public Response removeMovie(@RequestParam int movieId){
         return movieManagement.removeMovie(movieId);
     }
     
-    @GetMapping("/admin/all")
+    @GetMapping("/manage/movie/all")
     public Response adminGetAllMovie(){
         return movieManagement.getMovie(0);
     }
     
-    @GetMapping("/admin/get/{movieId}")
+    @GetMapping("/manage/movie/get/{movieId}")
     public Response adminGetOneMovie(@PathVariable int movieId){
         return movieManagement.getMovie(movieId);
     }
-
-//    @GetMapping("/joinedPromotion")
-//    public Response getJoinedPromotion(@RequestParam int movieId){
-//        return promotionInfo.getJoinedPromotionOf(movieId);
-//    }
 }

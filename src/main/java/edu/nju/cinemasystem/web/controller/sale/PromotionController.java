@@ -7,6 +7,8 @@ import edu.nju.cinemasystem.data.vo.form.PromotionForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+
 @RestController
 public class PromotionController {
     @Autowired
@@ -14,17 +16,18 @@ public class PromotionController {
     @Autowired
     private Promotion promotion;
 
-    @GetMapping("/coupon/get")
-    public Response getAvailableCoupon(@RequestParam int userId){
+    @GetMapping("/user/coupon/get")
+    public Response getAvailableCoupon(HttpSession session){
+        int userId = Integer.parseInt(String.valueOf(session.getAttribute("id")));
         return coupon.getAvailableCouponsByUser(userId);
     }
 
-    @PostMapping("/promotion/add")
+    @PostMapping("/admin/promotion/add")
     public Response publishPromotion(@RequestBody PromotionForm promotionForm){
         return promotion.publishPromotion(promotionForm);
     }
 
-    @GetMapping("/promotion/get")
+    @GetMapping("/admin/promotion/get")
     public Response getAllPromotions(){
         return promotion.getAllPromotions();
     }

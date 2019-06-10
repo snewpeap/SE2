@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/cinema?serverTimezone=CTT&characterEncoding=UTF-8&useAffectedRows=true
     username: root
-    password: Wj123456
+    password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
   thymeleaf:
     cache: false
@@ -56,6 +56,7 @@ role:
   staff: "staff"
   manager: "manager"
   root: "root"
+
 # 管理排片操作信息 #
 arrangement-msg:
   visible-to-audience: "排片已对观众可见"

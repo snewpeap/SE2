@@ -26,15 +26,15 @@ $("#signUp-btn").click(function () {
 
     function getRegisterForm() {
     return{
-        username: $("#signUp-name").val(),
+        name: $("#signUp-name").val(),
         password: $("#signUp-password").val(),
-        secondPassword: $("#signUp-second-password").val()
+        confirmPassword: $("#signUp-second-password").val()
     };
     }
 
     function validateSignUpForm(data) {
         var isValidate = true;
-        if (!data.username || data.username.length < 4 || data.username.length > 10) {
+        if (!data.name || data.name.length < 4 || data.name.length > 10) {
             isValidate = false;
             $('#signUp-name').parent('.input-group').addClass('has-error');
             $('#signUp-name-error').css("visibility", "visible");
@@ -45,12 +45,12 @@ $("#signUp-btn").click(function () {
             $('#signUp-password-error').css("visibility", "visible");
         }
 
-        if (!data.secondPassword) {
+        if (!data.confirmPassword) {
             isValidate = false;
             $('#signUp-second-password').parent('.input-group').addClass('has-error');
             $('#signUp-second-password-error').css("visibility", "visible");
             $('#signUp-second-password-error').text("请再次输入密码");
-        } else if (data.secondPassword != data.password) {
+        } else if (data.confirmPassword != data.password) {
             isValidate = false;
             $('#signUp-second-password').parent('.input-group').addClass('has-error');
             $('#signUp-second-password-error').css("visibility", "visible");
