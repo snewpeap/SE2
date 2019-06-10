@@ -6,7 +6,7 @@ $(document).ready(function () {
             return;
         }
 
-        postRequest(
+        login(
             '/login',
             formData,
             function (res) {
