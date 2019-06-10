@@ -11,6 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -32,30 +33,31 @@ public class GlobalUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
+        final String prefix = "ROLE_";
         User user = userMapper.selectByName(name);
-        if (user == null){
+        if (user == null) {
             throw new UsernameNotFoundException(accountMsg.getAccountNotExist());
         }
         List<SimpleGrantedAuthority> auth = new ArrayList<>(3);
         String role = roleMapper.selectByPrimaryKey(userHasRoleMapper.selectByUserID(user.getId()).getRoleId()).getRoleName();
-        SimpleGrantedAuthority staffAuth = new SimpleGrantedAuthority(roleProperty.getStaff());
-        SimpleGrantedAuthority managerAuth = new SimpleGrantedAuthority(roleProperty.getManager());
+        SimpleGrantedAuthority staffAuth = new SimpleGrantedAuthority(prefix + roleProperty.getStaff());
+        SimpleGrantedAuthority managerAuth = new SimpleGrantedAuthority(prefix + roleProperty.getManager());
         if (roleProperty.getRoot().equals(role)) {
-            auth.add(new SimpleGrantedAuthority(roleProperty.getRoot()));
+            auth.add(new SimpleGrantedAuthority(prefix + roleProperty.getRoot()));
             auth.add(managerAuth);
             auth.add(staffAuth);
-        }else if (roleProperty.getManager().equals(role)){
+        } else if (roleProperty.getManager().equals(role)) {
             auth.add(managerAuth);
             auth.add(staffAuth);
-        }else if (roleProperty.getStaff().equals(role)){
+        } else if (roleProperty.getStaff().equals(role)) {
             auth.add(staffAuth);
-        }else {
-            auth.add(new SimpleGrantedAuthority(roleProperty.getAudience()));
+        } else {
+            auth.add(new SimpleGrantedAuthority(prefix + roleProperty.getAudience()));
         }
         return new org.springframework.security.core.userdetails.User(
                 user.getName(),
-                user.getPassword(),
+                new BCryptPasswordEncoder().encode(user.getPassword()),
                 auth
-                );
+        );
     }
 }
