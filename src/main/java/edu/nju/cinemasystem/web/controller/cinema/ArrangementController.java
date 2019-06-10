@@ -12,12 +12,12 @@ public class ArrangementController {
     @Autowired
     private Arrangement arrangement;
 
-    @GetMapping("/arrangement/get")
+    @GetMapping("/user/arrangement/get")
     public Response getArrangement(@RequestParam int movieId){
-        return arrangement.getArrangement(movieId);
+        return arrangement.getByMovieID(movieId);
     }
 
-    @GetMapping("/Seat/get")
+    @GetMapping("/user/Seat/get")
     public Response getSeatMap(@RequestParam int arrangementId){
         return arrangement.getSeatMap(arrangementId);
     }

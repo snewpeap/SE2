@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/hall")
+@RequestMapping("/admin/hall")
 public class HallController {
     @Autowired
     private HallManage hallManage;
