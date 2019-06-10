@@ -27,7 +27,7 @@ function login(url,data,onSuccess,onError) {
         type: 'POST',
         url: url,
         async: true,
-        data: JSON.stringify(data),
+        data: data,
         contentType: 'application/x-www-form-urlencoded',
         processData: true,
         success: onSuccess,
