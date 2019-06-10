@@ -5,10 +5,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 @ConfigurationProperties(prefix = "arrangement-msg")
-public class ArrangementMsg extends GlobalMsg{
+public class ArrangementMsg extends GlobalMsg {
 
     private String visibleToAudience;
     private String arrangementStart;
+    private String isStillHaveArrangement;
 
     public String getArrangementStart() {
         return arrangementStart;
@@ -24,5 +25,13 @@ public class ArrangementMsg extends GlobalMsg{
 
     public void setVisibleToAudience(String visibleToAudience) {
         this.visibleToAudience = visibleToAudience;
+    }
+
+    public String getIsStillHaveArrangement() {
+        return isStillHaveArrangement;
+    }
+
+    public void setIsStillHaveArrangement(String isStillHaveArrangement) {
+        this.isStillHaveArrangement = isStillHaveArrangement;
     }
 }

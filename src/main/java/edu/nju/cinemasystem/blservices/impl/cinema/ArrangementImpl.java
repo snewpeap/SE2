@@ -239,6 +239,11 @@ public class ArrangementImpl
         return hallManage.getHallNameByID(hallID);
     }
 
+    @Override
+    public boolean haveArrangementAfterCurrentTime(int hallID, Date currentTime) {
+        return arrangementMapper.selectByHallIDAndCurrentTime(hallID, currentTime) != null;
+    }
+
     /**
      * 检查ArrangementForm里的参数是否合法
      *
