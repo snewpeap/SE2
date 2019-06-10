@@ -70,4 +70,9 @@ public class AccountImpl implements Account {
     public User getUserByID(@NotNull int ID) {
         return userMapper.selectByPrimaryKey(ID);
     }
+
+    @Override
+    public UserVO getUserVOByName(@NotNull String name) {
+        return UserVO.assembleUserVO(userMapper.selectByName(name));
+    }
 }

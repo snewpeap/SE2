@@ -1,10 +1,14 @@
 package edu.nju.cinemasystem.web.config;
 
 import edu.nju.cinemasystem.util.properties.RoleProperty;
+import edu.nju.cinemasystem.util.security.GlobalAuthenticationFailHandler;
+import edu.nju.cinemasystem.util.security.GlobalAuthenticationProvider;
+import edu.nju.cinemasystem.util.security.GlobalAuthenticationSuccessHandler;
 import edu.nju.cinemasystem.util.security.GlobalUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -19,21 +23,32 @@ public class CustomWebSecurityConfiguration extends WebSecurityConfigurerAdapter
 
     private final RoleProperty roleProperty;
     private GlobalUserDetailService globalUserDetailService;
+    private GlobalAuthenticationSuccessHandler successHandler;
+    private GlobalAuthenticationFailHandler failHandler;
 
     @Autowired
-    public CustomWebSecurityConfiguration(RoleProperty roleProperty, GlobalUserDetailService globalUserDetailService) {
+    public CustomWebSecurityConfiguration(RoleProperty roleProperty, GlobalUserDetailService globalUserDetailService, GlobalAuthenticationSuccessHandler successHandler, GlobalAuthenticationFailHandler failHandler) {
         this.roleProperty = roleProperty;
         this.globalUserDetailService = globalUserDetailService;
+        this.successHandler = successHandler;
+        this.failHandler = failHandler;
     }
 
-    @Bean
+    @Bean(name = "passwordEncoder")
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean(name = "globalAuthenticationProvider")
+    public AuthenticationProvider globalAuthenticationProvider(){
+        GlobalAuthenticationProvider authenticationProvider = new GlobalAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(globalUserDetailService);
+        return authenticationProvider;
+    }
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(globalUserDetailService).passwordEncoder(passwordEncoder());
+        auth.authenticationProvider(globalAuthenticationProvider());
     }
 
     @Override
@@ -55,10 +70,8 @@ public class CustomWebSecurityConfiguration extends WebSecurityConfigurerAdapter
                 .formLogin()
                 .loginPage("/index")
                 .loginProcessingUrl("/login")
-                .permitAll()
-                .and()
-                .logout()
-                .logoutUrl("/logout")
+                .successHandler(successHandler)
+                .failureHandler(failHandler)
                 .permitAll()
                 .and()
                 .sessionManagement()
