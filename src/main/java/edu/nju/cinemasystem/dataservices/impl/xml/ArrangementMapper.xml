@@ -36,7 +36,7 @@
         <include refid="Base_Column_List"/>
         from arrangement
         where hall_id=#{hallID}
-        and start_time between date(#{startDate}) and date_add(date(#{startDate}),interval #{duration} day)
+        and start_time between completeTime(#{startDate}) and date_add(completeTime(#{startDate}),interval #{duration} day)
     </select>
 
     <select id="selectByDay" resultMap="BaseResultMap">

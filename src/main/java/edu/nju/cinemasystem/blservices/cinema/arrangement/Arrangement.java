@@ -8,6 +8,7 @@ public interface Arrangement {
     /**
      * 用排片ID查找排片，排片是不可见状态的时候返回一个错误码401
      * 不用我先留着备用
+     *
      * @param aID 排片ID
      * @return 包含ArrangementVO
      */
@@ -15,6 +16,7 @@ public interface Arrangement {
 
     /**
      * 用电影ID查找电影的所有排片
+     *
      * @param movieID 电影ID
      * @return ArrangementVO的列表
      */
@@ -22,6 +24,7 @@ public interface Arrangement {
 
     /**
      * 获得座位分布，排片不可见的时候返回response.fail,包含一个错误码401
+     *
      * @param aID 排片ID
      * @return 返回ArrangementSeatVO的列表
      */
@@ -29,6 +32,7 @@ public interface Arrangement {
 
     /**
      * 根据ID获得当场排片的价格
+     *
      * @param arrangementID 排片ID
      * @return 价格
      */
@@ -36,14 +40,16 @@ public interface Arrangement {
 
     /**
      * 改变座位的状态
+     *
      * @param arrangementID 排片ID
-     * @param seatID 座位ID
-     * @param status 状态
+     * @param seatID        座位ID
+     * @param status        状态
      */
     void changeArrangementSeatStatus(int arrangementID, int seatID, Byte status);
 
     /**
      * 检查排片是否开始放映
+     *
      * @param ID 排片ID
      * @return boolean值
      */
@@ -51,6 +57,7 @@ public interface Arrangement {
 
     /**
      * 根据排片返回电影id
+     *
      * @param ID 排片ID
      * @return 电影ID
      */
@@ -58,6 +65,7 @@ public interface Arrangement {
 
     /**
      * 获取排片的开始时间和结束时间
+     *
      * @param ID 排片ID
      * @return 开始时间结束时间
      */
@@ -65,9 +73,18 @@ public interface Arrangement {
 
     /**
      * 返回排片的影厅名称
+     *
      * @param ID 排片ID
      * @return 影厅名称
      */
     String getHallNameByArrangementID(int ID);
 
+    /**
+     * 判断当前时间以后该影厅是否还有排片
+     *
+     * @param hallID      影厅ID
+     * @param currentTime 当前时间
+     * @return boolean值
+     */
+    boolean haveArrangementAfterCurrentTime(int hallID, Date currentTime);
 }

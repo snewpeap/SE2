@@ -4,16 +4,16 @@
     <resultMap id="BaseResultMap" type="edu.nju.cinemasystem.data.po.MovieLike">
         <result column="user_id" jdbcType="INTEGER" property="id"/>
         <result column="movie_id" jdbcType="INTEGER" property="movieId"/>
-        <result column="date" jdbcType="DATE" property="date"/>
+        <result column="completeTime" jdbcType="DATE" property="completeTime"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        user_id, movie_id, date
+        user_id, movie_id, completeTime
     </sql>
 
     <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.MovieLike">
-        insert into movie_like (user_id, movie_id, date)
-        values (#{id,jdbcType=INTEGER}, #{movieId,jdbcType=INTEGER}, #{date,jdbcType=DATE})
+        insert into movie_like (user_id, movie_id, completeTime)
+        values (#{id,jdbcType=INTEGER}, #{movieId,jdbcType=INTEGER}, #{completeTime,jdbcType=DATE})
     </insert>
 
     <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.MovieLike">
@@ -25,7 +25,7 @@
             <if test="movieId != null">
                 movie_id,
             </if>
-            date,
+            completeTime,
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -35,8 +35,8 @@
                 #{movieId,jdbcType=INTEGER},
             </if>
             <choose>
-                <when test="date != null">
-                    #{date,jdbcType=DATE},
+                <when test="completeTime != null">
+                    #{completeTime,jdbcType=DATE},
                 </when>
                 <otherwise>
                     now(),

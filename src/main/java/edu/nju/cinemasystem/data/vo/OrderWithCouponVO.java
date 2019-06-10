@@ -1,12 +1,27 @@
 package edu.nju.cinemasystem.data.vo;
 
+import java.util.Date;
 import java.util.List;
 
 public class OrderWithCouponVO {
-     
+
     private Long ID;
     private List<TicketVO> tickets;
     private List<CouponVO> coupons;
+    private Date startTime;
+    private Date endTime;
+    private String movieName;
+    private String hallName;
+
+    public OrderWithCouponVO(Long ID, List<TicketVO> tickets, List<CouponVO> coupons, Date startTime, Date endTime, String movieName, String hallName) {
+        this.ID = ID;
+        this.tickets = tickets;
+        this.coupons = coupons;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.movieName = movieName;
+        this.hallName = hallName;
+    }
 
     public Long getID() {
         return ID;
@@ -32,12 +47,35 @@ public class OrderWithCouponVO {
         this.ID = iD;
     }
 
-    public OrderWithCouponVO(Long iD, List<TicketVO> tickets, List<CouponVO> coupons) {
-        ID = iD;
-        this.tickets = tickets;
-        this.coupons = coupons;
+    public Date getStartTime() {
+        return startTime;
     }
-    
-    
 
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getMovieName() {
+        return movieName;
+    }
+
+    public void setMovieName(String movieName) {
+        this.movieName = movieName;
+    }
+
+    public String getHallName() {
+        return hallName;
+    }
+
+    public void setHallName(String hallName) {
+        this.hallName = hallName;
+    }
 }
