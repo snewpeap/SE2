@@ -69,5 +69,4 @@ public interface Arrangement {
      * @return 影厅名称
      */
     String getHallNameByArrangementID(int ID);
-
 }

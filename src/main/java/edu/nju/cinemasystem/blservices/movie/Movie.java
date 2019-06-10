@@ -16,4 +16,11 @@ public interface Movie {
      * @return 查到的电影列表
      */
     Response searchMovies(String query);
+
+    /**
+     * 通过电影ID获取电影名称
+     * @param movieID 电影ID
+     * @return 电影名称
+     */
+    String getMovieNameByID(int movieID);
 }

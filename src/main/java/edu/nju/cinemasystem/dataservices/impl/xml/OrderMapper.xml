@@ -5,12 +5,12 @@
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="real_amount" jdbcType="REAL" property="realAmount"/>
         <result column="original_amount" jdbcType="REAL" property="originalAmount"/>
-        <result column="date" jdbcType="DATE" property="date"/>
+        <result column="completeTime" jdbcType="DATE" property="completeTime"/>
         <result column="use_VIPcard" jdbcType="TINYINT" property="useVipcard"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, real_amount, original_amount, date, use_VIPcard
+        id, real_amount, original_amount, completeTime, use_VIPcard
     </sql>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -28,9 +28,9 @@
 
     <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.Order">
         insert into `order` (id, real_amount, original_amount,
-                           date, use_VIPcard)
+                           completeTime, use_VIPcard)
         values (#{id,jdbcType=BIGINT}, #{realAmount,jdbcType=REAL}, #{originalAmount,jdbcType=REAL},
-                #{date,jdbcType=DATE}, #{useVipcard,jdbcType=TINYINT})
+                #{completeTime,jdbcType=DATE}, #{useVipcard,jdbcType=TINYINT})
     </insert>
 
     <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.Order">
@@ -45,8 +45,8 @@
             <if test="originalAmount != null">
                 original_amount,
             </if>
-            <if test="date != null">
-                date,
+            <if test="completeTime != null">
+                completeTime,
             </if>
             <if test="useVipcard != null">
                 use_VIPcard,
@@ -62,8 +62,8 @@
             <if test="originalAmount != null">
                 #{originalAmount,jdbcType=REAL},
             </if>
-            <if test="date != null">
-                #{date,jdbcType=DATE},
+            <if test="completeTime != null">
+                #{completeTime,jdbcType=DATE},
             </if>
             <if test="useVipcard != null">
                 #{useVipcard,jdbcType=TINYINT},
@@ -80,8 +80,8 @@
             <if test="originalAmount != null">
                 original_amount = #{originalAmount,jdbcType=REAL},
             </if>
-            <if test="date != null">
-                date = #{date,jdbcType=DATE},
+            <if test="completeTime != null">
+                completeTime = #{completeTime,jdbcType=DATE},
             </if>
             <if test="useVipcard != null">
                 use_VIPcard = #{useVipcard,jdbcType=TINYINT},
@@ -94,7 +94,7 @@
         update `order`
         set real_amount     = #{realAmount,jdbcType=REAL},
             original_amount = #{originalAmount,jdbcType=REAL},
-            date            = #{date,jdbcType=DATE},
+            completeTime            = #{completeTime,jdbcType=DATE},
             use_VIPcard     = #{useVipcard,jdbcType=TINYINT}
         where id = #{id,jdbcType=BIGINT}
     </update>

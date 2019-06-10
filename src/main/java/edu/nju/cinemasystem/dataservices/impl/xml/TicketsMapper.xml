@@ -6,18 +6,18 @@
         <result column="user_id" jdbcType="INTEGER" property="id"/>
         <result column="arrangement_id" jdbcType="INTEGER" property="arrangementId"/>
         <result column="seat_id" jdbcType="INTEGER" property="seatId"/>
-        <result column="date" jdbcType="DATE" property="date"/>
+        <result column="completeTime" jdbcType="DATE" property="completeTime"/>
         <result column="status" jdbcType="TINYINT" property="status"/>
         <result column="real_amount" jdbcType="REAL" property="realAmount"/>
         <result column="orderID" jdbcType="BIGINT" property="orderID"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, user_id, arrangement_id, seat_id, date, status, real_amount, orderID
+        id, user_id, arrangement_id, seat_id, completeTime, status, real_amount, orderID
     </sql>
 
     <sql id="t_Column_List">
-        t.id, t.user_id, t.arrangement_id, t.seat_id, t.date, t.status, t.real_amount, t.orderID
+        t.id, t.user_id, t.arrangement_id, t.seat_id, t.completeTime, t.status, t.real_amount, t.orderID
     </sql>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -60,7 +60,7 @@
         select
         <include refid="Base_Column_List"/>
         from tickets
-        where date between #{startDate,jdbcType=DATE} and #{endDate,jdbcType=DATE}
+        where completeTime between #{startDate,jdbcType=DATE} and #{endDate,jdbcType=DATE}
     </select>
 
     <select id="selectByArrangementID" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -73,10 +73,10 @@
     <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.Ticket"
             useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into tickets (id, user_id, arrangement_id,
-                             seat_id, date, status,
+                             seat_id, completeTime, status,
                              real_amount, orderID)
         values (#{id,jdbcType=INTEGER}, #{id,jdbcType=INTEGER}, #{arrangementId,jdbcType=INTEGER},
-                #{seatId,jdbcType=INTEGER}, #{date,jdbcType=DATE}, #{status,jdbcType=TINYINT},
+                #{seatId,jdbcType=INTEGER}, #{completeTime,jdbcType=DATE}, #{status,jdbcType=TINYINT},
                 #{realAmount,jdbcType=REAL}, #{orderID,jdbcType=BIGINT})
     </insert>
 
@@ -96,8 +96,8 @@
             <if test="seatId != null">
                 seat_id,
             </if>
-            <if test="date != null">
-                date,
+            <if test="completeTime != null">
+                completeTime,
             </if>
             <if test="status != null">
                 status,
@@ -122,8 +122,8 @@
             <if test="seatId != null">
                 #{seatId,jdbcType=INTEGER},
             </if>
-            <if test="date != null">
-                #{date,jdbcType=DATE},
+            <if test="completeTime != null">
+                #{completeTime,jdbcType=DATE},
             </if>
             <if test="status != null">
                 #{status,jdbcType=TINYINT},
@@ -149,8 +149,8 @@
             <if test="seatId != null">
                 seat_id = #{seatId,jdbcType=INTEGER},
             </if>
-            <if test="date != null">
-                date = #{date,jdbcType=DATE},
+            <if test="completeTime != null">
+                completeTime = #{completeTime,jdbcType=DATE},
             </if>
             <if test="status != null">
                 status = #{status,jdbcType=TINYINT},
@@ -170,7 +170,7 @@
         set user_id        = #{id,jdbcType=INTEGER},
             arrangement_id = #{arrangementId,jdbcType=INTEGER},
             seat_id        = #{seatId,jdbcType=INTEGER},
-            date           = #{date,jdbcType=DATE},
+            completeTime           = #{completeTime,jdbcType=DATE},
             status         = #{status,jdbcType=TINYINT},
             real_amount    = #{realAmount,jdbcType=REAL},
             orderID        = #{orderID,jdbcType=BIGINT}

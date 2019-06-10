@@ -232,7 +232,7 @@ CREATE TABLE IF NOT EXISTS `cinema`.`movie_like`
 (
     `user_id`  INT(11) NOT NULL,
     `movie_id` INT(11) NOT NULL,
-    `date`     DATE    NOT NULL,
+    `completeTime`     DATE    NOT NULL,
     INDEX `fk_user_has_movie_movie1_idx` (`movie_id` ASC),
     INDEX `fk_user_has_movie_user1_idx` (`user_id` ASC),
     CONSTRAINT `fk_user_has_movie_movie1`
@@ -260,7 +260,7 @@ CREATE TABLE IF NOT EXISTS `cinema`.`recharge_record`
     `id`              INT(11)        NOT NULL,
     `original_amount` FLOAT UNSIGNED NOT NULL,
     `discount_amount` FLOAT          NOT NULL,
-    `date`            DATE           NOT NULL,
+    `completeTime`            DATE           NOT NULL,
     `user_id`         INT(11)        NOT NULL,
     PRIMARY KEY (`id`),
     INDEX `fk_recharge_record_user1_idx` (`user_id` ASC),
@@ -299,7 +299,7 @@ CREATE TABLE IF NOT EXISTS `cinema`.`order`
     `id`              BIGINT(20)     NOT NULL,
     `real_amount`     FLOAT UNSIGNED NOT NULL,
     `original_amount` FLOAT UNSIGNED NOT NULL,
-    `date`            DATE           NOT NULL,
+    `completeTime`            DATE           NOT NULL,
     `use_VIPcard`     TINYINT(4)     NOT NULL,
     PRIMARY KEY (`id`)
 )
@@ -317,7 +317,7 @@ CREATE TABLE IF NOT EXISTS `cinema`.`tickets`
     `user_id`        INT(11)        NOT NULL,
     `arrangement_id` INT(11)        NOT NULL,
     `seat_id`        INT(11)        NOT NULL,
-    `date`           DATE           NOT NULL,
+    `completeTime`           DATE           NOT NULL,
     `status`         TINYINT(4)     NOT NULL,
     `real_amount`    FLOAT UNSIGNED NOT NULL,
     `orderID`        BIGINT(20)     NOT NULL,
