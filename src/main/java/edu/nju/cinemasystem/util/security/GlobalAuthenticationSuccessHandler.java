@@ -28,11 +28,14 @@ public class GlobalAuthenticationSuccessHandler extends SavedRequestAwareAuthent
         String username = authentication.getName();
         session.setAttribute(InterceptorConfiguration.SESSION_KEY, account.getUserVOByName(username));
         System.out.println("登录成功");
+//        request.getRequestDispatcher(authentication.getAuthorities()
+//                .contains(new SimpleGrantedAuthority("ROLE_" + roleProperty.getAudience())) ?
+//                "/home" : "/admin/movieManage").forward(request,response);
         super.setDefaultTargetUrl(
                 authentication.getAuthorities()
                         .contains(new SimpleGrantedAuthority("ROLE_" + roleProperty.getAudience())) ?
-                        "/home" : "/admin/movieManage"
+                        "/user/home" : "/manage/movie"
         );
-        super.onAuthenticationSuccess(request, response, authentication);
+        super.onAuthenticationSuccess(request,response,authentication);
     }
 }
