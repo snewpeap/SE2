@@ -2,6 +2,7 @@ package edu.nju.cinemasystem.blservices.user;
 
 import edu.nju.cinemasystem.data.po.User;
 import edu.nju.cinemasystem.data.vo.Response;
+import edu.nju.cinemasystem.data.vo.UserVO;
 import edu.nju.cinemasystem.data.vo.form.RegistryForm;
 import edu.nju.cinemasystem.data.vo.form.UserForm;
 
@@ -23,4 +24,6 @@ public interface Account {
     Response login(UserForm userForm);
 
     User getUserByID(@NotNull int ID);
+
+    UserVO getUserVOByName(@NotNull String name);
 }

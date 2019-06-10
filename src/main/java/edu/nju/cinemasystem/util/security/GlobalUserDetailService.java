@@ -11,7 +11,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -56,7 +55,7 @@ public class GlobalUserDetailService implements UserDetailsService {
         }
         return new org.springframework.security.core.userdetails.User(
                 user.getName(),
-                new BCryptPasswordEncoder().encode(user.getPassword()),
+                user.getPassword(),
                 auth
         );
     }
