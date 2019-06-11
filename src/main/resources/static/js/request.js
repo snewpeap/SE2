@@ -48,21 +48,32 @@ function deleteRequest(url, data, onSuccess, onError) {
     });
 }
 
+function getCookie(cname)
+{
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++)
+    {
+        var c = ca[i].trim();
+        if (c.indexOf(name)===0) return c.substring(name.length,c.length);
+    }
+    return "";
+}
 
 function formatDate(date){
     var year = date.getFullYear();
     var month = date.getMonth()+1+'';
     var day = date.getDate()+'';
-    month.length===1 && (month = '0'+month)
-    day.length===1 && (day = '0'+day)
+    month.length===1 && (month = '0'+month);
+    day.length===1 && (day = '0'+day);
     return year+'-'+month+'-'+day;
 }
 
 function formatTime(date){
     var hour = date.getHours()+'';
     var minutes = date.getMinutes()+'';
-    hour.length===1 && (hour = '0'+hour)
-    minutes.length===1 && (minutes = '0'+minutes)
+    hour.length===1 && (hour = '0'+hour);
+    minutes.length===1 && (minutes = '0'+minutes);
     return hour+":"+minutes;
 }
 
