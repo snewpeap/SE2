@@ -31,10 +31,10 @@ function getInfo() {
         }
     );
 }
-//todo
+
 function getExistingTicket() {
     getRequest(
-        "/user/ticket/get/exsiting?scheduleId=" + scheduleId,
+        "/user/ticket/get/existing?scheduleId=" + scheduleId,
         function (res) {
             if (res.success){
                 let tickets = res.content;
@@ -237,11 +237,9 @@ function orderConfirmClick() {
         seats.push(seatData);
     });
 
-    //todo
     postRequest(
-        '/user/ticket/lockSeat' + scheduleId,
+        '/user/ticket/lockSeats/' + scheduleId,
         {
-            scheduleId: scheduleId,
             seats: seats
         },function (res) {
             if (res.success){
@@ -309,12 +307,12 @@ function changeCoupon(couponIndex) {
     $('#pay-amount').html("<div><b>金额：</b>" + actualTotal + "元</div>");
 }
 
-//todo
+//todo 主要在支付
 function payConfirmClick() {
     if (useVIP) {
         //postPayRequest();
-        postRequest('/user/ticket/payByVIP',
-            {ticketId:ticketId,couponId:order.couponId},
+        postRequest('/user/ticket/payByVIP?couponId=' + order.couponId,
+            {ticketId:ticketId},
             function(res){
                 if (res.success === true ){
                     $('#order-state').css("display", "none");
@@ -339,12 +337,11 @@ function payConfirmClick() {
     }
 }
 
-//todo
 function postPayRequest() {
     console.log(ticketId);
     console.log(order.couponId);
-    postRequest('/user/ticket/pay',
-        {ticketId:ticketId,couponId:order.couponId},
+    postRequest('/user/ticket/pay?couponId=' + order.couponId,
+        {ticketId:ticketId},
         function(res){
             if(res.success === true){
                 $('#order-state').css("display", "none");

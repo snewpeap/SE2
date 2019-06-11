@@ -32,6 +32,7 @@ function getVIP() {
             alert(error);
         });
 
+    //todo:user获得vipcard的充值优惠
     getRequest(
         '/vip/getVIPInfo',
         function (res) {
@@ -74,7 +75,7 @@ function confirmCommit() {
         if ($('#userMember-cardNum').val() === "123123123" && $('#userMember-cardPwd').val() === "123123") {
             if (isBuyState) {
                 postRequest(
-                    '/vip/add?userId=' + sessionStorage.getItem('id'),
+                    '/user/vip/card/add',
                     null,
                     function (res) {
                         $('#buyModal').modal('hide');
@@ -86,8 +87,8 @@ function confirmCommit() {
                     });
             } else {
                 postRequest(
-                    '/vip/charge',
-                    {vipId: vipCardId, amount: parseInt($('#userMember-amount').val())},
+                    '/user/vip/card/deposit',
+                    {amount: parseInt($('#userMember-amount').val())},
                     function (res) {
                         $('#buyModal').modal('hide');
                         alert("充值成功");
@@ -104,7 +105,7 @@ function confirmCommit() {
 }
 
 function validateForm() {
-    var isValidate = true;
+    let isValidate = true;
     if (!$('#userMember-cardNum').val()) {
         isValidate = false;
         $('#userMember-cardNum').parent('.form-group').addClass('has-error');
@@ -125,11 +126,11 @@ function validateForm() {
 
 function getCoupon() {
     getRequest(
-        '/coupon/' + sessionStorage.getItem('id') + '/get',
+        '/user/coupon/get',
         function (res) {
             if (res.success) {
-                var couponList = res.content;
-                var couponListContent = '';
+                let couponList = res.content;
+                let couponListContent = '';
                 for (let coupon of couponList) {
                     couponListContent += '<div class="col-md-6 coupon-wrapper"><div class="coupon"><div class="content">' +
                         '<div class="col-md-8 left">' +

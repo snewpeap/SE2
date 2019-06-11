@@ -32,7 +32,7 @@ $(document).ready(function(){
             "<td style=\"width: 195px\">"+start+"</td>" +
             "<td style=\"width: 195px\">"+end+"</td>" +
             "<td style=\"width: 80px\">"+ticket.state+"</td>" +
-            "<td style='width: 80px'><a id='ticketId' @click='refund()'>退票</a></td>" +
+            "<td style='width: 80px'><a id='@ticketId' @click='refund()'>退票</a></td>" +
             "</tr>";
         $(".table tbody").append(ticketDomStr);
     }
@@ -43,9 +43,10 @@ $(document).ready(function(){
 
     //todo: refund
     function refund(e) {
+        let id = e.target.id;
         postRequest(
             '/user/ticket/refund',
-            ticketId,
+            {id},
             function (res) {
                 if (res.success){
                     alert("退票成功！")
