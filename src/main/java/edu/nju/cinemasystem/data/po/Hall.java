@@ -79,4 +79,6 @@ public class Hall {
         this.isImax = isImax;
         this.is3d = is3d;
     }
+
+    public Hall() { }
 }

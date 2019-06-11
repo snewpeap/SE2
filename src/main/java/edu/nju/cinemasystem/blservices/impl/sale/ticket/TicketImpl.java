@@ -2,6 +2,7 @@ package edu.nju.cinemasystem.blservices.impl.sale.ticket;
 
 import edu.nju.cinemasystem.blservices.cinema.arrangement.Arrangement;
 import edu.nju.cinemasystem.blservices.cinema.hall.HallManage;
+import edu.nju.cinemasystem.blservices.movie.Movie;
 import edu.nju.cinemasystem.blservices.sale.promotion.Coupon;
 import edu.nju.cinemasystem.blservices.vip.SalesInfo;
 import edu.nju.cinemasystem.blservices.vip.VIPCard;
@@ -47,11 +48,12 @@ public class TicketImpl implements
     RefundStrategyMapper refundStrategyMapper;
     private final
     HallManage hallManage;
+    private final Movie movie;
 
     private static DelayQueue<DelayedTask> delayQueue = new DelayQueue<>();
 
     @Autowired
-    public TicketImpl(TicketsMapper ticketsMapper, Arrangement arrangement, Coupon coupon, GlobalMsg globalMsg, ArrangementMsg arrangementMsg, VIPCard vipCard, TicketMsg ticketMsg, OrderMapper orderMapper, RefundStrategyMapper refundStrategyMapper, HallManage hallManage) {
+    public TicketImpl(TicketsMapper ticketsMapper, Arrangement arrangement, Coupon coupon, GlobalMsg globalMsg, ArrangementMsg arrangementMsg, VIPCard vipCard, TicketMsg ticketMsg, OrderMapper orderMapper, RefundStrategyMapper refundStrategyMapper, HallManage hallManage, Movie movie) {
         this.ticketsMapper = ticketsMapper;
         this.arrangement = arrangement;
         this.coupon = coupon;
@@ -62,6 +64,7 @@ public class TicketImpl implements
         this.orderMapper = orderMapper;
         this.refundStrategyMapper = refundStrategyMapper;
         this.hallManage = hallManage;
+        this.movie = movie;
     }
 
     /**
@@ -163,7 +166,7 @@ public class TicketImpl implements
         for (Ticket ticket : tickets) {
             ticketsMapper.deleteByPrimaryKey(ticket.getId());
             int seatID = ticket.getSeatId();
-            arrangement.changeArrangementSeatStatus(ticket.getArrangementId(),seatID,(byte)0);
+            arrangement.changeArrangementSeatStatus(ticket.getArrangementId(), seatID, (byte) 0);
         }
         orderMapper.deleteByPrimaryKey(orderID);
         for (DelayedTask or : delayQueue) {
@@ -199,9 +202,9 @@ public class TicketImpl implements
         if (order.getUseVipcard() == (byte) 1) {
             vipCard.addVIPBalance(ticket.getUserId(), amount);
         }
-        ticket.setStatus((byte)3);
+        ticket.setStatus((byte) 3);
         int seatID = ticket.getSeatId();
-        arrangement.changeArrangementSeatStatus(ticket.getArrangementId(),seatID,(byte)0);
+        arrangement.changeArrangementSeatStatus(ticket.getArrangementId(), seatID, (byte) 0);
         ticketsMapper.updateByPrimaryKeySelective(ticket);
         response = Response.success();
         response.setMessage(globalMsg.getOperationSuccess());
@@ -272,8 +275,12 @@ public class TicketImpl implements
         for (Map.Entry<Long, List<TicketVO>> entry : ticketVOsMapByOrderID.entrySet()) {
             List<TicketVO> oneTicketVOs = entry.getValue();
             float realSpend = oneTicketVOs.size() * oneTicketVOs.get(0).getRealAmount();
-            float originalSpend = oneTicketVOs.size() * (arrangement.getFareByID(oneTicketVOs.get(0).getArrangementId()));
-            orderVOS.add(new OrderVO(entry.getKey(), oneTicketVOs, realSpend, originalSpend, date));
+            int arrangementID = oneTicketVOs.get(0).getArrangementId();
+            float originalSpend = oneTicketVOs.size() * (arrangement.getFareByID(arrangementID));
+            Date[] dates = arrangement.getStartDateAndEndDate(arrangementID);
+            String movieName = movie.getMovieNameByID(arrangement.getMovieIDbyID(arrangementID));
+            String hallName = arrangement.getHallNameByArrangementID(arrangementID);
+            orderVOS.add(new OrderVO(entry.getKey(), oneTicketVOs, realSpend, originalSpend, date, dates[0], dates[1], movieName, hallName));
         }
         response = Response.success();
         response.setContent(orderVOS);
@@ -335,29 +342,31 @@ public class TicketImpl implements
     /**
      * 组装一个OrderWithCouponVO
      *
-     * @param tickets Ticket列表
-     * @param userID 用户ID
-     * @param orderID 订单
+     * @param tickets     Ticket列表
+     * @param userID      用户ID
+     * @param orderID     订单
      * @param totalAmount 订单总金额
      * @return OrderWithCouponVO
      */
     private OrderWithCouponVO assembleOrderWithCouponVO(List<Ticket> tickets, int userID, long orderID, float totalAmount) {
         List<TicketVO> ticketVOs = new ArrayList<>();
         List<CouponVO> couponVOs = coupon.getAvailableCouponsByUserAndTickets(userID, totalAmount);
-        if (tickets != null) {
-            for (Ticket ticket : tickets) {
-                TicketVO ticketVO = assembleTicketVO(ticket);
-                ticketVOs.add(ticketVO);
-            }
+        int arrangementID = tickets.get(0).getArrangementId();
+        Date[] dates = arrangement.getStartDateAndEndDate(arrangementID);
+        String movieName = movie.getMovieNameByID(arrangement.getMovieIDbyID(arrangementID));
+        String hallName = arrangement.getHallNameByArrangementID(arrangementID);
+        for (Ticket ticket : tickets) {
+            TicketVO ticketVO = assembleTicketVO(ticket);
+            ticketVOs.add(ticketVO);
         }
-        return new OrderWithCouponVO(orderID, ticketVOs, couponVOs);
+        return new OrderWithCouponVO(orderID, ticketVOs, couponVOs, dates[0], dates[1], movieName, hallName);
     }
 
     /**
      * 给指定的日期加上天数
      *
      * @param date 指定的日期
-     * @param day 天数
+     * @param day  天数
      * @return 加上天数后的日期
      */
     private Date addDate(Date date, int day) {
@@ -378,9 +387,6 @@ public class TicketImpl implements
         long orderID = ticket.getOrderID();
         int userID = ticket.getUserId();
         int arrangementId = ticket.getArrangementId();
-        Date[] dates = arrangement.getStartDateAndEndDate(ticket.getArrangementId());
-        Date startDate = dates[0];
-        Date endDate = dates[1];
         String status = null;
         switch (ticket.getStatus()) {
             case (byte) 0:
@@ -402,8 +408,7 @@ public class TicketImpl implements
         int[] seats = hallManage.getSeatBySeatID(ticket.getSeatId());
         int row = seats[0];
         int column = seats[1];
-        String hallName = arrangement.getHallNameByArrangementID(ticket.getArrangementId());
-        return new TicketVO(id, orderID, userID, arrangementId, startDate, endDate, status, realAmount, row, column, hallName);
+        return new TicketVO(id, orderID, userID, arrangementId, status, realAmount, row, column);
     }
 
 }

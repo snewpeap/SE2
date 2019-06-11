@@ -7,23 +7,11 @@ public class TicketVO {
 
     private Integer id;
 
-    public long getOrderID() {
-        return orderID;
-    }
-
-    public void setOrderID(long orderID) {
-        this.orderID = orderID;
-    }
-
     private long orderID;
 
     private Integer userId;
 
     private Integer arrangementId;
-
-    private Date startDate;
-
-    private Date endDate;
 
     private String status;
 
@@ -33,20 +21,16 @@ public class TicketVO {
 
     private int column;
 
-    private String hallName;
 
-    public TicketVO(Integer id, long orderID,Integer userId, Integer arrangementId, Date startDate, Date endDate, String status, Float realAmount, int row, int column, String hallName) {
+    public TicketVO(Integer id, long orderID, Integer userId, Integer arrangementId, String status, Float realAmount, int row, int column) {
         this.id = id;
         this.orderID = orderID;
         this.userId = userId;
         this.arrangementId = arrangementId;
-        this.startDate = startDate;
-        this.endDate = endDate;
         this.status = status;
         this.realAmount = realAmount;
         this.row = row;
         this.column = column;
-        this.hallName = hallName;
     }
 
     public Integer getId() {
@@ -55,6 +39,14 @@ public class TicketVO {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public long getOrderID() {
+        return orderID;
+    }
+
+    public void setOrderID(long orderID) {
+        this.orderID = orderID;
     }
 
     public Integer getUserId() {
@@ -71,22 +63,6 @@ public class TicketVO {
 
     public void setArrangementId(Integer arrangementId) {
         this.arrangementId = arrangementId;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
     }
 
     public String getStatus() {
@@ -119,13 +95,5 @@ public class TicketVO {
 
     public void setColumn(int column) {
         this.column = column;
-    }
-
-    public String getHallName() {
-        return hallName;
-    }
-
-    public void setHallName(String hallName) {
-        this.hallName = hallName;
     }
 }

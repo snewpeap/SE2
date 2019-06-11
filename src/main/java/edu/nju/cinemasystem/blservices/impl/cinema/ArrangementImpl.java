@@ -1,7 +1,6 @@
 package edu.nju.cinemasystem.blservices.impl.cinema;
 
 import edu.nju.cinemasystem.blservices.cinema.arrangement.ArrangementManage;
-import edu.nju.cinemasystem.blservices.cinema.hall.HallManage;
 import edu.nju.cinemasystem.blservices.movie.ArrangementInfo;
 import edu.nju.cinemasystem.data.po.Arrangement;
 import edu.nju.cinemasystem.data.po.ArrangementSeat;
@@ -12,16 +11,16 @@ import edu.nju.cinemasystem.data.vo.Response;
 import edu.nju.cinemasystem.data.vo.form.ArrangementForm;
 import edu.nju.cinemasystem.dataservices.cinema.arrangement.ArrangementMapper;
 import edu.nju.cinemasystem.dataservices.cinema.arrangement.ArrangementSeatMapper;
+import edu.nju.cinemasystem.dataservices.cinema.hall.HallMapper;
 import edu.nju.cinemasystem.dataservices.cinema.hall.SeatMapper;
 import edu.nju.cinemasystem.util.properties.message.ArrangementMsg;
 import edu.nju.cinemasystem.util.properties.message.GlobalMsg;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class ArrangementImpl
@@ -38,16 +37,16 @@ public class ArrangementImpl
     private final
     ArrangementMsg arrangementMsg;
     private final
-    HallManage hallManage;
+    HallMapper hallMapper;
 
     @Autowired
-    public ArrangementImpl(ArrangementMapper arrangementMapper, GlobalMsg globalMsg, ArrangementSeatMapper arrangementSeatMapper, SeatMapper seatMapper, ArrangementMsg arrangementMsg, HallManage hallManage) {
+    public ArrangementImpl(ArrangementMapper arrangementMapper, GlobalMsg globalMsg, ArrangementSeatMapper arrangementSeatMapper, SeatMapper seatMapper, ArrangementMsg arrangementMsg, HallMapper hallMapper) {
         this.arrangementMapper = arrangementMapper;
         this.globalMsg = globalMsg;
         this.arrangementSeatMapper = arrangementSeatMapper;
         this.seatMapper = seatMapper;
         this.arrangementMsg = arrangementMsg;
-        this.hallManage = hallManage;
+        this.hallMapper = hallMapper;
     }
 
     @Override
@@ -236,7 +235,12 @@ public class ArrangementImpl
     public String getHallNameByArrangementID(int ID) {
         Arrangement arrangement = arrangementMapper.selectByPrimaryKey(ID);
         int hallID = arrangement.getHallId();
-        return hallManage.getHallNameByID(hallID);
+        return hallMapper.selectByPrimaryKey(hallID).getName();
+    }
+
+    @Override
+    public boolean haveArrangementAfterCurrentTime(int hallID, Date currentTime) {
+        return arrangementMapper.selectByHallIDAndCurrentTime(hallID, currentTime) != null;
     }
 
     /**

@@ -73,7 +73,7 @@ public interface ArrangementMapper {
      * @param hallID    影厅id
      * @param startDate 开始的时间，结束时间晚于开始时间当天0点的不会被返回
      * @param duration  天数，使用应用配置请
-     * @return 符合条件的所有电影
+     * @return 符合条件的所有排片
      */
     List<Arrangement> selectByHallIDAndStartDate(
             @Param("hallID") int hallID,
@@ -82,9 +82,22 @@ public interface ArrangementMapper {
     );
 
     /**
+     * TODO 查找当前时间后的在该影厅的所有排片，没有返回null
+     *
+     * @param hallID      影厅id
+     * @param currentTime 开始的时间，结束时间晚于开始时间当天0点的不会被返回
+     * @return 符合条件的所有排片，没有返回null
+     */
+    List<Arrangement> selectByHallIDAndCurrentTime(
+            @Param("hallID") int hallID,
+            @Param("currentTime") java.util.Date currentTime
+    );
+
+    /**
      * 获取开始时间晚于startDay的0时，结束时间早于endDay的0时的所有排片
+     *
      * @param startDay 起始时间
-     * @param endDay 结束时间
+     * @param endDay   结束时间
      * @return 匹配的排片
      */
     List<Arrangement> selectByDay(@Param("startDay") Date startDay, @Param("endDay") Date endDay);

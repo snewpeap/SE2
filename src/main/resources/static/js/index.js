@@ -6,23 +6,26 @@ $(document).ready(function () {
             return;
         }
 
-        postRequest(
+        login(
             '/login',
             formData,
-            function (res) {
-                if (res.success) {
-                    sessionStorage.setItem('name', formData.name);
-                    sessionStorage.setItem('id', res.content.ID);
-                    if (formData.name === "root") {
+            function (date,status,xhr) {
+                // if (res.success) {
+                var redirect = xhr.getResponseHeader("Location");
+                if (redirect){
+                    window.location.href = redirect;
+                }
+                document.write(date);
+                    /*if (formData.name === "root") {
                         sessionStorage.setItem('role', 'admin');
                         window.location.href = "/manage/movie"
                     } else {
                         sessionStorage.setItem('role', 'user');
                         window.location.href = "/user/home"
-                    }
-                } else {
-                    alert(res.message);
-                }
+                    }*/
+                // } else {
+                //     alert(res.message);
+                // }
             },
             function (error) {
                 alert(error);
@@ -31,14 +34,14 @@ $(document).ready(function () {
 
     function getLoginForm() {
         return {
-            name: $('#index-name').val(),
+            username: $('#index-name').val(),
             password: $('#index-password').val()
         };
     }
 
     function validateLoginForm(data) {
-        let isValidate = true;
-        if (!data.name) {
+        var isValidate = true;
+        if (!data.username) {
             isValidate = false;
             $('#index-name').parent('.input-group').addClass('has-error');
             $('#index-name-error').css("visibility", "visible");

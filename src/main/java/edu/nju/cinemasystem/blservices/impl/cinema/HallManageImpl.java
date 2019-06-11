@@ -1,5 +1,6 @@
 package edu.nju.cinemasystem.blservices.impl.cinema;
 
+import edu.nju.cinemasystem.blservices.cinema.arrangement.Arrangement;
 import edu.nju.cinemasystem.blservices.cinema.hall.HallManage;
 import edu.nju.cinemasystem.data.po.Hall;
 import edu.nju.cinemasystem.data.po.Seat;
@@ -8,11 +9,13 @@ import edu.nju.cinemasystem.data.vo.Response;
 import edu.nju.cinemasystem.data.vo.form.HallForm;
 import edu.nju.cinemasystem.dataservices.cinema.hall.HallMapper;
 import edu.nju.cinemasystem.dataservices.cinema.hall.SeatMapper;
+import edu.nju.cinemasystem.util.properties.message.ArrangementMsg;
 import edu.nju.cinemasystem.util.properties.message.GlobalMsg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -24,29 +27,33 @@ public class HallManageImpl implements HallManage {
     GlobalMsg globalMsg;
     private final
     SeatMapper seatMapper;
+    private final Arrangement arrangement;
+    private final ArrangementMsg arrangementMsg;
 
     @Autowired
-    public HallManageImpl(HallMapper hallMapper, GlobalMsg globalMsg, SeatMapper seatMapper) {
+    public HallManageImpl(HallMapper hallMapper, GlobalMsg globalMsg, SeatMapper seatMapper, Arrangement arrangement, ArrangementMsg arrangementMsg) {
         this.hallMapper = hallMapper;
         this.globalMsg = globalMsg;
         this.seatMapper = seatMapper;
+        this.arrangement = arrangement;
+        this.arrangementMsg = arrangementMsg;
     }
 
     @Override
-    public Response InputHallInfo(HallForm hallForm) {
+    public Response inputHallInfo(HallForm hallForm) {
         Response response;
         String name = hallForm.getName();
         int column = hallForm.getColumn();
         int row = hallForm.getRow();
-        byte size = 0;
+        byte size = (byte) 0;
         switch (hallForm.getSize()) {
             case "大":
                 break;
             case "中":
-                size = 1;
+                size = (byte) 1;
                 break;
             case "小":
-                size = 2;
+                size = (byte) 2;
                 break;
             default:
                 response = Response.fail();
@@ -57,13 +64,15 @@ public class HallManageImpl implements HallManage {
         byte isImax = (byte) (hallForm.getIsImax() ? 1 : 0);
         byte is3d = (byte) (hallForm.getIs3d() ? 1 : 0);
         Hall hall = new Hall(name, column, row, size, isImax, is3d);
-        //TODO 这个id不确定
-        hallMapper.insertSelective(hall);
+        //TODO insertSelective报错
+        //hallMapper.insertSelective(hall);
+        hallMapper.insert(hall);
         int id = hall.getId();
         for (int i = 1; i <= hallForm.getRow(); i++) {
             for (int j = 1; j <= hallForm.getColumn(); j++) {
                 Seat seat = new Seat(j, i, id);
-                seatMapper.insertSelective(seat);
+                //TODO insertSelective报错
+                seatMapper.insert(seat);
             }
         }
         response = Response.success();
@@ -87,14 +96,48 @@ public class HallManageImpl implements HallManage {
     @Override
     public Response modifyHallInfo(HallForm hallForm, int ID) {
         Response response;
+        if (arrangement.haveArrangementAfterCurrentTime(ID, new Date())) {
+            return Response.fail(arrangementMsg.getIsStillHaveArrangement());
+        }
         if (!censorHallForm(hallForm)) {
             response = Response.fail();
             response.setMessage(globalMsg.getWrongParam());
             return response;
         }
+        Hall oldHall = hallMapper.selectByPrimaryKey(ID);
+        if (!hallForm.getColumn().equals(oldHall.getColumn()) || !hallForm.getRow().equals(oldHall.getRow())) {
+            if (hallForm.getColumn() >= oldHall.getColumn() || hallForm.getRow() >= oldHall.getRow()) {
+                for (int r = oldHall.getRow() + 1; r <= hallForm.getRow(); r++) {
+                    for (int c = 1; c <= hallForm.getColumn(); c++) {
+                        Seat seat = new Seat(c, r, ID);
+                        seatMapper.insert(seat);
+                    }
+                }
+                for (int r = 1; r <= oldHall.getRow(); r++) {
+                    for (int c = oldHall.getRow() + 1; c <= hallForm.getColumn(); c++) {
+                        Seat seat = new Seat(c, r, ID);
+                        //TODO insertSelective报错
+                        seatMapper.insert(seat);
+                    }
+                }
+            } else {
+                List<Seat> seats = seatMapper.selectByHallID(ID);
+                for (Seat seat : seats) {
+                    seatMapper.deleteByPrimaryKey(seat.getId());
+                }
+                for (int i = 1; i <= hallForm.getRow(); i++) {
+                    for (int j = 1; j <= hallForm.getColumn(); j++) {
+                        Seat seat = new Seat(j, i, ID);
+                        //TODO insertSelective报错
+                        seatMapper.insert(seat);
+                    }
+                }
+            }
+        }
         Hall hall = assembleHall(hallForm);
         hall.setId(ID);
-        hallMapper.updateByPrimaryKeySelective(hall);
+        //TODO updateByPrimaryKeySelective报错
+        hallMapper.updateByPrimaryKey(hall);
         response = Response.success();
         return response;
     }

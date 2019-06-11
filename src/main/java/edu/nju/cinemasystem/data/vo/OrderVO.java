@@ -9,7 +9,11 @@ public class OrderVO {
     private List<TicketVO> ticketVOs;
     private float realSpend;
     private float originalSpend;
-    private Date date;
+    private Date completeTime;
+    private Date startTime;
+    private Date endTime;
+    private String movieName;
+    private String hallName;
 
     public Long getOrderID() {
         return orderID;
@@ -43,11 +47,55 @@ public class OrderVO {
         this.originalSpend = originalSpend;
     }
 
-    public OrderVO(Long orderID, List<TicketVO> ticketVOs, float realSpend, float originalSpend, Date date) {
+    public Date getCompleteTime() {
+        return completeTime;
+    }
+
+    public void setCompleteTime(Date completeTime) {
+        this.completeTime = completeTime;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getMovieName() {
+        return movieName;
+    }
+
+    public void setMovieName(String movieName) {
+        this.movieName = movieName;
+    }
+
+    public String getHallName() {
+        return hallName;
+    }
+
+    public void setHallName(String hallName) {
+        this.hallName = hallName;
+    }
+
+    public OrderVO(Long orderID, List<TicketVO> ticketVOs, float realSpend, float originalSpend, Date completeTime, Date startTime, Date endTime, String movieName, String hallName) {
         this.orderID = orderID;
         this.ticketVOs = ticketVOs;
         this.realSpend = realSpend;
         this.originalSpend = originalSpend;
-        this.date = date;
+        this.completeTime = completeTime;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.movieName = movieName;
+        this.hallName = hallName;
     }
 }

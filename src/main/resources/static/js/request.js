@@ -22,6 +22,19 @@ function postRequest(url, data, onSuccess, onError) {
     });
 }
 
+function login(url,data,onSuccess,onError) {
+    $.ajax({
+        type: 'POST',
+        url: url,
+        async: true,
+        data: data,
+        contentType: 'application/x-www-form-urlencoded',
+        processData: true,
+        success: onSuccess,
+        error: onError
+    })
+}
+
 function deleteRequest(url, data, onSuccess, onError) {
     $.ajax({
         type: 'DELETE',
