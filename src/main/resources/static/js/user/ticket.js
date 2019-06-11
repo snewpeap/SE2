@@ -32,7 +32,7 @@ $(document).ready(function(){
             "<td style=\"width: 195px\">"+start+"</td>" +
             "<td style=\"width: 195px\">"+end+"</td>" +
             "<td style=\"width: 80px\">"+ticket.state+"</td>" +
-            "<td style='width: 80px'><a id='@ticketId' @click='refund()'>退票</a></td>" +
+            "<td style='width: 80px'><a id='@ticketId' onclick='refund()'>退票</a></td>" +
             "</tr>";
         $(".table tbody").append(ticketDomStr);
     }

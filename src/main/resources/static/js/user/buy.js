@@ -21,7 +21,7 @@ $(document).ready(function () {
 
 function getInfo() {
     getRequest(
-        '/user/Seat/get?arrangementId=' + scheduleId,
+        '/user/seat/get?arrangementId=' + scheduleId,
         function (res) {
             if (res.success) {
                 renderSchedule(res.content.scheduleItem, res.content.seats);
