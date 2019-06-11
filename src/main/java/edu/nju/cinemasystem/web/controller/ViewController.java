@@ -41,19 +41,24 @@ public class ViewController {
         return "admin/handOutCoupon";
     }
 
-    @RequestMapping("/manage/movie/detail")
+    @RequestMapping("/manage/movieDetail")
     public String getManageMovieDetail(@RequestParam int movieId) {
         return "admin/movieDetail";
     }
 
-    @RequestMapping("/manage/movie")
-    public String getManageMovie() {
-        return "admin/movieManage";
+    @RequestMapping("/manage/movieAdd")
+    public String getManageMovieAdd() {
+        return "admin/movieAdd";
+    }
+
+    @RequestMapping("/manage/movieAll")
+    public String getManageMovieAll() {
+        return "admin/movieAll";
     }
 
     @RequestMapping("/admin/refundStrategy")
     public String getAdminRefundStrategy() {
-        return "admin/refundStrategy";
+        return "admin/refundStrategyManage";
     }
 
     @RequestMapping("/root/staff")

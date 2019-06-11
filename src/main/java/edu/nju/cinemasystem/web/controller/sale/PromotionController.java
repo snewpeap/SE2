@@ -17,8 +17,7 @@ public class PromotionController {
     private Promotion promotion;
 
     @GetMapping("/user/coupon/get")
-    public Response getAvailableCoupon(HttpSession session){
-        int userId = Integer.parseInt(String.valueOf(session.getAttribute("id")));
+    public Response getAvailableCoupon(@RequestParam int userId){
         return coupon.getAvailableCouponsByUser(userId);
     }
 

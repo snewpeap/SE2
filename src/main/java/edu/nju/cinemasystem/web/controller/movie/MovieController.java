@@ -35,14 +35,12 @@ public class MovieController {
     }
     
     @PostMapping("/user/movie/like/{movieId}")
-    public Response likeMovie(@PathVariable int movieId,HttpSession session){
-        int userId = Integer.parseInt(String.valueOf(session.getAttribute("id")));
+    public Response likeMovie(@PathVariable int movieId,@RequestParam int userId){
         return movieLike.like(userId,movieId);
     }
     
     @PostMapping("/user/movie/unlike/{movieId}")
-    public Response unlikeMovie(HttpSession session,@PathVariable int movieId){
-        int userId = Integer.parseInt(String.valueOf(session.getAttribute("id")));
+    public Response unlikeMovie(@PathVariable int movieId,@RequestParam int userId){
         return movieLike.unlike(userId,movieId);
     }
     
