@@ -66,6 +66,8 @@ CREATE TABLE IF NOT EXISTS `cinema`.`movie`
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
 
+INSERT INTO movie (`name`, director, screen_writer, starring, type, country, `language`, duration, start_date, `description`)
+VALUES ('随便','赖宝光','赖宝光','赖宝光','赖宝光','日本','日语',123,'2019-6-1','农夫山泉始终坚持水源地建厂的理念，以确保天然品质');
 
 -- -----------------------------------------------------
 -- Table `cinema`.`arrangement`

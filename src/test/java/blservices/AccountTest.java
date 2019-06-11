@@ -67,39 +67,6 @@ public class AccountTest {
         throw new RuntimeException();
     }
 
-    @Test
-    public void testLogin1() {
-        String sim = "audience";
-        UserForm userForm = generateUF(sim,sim);
-        Response response = account.login(userForm);
-        UserVO userVO = (UserVO) response.getContent();
-        assertTrue(response.isSuccess());
-        assertEquals(accountMsg.getLoginSuccess(), response.getMessage());
-        assertEquals(sim, userVO.getName());
-        assertEquals((int) userMapper.selectByName(sim).getId(), userVO.getID());
-    }
-
-    @Test
-    public void testLoginFail_noSuchAccount() {
-        UserForm userForm = generateUF("null","null");
-        Response response = account.login(userForm);
-        UserVO userVO = (UserVO) response.getContent();
-        assertFalse(response.isSuccess());
-        assertEquals(accountMsg.getAccountNotExist(), response.getMessage());
-        assertNull(userVO);
-    }
-
-    @Test
-    public void testLoginFail_wrongPassword() {
-        User simUser = userMapper.selectByName("audience");
-        UserForm userForm = generateUF(simUser.getName(),"a_wrong_password");
-        Response response = account.login(userForm);
-        UserVO userVO = (UserVO) response.getContent();
-        assertFalse(response.isSuccess());
-        assertEquals(accountMsg.getWrongPassword(),response.getMessage());
-        assertNull(userVO);
-    }
-
     private RegistryForm generateRF(String name,String password,String confirm){
         RegistryForm registryForm = new RegistryForm();
         registryForm.setName(name);

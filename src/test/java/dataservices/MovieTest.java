@@ -42,8 +42,8 @@ public class MovieTest {
     public void testInsertFail_hasNull(){
         Movie movie = new Movie();
         movie.setName("TestNull");
-        int i = movieMapper.insert(movie);
-        assertEquals(i,0);
+        int i = movieMapper.insertSelective(movie);
+        assertEquals(0,i);
         throw new RuntimeException();
     }
 
@@ -51,9 +51,8 @@ public class MovieTest {
     @Transactional
     public void testInsert(){
         Movie movie = movieMapper.selectByPrimaryKey(1);
-        movie.setId(null);
         movie.setName("都行");
-        int i = movieMapper.insert(movie);
+        int i = movieMapper.insertSelective(movie);
         assertEquals(i,1);
         throw new RuntimeException();
     }
@@ -62,10 +61,9 @@ public class MovieTest {
     @Transactional
     public void testInsertFail_MinusDuration(){
         Movie movie = movieMapper.selectByPrimaryKey(1);
-        movie.setId(null);
         movie.setName("有问题");
         movie.setDuration(-1);
-        int i = movieMapper.insert(movie);
+        int i = movieMapper.insertSelective(movie);
         assertEquals(i,0);
     }
 }

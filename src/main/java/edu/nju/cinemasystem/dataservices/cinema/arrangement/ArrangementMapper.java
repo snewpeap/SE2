@@ -77,12 +77,12 @@ public interface ArrangementMapper {
      */
     List<Arrangement> selectByHallIDAndStartDate(
             @Param("hallID") int hallID,
-            @Param("startDate") java.util.Date startDate,
+            @Param("startDate") Date startDate,
             @Param("duration") int duration
     );
 
     /**
-     * TODO 查找当前时间后的在该影厅的所有排片，没有返回null
+     * 查找当前时间后的在该影厅的所有排片，没有返回null
      *
      * @param hallID      影厅id
      * @param currentTime 开始的时间，结束时间晚于开始时间当天0点的不会被返回
@@ -90,7 +90,7 @@ public interface ArrangementMapper {
      */
     List<Arrangement> selectByHallIDAndCurrentTime(
             @Param("hallID") int hallID,
-            @Param("currentTime") java.util.Date currentTime
+            @Param("currentTime") Date currentTime
     );
 
     /**

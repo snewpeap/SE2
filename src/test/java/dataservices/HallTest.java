@@ -1,6 +1,5 @@
 package dataservices;
 
-
 import edu.nju.cinemasystem.Application;
 import edu.nju.cinemasystem.data.po.Hall;
 import edu.nju.cinemasystem.dataservices.cinema.hall.HallMapper;
@@ -10,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = Application.class)
@@ -29,7 +30,8 @@ public class HallTest {
         hall.setIs3d((byte) 1);
         hall.setIsImax((byte) 1);
         int i = hallMapper.insertSelective(hall);
-        assert i == 1;
+        assertEquals(1,i);
+        throw new RuntimeException();
     }
 
     @Test
@@ -43,7 +45,7 @@ public class HallTest {
         hall.setIs3d((byte) 1);
         hall.setIsImax((byte) 1);
         int i = hallMapper.insert(hall);
-
-        assert 1 == hall.getId();
+        assertEquals(1,i);
+        throw new RuntimeException();
     }
 }
