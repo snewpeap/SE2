@@ -1,7 +1,11 @@
 package edu.nju.cinemasystem.data.vo.form;
 
+import javax.validation.constraints.NotBlank;
+
 public class UserForm {
+    @NotBlank
     private String name;
+    @NotBlank
     private String password;
 
     public String getName() {

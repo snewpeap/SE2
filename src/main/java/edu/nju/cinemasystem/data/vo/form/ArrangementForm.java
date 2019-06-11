@@ -1,19 +1,31 @@
 package edu.nju.cinemasystem.data.vo.form;
 
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.util.Date;
 
 public class ArrangementForm {
 
+    @NotNull
+    @Future
     private Date startTime;
 
+    @NotNull
+    @Future
     private Date endTime;
 
+    @NotNull
+    @Positive
     private Float fare;
 
+    @NotNull
     private Integer hallId;
 
+    @NotNull
     private Integer movieId;
 
+    @Future
     private Date visibleDate;
 
     public Date getStartTime() {

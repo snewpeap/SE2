@@ -1,32 +1,50 @@
 package edu.nju.cinemasystem.data.vo;
 
 import edu.nju.cinemasystem.data.po.Movie;
+import org.hibernate.validator.constraints.URL;
 
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.util.Date;
 
 public abstract class BaseMovieVO {
     private Integer id;
 
+    @NotBlank
     private String name;
 
+    @URL
     private String poster;
 
+    @NotBlank
     private String director;
 
+    @NotBlank
     private String screenWriter;
 
+    @NotNull
     private String starring;
 
+    @NotNull
     private String type;
 
+    @NotNull
     private String country;
 
+    @NotNull
     private String language;
 
+    @NotNull
+    @Positive
     private Integer duration;
 
+    @NotNull
+    @Future
     private Date startDate;
 
+    @NotNull
     private String description;
 
     public Integer getId() {

@@ -21,12 +21,12 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, name, poster, director, screen_writer, starring, type, country, language, duration,
-        start_date, status
+        id, `name`, poster, director, screen_writer, starring, type, country, `language`, duration,
+        start_date, `status`
     </sql>
 
     <sql id="Blob_Column_List">
-        description
+        `description`
     </sql>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
@@ -53,11 +53,11 @@
 
     <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.Movie"
             useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        insert into movie (id, name, poster,
+        insert into movie (id, `name`, poster,
                            director, screen_writer, starring,
-                           type, country, language,
-                           duration, start_date, status,
-                           description)
+                           type, country, `language`,
+                           duration, start_date, `status`,
+                           `description`)
         values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{poster,jdbcType=VARCHAR},
                 #{director,jdbcType=VARCHAR}, #{screenWriter,jdbcType=VARCHAR}, #{starring,jdbcType=VARCHAR},
                 #{type,jdbcType=VARCHAR}, #{country,jdbcType=VARCHAR}, #{language,jdbcType=VARCHAR},
@@ -73,7 +73,7 @@
                 id,
             </if>
             <if test="name != null">
-                name,
+                `name`,
             </if>
             <if test="poster != null">
                 poster,
@@ -94,7 +94,7 @@
                 country,
             </if>
             <if test="language != null">
-                language,
+                `language`,
             </if>
             <if test="duration != null">
                 duration,
@@ -103,10 +103,10 @@
                 start_date,
             </if>
             <if test="status != null">
-                status,
+                `status`,
             </if>
             <if test="description != null">
-                description,
+                `description`,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -156,7 +156,7 @@
         update movie
         <set>
             <if test="name != null">
-                name = #{name,jdbcType=VARCHAR},
+                `name` = #{name,jdbcType=VARCHAR},
             </if>
             <if test="poster != null">
                 poster = #{poster,jdbcType=VARCHAR},
@@ -177,7 +177,7 @@
                 country = #{country,jdbcType=VARCHAR},
             </if>
             <if test="language != null">
-                language = #{language,jdbcType=VARCHAR},
+                `language` = #{language,jdbcType=VARCHAR},
             </if>
             <if test="duration != null">
                 duration = #{duration,jdbcType=INTEGER},
@@ -186,10 +186,10 @@
                 start_date = #{startDate,jdbcType=DATE},
             </if>
             <if test="status != null">
-                status = #{status,jdbcType=TINYINT},
+                `status` = #{status,jdbcType=TINYINT},
             </if>
             <if test="description != null">
-                description = #{description,jdbcType=LONGVARCHAR},
+                `description` = #{description,jdbcType=LONGVARCHAR},
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
@@ -197,34 +197,34 @@
 
     <update id="updateByPrimaryKeyWithBLOBs" parameterType="edu.nju.cinemasystem.data.po.Movie">
         update movie
-        set name          = #{name,jdbcType=VARCHAR},
+        set `name`        = #{name,jdbcType=VARCHAR},
             poster        = #{poster,jdbcType=VARCHAR},
             director      = #{director,jdbcType=VARCHAR},
             screen_writer = #{screenWriter,jdbcType=VARCHAR},
             starring      = #{starring,jdbcType=VARCHAR},
             type          = #{type,jdbcType=VARCHAR},
             country       = #{country,jdbcType=VARCHAR},
-            language      = #{language,jdbcType=VARCHAR},
+            `language`    = #{language,jdbcType=VARCHAR},
             duration      = #{duration,jdbcType=INTEGER},
             start_date    = #{startDate,jdbcType=DATE},
-            status        = #{status,jdbcType=TINYINT},
-            description   = #{description,jdbcType=LONGVARCHAR}
+            `status`      = #{status,jdbcType=TINYINT},
+            `description` = #{description,jdbcType=LONGVARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
 
     <update id="updateByPrimaryKey" parameterType="edu.nju.cinemasystem.data.po.Movie">
         update movie
-        set name          = #{name,jdbcType=VARCHAR},
+        set `name`        = #{name,jdbcType=VARCHAR},
             poster        = #{poster,jdbcType=VARCHAR},
             director      = #{director,jdbcType=VARCHAR},
             screen_writer = #{screenWriter,jdbcType=VARCHAR},
             starring      = #{starring,jdbcType=VARCHAR},
             type          = #{type,jdbcType=VARCHAR},
             country       = #{country,jdbcType=VARCHAR},
-            language      = #{language,jdbcType=VARCHAR},
+            `language`    = #{language,jdbcType=VARCHAR},
             duration      = #{duration,jdbcType=INTEGER},
             start_date    = #{startDate,jdbcType=DATE},
-            status        = #{status,jdbcType=TINYINT}
+            `status`      = #{status,jdbcType=TINYINT}
         where id = #{id,jdbcType=INTEGER}
     </update>
 </mapper>

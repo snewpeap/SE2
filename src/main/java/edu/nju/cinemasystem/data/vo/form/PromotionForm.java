@@ -1,24 +1,40 @@
 package edu.nju.cinemasystem.data.vo.form;
 
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.Date;
 import java.util.List;
 
 public class PromotionForm {
-    
+
+    @NotNull
     private String name;
 
+    @NotNull
+    @Future
     private Date startTime;
 
+    @NotNull
+    @Future
     private Date endTime;
 
     private Boolean specifyMovies;
 
+    @NotNull
+    @PositiveOrZero
     private Float targetAmount;
 
+    @NotNull
+    @Positive
     private Float couponAmount;
 
+    @NotNull
+    @Positive
     private Integer couponExpiration;
 
+    @NotNull
     private String description;
 
     public List<Integer> getMovieIDs() {

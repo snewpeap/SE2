@@ -17,11 +17,11 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, name, start_time, end_time, specify_movies, target_amount, coupon_amount, coupon_expiration
+        id, `name`, start_time, end_time, specify_movies, target_amount, coupon_amount, coupon_expiration
     </sql>
 
     <sql id="Blob_Column_List">
-        description
+        `description`
     </sql>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
@@ -49,9 +49,9 @@
 
     <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.Promotion"
             useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        insert into promotion (id, name, start_time,
+        insert into promotion (id, `name`, start_time,
                                end_time, specify_movies, target_amount,
-                               coupon_amount, coupon_expiration, description)
+                               coupon_amount, coupon_expiration, `description`)
         values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{startTime,jdbcType=DATE},
                 #{endTime,jdbcType=DATE}, #{specifyMovies,jdbcType=TINYINT}, #{targetAmount,jdbcType=REAL},
                 #{couponAmount,jdbcType=REAL}, #{couponExpiration,jdbcType=INTEGER},
@@ -66,7 +66,7 @@
                 id,
             </if>
             <if test="name != null">
-                name,
+                `name`,
             </if>
             <if test="startTime != null">
                 start_time,
@@ -87,7 +87,7 @@
                 coupon_expiration,
             </if>
             <if test="description != null">
-                description,
+                `description`,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -125,7 +125,7 @@
         update promotion
         <set>
             <if test="name != null">
-                name = #{name,jdbcType=VARCHAR},
+                `name` = #{name,jdbcType=VARCHAR},
             </if>
             <if test="startTime != null">
                 start_time = #{startTime,jdbcType=DATE},
@@ -146,7 +146,7 @@
                 coupon_expiration = #{couponExpiration,jdbcType=INTEGER},
             </if>
             <if test="description != null">
-                description = #{description,jdbcType=LONGVARCHAR},
+                `description` = #{description,jdbcType=LONGVARCHAR},
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
@@ -154,20 +154,20 @@
 
     <update id="updateByPrimaryKeyWithBLOBs" parameterType="edu.nju.cinemasystem.data.po.Promotion">
         update promotion
-        set name              = #{name,jdbcType=VARCHAR},
+        set `name`              = #{name,jdbcType=VARCHAR},
             start_time        = #{startTime,jdbcType=DATE},
             end_time          = #{endTime,jdbcType=DATE},
             specify_movies    = #{specifyMovies,jdbcType=TINYINT},
             target_amount     = #{targetAmount,jdbcType=REAL},
             coupon_amount     = #{couponAmount,jdbcType=REAL},
             coupon_expiration = #{couponExpiration,jdbcType=INTEGER},
-            description       = #{description,jdbcType=LONGVARCHAR}
+            `description`       = #{description,jdbcType=LONGVARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
 
     <update id="updateByPrimaryKey" parameterType="edu.nju.cinemasystem.data.po.Promotion">
         update promotion
-        set name              = #{name,jdbcType=VARCHAR},
+        set `name`              = #{name,jdbcType=VARCHAR},
             start_time        = #{startTime,jdbcType=DATE},
             end_time          = #{endTime,jdbcType=DATE},
             specify_movies    = #{specifyMovies,jdbcType=TINYINT},

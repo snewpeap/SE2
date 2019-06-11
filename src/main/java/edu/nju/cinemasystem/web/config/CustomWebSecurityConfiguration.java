@@ -20,6 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class CustomWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
+    public final static String SESSION_KEY = "user";
 
     private final RoleProperty roleProperty;
     private GlobalUserDetailService globalUserDetailService;
@@ -57,13 +58,13 @@ public class CustomWebSecurityConfiguration extends WebSecurityConfigurerAdapter
                 .antMatchers("/index", "/register", "/logout", "/login", "/error").permitAll()
                 .antMatchers("/manage/**")
                 .hasAnyRole(
-                        roleProperty.getRoot(), roleProperty.getManager(), roleProperty.getRoot())
+                        roleProperty.getStaff(), roleProperty.getManager(), roleProperty.getRoot())
                 .antMatchers("/admin/**")
                 .hasAnyRole(
                         roleProperty.getRoot(), roleProperty.getManager())
-                .antMatchers("/root/**")
+                .antMatchers("/root/**", "/actuator", "/actuator/**")
                 .hasRole(roleProperty.getRoot())
-                .regexMatchers("^/(?!manage|admin|root|index|register|login|logout|error).*$")
+                .regexMatchers("^/(?!manage|admin|root|index|register|login|logout|error|actuator).*$")
                 .hasRole(roleProperty.getAudience())
                 .anyRequest().authenticated()
                 .and()

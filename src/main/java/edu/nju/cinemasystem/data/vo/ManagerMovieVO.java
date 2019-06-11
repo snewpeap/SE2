@@ -2,6 +2,7 @@ package edu.nju.cinemasystem.data.vo;
 
 public class ManagerMovieVO extends BaseMovieVO {
     private boolean status;
+    private int LikeNum;
 
     public int getLikeNum() {
         return LikeNum;
@@ -10,8 +11,6 @@ public class ManagerMovieVO extends BaseMovieVO {
     public void setLikeNum(int likeNum) {
         LikeNum = likeNum;
     }
-
-    private int LikeNum;
 
     public boolean isStatus() {
         return status;

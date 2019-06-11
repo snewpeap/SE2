@@ -1,8 +1,5 @@
 package edu.nju.cinemasystem.data.vo;
 
-import java.util.Date;
-
-
 public class TicketVO {
 
     private Integer id;

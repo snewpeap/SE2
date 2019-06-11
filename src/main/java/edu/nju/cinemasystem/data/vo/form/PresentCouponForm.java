@@ -1,10 +1,15 @@
 package edu.nju.cinemasystem.data.vo.form;
 
+import org.hibernate.validator.constraints.UniqueElements;
+
 import java.util.List;
 
 public class PresentCouponForm {
+    @UniqueElements
     private List<Integer> vips;
-    private List<Integer> couponIds;
+
+    @UniqueElements
+    private List<Integer> promotionIDs;
 
     public List<Integer> getVips() {
         return vips;
@@ -14,11 +19,11 @@ public class PresentCouponForm {
         this.vips = vips;
     }
 
-    public List<Integer> getCouponIds() {
-        return couponIds;
+    public List<Integer> getPromotionIDs() {
+        return promotionIDs;
     }
 
-    public void setCouponIds(List<Integer> couponIds) {
-        this.couponIds = couponIds;
+    public void setPromotionIDs(List<Integer> promotionIDs) {
+        this.promotionIDs = promotionIDs;
     }
 }

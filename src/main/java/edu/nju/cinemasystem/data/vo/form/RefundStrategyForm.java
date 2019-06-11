@@ -1,10 +1,17 @@
 package edu.nju.cinemasystem.data.vo.form;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
+
 public class RefundStrategyForm {
+    @NotNull
+    @PositiveOrZero
     private Integer day;
 
     private Boolean refundable;
 
+    @NotNull
+    @PositiveOrZero
     private Float percentage;
 
     public Integer getDay() {

@@ -64,14 +64,14 @@ public class HallManageImpl implements HallManage {
         byte isImax = (byte) (hallForm.getIsImax() ? 1 : 0);
         byte is3d = (byte) (hallForm.getIs3d() ? 1 : 0);
         Hall hall = new Hall(name, column, row, size, isImax, is3d);
-        //TODO insertSelective报错
+        //TODO insertSelective
         //hallMapper.insertSelective(hall);
         hallMapper.insert(hall);
         int id = hall.getId();
         for (int i = 1; i <= hallForm.getRow(); i++) {
             for (int j = 1; j <= hallForm.getColumn(); j++) {
                 Seat seat = new Seat(j, i, id);
-                //TODO insertSelective报错
+                //TODO insertSelective
                 seatMapper.insert(seat);
             }
         }
@@ -116,7 +116,7 @@ public class HallManageImpl implements HallManage {
                 for (int r = 1; r <= oldHall.getRow(); r++) {
                     for (int c = oldHall.getRow() + 1; c <= hallForm.getColumn(); c++) {
                         Seat seat = new Seat(c, r, ID);
-                        //TODO insertSelective报错
+                        //TODO insertSelective
                         seatMapper.insert(seat);
                     }
                 }
@@ -128,7 +128,7 @@ public class HallManageImpl implements HallManage {
                 for (int i = 1; i <= hallForm.getRow(); i++) {
                     for (int j = 1; j <= hallForm.getColumn(); j++) {
                         Seat seat = new Seat(j, i, ID);
-                        //TODO insertSelective报错
+                        //TODO insertSelective
                         seatMapper.insert(seat);
                     }
                 }
@@ -136,7 +136,7 @@ public class HallManageImpl implements HallManage {
         }
         Hall hall = assembleHall(hallForm);
         hall.setId(ID);
-        //TODO updateByPrimaryKeySelective报错
+        //TODO updateByPrimaryKeySelective
         hallMapper.updateByPrimaryKey(hall);
         response = Response.success();
         return response;

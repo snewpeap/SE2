@@ -35,8 +35,16 @@
         select
         <include refid="Base_Column_List"/>
         from arrangement
-        where hall_id=#{hallID}
-        and start_time between completeTime(#{startDate}) and date_add(completeTime(#{startDate}),interval #{duration} day)
+        where hall_id = #{hallID}
+        and start_time between date(#{startDate}) and date_add(date(#{startDate}),interval #{duration} day)
+    </select>
+
+    <select id="selectByHallIDAndCurrentTime" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from arrangement
+        where hall_id = #{hallID}
+        and end_time > now()
     </select>
 
     <select id="selectByDay" resultMap="BaseResultMap">
