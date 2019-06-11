@@ -102,10 +102,10 @@
                 #{id,jdbcType=INTEGER},
             </if>
             <if test="startTime != null">
-                #{startTime,jdbcType=DATE},
+                #{startTime},
             </if>
             <if test="endTime != null">
-                #{endTime,jdbcType=DATE},
+                #{endTime},
             </if>
             <if test="fare != null">
                 #{fare,jdbcType=REAL},
@@ -117,7 +117,7 @@
                 #{movieId,jdbcType=INTEGER},
             </if>
             <if test="visibleDate != null">
-                #{visibleDate,jdbcType=DATE},
+                #{visibleDate},
             </if>
         </trim>
     </insert>

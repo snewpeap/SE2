@@ -20,4 +20,6 @@ public interface Promotion {
     Response getAllPromotions();
 
 
+
+
 }

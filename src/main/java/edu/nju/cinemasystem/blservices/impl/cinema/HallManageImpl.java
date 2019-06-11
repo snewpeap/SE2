@@ -13,6 +13,7 @@ import edu.nju.cinemasystem.util.properties.message.ArrangementMsg;
 import edu.nju.cinemasystem.util.properties.message.GlobalMsg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -40,6 +41,7 @@ public class HallManageImpl implements HallManage {
     }
 
     @Override
+    @Transactional
     public Response inputHallInfo(HallForm hallForm) {
         Response response;
         String name = hallForm.getName();
@@ -64,15 +66,12 @@ public class HallManageImpl implements HallManage {
         byte isImax = (byte) (hallForm.getIsImax() ? 1 : 0);
         byte is3d = (byte) (hallForm.getIs3d() ? 1 : 0);
         Hall hall = new Hall(name, column, row, size, isImax, is3d);
-        //TODO insertSelective
-        //hallMapper.insertSelective(hall);
-        hallMapper.insert(hall);
+        hallMapper.insertSelective(hall);
         int id = hall.getId();
         for (int i = 1; i <= hallForm.getRow(); i++) {
             for (int j = 1; j <= hallForm.getColumn(); j++) {
                 Seat seat = new Seat(j, i, id);
-                //TODO insertSelective
-                seatMapper.insert(seat);
+                seatMapper.insertSelective(seat);
             }
         }
         response = Response.success();
@@ -94,6 +93,7 @@ public class HallManageImpl implements HallManage {
     }
 
     @Override
+    @Transactional
     public Response modifyHallInfo(HallForm hallForm, int ID) {
         Response response;
         if (arrangement.haveArrangementAfterCurrentTime(ID, new Date())) {
@@ -114,30 +114,24 @@ public class HallManageImpl implements HallManage {
                     }
                 }
                 for (int r = 1; r <= oldHall.getRow(); r++) {
-                    for (int c = oldHall.getRow() + 1; c <= hallForm.getColumn(); c++) {
+                    for (int c = oldHall.getColumn() + 1; c <= hallForm.getColumn(); c++) {
                         Seat seat = new Seat(c, r, ID);
-                        //TODO insertSelective
-                        seatMapper.insert(seat);
+                        seatMapper.insertSelective(seat);
                     }
                 }
             } else {
-                List<Seat> seats = seatMapper.selectByHallID(ID);
-                for (Seat seat : seats) {
-                    seatMapper.deleteByPrimaryKey(seat.getId());
-                }
+                seatMapper.deleteByHallID(ID);
                 for (int i = 1; i <= hallForm.getRow(); i++) {
                     for (int j = 1; j <= hallForm.getColumn(); j++) {
                         Seat seat = new Seat(j, i, ID);
-                        //TODO insertSelective
-                        seatMapper.insert(seat);
+                        seatMapper.insertSelective(seat);
                     }
                 }
             }
         }
         Hall hall = assembleHall(hallForm);
         hall.setId(ID);
-        //TODO updateByPrimaryKeySelective
-        hallMapper.updateByPrimaryKey(hall);
+        hallMapper.updateByPrimaryKeySelective(hall);
         response = Response.success();
         return response;
     }

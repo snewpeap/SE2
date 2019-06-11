@@ -1,5 +1,8 @@
 package blservices;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import edu.nju.cinemasystem.Application;
 import edu.nju.cinemasystem.blservices.cinema.hall.HallManage;
@@ -10,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = Application.class)
@@ -19,19 +23,21 @@ public class HallManageTest {
     HallManage hallManage;
 
     @Test
+    @Transactional
     public void testInputHallInfo1(){
         HallForm hallForm = new HallForm();
-        hallForm.setName("啊啊啊啊");
-        hallForm.setColumn(30);
-        hallForm.setRow(10);
+        hallForm.setName("影厅1");
+        hallForm.setColumn(5);
+        hallForm.setRow(3);
         hallForm.setSize("大");
         hallForm.setIs3d(true);
         hallForm.setIsImax(true);
         Response response = hallManage.inputHallInfo(hallForm);
-        assert response.isSuccess();
+        assertTrue(response.isSuccess());
     }
 
     @Test
+    @Transactional
     public void testInputHallInfo2(){
         HallForm hallForm = new HallForm();
         hallForm.setName("八八八八");
@@ -45,6 +51,7 @@ public class HallManageTest {
     }
 
     @Test
+    @Transactional
     public void testModifyHallInfo1(){
         HallForm hallForm = new HallForm();
         hallForm.setName("eeee");
@@ -58,21 +65,24 @@ public class HallManageTest {
     }
 
     @Test
+    @Transactional
     public void testModifyHallInfo2(){
         HallForm hallForm = new HallForm();
-        hallForm.setName("八八八八");
-        hallForm.setColumn(30);
-        hallForm.setRow(10);
+        hallForm.setName("修改后");
+        hallForm.setColumn(5);
+        hallForm.setRow(6);
         hallForm.setSize("大");
         hallForm.setIs3d(true);
         hallForm.setIsImax(false);
-        Response response = hallManage.modifyHallInfo(hallForm,2);
-        assert response.isSuccess();
+        Response response = hallManage.modifyHallInfo(hallForm,1);
+        System.out.println(response.getMessage());
+        assertTrue(response.isSuccess());
     }
 
     @Test
+    @Transactional
     public void  testGetAllInfo1(){
         Response re1 = hallManage.getAllHallInfo();
-
+        assertNotNull(re1.getContent());
     }
 }

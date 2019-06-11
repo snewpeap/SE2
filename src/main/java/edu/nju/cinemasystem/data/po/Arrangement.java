@@ -72,13 +72,4 @@ public class Arrangement {
     public void setVisibleDate(Date visibleDate) {
         this.visibleDate = visibleDate;
     }
-
-    public Arrangement(Date startTime, Date endTime, Float fare, Integer hallId, Integer movieId, Date visibleDate) {
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.fare = fare;
-        this.hallId = hallId;
-        this.movieId = movieId;
-        this.visibleDate = visibleDate;
-    }
 }
