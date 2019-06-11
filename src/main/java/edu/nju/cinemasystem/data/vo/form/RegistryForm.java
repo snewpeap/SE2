@@ -1,8 +1,15 @@
 package edu.nju.cinemasystem.data.vo.form;
 
+import javax.validation.constraints.NotBlank;
+
 public class RegistryForm {
+    @NotBlank
     private String name;
+
+    @NotBlank
     private String password;
+
+    @NotBlank
     private String confirmPassword;
 
     public String getName() {

@@ -1,13 +1,23 @@
 package edu.nju.cinemasystem.data.vo.form;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+
 public class HallForm{
 
+    @NotBlank
     private String name;
 
+    @NotNull
+    @Positive
     private Integer column;
 
+    @NotNull
+    @Positive
     private Integer row;
 
+    @NotBlank
     private String size;    //大，中，小
 
     private Boolean isImax;

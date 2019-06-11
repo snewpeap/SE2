@@ -25,7 +25,7 @@ public class ArrangementSeatVO{
     }
 
     public ArrangementSeatVO(ArrangementSeat arrangementSeat) {
-        this.isLocked = arrangementSeat.getIsLocked() == 0? false:true;
+        this.isLocked = arrangementSeat.getIsLocked() != 0;
         this.seatId = arrangementSeat.getSeatId();
     }
 

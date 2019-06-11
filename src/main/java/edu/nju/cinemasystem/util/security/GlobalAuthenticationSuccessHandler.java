@@ -3,7 +3,7 @@ package edu.nju.cinemasystem.util.security;
 import edu.nju.cinemasystem.blservices.user.Account;
 import edu.nju.cinemasystem.data.vo.UserVO;
 import edu.nju.cinemasystem.util.properties.RoleProperty;
-import edu.nju.cinemasystem.web.config.InterceptorConfiguration;
+import edu.nju.cinemasystem.web.config.CustomWebSecurityConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,7 +30,7 @@ public class GlobalAuthenticationSuccessHandler extends SavedRequestAwareAuthent
         HttpSession session = request.getSession();
         String username = authentication.getName();
         UserVO userVO = account.getUserVOByName(username);
-        session.setAttribute(InterceptorConfiguration.SESSION_KEY, userVO);
+        session.setAttribute(CustomWebSecurityConfiguration.SESSION_KEY, userVO);
         System.out.println(username + "登录成功");
 //        request.getRequestDispatcher(authentication.getAuthorities()
 //                .contains(new SimpleGrantedAuthority("ROLE_" + roleProperty.getAudience())) ?

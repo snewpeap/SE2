@@ -6,11 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 
 @SpringBootApplication
 @EnableConfigurationProperties
-@EnableGlobalMethodSecurity(securedEnabled = true)
 @MapperScan(basePackages = "edu.nju.cinemasystem.dataservices")
 public class Application extends SpringBootServletInitializer {
 

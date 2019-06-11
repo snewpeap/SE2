@@ -59,6 +59,6 @@ public class VipController {
 
     @PostMapping("/admin/vip/presentCoupon")
     public Response presentCoupon(@RequestBody PresentCouponForm presentCouponForm){
-        return vipManagement.presentCoupon(presentCouponForm.getVips(),presentCouponForm.getCouponIds());
+        return vipManagement.presentCoupon(presentCouponForm.getVips(),presentCouponForm.getPromotionIDs());
     }
 }

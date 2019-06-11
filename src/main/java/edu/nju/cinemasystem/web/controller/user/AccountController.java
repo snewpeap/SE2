@@ -5,7 +5,6 @@ import edu.nju.cinemasystem.data.vo.Response;
 import edu.nju.cinemasystem.data.vo.form.RegistryForm;
 import edu.nju.cinemasystem.util.properties.RoleProperty;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.io.IOException;
 
 /**
@@ -32,7 +31,6 @@ public class AccountController {
         this.roleProperty = roleProperty;
     }
 
-    @PreAuthorize("isAuthenticated()")
     @RequestMapping("/index")
     public void getIndex(HttpServletResponse response) throws IOException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -44,10 +42,9 @@ public class AccountController {
 
 
     @PostMapping("/register")
-    public Response register(@RequestBody RegistryForm registryForm, HttpSession session, HttpServletResponse servletResponse) throws IOException {
+    public Response register(@RequestBody @Valid RegistryForm registryForm, HttpServletResponse servletResponse) throws IOException {
         Response response = account.register(registryForm);
         if (response.isSuccess()) {
-//            session.setAttribute(InterceptorConfiguration.SESSION_KEY, response.getContent());
             servletResponse.sendRedirect("/login");
         }
         return response;
