@@ -37,7 +37,7 @@ $(document).ready(function () {
     }
 
     function validateLoginForm(data) {
-        var isValidate = true;
+        let isValidate = true;
         if (!data.name) {
             isValidate = false;
             $('#index-name').parent('.input-group').addClass('has-error');

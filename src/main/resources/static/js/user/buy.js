@@ -21,7 +21,7 @@ $(document).ready(function () {
 
 function getInfo() {
     getRequest(
-        '/ticket/get/occupiedSeats?scheduleId=' + scheduleId,
+        '/user/Seat/get?arrangementId=' + scheduleId,
         function (res) {
             if (res.success) {
                 renderSchedule(res.content.scheduleItem, res.content.seats);
@@ -31,15 +31,15 @@ function getInfo() {
         }
     );
 }
-
+//todo
 function getExistingTicket() {
     getRequest(
-        "/ticket/get/"+sessionStorage.getItem('id')+"/"+scheduleId,
+        "/user/ticket/get/exsiting?scheduleId=" + scheduleId,
         function (res) {
             if (res.success){
-                var tickets = res.content;
+                let tickets = res.content;
                 if(tickets.length !== 0){
-                    var r = confirm("您之前选的座位还未付款，点击确认继续购买");
+                    let r = confirm("您之前选的座位还未付款，点击确认继续购买");
                     if(r){
                         getOrder();
                     }else{
@@ -79,7 +79,7 @@ function renderSchedule(schedule, seats) {
     var hallDomStr = "";
     var seat = "";
     for (var i = 0; i < seats.length; i++) {
-        var temp = ""
+        var temp = "";
         for (var j = 0; j < seats[i].length; j++) {
             var id = "seat" + i + j;
 
@@ -154,14 +154,14 @@ function getActivity(){
             }
         },
         function (error) {
-            //alert(error);
+            alert(error);
         }
     )
 }
 
 function getCoupon() {
     getRequest(
-        '/coupon/'+sessionStorage.getItem('id') + '/get',
+        '/user/coupon/get',
         function (res) {
             if (res.success){
                 var couponTicketStr = "";
@@ -189,20 +189,20 @@ function getCoupon() {
             }
         },
         function (error) {
-            //alert(error);
+            alert(error);
         }
     )
 }
 
 function getTicket() {
     getRequest(
-        '/ticket/get/'+sessionStorage.getItem('id'),
+        '/user/ticket/get/existing',
         function (res) {
             if (res.success){
                 res.content.forEach(function (ticket) {
                         if (ticket.state==="未完成" && ticket.schedule.id === scheduleId){
                             ticketId.push(ticket.id);
-                            var ticketStr="";
+                            let ticketStr="";
                             ticketStr += "<div>" + (ticket.rowIndex + 1) + "排" + (ticket.columnIndex + 1) + "座</div>";
                             order.ticketId.push(ticket.id);
                             $('#order-tickets').append(ticketStr);
@@ -210,10 +210,10 @@ function getTicket() {
                     }
                 );
 
-                var num = "<div>" + ticketId.length + "张</div>";
+                let num = "<div>" + ticketId.length + "张</div>";
                 $('#order-ticket-num').html(num);
 
-                var total = price * ticketId.length;
+                let total = price * ticketId.length;
                 totalVO = total.toFixed(2);
                 $('#order-total').text(totalVO);
                 $('#order-footer-total').text("总金额： ¥" + totalVO);
@@ -228,19 +228,19 @@ function getTicket() {
 }
 
 function orderConfirmClick() {
-    var seats = [];
+    let seats = [];
     selectedSeats.forEach(function (seat) {
-        var seatData = {
+        let seatData = {
             columnIndex: seat[1],
             rowIndex: seat[0]
         };
         seats.push(seatData);
     });
 
+    //todo
     postRequest(
-        '/ticket/lockSeat',
+        '/user/ticket/lockSeat' + scheduleId,
         {
-            userId: sessionStorage.getItem('id'),
             scheduleId: scheduleId,
             seats: seats
         },function (res) {
@@ -264,7 +264,7 @@ function getOrder() {
     getTicket();
 
     getRequest(
-        '/vip/' + sessionStorage.getItem('id') + '/get',
+        '/user/vip/card/get',
         function (res) {
             isVIP = res.success;
             useVIP = res.success;
@@ -304,15 +304,16 @@ function switchPay(type) {
 function changeCoupon(couponIndex) {
     order.couponId = coupons[couponIndex].id;
     $('#order-discount').text("优惠金额： ¥" + coupons[couponIndex].discountAmount.toFixed(2));
-    var actualTotal = (parseFloat($('#order-total').text()) - parseFloat(coupons[couponIndex].discountAmount)).toFixed(2);
+    let actualTotal = (parseFloat($('#order-total').text()) - parseFloat(coupons[couponIndex].discountAmount)).toFixed(2);
     $('#order-actual-total').text(" ¥" + actualTotal);
     $('#pay-amount').html("<div><b>金额：</b>" + actualTotal + "元</div>");
 }
 
+//todo
 function payConfirmClick() {
     if (useVIP) {
         //postPayRequest();
-        postRequest('/ticket/vip/buy',
+        postRequest('/user/ticket/payByVIP',
             {ticketId:ticketId,couponId:order.couponId},
             function(res){
                 if (res.success === true ){
@@ -338,10 +339,11 @@ function payConfirmClick() {
     }
 }
 
+//todo
 function postPayRequest() {
     console.log(ticketId);
     console.log(order.couponId);
-    postRequest('/ticket/buy',
+    postRequest('/user/ticket/pay',
         {ticketId:ticketId,couponId:order.couponId},
         function(res){
             if(res.success === true){

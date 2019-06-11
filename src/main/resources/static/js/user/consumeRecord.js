@@ -1,11 +1,14 @@
 var consumeRecord = [];
 $(document).ready(function () {
-    var userID = sessionStorage.getItem(ID());
+    let userID = sessionStorage.getItem(ID());
     getRequest(
         '/ticket/purchaseRecord?userId=' + userID,
         function (res) {
             if (res.success){
                 consumeRecord = res.content;
+                consumeRecord.forEach(function (record) {
+                    addRecord(record)
+                })
             } else {
                 alert(res.message);
             }
@@ -13,23 +16,33 @@ $(document).ready(function () {
         function (error) {
             alert(error);
         }
-    )
+    );
 
-    function renderTicketList(ticket) {
-        var ticketDomStr = '';
-        var start = ticket.schedule.startTime.slice(0,19).replace('T',' ');
-        var end  = ticket.schedule.endTime.slice(0,19).replace('T',' ');
-        ticketDomStr +=
+    function addRecord(record) {
+        let recordStr = '';
+        recordStr +=
             "<tr>"+
-            "<td style=\"width: 115px\">"+ticket.schedule.movieName+"</td>" +
-            "<td style=\"width: 70px\">"+ticket.schedule.hallName+"</td>" +
-            "<td style=\"width: 80px\">"+(ticket.rowIndex+1)+"排"+(ticket.columnIndex+1)+"座</td>" +
-            "<td style=\"width: 195px\">"+start+"</td>" +
-            "<td style=\"width: 195px\">"+end+"</td>" +
-            "<td style=\"width: 80px\">"+ticket.state+"</td>"+
-            "</tr>";
-        $(".table tbody").append(ticketDomStr);
+            "<td style=\"width: 115px\">"+ record.ticketVOs[0].name+"</td>" +
+            "<td style=\"width: 195px\">"+ record.date+"</td>" +
+            "<td style=\"width: 80px\">"+ record.ticketVOs.length +"张</td>" +
+            "<td style='width: 120px'>" + record.originalSpend + "元</td>" +
+            "<td style='width: 120px'>" + record.realSpend + "元</td>" +
+            "</tr>" ;
+        $(".table tbody").append(recordStr);
     }
     
+    function getTicketInfo(record) {
+        let ticketStr = '';
+        record.ticketVOs.forEach(function (ticketVO) {
+            ticketStr +=
+                "电影名称："+ ticketVO.name +
+                "放映影厅："+ ticketVO.hallname +
+                "座位：" + (ticketVO.row) + "排" + (ticketVO.column) + "座" +
+                "开始时间：" + ticketVO.startDate +
+                "结束时间：" + ticketVO.endDate;
+            }
+        )
     }
+    }
+    
 );

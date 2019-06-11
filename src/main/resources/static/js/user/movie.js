@@ -1,10 +1,10 @@
-var movieList;
+let movieList = [];
 $(document).ready(function () {
     getAllMovieList();
 
     function getAllMovieList(){
         getRequest(
-            '/movie/all',
+            '/user/movie/all',
             function (res) {
                 if (res.success){
                     movieList = res.content;
@@ -19,7 +19,8 @@ $(document).ready(function () {
     }
 
     $("#all-tab").click(function () {
-        var movieStr = '';
+        let movieStr = '';
+        movieStr += "";
 
         $(".table tbody").append();
     })
