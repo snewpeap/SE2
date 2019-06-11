@@ -6,103 +6,108 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class ViewController {
-    @RequestMapping("/index")
+    @RequestMapping("/")
     public String getIndex(){
+        return "redirect:/index";
+    }
+
+    @RequestMapping("/login")
+    public String getLogin() {
         return "index";
     }
 
-    @RequestMapping("/signUp")
+    @RequestMapping("/register")
     public String getRegister() {
         return "register";
     }
 
     @RequestMapping("/admin/activity")
-    public String getAdminActivityManage(){
+    public String getAdminActivityManage() {
         return "admin/activityManage";
     }
 
     @RequestMapping("/manage/arrangement")
-    public String getManageArrangement(){
+    public String getManageArrangement() {
         return "admin/arrangementManage";
     }
 
     @RequestMapping("/admin/hall")
-    public String getAdminManageHall(){
+    public String getAdminManageHall() {
         return "admin/hallManage";
     }
 
     @RequestMapping("/admin/handout/coupon")
-    public String getAdminHandoutCoupon(){
+    public String getAdminHandoutCoupon() {
         return "admin/handOutCoupon";
     }
 
     @RequestMapping("/manage/movie/detail")
-    public String getManageMovieDetail(@RequestParam int movieId){
+    public String getManageMovieDetail(@RequestParam int movieId) {
         return "admin/movieDetail";
     }
 
     @RequestMapping("/manage/movie")
-    public String getManageMovie(){
+    public String getManageMovie() {
         return "admin/movieManage";
     }
 
     @RequestMapping("/admin/refundStrategy")
-    public String getAdminRefundStrategy(){
+    public String getAdminRefundStrategy() {
         return "admin/refundStrategy";
     }
 
     @RequestMapping("/root/staff")
-    public String getRootStaff(){
+    public String getRootStaff() {
         return "admin/staffManage";
     }
 
     @RequestMapping("/manage/statistics")
-    public String getManageStatistics(){
+    public String getManageStatistics() {
         return "admin/statistics";
     }
 
     @RequestMapping("/admin/vipStrategy")
-    public String getAdminVipStrategy(){
+    public String getAdminVipStrategy() {
         return "admin/vipStrategyManage";
     }
 
     @RequestMapping("/user/buy")
-    public String getUserBuy(){
+    public String getUserBuy() {
         return "user/buy";
     }
 
     @RequestMapping("/user/cardPocket")
-    public String getUserCardPocket(){
+    public String getUserCardPocket() {
         return "user/cardPocket";
     }
 
     @RequestMapping("/user/consumeRecord")
-    public String getUserConsumeRecord(){
+    public String getUserConsumeRecord() {
         return "user/consumeRecord";
     }
 
     @RequestMapping("/user/home")
-    public String getUserHome(){
+    public String getUserHome() {
         return "user/home";
     }
 
     @RequestMapping("/user/movie")
-    public String getUserMovie(){
+    public String getUserMovie() {
         return "user/movie";
     }
 
     @RequestMapping("/user/rechargeRecord")
-    public String getUserRechargeRecord(){
+    public String getUserRechargeRecord() {
         return "user/rechargeRecord";
     }
 
     @RequestMapping("user/ticket")
-    public String getUserTicket(){
+    public String getUserTicket() {
         return "user/ticket";
     }
 
     @RequestMapping("/user/movie/detail")
-    public String getUserMovieDetail(){
+    public String getUserMovieDetail() {
         return "user/viewMovieDetail";
     }
 }

@@ -11,18 +11,17 @@ $(document).ready(function () {
             formData,
             function (date,status,xhr) {
                 // if (res.success) {
-                var redirect = xhr.getResponseHeader("Location");
-                if (redirect){
-                    window.location.href = redirect;
+                // var redirect = xhr.getResponseHeader("Location");
+                // if (redirect){
+                //     window.location.href = redirect;
+                // }
+                var role = getCookie('role');
+                if (role === "audience") {
+                    sessionStorage.setItem('role', 'audience');
+                } else {
+                    sessionStorage.setItem('role', 'staff');
                 }
-                document.write(date);
-                    /*if (formData.name === "root") {
-                        sessionStorage.setItem('role', 'admin');
-                        window.location.href = "/manage/movie"
-                    } else {
-                        sessionStorage.setItem('role', 'user');
-                        window.location.href = "/user/home"
-                    }*/
+                window.location.href = "/index"
                 // } else {
                 //     alert(res.message);
                 // }

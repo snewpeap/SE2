@@ -40,7 +40,7 @@ public class CustomWebSecurityConfiguration extends WebSecurityConfigurerAdapter
     }
 
     @Bean(name = "globalAuthenticationProvider")
-    public AuthenticationProvider globalAuthenticationProvider(){
+    public AuthenticationProvider globalAuthenticationProvider() {
         GlobalAuthenticationProvider authenticationProvider = new GlobalAuthenticationProvider();
         authenticationProvider.setUserDetailsService(globalUserDetailService);
         return authenticationProvider;
@@ -54,7 +54,7 @@ public class CustomWebSecurityConfiguration extends WebSecurityConfigurerAdapter
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/index", "/register", "/logout", "/login").permitAll()
+                .antMatchers("/index", "/register", "/logout", "/login", "/error").permitAll()
                 .antMatchers("/manage/**")
                 .hasAnyRole(
                         roleProperty.getRoot(), roleProperty.getManager(), roleProperty.getRoot())
@@ -63,20 +63,30 @@ public class CustomWebSecurityConfiguration extends WebSecurityConfigurerAdapter
                         roleProperty.getRoot(), roleProperty.getManager())
                 .antMatchers("/root/**")
                 .hasRole(roleProperty.getRoot())
-                .regexMatchers("^/(?!manage|admin|root|index|register|login|logout).*$")
+                .regexMatchers("^/(?!manage|admin|root|index|register|login|logout|error).*$")
                 .hasRole(roleProperty.getAudience())
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/index")
+                .loginPage("/login")
                 .loginProcessingUrl("/login")
                 .successHandler(successHandler)
                 .failureHandler(failHandler)
                 .permitAll()
                 .and()
+                .logout()
+                .logoutUrl("/logout")
+                .clearAuthentication(true)
+                .deleteCookies()
+                .logoutSuccessUrl("/login")
+                .permitAll()
+                .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                .invalidSessionUrl("/index")
+                .maximumSessions(1)
+                .maxSessionsPreventsLogin(false)
+                .expiredUrl("/login")
+                .and()
                 .and()
                 .csrf()
                 .disable();

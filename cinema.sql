@@ -188,11 +188,11 @@ CREATE TABLE IF NOT EXISTS `cinema`.`user`
     AUTO_INCREMENT = 4
     DEFAULT CHARACTER SET = utf8;
 
-insert into cinema.user(name, password)
-values ('root', 'root'),
-       ('manager', 'manager'),
-       ('staff', 'staff'),
-       ('audience', 'audience');
+insert into cinema.user
+values (4,'root', 'root'),
+       (3,'manager', 'manager'),
+       (2,'staff', 'staff'),
+       (1,'audience', 'audience');
 
 -- -----------------------------------------------------
 -- Table `cinema`.`coupon`
@@ -458,6 +458,9 @@ CREATE TABLE IF NOT EXISTS `cinema`.`user_has_role`
 )
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
+
+INSERT INTO user_has_role
+VALUES (1,1),(2,2),(3,3),(4,4);
 
 CREATE or replace
     ALGORITHM = UNDEFINED

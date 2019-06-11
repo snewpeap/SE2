@@ -3,10 +3,15 @@ package edu.nju.cinemasystem.web.controller.user;
 import edu.nju.cinemasystem.blservices.user.Account;
 import edu.nju.cinemasystem.data.vo.Response;
 import edu.nju.cinemasystem.data.vo.form.RegistryForm;
-import edu.nju.cinemasystem.web.config.InterceptorConfiguration;
+import edu.nju.cinemasystem.util.properties.RoleProperty;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
@@ -18,22 +23,33 @@ import java.io.IOException;
  */
 @RestController
 public class AccountController {
+    private final Account account;
+    private final RoleProperty roleProperty;
+
     @Autowired
-    private Account account;
+    public AccountController(Account account, RoleProperty roleProperty) {
+        this.account = account;
+        this.roleProperty = roleProperty;
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping("/index")
+    public void getIndex(HttpServletResponse response) throws IOException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String redirect = auth.getAuthorities()
+                .contains(new SimpleGrantedAuthority("ROLE_" + roleProperty.getAudience())) ?
+                "/user/home" : "/manage/movie";
+        response.sendRedirect(redirect);
+    }
+
 
     @PostMapping("/register")
     public Response register(@RequestBody RegistryForm registryForm, HttpSession session, HttpServletResponse servletResponse) throws IOException {
         Response response = account.register(registryForm);
         if (response.isSuccess()) {
-            session.setAttribute(InterceptorConfiguration.SESSION_KEY, response.getContent());
-            servletResponse.sendRedirect("/home");
+//            session.setAttribute(InterceptorConfiguration.SESSION_KEY, response.getContent());
+            servletResponse.sendRedirect("/login");
         }
         return response;
-    }
-
-    @PostMapping("/logout")
-    public void logOut(HttpSession session, HttpServletResponse servletResponse) throws IOException {
-        session.removeAttribute(InterceptorConfiguration.SESSION_KEY);
-        servletResponse.sendRedirect("/index");
     }
 }
