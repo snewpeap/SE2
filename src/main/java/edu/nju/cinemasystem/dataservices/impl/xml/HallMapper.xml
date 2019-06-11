@@ -52,13 +52,13 @@
                 id,
             </if>
             <if test="name != null">
-                name,
+                `name`,
             </if>
             <if test="column != null">
-                column,
+                `column`,
             </if>
             <if test="row != null">
-                row,
+                `row`,
             </if>
             <if test="size != null">
                 size,
@@ -102,10 +102,10 @@
                 name = #{name,jdbcType=VARCHAR},
             </if>
             <if test="column != null">
-                column = #{column,jdbcType=INTEGER},
+                `column` = #{column,jdbcType=INTEGER},
             </if>
             <if test="row != null">
-                row = #{row,jdbcType=INTEGER},
+                `row` = #{row,jdbcType=INTEGER},
             </if>
             <if test="size != null">
                 size = #{size,jdbcType=TINYINT},

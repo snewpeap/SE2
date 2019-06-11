@@ -5,12 +5,12 @@
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="original_amount" jdbcType="REAL" property="originalAmount"/>
         <result column="discount_amount" jdbcType="REAL" property="discountAmount"/>
-        <result column="completeTime" jdbcType="DATE" property="completeTime"/>
+        <result column="date" jdbcType="DATE" property="date"/>
         <result column="user_id" jdbcType="INTEGER" property="id"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, original_amount, discount_amount, completeTime, user_id
+        id, original_amount, discount_amount, `date`, user_id
     </sql>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -36,9 +36,9 @@
     <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.RechargeRecord"
             useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into recharge_record (id, original_amount, discount_amount,
-                                     completeTime, user_id)
+                                     `date`, user_id)
         values (#{id,jdbcType=INTEGER}, #{originalAmount,jdbcType=REAL}, #{discountAmount,jdbcType=REAL},
-                #{completeTime,jdbcType=DATE}, #{id,jdbcType=INTEGER})
+                #{date,jdbcType=DATE}, #{id,jdbcType=INTEGER})
     </insert>
 
     <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.RechargeRecord"
@@ -54,8 +54,8 @@
             <if test="discountAmount != null">
                 discount_amount,
             </if>
-            <if test="completeTime != null">
-                completeTime,
+            <if test="date != null">
+                `date`,
             </if>
             <if test="id != null">
                 user_id,
@@ -71,8 +71,8 @@
             <if test="discountAmount != null">
                 #{discountAmount,jdbcType=REAL},
             </if>
-            <if test="completeTime != null">
-                #{completeTime,jdbcType=DATE},
+            <if test="date != null">
+                #{date,jdbcType=DATE},
             </if>
             <if test="id != null">
                 #{id,jdbcType=INTEGER},
@@ -89,8 +89,8 @@
             <if test="discountAmount != null">
                 discount_amount = #{discountAmount,jdbcType=REAL},
             </if>
-            <if test="completeTime != null">
-                completeTime = #{completeTime,jdbcType=DATE},
+            <if test="date != null">
+                date = #{date,jdbcType=DATE},
             </if>
             <if test="id != null">
                 user_id = #{id,jdbcType=INTEGER},
@@ -103,7 +103,7 @@
         update recharge_record
         set original_amount = #{originalAmount,jdbcType=REAL},
             discount_amount = #{discountAmount,jdbcType=REAL},
-            completeTime            = #{completeTime,jdbcType=DATE},
+            date            = #{date,jdbcType=DATE},
             user_id         = #{id,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
     </update>-->

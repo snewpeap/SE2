@@ -64,8 +64,7 @@ public class MovieImpl implements edu.nju.cinemasystem.blservices.movie.Movie {
 
     @Override
     public String getMovieNameByID(int movieID) {
-        //TODO
-        return null;
+        return movieMapper.selectByPrimaryKey(movieID).getName();
     }
 
     private AudienceMovieVO assembleAudienceMovieVO(Movie movie){

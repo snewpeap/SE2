@@ -66,4 +66,11 @@ public interface SeatMapper {
      * @return 所有座位
      */
     List<Seat> selectAll();
+
+    /**
+     * 根据影厅id删除影厅的所有座位
+     * @param hallID 影厅id
+     * @return 操作的行数(座位数)
+     */
+    int deleteByHallID(int hallID);
 }

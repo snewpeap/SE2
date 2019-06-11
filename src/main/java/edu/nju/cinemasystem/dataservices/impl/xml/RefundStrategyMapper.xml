@@ -8,14 +8,14 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        day, refundable, percentage
+        `day`, refundable, percentage
     </sql>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from refund_strategy
-        where day = #{day,jdbcType=INTEGER}
+        where `day` = #{day,jdbcType=INTEGER}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
@@ -26,11 +26,11 @@
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
         from refund_strategy
-        where day = #{day,jdbcType=INTEGER}
+        where `day` = #{day,jdbcType=INTEGER}
     </delete>
 
     <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.RefundStrategy">
-        insert into refund_strategy (day, refundable, percentage)
+        insert into refund_strategy (`day`, refundable, percentage)
         values (#{day,jdbcType=INTEGER}, #{refundable,jdbcType=TINYINT}, #{percentage,jdbcType=REAL})
     </insert>
 

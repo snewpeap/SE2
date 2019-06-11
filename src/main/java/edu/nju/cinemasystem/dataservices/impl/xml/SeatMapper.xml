@@ -9,7 +9,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, column, row, hall_id
+        id, `column`, `row`, hall_id
     </sql>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -37,9 +37,15 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
+    <delete id="deleteByHallID" parameterType="java.lang.Integer">
+        delete
+        from seat
+        where hall_id = #{hallID}
+    </delete>
+
     <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.Seat"
             useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        insert into seat (id, `column`, row,
+        insert into seat (id, `column`, `row`,
                           hall_id)
         values (#{id,jdbcType=INTEGER}, #{column,jdbcType=INTEGER}, #{row,jdbcType=INTEGER},
                 #{hallId,jdbcType=INTEGER})
@@ -53,10 +59,10 @@
                 id,
             </if>
             <if test="column != null">
-                column,
+                `column`,
             </if>
             <if test="row != null">
-                row,
+                `row`,
             </if>
             <if test="hallId != null">
                 hall_id,
@@ -82,10 +88,10 @@
         update seat
         <set>
             <if test="column != null">
-                column = #{column,jdbcType=INTEGER},
+                `column` = #{column,jdbcType=INTEGER},
             </if>
             <if test="row != null">
-                row = #{row,jdbcType=INTEGER},
+                `row` = #{row,jdbcType=INTEGER},
             </if>
             <if test="hallId != null">
                 hall_id = #{hallId,jdbcType=INTEGER},
@@ -97,7 +103,7 @@
     <update id="updateByPrimaryKey" parameterType="edu.nju.cinemasystem.data.po.Seat">
         update seat
         set `column` = #{column,jdbcType=INTEGER},
-            row      = #{row,jdbcType=INTEGER},
+            `row`      = #{row,jdbcType=INTEGER},
             hall_id  = #{hallId,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
     </update>
