@@ -17,53 +17,47 @@ public class TicketController {
     @Autowired
     private RefundTicketManage refundTicketManage;
 
-    @PostMapping("/user/ticket/lockSeats/{arrangementId}")
-    public Response lockSeats(@RequestBody List<Integer> seatId, HttpSession session, @PathVariable int arrangementId){
+    @GetMapping("/user/ticket/get/existing")
+    public Response getExistingTickets(@RequestParam int scheduleId,HttpSession session){
         int userId = Integer.parseInt(String.valueOf(session.getAttribute("id")));
+        return ticket.getOrderByScheduleIdAndUserId(userId,scheduleId);
+    }
+
+    @PostMapping("/user/ticket/cancel")
+    public Response cancelOrder(@RequestBody long orderId,@RequestParam int userId){
+        return ticket.cancelOrder(userId,orderId);
+    }
+
+    @PostMapping("/user/ticket/lockSeats/{arrangementId}")
+    public Response lockSeats(@RequestBody List<Integer> seatId, @RequestParam int userId, @PathVariable int arrangementId){
         return ticket.lockSeat(seatId,userId,arrangementId);
     }
 
     @PostMapping("/user/ticket/pay")
-    public Response payOrder(@RequestBody long orderId,HttpSession session,@RequestParam int couponId){
-        int userId = Integer.parseInt(String.valueOf(session.getAttribute("id")));
+    public Response payOrder(@RequestBody long orderId,@RequestParam int userId,@RequestParam int couponId){
         return ticket.payOrder(orderId,userId,couponId);
     }
 
     @PostMapping("/user/ticket/payByVIP")
-    public Response payOrderByVIP(@RequestBody long orderId,HttpSession session,@RequestParam int couponId){
-        int userId = Integer.parseInt(String.valueOf(session.getAttribute("id")));
+    public Response payOrderByVIP(@RequestBody long orderId,@RequestParam int userId,@RequestParam int couponId){
         return ticket.payOrderByVIPCard(orderId,userId,couponId);
     }
 
     @GetMapping("/user/ticket/purchaseRecord")
-    public Response getPurchaseRecord(HttpSession session){
-        int userId = Integer.parseInt(String.valueOf(session.getAttribute("id")));
+    public Response getPurchaseRecord(@RequestParam int userId){
         return ticket.getHistoricalConsumptionsByUserId(userId);
     }
 
-    @PostMapping("/user/ticket/cancel")
-    public Response cancelOrder(@RequestBody long orderId,HttpSession session){
-        int userId = Integer.parseInt(String.valueOf(session.getAttribute("id")));
-        return ticket.cancelOrder(userId,orderId);
-    }
-
     @PostMapping("/user/ticket/refund")
-    public Response refundTicket(HttpSession session,@RequestBody int ticketId){
-        int userId = Integer.parseInt(String.valueOf(session.getAttribute("id")));
+    public Response refundTicket(@RequestParam int userId,@RequestBody int ticketId){
         return ticket.refundTicket(userId,ticketId);
     }
 
-    @GetMapping("/user/ticket/get")
-    public Response getAllTickets(HttpSession session){
-        int userId = Integer.parseInt(String.valueOf(session.getAttribute("id")));
-        return ticket.getAllTicketsByUserId(userId);
-    }
-
-    @GetMapping("/user/ticket/get/existing")
-    public Response getExistingTickets(@PathVariable int scheduleId,HttpSession session){
-        int userId = Integer.parseInt(String.valueOf(session.getAttribute("id")));
-        return ticket.getOrderByScheduleIdAndUserId(userId,scheduleId);
-    }
+//    @GetMapping("/user/ticket/get")
+//    public Response getAllTickets(HttpSession session){
+//        int userId = Integer.parseInt(String.valueOf(session.getAttribute("id")));
+//        return ticket.getAllTicketsByUserId(userId);
+//    }
 
     @PostMapping("/admin/ticket/refundStrategy/add")
     public Response addRefundStrategy(@RequestBody RefundStrategyForm refundStrategyForm){

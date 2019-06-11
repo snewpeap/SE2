@@ -3,6 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>订单记录</title>
+    <!-- for-mobile-apps -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="" />
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLBar, 0); }, false);
+    function hideURLBar(){ window.scrollTo(0,1); } </script>
+    <!-- //for-mobile-apps -->
+    <link href="/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+    <!-- pop-up -->
+    <link href="/css/popuo-box.css" rel="stylesheet" type="text/css" media="all" />
+    <!-- //pop-up -->
+    <link href="/css/easy-responsive-tabs.css" rel='stylesheet' type='text/css'/>
+    <link rel="stylesheet" type="text/css" href="/css/zoomslider.css" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <link href="/css/font-awesome.css" rel="stylesheet">
+    <script type="text/javascript" src="/js/user/modernizr-2.6.2.min.js"></script>
+    <!--/web-fonts-->
+    <link href='http://fonts.googleapis.com/css?family=Tangerine:400,700' rel='stylesheet' type='text/css'>
+    <link href="http://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <!--//web-fonts-->
 </head>
 <body>
 
@@ -21,11 +42,11 @@
             <!-- navbar-header -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><a href="../index.html">首页</a></li>
-                    <li><a href="ticket.html">我的电影票</a></li>
-                    <li><a href="cardPocket.html">卡包</a></li>
-                    <li><a href="movie.html">电影列表</a></li>
-                    <li><a href="#"></a>订单记录</li>
+                    <li><a href="/user/home">首页</a></li>
+                    <li><a href="/user/movie">电影列表</a></li>
+                    <li><a href="/user/ticket">我的电影票</a></li>
+                    <li><a href="/user/cardPocket">卡包</a></li>
+                    <li><a href="#">订单记录</a></li>
                 </ul>
             </div>
             <div class="clearfix"> </div>
@@ -37,11 +58,11 @@
         <thead>
         <tr>
             <th style="width: 115px">电影名称</th>
-            <th style="width: 70px">影厅名</th>
             <th style="width: 195px">放映时间</th>
             <th style="width: 80px">电影票张数</th>
-            <th style="width: 80px">状态</th>
-            <th style="width: 80px">支付方式</th>
+            <th style="width: 120px">订单金额</th>
+            <th style="width: 120px">实付金额</th>
+<!--            <th style="width: 80px">支付方式</th>-->
         </tr>
         </thead>
         <tbody>
