@@ -18,7 +18,7 @@ function getVIP() {
                 $("#member-card").css("display", "");
                 $("#nonmember-card").css("display", "none");
 
-                vipCardId = res.content.id;
+                vipCardId = res.content.getId();
                 $("#member-id").text(res.content.id);
                 $("#member-balance").text("¥" + res.content.balance.toFixed(2));
                 $("#member-joinDate").text(res.content.joinDate.substring(0, 10));
@@ -52,14 +52,14 @@ function getVIP() {
 
 function buyClick() {
     clearForm();
-    $('#buyModal').modal('show')
+    $('#buyModal').modal('show');
     $("#userMember-amount-group").css("display", "none");
     isBuyState = true;
 }
 
 function chargeClick() {
     clearForm();
-    $('#buyModal').modal('show')
+    $('#buyModal').modal('show');
     $("#userMember-amount-group").css("display", "");
     isBuyState = false;
 }
