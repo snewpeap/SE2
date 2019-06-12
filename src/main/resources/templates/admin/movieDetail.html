@@ -27,6 +27,9 @@
 
     <!-- Custom Theme Style -->
     <link href="/webjars/gentelella/build/css/custom.min.css" rel="stylesheet">
+    <!-- Personal Theme Style -->
+    <link href="/css/admin/movieList.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/common.css" rel="stylesheet" type="text/css"/>
 </head>
 <body class="nav-md">
 <div class="container body">
@@ -119,7 +122,31 @@
 
         <!--            主内容-->
         <div class="right_col" role="main">
-
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="dashboard_graph">
+                        <div class="content-header">
+                            <img id="movie-img">
+                            <div class="movie-basic-info">
+                                <div><span class="title" id="movie-name"></span></div>
+                                <div style="margin-top: 20px;"><span>简 介 ：</span><span id="movie-description" class="gray-text"></span></div>
+                                <div><span>上 映 ：</span><span id="movie-startDate"></span></div>
+                                <div><span>类 型 ：</span><span id="movie-type"></span></div>
+                                <div><span>地 区 ：</span><span id="movie-country"></span></div>
+                                <div><span>语 言 ：</span><span id="movie-language"></span></div>
+                                <div><span>导 演 ：</span><span id="movie-director"></span></div>
+                                <div><span>主 演 ：</span><span id="movie-starring"></span></div>
+                                <div><span>编 剧 ：</span><span id="movie-writer"></span></div>
+                                <div><span>片 长 ：</span><span id="movie-length"></span></div>
+                                <div class="movie-operations">
+                                    <button type="button" class="btn btn-primary" id="modify-btn" data-backdrop="static" data-toggle="modal" data-target="#movieEditModal"><span>修 改</span></button>
+                                    <button type="button" class="btn btn-danger" id="delete-btn"><span>下 架</span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="clearfix"></div>

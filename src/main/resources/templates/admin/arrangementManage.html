@@ -27,6 +27,9 @@
 
     <!-- Custom Theme Style -->
     <link href="/webjars/gentelella/build/css/custom.min.css" rel="stylesheet">
+    <!-- Personal Theme Style -->
+    <link href="/css/admin/arrangementManage.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/common.css" rel="stylesheet" type="text/css"/>
 </head>
 <body class="nav-md">
 <div class="container body">
@@ -119,7 +122,46 @@
 
         <!--            主内容-->
         <div class="right_col" role="main">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="dashboard_graph">
+                        <div class="content-header">
+                            <span class="title gray-text">排片管理</span>
+                        </div>
+                        <div class="card" style="margin:20px 0;padding:20px;">
+                            <div style="display: flex;justify-content: space-between">
+                                <div>
+                                    <span>选择影厅  </span>
+                                    <select id="hall-select" class="form-control" style="display: inline-block;width: 180px;">
+                                    </select>
+                                </div>
+                                <div>
+                                    <span>选择日期  </span>
+                                    <input type="date" class="form-control" id="schedule-date-input" style="display: inline-block;width: 180px;">
+                                </div>
 
+                                <button type="button" class="btn btn-primary" data-backdrop="static" data-toggle="modal" data-target="#scheduleModal">新增排片</button>
+                            </div>
+                        </div>
+                        <div class="card" style="margin-top: 20px">
+                            <div class="schedule-date-container">
+                                <div class="schedule-date">2019/04/01</div>
+                            </div>
+                            <div class="schedule-container" >
+                                <ul class="schedule-time-line">
+                                    <li class="schedule-time-item">00:00</li>
+                                    <li class="schedule-time-item">06:00</li>
+                                    <li class="schedule-time-item">12:00</li>
+                                    <li class="schedule-time-item">18:00</li>
+                                    <li class="schedule-time-item">24:00</li>
+                                </ul>
+                                <ul class="schedule-item-line">
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="clearfix"></div>
