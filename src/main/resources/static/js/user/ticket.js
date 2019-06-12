@@ -45,8 +45,10 @@ $(document).ready(function(){
     function refund(e) {
         let id = e.target.id;
         postRequest(
-            '/user/ticket/refund',
-            {id},
+            '/user/ticket/refund?userId=' + getCookie('id'),
+            {
+                id
+            },
             function (res) {
                 if (res.success){
                     alert("退票成功！")

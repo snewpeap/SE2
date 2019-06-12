@@ -130,10 +130,10 @@ $(document).ready(function () {
         var nextInfoStr = "";
         for (var i = 1;i<6 && i<allMovieList.length;i++){
             nextInfoStr +=
-                "<div class=\"w3l-movie-gride-agile\">" + "<a href=\"viewMovieDetail.html\" class=\"hvr-sweep-to-bottom\"><img src=\"" + List[i].image +
+                "<div class=\"w3l-movie-gride-agile\">" + "<a href=\"/user/movie/detail\" class=\"hvr-sweep-to-bottom\"><img src=\"" + List[i].image +
                 "\" title=\"Movies Pro\" class=\"img-responsive\" alt=\" \" /><div class=\"w3l-action-icon\"><i class=\"fa fa-play-circle-o\" aria-hidden=\"true\"></i></div></a>" +
                 "<div class=\"mid-1 agileits_w3layouts_mid_1_home\">" +
-                "<div class=\"w3l-movie-text\"><h6><a href=\"viewMovieDetail.html\">" + List[i].name + "</a></h6></div>" +
+                "<div class=\"w3l-movie-text\"><h6><a href=\"/user/movie/detail\">" + List[i].name + "</a></h6></div>" +
                 "<div class=\"mid-2 agile_mid_2_home\"><p>想看人数："+ List[i].getLikeNum() +"</p><div class=\"clearfix\"></div></div></div>" +
                 joinedPromotion(List,i,nextInfoStr) + "</div>";
         }
@@ -146,11 +146,11 @@ $(document).ready(function () {
         for (var i = 0;i<newestList.length;i++){
             newMovie +=
                 "<div class=\"item\">" + "<div class=\"w3l-movie-gride-agile w3l-movie-gride-slider \">" +
-                "<a href=\"viewMovieDetail.html\" class=\"hvr-sweep-to-bottom\"><img src=\" "+ newestList[i].image +"\" title=\"Movies Pro\" class=\"img-responsive\" alt=\" \" />" +
+                "<a href=\"/user/movie/detail\" class=\"hvr-sweep-to-bottom\"><img src=\" "+ newestList[i].image +"\" title=\"Movies Pro\" class=\"img-responsive\" alt=\" \" />" +
                 "<div class=\"w3l-action-icon\"><i class=\"fa fa-play-circle-o\" aria-hidden=\"true\"></i></div></a>" +
                 "<div class=\"mid-1 agileits_w3layouts_mid_1_home\">" +
                 "<div class=\"w3l-movie-text\">" +
-                "<h6><a href=\"viewMovieDetail.html\">" + newestList[i].name + "</a></h6></div>" +
+                "<h6><a href=\"/user/movie/detail\">" + newestList[i].name + "</a></h6></div>" +
                 "<div class=\"mid-2 agile_mid_2_home\"><p>" + newestList[i].startDate +
                 "</p><div>想看人数：" + newestList[i].getLikeNum() + "</div><div class=\"clearfix\"></div></div></div>" +
                 joinedPromotion(newestList,i,newMovie) + "</div></div>";
@@ -165,7 +165,7 @@ $(document).ready(function () {
                 "<a href=\"single.html\" class=\"hvr-sweep-to-bottom\"><img src=\"" + highestList[i].image + "\" title=\"Movies Pro\" class=\"img-responsive\" alt=\" \">" +
                 "<div class=\"w3l-action-icon\"><i class=\"fa fa-play-circle-o\" aria-hidden=\"true\"></i></div></a>" +
                 "<div class=\"mid-1 agileits_w3layouts_mid_1_home\">" + "<div class=\"w3l-movie-text\">" +
-                "<h6><a href=\"single.html\">" + highestList[i].name + "</a></h6></div>" +
+                "<h6><a href=\"/user/movie/detail\">" + highestList[i].name + "</a></h6></div>" +
                 "<div class=\"mid-2 agile_mid_2_home\"><p>" + highestList[i].startDate +
                 "</p><div>想看人数：" + highestList[i].getLikeNum() + "</div><div class=\"clearfix\"></div></div></div>" +
                 joinedPromotion(highestList,i,res) + "</div>";
@@ -177,11 +177,11 @@ $(document).ready(function () {
         var res = '';
         for (var i = 1;i<mostList.length;i++){
             res += "<div class=\"w3l-movie-gride-agile\">" +
-                "<a href=\"viewMovieDetail.html\" class=\"hvr-sweep-to-bottom\"><img src=\"" + mostList[i].image + "\" title=\"Movies Pro\" class=\"img-responsive\" alt=\" \">" +
+                "<a href=\"/user/movie/detail\" class=\"hvr-sweep-to-bottom\"><img src=\"" + mostList[i].image + "\" title=\"Movies Pro\" class=\"img-responsive\" alt=\" \">" +
                 "<div class=\"w3l-action-icon\"><i class=\"fa fa-play-circle-o\" aria-hidden=\"true\"></i></div></a>" +
                 "<div class=\"mid-1 agileits_w3layouts_mid_1_home\">" +
                 "<div class=\"w3l-movie-text\">" +
-                "<h6><a href=\"single.html\">" + mostList[i].name + "</a></h6></div>" +
+                "<h6><a href=\"/user/movie/detail\">" + mostList[i].name + "</a></h6></div>" +
                 "<div class=\"mid-2 agile_mid_2_home\"><p>" + mostList[i].startDate + "</p><div>想看人数:" + mostList[i].getLikeNum() +
                 "</div><div class=\"clearfix\"></div></div></div>" + joinedPromotion(mostList,i,res) + "</div>";
         }

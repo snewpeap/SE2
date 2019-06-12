@@ -1,8 +1,9 @@
 var dates;
 var movieId;
+var isLike;
 
 $(document).ready(function () {
-    $(".gray-text")[0].innerText = sessionStorage.getItem("username");
+    // $(".gray-text")[0].innerText = sessionStorage.getItem("username");
 
     movieId = parseInt(window.location.href.split('?')[1].split('&')[0].split('=')[1]);
 
@@ -24,6 +25,28 @@ $(document).ready(function () {
                 alert(error);
             }
         );
+    }
+
+    //todo get Like
+    function getIfLike() {
+        getRequest(
+            'user/movie/get/'+ movieId,
+            function (res) {
+                if (res.success){
+                    let m = res.content;
+                    isLike = m.isLike;
+                    if (isLike){
+                        $('#like-btn span').text("已想看");
+                    }
+                } else {
+                    alert(res.message);
+                }
+            },
+            function (error) {
+                alert(error);
+            }
+        )
+
     }
 
 });
@@ -61,3 +84,40 @@ function repaintScheduleBody(curDateLoc) {
 
     $('#schedule-body').html(bodyContent);
 }
+
+//todo:like unlike
+$('#like-btn').click(function () {
+    if (!isLike){
+        postRequest(
+            '/user/movie/like/' + movieId +"?userId=" + getCookie('id'),
+            null,
+            function (res) {
+                if (res.success){
+                    alert("操作成功!");
+                    $('#like-btn span').text("已想看");
+                } else {
+                    alert(res.message);
+                }
+            },
+            function (error) {
+                alert(error);
+            }
+        );
+    } else {
+        postRequest(
+            '/user/movie/unlike/' + movieId +"?userId=" + getCookie('id'),
+            null,
+            function (res) {
+                if (res.success){
+                    alert("操作成功!");
+                    $('#like-btn span').text("想 看");
+                } else {
+                    alert(res.message);
+                }
+            },
+            function (error) {
+                alert(error);
+            }
+        );
+    }
+});

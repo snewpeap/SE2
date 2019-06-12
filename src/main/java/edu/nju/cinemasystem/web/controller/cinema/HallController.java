@@ -7,22 +7,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/admin/hall")
 public class HallController {
     @Autowired
     private HallManage hallManage;
 
-    @PostMapping("/add")
+    @PostMapping("/admin/hall/add")
     public Response addHall(@RequestBody HallForm hallForm){
         return hallManage.inputHallInfo(hallForm);
     }
 
-    @PostMapping("/modify")
+    @PostMapping("/admin/hall/modify")
     public Response updateHall(@RequestBody HallForm hallForm, @RequestParam int ID){
         return hallManage.modifyHallInfo(hallForm,ID);
     }
 
-    @GetMapping("/get")
+    @GetMapping("/manage/hall/get")
     public Response getAllHall(){
         return hallManage.getAllHallInfo();
     }
