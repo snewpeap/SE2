@@ -10,6 +10,7 @@ import edu.nju.cinemasystem.util.properties.message.GlobalMsg;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class RefundTicketManageImpl implements RefundTicketManage {
@@ -29,6 +30,7 @@ public class RefundTicketManageImpl implements RefundTicketManage {
     }
 
     @Override
+    @Transactional
     public Response addRefundTicketManage(RefundStrategyForm refundStrategyForm) {
         Response response;
         int days = refundStrategyForm.getDay();
@@ -46,6 +48,7 @@ public class RefundTicketManageImpl implements RefundTicketManage {
     }
 
     @Override
+    @Transactional
     public Response modifyRefundTicketManage(RefundStrategyForm refundStrategyForm) {
         Response response;
         int days = refundStrategyForm.getDay();

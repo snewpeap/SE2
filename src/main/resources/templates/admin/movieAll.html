@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="/images/favicon.ico" type="image/ico" />
-    <title>退票策略</title>
+    <title>查看电影</title>
 
     <!-- Bootstrap -->
     <link href="/webjars/gentelella/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -27,12 +27,15 @@
 
     <!-- Custom Theme Style -->
     <link href="/webjars/gentelella/build/css/custom.min.css" rel="stylesheet">
+    <!-- Personal Theme Style -->
+    <link href="/css/admin/movieList.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/common.css" rel="stylesheet" type="text/css"/>
 </head>
 <body class="nav-md">
-<div class="container body">
-    <div class="main_container">
-        <!--            侧边栏-->
-        <div class="col-md-3 left_col">
+    <div class="container body">
+        <div class="main_container">
+<!--            侧边栏-->
+            <div class="col-md-3 left_col">
             <div class="left_col scroll-view">
                 <div class="navbar nav_title" style="border: 0;">
                     <a href="/manage/movieAll" class="site_title"><i class="fa fa-paw"></i> <span>队名不能为空！</span></a>
@@ -93,90 +96,95 @@
             </div>
         </div>
 
-        <!--            顶部导航-->
-        <div class="top_nav">
-            <div class="nav_menu">
-                <nav>
-                    <div class="nav toggle">
-                        <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+<!--            顶部导航-->
+            <div class="top_nav">
+                <div class="nav_menu">
+                    <nav>
+                        <div class="nav toggle">
+                            <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                        </div>
+
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="">
+                                <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <img src="/images/defaultAvatar.jpg" alt="">
+                                    <span class="username">John Doe</span>
+                                    <span class=" fa fa-angle-down"></span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-usermenu pull-right">
+                                    <li><a href="/logout"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+<!--            主内容-->
+            <div class="right_col" role="main">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="dashboard_graph">
+                        </div>
                     </div>
-
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="">
-                            <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <img src="/images/defaultAvatar.jpg" alt="">
-                                <span class="username">John Doe</span>
-                                <span class=" fa fa-angle-down"></span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-usermenu pull-right">
-                                <li><a href="/logout"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </nav>
+                </div>
             </div>
-        </div>
 
-        <!--            主内容-->
-        <div class="right_col" role="main">
-
-        </div>
-
-        <div class="clearfix"></div>
-
-        <!--        尾注-->
-        <footer>
-            <div class="pull-right">
-                Team Name Cannot Be Empty Organized by <a href="http://seec.yangshan.tech/">seec</a>
-            </div>
             <div class="clearfix"></div>
-        </footer>
 
+            <!--        尾注-->
+            <footer>
+                <div class="pull-right">
+                    Team Name Cannot Be Empty Organized by <a href="http://seec.yangshan.tech/">seec</a>
+                </div>
+                <div class="clearfix"></div>
+            </footer>
+
+        </div>
     </div>
-</div>
 
-<!-- jQuery -->
-<script src="/webjars/gentelella/vendors/jquery/dist/jquery.min.js"></script>
-<!-- Bootstrap -->
-<script src="/webjars/gentelella/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
-<!-- FastClick -->
-<script src="/webjars/gentelella/vendors/fastclick/lib/fastclick.js"></script>
-<!-- NProgress -->
-<script src="/webjars/gentelella/vendors/nprogress/nprogress.js"></script>
-<!-- Chart.js -->
-<script src="/webjars/gentelella/vendors/Chart.js/dist/Chart.min.js"></script>
-<!-- gauge.js -->
-<script src="/webjars/gentelella/vendors/gauge.js/dist/gauge.min.js"></script>
-<!-- bootstrap-progressbar -->
-<script src="/webjars/gentelella/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
-<!-- iCheck -->
-<script src="/webjars/gentelella/vendors/iCheck/icheck.min.js"></script>
-<!-- Skycons -->
-<script src="/webjars/gentelella/vendors/skycons/skycons.js"></script>
-<!-- Flot -->
-<script src="/webjars/gentelella/vendors/Flot/jquery.flot.js"></script>
-<script src="/webjars/gentelella/vendors/Flot/jquery.flot.pie.js"></script>
-<script src="/webjars/gentelella/vendors/Flot/jquery.flot.time.js"></script>
-<script src="/webjars/gentelella/vendors/Flot/jquery.flot.stack.js"></script>
-<script src="/webjars/gentelella/vendors/Flot/jquery.flot.resize.js"></script>
-<!-- Flot plugins -->
-<script src="/webjars/gentelella/vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
-<script src="/webjars/gentelella/vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
-<script src="/webjars/gentelella/vendors/flot.curvedlines/curvedLines.js"></script>
-<!-- DateJS -->
-<script src="/webjars/gentelella/vendors/DateJS/build/date.js"></script>
-<!-- JQVMap -->
-<script src="/webjars/gentelella/vendors/jqvmap/dist/jquery.vmap.js"></script>
-<script src="/webjars/gentelella/vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
-<script src="/webjars/gentelella/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
-<!-- bootstrap-daterangepicker -->
-<script src="/webjars/gentelella/vendors/moment/min/moment.min.js"></script>
-<script src="/webjars/gentelella/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <!-- jQuery -->
+    <script src="/webjars/gentelella/vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="/webjars/gentelella/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="/webjars/gentelella/vendors/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="/webjars/gentelella/vendors/nprogress/nprogress.js"></script>
+    <!-- Chart.js -->
+    <script src="/webjars/gentelella/vendors/Chart.js/dist/Chart.min.js"></script>
+    <!-- gauge.js -->
+    <script src="/webjars/gentelella/vendors/gauge.js/dist/gauge.min.js"></script>
+    <!-- bootstrap-progressbar -->
+    <script src="/webjars/gentelella/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+    <!-- iCheck -->
+    <script src="/webjars/gentelella/vendors/iCheck/icheck.min.js"></script>
+    <!-- Skycons -->
+    <script src="/webjars/gentelella/vendors/skycons/skycons.js"></script>
+    <!-- Flot -->
+    <script src="/webjars/gentelella/vendors/Flot/jquery.flot.js"></script>
+    <script src="/webjars/gentelella/vendors/Flot/jquery.flot.pie.js"></script>
+    <script src="/webjars/gentelella/vendors/Flot/jquery.flot.time.js"></script>
+    <script src="/webjars/gentelella/vendors/Flot/jquery.flot.stack.js"></script>
+    <script src="/webjars/gentelella/vendors/Flot/jquery.flot.resize.js"></script>
+    <!-- Flot plugins -->
+    <script src="/webjars/gentelella/vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
+    <script src="/webjars/gentelella/vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
+    <script src="/webjars/gentelella/vendors/flot.curvedlines/curvedLines.js"></script>
+    <!-- DateJS -->
+    <script src="/webjars/gentelella/vendors/DateJS/build/date.js"></script>
+    <!-- JQVMap -->
+    <script src="/webjars/gentelella/vendors/jqvmap/dist/jquery.vmap.js"></script>
+    <script src="/webjars/gentelella/vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
+    <script src="/webjars/gentelella/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="/webjars/gentelella/vendors/moment/min/moment.min.js"></script>
+    <script src="/webjars/gentelella/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
 
-<!-- Custom Theme Scripts -->
-<script src="/webjars/gentelella/build/js/custom.min.js"></script>
-<script src="/js/request.js"></script>
-<script src="/js/admin/common.js"></script>
-<script src="/js/admin/refundStrategyManage.js"></script>
+    <!-- Custom Theme Scripts -->
+    <script src="/webjars/gentelella/build/js/custom.min.js"></script>
+    <script src="/js/request.js"></script>
+    <script src="/js/admin/common.js"></script>
+    <script src="/js/admin/movieAll.js"></script>
 </body>
 </html>

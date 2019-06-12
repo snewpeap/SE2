@@ -36,7 +36,7 @@ public class AccountController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String redirect = auth.getAuthorities()
                 .contains(new SimpleGrantedAuthority("ROLE_" + roleProperty.getAudience())) ?
-                "/user/home" : "/manage/movie";
+                "/user/home" : "/manage/movieAll";
         response.sendRedirect(redirect);
     }
 
@@ -44,9 +44,6 @@ public class AccountController {
     @PostMapping("/register")
     public Response register(@RequestBody @Valid RegistryForm registryForm, HttpServletResponse servletResponse) throws IOException {
         Response response = account.register(registryForm);
-        if (response.isSuccess()) {
-            servletResponse.sendRedirect("/login");
-        }
         return response;
     }
 }

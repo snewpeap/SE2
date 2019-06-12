@@ -16,6 +16,7 @@ import edu.nju.cinemasystem.util.exception.ServiceException;
 import edu.nju.cinemasystem.util.properties.message.GlobalMsg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -76,6 +77,7 @@ public class PromotionImpl implements
     }
 
     @Override
+    @Transactional
     public Response publishPromotion(PromotionForm promotionForm) {
         String name = promotionForm.getName();
         Date startTime = promotionForm.getStartTime();
@@ -142,6 +144,7 @@ public class PromotionImpl implements
     }
 
     @Override
+    @Transactional
     public void removeCouponByID(int ID) {
         try {
             couponMapper.deleteByPrimaryKey(ID);
@@ -151,6 +154,7 @@ public class PromotionImpl implements
     }
 
     @Override
+    @Transactional
     public void sendCouponsToUser(int userID, int movieID) {
         List<Promotion> allPromotions = promotionMapper.selectAll();
         List<Promotion> availablePromotions = new ArrayList<>();
@@ -186,6 +190,7 @@ public class PromotionImpl implements
     }
 
     @Override
+    @Transactional
     public void presentCouponTo(int userID, List<Integer> promotionIDs) throws ServiceException {
         List<Integer> success = new ArrayList<>();
         for (int promotionID : promotionIDs) {

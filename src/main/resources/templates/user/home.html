@@ -28,7 +28,7 @@
 <!--/main-header-->
 <!--/banner-section-->
 <!--todo:背景图要换-->
-<div id="demo-1" data-zs-src='["images/2.jpg", "images/1.jpg", "images/3.jpg","images/4.jpg"]' data-zs-overlay="dots">
+<div id="demo-1" data-zs-src='["/images/2.jpg", "/images/1.jpg", "/images/3.jpg","/images/4.jpg"]' data-zs-overlay="dots">
     <div class="demo-inner-content">
         <!--/header-w3l-->
         <div class="header-w3-agileits" id="home">
@@ -46,13 +46,12 @@
                     <!-- navbar-header -->
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li><a href="../index.html">首页</a></li>
-                            <li><a href="ticket.html">我的电影票</a></li>
-                            <li><a href="cardPocket.html">卡包</a></li>
-                            <li><a href="movie.html">电影列表</a></li>
-                            <li><a href="#"></a>订单记录</li>
+                            <li><a href="#">首页</a></li>
+                            <li><a href="/user/movie">电影列表</a></li>
+                            <li><a href="/user/movie">我的电影票</a></li>
+                            <li><a href="/user/cardPocket">卡包</a></li>
+                            <li><a href="/user/consumeRecord">订单记录</a></li>
                         </ul>
-
                     </div>
                     <div class="clearfix"> </div>
                 </nav>
@@ -68,9 +67,7 @@
                         </form>
                     </div>
                 </div>
-
             </div>
-
         </div>
         <!--//header-w3l-->
         <!--/banner-info-->
@@ -100,7 +97,6 @@
                     <li>最新上架</li>
                     <li>票房最高</li>
                     <li>最多想看</li>
-
                 </ul>
                 <div class="resp-tabs-container">
                     <div class="tab1">
@@ -112,16 +108,16 @@
                                             <div id = "newest-movie-image"></div>
                                         </div>
                                         <div class="player-text" id="newest-movie-info"></div>
-                                <div class="col-md-7 wthree_agile-movies_list">
-                                    <div class="w3l-movie-gride-agile">
-                                        <div class="mid-1 agileits_w3layouts_mid_1_home" id = "one-new-movie"></div>
+                                        <div class="col-md-7 wthree_agile-movies_list">
+                                            <div class="w3l-movie-gride-agile">
+                                                <div class="mid-1 agileits_w3layouts_mid_1_home" id = "one-new-movie"></div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"> </div>
                                     </div>
+                                    <div class="cleafix"></div>
                                 </div>
-                                <div class="clearfix"> </div>
                             </div>
-                            <div class="cleafix"></div>
-                        </div>
-                    </div>
                         </div>
                     </div>
                     <div class="tab2">
@@ -133,15 +129,16 @@
                                             <div id = "highest-movie-image"></div>
                                         </div>
                                         <div class="player-text" id="highest-movie-info"></div>
+                                        <div class="col-md-7 wthree_agile-movies_list">
+                                            <div class="w3l-movie-gride-agile">
+                                                <div class="mid-1 agileits_w3layouts_mid_1_home" id="one-new-movie2"></div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"> </div>
                                     </div>
-                                    <div class="col-md-7 wthree_agile-movies_list">
-                                        <div class="w3l-movie-gride-agile">
-                                            <div class="mid-1 agileits_w3layouts_mid_1_home" id="one-new-movie2"></div>
-                                    </div>
+                                    <div class="cleafix"></div>
                                 </div>
-                                <div class="clearfix"> </div>
                             </div>
-                            <div class="cleafix"></div>
                         </div>
                     </div>
                     <div class="tab3">
@@ -152,22 +149,22 @@
                                         <div data-video="BXEZFd0RT5Y" id="video2">
                                             <div id="most-movie-image"></div>
                                         </div>
-                                    <div class="player-text" id="most-movie-info"></div>
-                                </div>
-                                <div class="col-md-7 wthree_agile-movies_list">
-                                    <div class="w3l-movie-gride-agile">
-                                        <div class="mid-1 agileits_w3layouts_mid_1_home" id="one-new-movie3"></div>
+                                        <div class="player-text" id="most-movie-info"></div>
+                                        <div class="col-md-7 wthree_agile-movies_list">
+                                            <div class="w3l-movie-gride-agile">
+                                                <div class="mid-1 agileits_w3layouts_mid_1_home" id="one-new-movie3"></div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"> </div>
                                     </div>
+                                    <div class="cleafix"></div>
                                 </div>
-                        <div class="clearfix"> </div>
-                                </div>
-                        <div class="cleafix"></div>
-                    </div>
+                            </div>
                         </div>
+                    </div>
                 </div>
             </div>
         </div>
-            </div>
         <!--//tab-section-->
         <h3 class="agile_w3_title"> 最新 <span>电影</span></h3>
         <!--/movies-->

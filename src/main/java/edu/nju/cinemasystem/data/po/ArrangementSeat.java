@@ -31,9 +31,11 @@ public class ArrangementSeat {
         this.seatId = seatId;
     }
 
-    public ArrangementSeat(Byte isLocked, Integer arrangementId, Integer seatId) {
-        this.isLocked = isLocked;
-        this.arrangementId = arrangementId;
-        this.seatId = seatId;
+    public static ArrangementSeat assembleArrangementSeat(Byte isLocked, Integer arrangementId, Integer seatId){
+        ArrangementSeat arrangementSeat = new ArrangementSeat();
+        arrangementSeat.setIsLocked(isLocked);
+        arrangementSeat.setArrangementId(arrangementId);
+        arrangementSeat.setSeatId(seatId);
+        return arrangementSeat;
     }
 }

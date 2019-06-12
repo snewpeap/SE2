@@ -11,6 +11,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = Application.class)
@@ -23,14 +25,14 @@ public class HallTest {
     @Transactional
     public void insertSelectiveTest() {
         Hall hall = new Hall();
-        hall.setName("啊啊啊啊");
-        hall.setColumn(30);
+        hall.setName("Selective");
+        hall.setColumn(20);
         hall.setRow(10);
         hall.setSize((byte) 0);
         hall.setIs3d((byte) 1);
         hall.setIsImax((byte) 1);
         int i = hallMapper.insertSelective(hall);
-        assertEquals(1,i);
+        assertEquals((int)hall.getId(),i);
         throw new RuntimeException();
     }
 
@@ -38,14 +40,20 @@ public class HallTest {
     @Transactional
     public void insertTest() {
         Hall hall = new Hall();
-        hall.setName("啊啊啊啊");
-        hall.setColumn(30);
-        hall.setRow(10);
-        hall.setSize((byte) 0);
-        hall.setIs3d((byte) 1);
+        hall.setName("insertTest");
+        hall.setColumn(15);
+        hall.setRow(8);
+        hall.setSize((byte) 2);
+        hall.setIs3d((byte) 0);
         hall.setIsImax((byte) 1);
         int i = hallMapper.insert(hall);
         assertEquals(1,i);
         throw new RuntimeException();
+    }
+
+    @Test
+    @Transactional
+    public void deleteByHallID(){
+        assertTrue(hallMapper.deleteByPrimaryKey(2)!=0);
     }
 }

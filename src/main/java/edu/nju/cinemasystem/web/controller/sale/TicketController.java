@@ -60,12 +60,12 @@ public class TicketController {
         return ticket.refundTicket(userId, ticketId);
     }
 
-    //TODO 删去
-    @GetMapping("/user/ticket/get")
-    public Response getAllTickets(HttpSession session) {
-        int userId = (Integer) session.getAttribute("id");
-        return ticket.getAllTicketsByUserId(userId);
-    }
+//    //TODO 删去
+//    @GetMapping("/user/ticket/get")
+//    public Response getAllTickets(HttpSession session) {
+//        int userId = (Integer) session.getAttribute("id");
+//        return ticket.getAllTicketsByUserId(userId);
+//    }
 
     @GetMapping("/user/ticket/get/existing")
     public Response getExistingTickets(@PathVariable int scheduleId, HttpSession session) {

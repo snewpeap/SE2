@@ -17,6 +17,7 @@ import edu.nju.cinemasystem.util.properties.message.ArrangementMsg;
 import edu.nju.cinemasystem.util.properties.message.GlobalMsg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -117,26 +118,31 @@ public class ArrangementImpl
     }
 
     @Override
+    @Transactional
     public void changeArrangementSeatStatus(int arrangementID, int seatID, boolean locked) {
         ArrangementSeat arrangementSeat = new ArrangementSeat(locked ? (byte) 1 : (byte) 0, arrangementID, seatID);
         arrangementSeatMapper.updateSeatStatus(arrangementSeat);
     }
 
     @Override
+    @Transactional
     public Response addArrangement(ArrangementForm arrangementForm) {
         Response response;
-        if (censorArrangementForm(arrangementForm)) {
+        if (unCensorArrangementForm(arrangementForm)) {
             response = Response.fail();
             response.setMessage(globalMsg.getWrongParam());
             return response;
         }
-        Arrangement arrangement = assembleArrangement(arrangementForm);
-        //TODO 这个ID不确定
+        response = censorTimeConflict(arrangementForm);
+        if (!response.isSuccess()) {
+            return response;
+        }
+        Arrangement arrangement = assembleArrangementByForm(arrangementForm);
         arrangementMapper.insertSelective(arrangement);
         int id = arrangement.getId();
         List<Seat> seats = seatMapper.selectByHallID(arrangementForm.getHallId());
         seats.forEach(seat -> {
-            ArrangementSeat arrangementSeat = new ArrangementSeat((byte) 0, id, seat.getId());
+            ArrangementSeat arrangementSeat = ArrangementSeat.assembleArrangementSeat((byte) 0, id, seat.getId());
             arrangementSeatMapper.insertSelective(arrangementSeat);
         });
         response = Response.success();
@@ -145,6 +151,7 @@ public class ArrangementImpl
     }
 
     @Override
+    @Transactional
     public Response modifyArrangement(ArrangementForm arrangementForm, int ID) {
         Response response;
         if (arrangementMapper.selectByPrimaryKey(ID).getVisibleDate().compareTo(new Date()) <= 0) {
@@ -152,12 +159,16 @@ public class ArrangementImpl
             response.setMessage(arrangementMsg.getVisibleToAudience());
             return response;
         }
-        if (censorArrangementForm(arrangementForm)) {
+        if (unCensorArrangementForm(arrangementForm)) {
             response = Response.fail();
             response.setMessage(globalMsg.getWrongParam());
             return response;
         }
-        Arrangement arrangement = assembleArrangement(arrangementForm);
+        response = censorTimeConflict(arrangementForm);
+        if (!response.isSuccess()) {
+            return response;
+        }
+        Arrangement arrangement = assembleArrangementByForm(arrangementForm);
         arrangement.setId(ID);
         arrangementMapper.updateByPrimaryKeySelective(arrangement);
         response = Response.success();
@@ -166,6 +177,7 @@ public class ArrangementImpl
     }
 
     @Override
+    @Transactional
     public Response removeArrangement(int ID) {
         Response response;
         if (arrangementMapper.selectByPrimaryKey(ID).getVisibleDate().compareTo(new Date()) <= 0) {
@@ -182,6 +194,7 @@ public class ArrangementImpl
     }
 
     @Override
+    @Transactional
     public Response modifyVisibleDay(List<Integer> IDs, Date date) {
         List<Arrangement> arrangements = new ArrayList<>();
         IDs.forEach(ID -> arrangements.add(arrangementMapper.selectByPrimaryKey(ID)));
@@ -197,7 +210,7 @@ public class ArrangementImpl
 
     @Override
     public Response getArrangementsByHallID(int hallID, Date startDate) {
-        int duration = 0; //TODO 数据层接口可能会变 
+        int duration = 7; //TODO 数据层接口可能会变
         List<Arrangement> arrangements = arrangementMapper.selectByHallIDAndStartDate(hallID, startDate, duration);
         List<ArrangementVO> arrangementVOS = new ArrayList<>();
         arrangements.forEach(arrangement -> arrangementVOS.add(new ArrangementVO(arrangement)));
@@ -240,7 +253,7 @@ public class ArrangementImpl
 
     @Override
     public boolean haveArrangementAfterCurrentTime(int hallID, Date currentTime) {
-        return arrangementMapper.selectByHallIDAndCurrentTime(hallID, currentTime) != null;
+        return arrangementMapper.selectByHallIDAndCurrentTime(hallID, currentTime).size() != 0;
     }
 
     @Override
@@ -249,29 +262,59 @@ public class ArrangementImpl
     }
 
     /**
-     * 检查ArrangementForm里的参数是否合法
+     * 检查ArrangementForm里的参数是否不合法
      *
      * @param arrangementForm 排片表单
      * @return boolean值
      */
-    private boolean censorArrangementForm(ArrangementForm arrangementForm) {
+    private boolean unCensorArrangementForm(ArrangementForm arrangementForm) {
+        Date date = new Date();
         return (arrangementForm.getStartTime().compareTo(arrangementForm.getEndTime()) >= 0)
-                || (arrangementForm.getVisibleDate().compareTo(new Date()) < 0) || (arrangementForm.getFare() <= 0);
+                || (arrangementForm.getVisibleDate().compareTo(date) < 0) || (arrangementForm.getFare() <= 0) || (arrangementForm.getStartTime().compareTo(date) < 0) || (arrangementForm.getEndTime().compareTo(date) < 0);
     }
 
     /**
-     * 装配一个ArrangementPO
+     * 通过表单VO装配一个ArrangementPO
      *
      * @param arrangementForm 排片表单
      * @return arrangement
      */
-    private Arrangement assembleArrangement(ArrangementForm arrangementForm) {
+    private Arrangement assembleArrangementByForm(ArrangementForm arrangementForm) {
         Date startTime = arrangementForm.getStartTime();
         Date endTime = arrangementForm.getEndTime();
         Float fare = arrangementForm.getFare();
         Integer hallId = arrangementForm.getHallId();
         Integer movieId = arrangementForm.getMovieId();
         Date visibleDate = arrangementForm.getVisibleDate();
-        return new Arrangement(startTime, endTime, fare, hallId, movieId, visibleDate);
+        return assembleArrangement(startTime, endTime, fare, hallId, movieId, visibleDate);
+    }
+
+    /**
+     * 检查要添加的排片和之前的是否有时间段冲突
+     *
+     * @param arrangementForm 排片表单
+     * @return 没有返回success
+     */
+    private Response censorTimeConflict(ArrangementForm arrangementForm) {
+        int hallID = arrangementForm.getHallId();
+        List<Arrangement> arrangements = arrangementMapper.selectByDay(arrangementForm.getStartTime(), arrangementForm.getEndTime());
+        for (Arrangement arrangement : arrangements) {
+            if (arrangement.getHallId() == hallID) {
+                return Response.fail(arrangementMsg.getIsAlreadyHaveArrangement());
+            }
+        }
+        return Response.success();
+    }
+
+
+    private Arrangement assembleArrangement(Date startTime, Date endTime, Float fare, Integer hallId, Integer movieId, Date visibleDate) {
+        Arrangement arrangement = new Arrangement();
+        arrangement.setStartTime(startTime);
+        arrangement.setEndTime(endTime);
+        arrangement.setFare(fare);
+        arrangement.setHallId(hallId);
+        arrangement.setMovieId(movieId);
+        arrangement.setVisibleDate(visibleDate);
+        return arrangement;
     }
 }

@@ -71,6 +71,7 @@ arrangement-msg:
   visible-to-audience: "排片已对观众可见"
   arrangement-start: "排片已开始放映"
   is-still-have-arrangement: "该影厅后续还有排片"
+  is-already-have-arrangement: "时间段冲突"
 
 # 管理sale操作信息 #
 ticket-msg:

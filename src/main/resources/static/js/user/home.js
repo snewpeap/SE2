@@ -65,16 +65,16 @@ $(document).ready(function () {
 
     //按电影的id排序
     function getNewest() {
-        for (var i = 0;i<allMovieList.size-1;i++){
-            for (var j = 0; j<allMovieList.size-i-1;j++){
+        for (let i = 0;i<allMovieList.size-1;i++){
+            for (let j = 0; j<allMovieList.size-i-1;j++){
                 if (allMovieList[j].id<allMovieList[j+1].id){
-                    var temp = allMovieList[j];
+                    let temp = allMovieList[j];
                     allMovieList[j] = allMovieList[j+1];
                     allMovieList[j+1] = temp;
                 }
             }
         }
-        for (var x = 0;x<allMovieList.length;x++){
+        for (let x = 0;x<allMovieList.length;x++){
             newestList.push(allMovieList[x]);
         }
     }
@@ -82,7 +82,7 @@ $(document).ready(function () {
     //按想看人数排序
     getMostLikes();
     function getMostLikes() {
-        for (var i = 0;i<allMovieList.size-1;i++){
+        for (let i = 0;i<allMovieList.size-1;i++){
             for (var j = 0; j<allMovieList.size-i-1;j++){
                 if (allMovieList[j].LikeNum<allMovieList[j+1].LikeNum){
                     var temp = allMovieList[j];

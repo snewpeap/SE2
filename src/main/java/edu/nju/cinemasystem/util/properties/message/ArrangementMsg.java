@@ -10,6 +10,7 @@ public class ArrangementMsg extends GlobalMsg {
     private String visibleToAudience;
     private String arrangementStart;
     private String isStillHaveArrangement;
+    private String isAlreadyHaveArrangement;
 
     public String getArrangementStart() {
         return arrangementStart;
@@ -33,5 +34,13 @@ public class ArrangementMsg extends GlobalMsg {
 
     public void setIsStillHaveArrangement(String isStillHaveArrangement) {
         this.isStillHaveArrangement = isStillHaveArrangement;
+    }
+
+    public String getIsAlreadyHaveArrangement() {
+        return isAlreadyHaveArrangement;
+    }
+
+    public void setIsAlreadyHaveArrangement(String isAlreadyHaveArrangement) {
+        this.isAlreadyHaveArrangement = isAlreadyHaveArrangement;
     }
 }
