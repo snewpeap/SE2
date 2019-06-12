@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class ManagerMovieVO extends BaseMovieVO {
     private Date releaseDate;
-    private boolean status;
+    private Byte status;
     private int LikeNum;
     private List<Map<Date, Integer>> likeData;
 
@@ -26,11 +26,11 @@ public class ManagerMovieVO extends BaseMovieVO {
         LikeNum = likeNum;
     }
 
-    public boolean isStatus() {
+    public Byte getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(Byte status) {
         this.status = status;
     }
 

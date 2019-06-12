@@ -2,7 +2,7 @@ package edu.nju.cinemasystem.data.po;
 
 import java.util.Date;
 
-public class RechargeRecord {
+public class TradeRecord {
     private Integer id;
 
     private Float originalAmount;

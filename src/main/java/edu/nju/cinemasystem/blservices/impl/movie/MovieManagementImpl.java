@@ -112,7 +112,7 @@ public class MovieManagementImpl implements MovieManagement {
         BaseMovieVO.assembleMovieVO(movie, movieVO);
         movieVO.setReleaseDate(movie.getReleaseDate());
         movieVO.setLikeNum(movieLike.getLikeAmount(movieVO.getId()));
-        movieVO.setStatus(movie.getStatusBoolean());
+        movieVO.setStatus(movie.getStatus());
         movieVO.setLikeData(movieLike.getLikeDataOf(movie.getId()));
         return movieVO;
     }

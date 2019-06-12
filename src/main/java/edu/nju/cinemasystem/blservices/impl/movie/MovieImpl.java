@@ -42,7 +42,7 @@ public class MovieImpl implements edu.nju.cinemasystem.blservices.movie.Movie {
             response.setContent(allMovieVOs);
         } else {
             Movie movie = movieMapper.selectByPrimaryKey(movieID);
-            if (movie != null && !movie.getStatusBoolean()) {
+            if (movie != null && !movie.audienceVisible()) {
                 response = Response.fail();
                 response.setStatusCode(401);
             } else if (movie == null) {
