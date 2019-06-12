@@ -213,10 +213,16 @@ public class ArrangementImpl
     public Response getArrangementsByHallID(int hallID, Date startDate) {
         int duration = 7; //TODO 数据层接口可能会变
         List<Arrangement> arrangements = arrangementMapper.selectByHallIDAndStartDate(hallID, startDate, duration);
-        List<ArrangementVO> arrangementVOS = new ArrayList<>();
-        arrangements.forEach(arrangement -> arrangementVOS.add(new ArrangementVO(arrangement)));
+        List<List<ArrangementVO>> daySeparatedVOs = new ArrayList<>(7);
+        for (int i = 0; i < duration; i++) {
+            daySeparatedVOs.add(new ArrayList<>());
+        }
+        for (Arrangement arrangement : arrangements) {
+            int day = (int) ((arrangement.getStartTime().getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+            daySeparatedVOs.get(day).add(new ArrangementVO(arrangement));
+        }
         Response response = Response.success();
-        response.setContent(arrangementVOS);
+        response.setContent(daySeparatedVOs);
         return response;
     }
 

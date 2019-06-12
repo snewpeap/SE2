@@ -131,8 +131,8 @@ public class Movie {
         return status;
     }
 
-    public boolean getStatusBoolean() {
-        return status == 1;
+    public boolean audienceVisible() {
+        return status >= 3;
     }
 
     public void setStatus(Byte status) {

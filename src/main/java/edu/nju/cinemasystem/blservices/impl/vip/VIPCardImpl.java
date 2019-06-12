@@ -1,10 +1,10 @@
 package edu.nju.cinemasystem.blservices.impl.vip;
 
-import edu.nju.cinemasystem.data.po.RechargeRecord;
+import edu.nju.cinemasystem.data.po.TradeRecord;
 import edu.nju.cinemasystem.data.po.Vipcard;
 import edu.nju.cinemasystem.data.po.VipcardRechargeReduction;
 import edu.nju.cinemasystem.data.vo.Response;
-import edu.nju.cinemasystem.dataservices.vip.RechargeRecordMapper;
+import edu.nju.cinemasystem.dataservices.vip.TradeRecordMapper;
 import edu.nju.cinemasystem.dataservices.vip.VipcardMapper;
 import edu.nju.cinemasystem.dataservices.vip.VipcardRechargeReductionMapper;
 import edu.nju.cinemasystem.util.properties.message.VIPMsg;
@@ -19,10 +19,10 @@ public class VIPCardImpl implements edu.nju.cinemasystem.blservices.vip.VIPCard 
     private final VipcardMapper vipcardMapper;
     private final VIPMsg vipMsg;
     private final VipcardRechargeReductionMapper reductionMapper;
-    private final RechargeRecordMapper recordMapper;
+    private final TradeRecordMapper recordMapper;
 
     @Autowired
-    public VIPCardImpl(VipcardMapper vipcardMapper, VIPMsg vipMsg, VipcardRechargeReductionMapper reductionMapper, RechargeRecordMapper recordMapper) {
+    public VIPCardImpl(VipcardMapper vipcardMapper, VIPMsg vipMsg, VipcardRechargeReductionMapper reductionMapper, TradeRecordMapper recordMapper) {
         this.vipcardMapper = vipcardMapper;
         this.vipMsg = vipMsg;
         this.reductionMapper = reductionMapper;
@@ -80,12 +80,12 @@ public class VIPCardImpl implements edu.nju.cinemasystem.blservices.vip.VIPCard 
         float discountAmount = amount - reduction.getDiscountAmount();
         Response response = addVIPBalance(userID, amount);
         if (response.isSuccess()){
-            RechargeRecord rechargeRecord = new RechargeRecord();
-            rechargeRecord.setDate(new Date());
-            rechargeRecord.setUserId(userID);
-            rechargeRecord.setOriginalAmount(amount);
-            rechargeRecord.setDiscountAmount(discountAmount);
-            recordMapper.insertSelective(rechargeRecord);
+            TradeRecord tradeRecord = new TradeRecord();
+            tradeRecord.setDate(new Date());
+            tradeRecord.setUserId(userID);
+            tradeRecord.setOriginalAmount(amount);
+            tradeRecord.setDiscountAmount(discountAmount);
+            recordMapper.insertSelective(tradeRecord);
         }
         return response;
     }
@@ -101,11 +101,17 @@ public class VIPCardImpl implements edu.nju.cinemasystem.blservices.vip.VIPCard 
         if (balanceAfterPayment < 0) {
             response = Response.fail();
             response.setMessage(vipMsg.getOutOfBalance());
-            response.setContent(vipcard);
         } else {
+            TradeRecord tradeRecord = new TradeRecord();
+            tradeRecord.setDate(new Date());
+            tradeRecord.setUserId(userID);
+            tradeRecord.setOriginalAmount(vipcard.getBalance());
+            tradeRecord.setDiscountAmount(amount);
             vipcard.setBalance(balanceAfterPayment);
             vipcardMapper.updateByPrimaryKeySelective(vipcard);
+            recordMapper.insertSelective(tradeRecord);
         }
+        response.setContent(vipcard);
         return response;
     }
 
