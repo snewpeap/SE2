@@ -1,8 +1,8 @@
 var consumeRecord = [];
 $(document).ready(function () {
-    let userID = sessionStorage.getItem(ID());
+    let userID = getCookie('id');
     getRequest(
-        '/ticket/purchaseRecord?userId=' + userID,
+        '/user/ticket/purchaseRecord?userId=' + getCookie('id'),
         function (res) {
             if (res.success){
                 consumeRecord = res.content;

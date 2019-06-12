@@ -8,10 +8,10 @@ var totalVO;
 var coupons = [];
 var activities = [];
 var ticketId = [];
-
+var orderId;
 
 $(document).ready(function () {
-    $(".gray-text")[0].innerText = sessionStorage.getItem("username");
+    // $(".gray-text")[0].innerText = sessionStorage.getItem("username");
 
     scheduleId = parseInt(window.location.href.split('?')[1].split('&')[1].split('=')[1]);
 
@@ -34,7 +34,7 @@ function getInfo() {
 
 function getExistingTicket() {
     getRequest(
-        "/user/ticket/get/existing?scheduleId=" + scheduleId,
+        "/user/ticket/get/existing?scheduleId=" + scheduleId + "&userId=" + getCookie('id'),
         function (res) {
             if (res.success){
                 let tickets = res.content;
@@ -50,10 +50,13 @@ function getExistingTicket() {
         })
 }
 
-function cancelTickets(tickets) {
+//todo orderId?
+function cancelTickets() {
     postRequest(
-        "/ticket/cancel",
-        tickets,
+        "/user/ticket/cancel?userId=" + getCookie('id'),
+        {
+            orderId
+        },
         function (res) {
             if(res.success){
                 getInfo();
@@ -144,7 +147,7 @@ function seatClick(id, i, j) {
     }
     $('#seat-detail').html(seatDetailStr);
 }
-
+//todo 获得活动列表？
 function getActivity(){
     getRequest(
         '/activity/get',
@@ -161,7 +164,7 @@ function getActivity(){
 
 function getCoupon() {
     getRequest(
-        '/user/coupon/get',
+        '/user/coupon/get?userId=' + getCookie('id'),
         function (res) {
             if (res.success){
                 var couponTicketStr = "";
@@ -196,7 +199,7 @@ function getCoupon() {
 
 function getTicket() {
     getRequest(
-        '/user/ticket/get/existing',
+        '/user/ticket/get/existing?scheduleId=' + scheduleId + "&userId=" + getCookie('id'),
         function (res) {
             if (res.success){
                 res.content.forEach(function (ticket) {
@@ -238,12 +241,13 @@ function orderConfirmClick() {
     });
 
     postRequest(
-        '/user/ticket/lockSeats/' + scheduleId,
+        '/user/ticket/lockSeats/' + scheduleId + "?userId=" + getCookie('id'),
         {
             seats: seats
         },function (res) {
             if (res.success){
                 getOrder();
+                orderId = (res.content).getID();
             }
             else{
                 alert(res.message);
@@ -262,7 +266,7 @@ function getOrder() {
     getTicket();
 
     getRequest(
-        '/user/vip/card/get',
+        '/user/vip/card/get?userId=' + getCookie('id'),
         function (res) {
             isVIP = res.success;
             useVIP = res.success;
@@ -311,8 +315,10 @@ function changeCoupon(couponIndex) {
 function payConfirmClick() {
     if (useVIP) {
         //postPayRequest();
-        postRequest('/user/ticket/payByVIP?couponId=' + order.couponId,
-            {ticketId:ticketId},
+        postRequest('/user/ticket/payByVIP?userId=' + getCookie('id') + "&couponId=" + order.couponId,
+            {
+                ticketId:ticketId
+            },
             function(res){
                 if (res.success === true ){
                     $('#order-state').css("display", "none");
@@ -340,7 +346,7 @@ function payConfirmClick() {
 function postPayRequest() {
     console.log(ticketId);
     console.log(order.couponId);
-    postRequest('/user/ticket/pay?couponId=' + order.couponId,
+    postRequest('/user/ticket/pay?userId=' + getCookie('id') + "&couponId=" + order.couponId,
         {ticketId:ticketId},
         function(res){
             if(res.success === true){

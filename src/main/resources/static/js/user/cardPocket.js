@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $(".gray-text")[0].innerText = sessionStorage.getItem("username");
+    // $(".gray-text")[0].innerText = sessionStorage.getItem("username");
 
     getVIP();
     getCoupon();
@@ -10,7 +10,7 @@ var vipCardId;
 
 function getVIP() {
     getRequest(
-        '/user/vip/card/get',
+        '/user/vip/card/get?userId=' + getCookie('id'),
         function (res) {
             if (res.success) {
                 // 是会员
@@ -75,7 +75,7 @@ function confirmCommit() {
         if ($('#userMember-cardNum').val() === "123123123" && $('#userMember-cardPwd').val() === "123123") {
             if (isBuyState) {
                 postRequest(
-                    '/user/vip/card/add',
+                    '/user/vip/card/add?userId=' + getCookie('id'),
                     null,
                     function (res) {
                         $('#buyModal').modal('hide');
@@ -87,7 +87,7 @@ function confirmCommit() {
                     });
             } else {
                 postRequest(
-                    '/user/vip/card/deposit',
+                    '/user/vip/card/deposit?=userId' + getCookie('id'),
                     {amount: parseInt($('#userMember-amount').val())},
                     function (res) {
                         $('#buyModal').modal('hide');
