@@ -18,8 +18,7 @@ public class TicketController {
     private RefundTicketManage refundTicketManage;
 
     @GetMapping("/user/ticket/get/existing")
-    public Response getExistingTickets(@RequestParam int scheduleId,HttpSession session){
-        int userId = Integer.parseInt(String.valueOf(session.getAttribute("id")));
+    public Response getExistingTickets(@RequestParam int scheduleId,@RequestParam int userId){
         return ticket.getOrderByScheduleIdAndUserId(userId,scheduleId);
     }
 
