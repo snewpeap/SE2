@@ -120,7 +120,8 @@ public class ArrangementImpl
     @Override
     @Transactional
     public void changeArrangementSeatStatus(int arrangementID, int seatID, boolean locked) {
-        ArrangementSeat arrangementSeat = new ArrangementSeat(locked ? (byte) 1 : (byte) 0, arrangementID, seatID);
+        ArrangementSeat arrangementSeat
+                = ArrangementSeat.assembleArrangementSeat(locked ? (byte) 1 : (byte) 0, arrangementID, seatID);
         arrangementSeatMapper.updateSeatStatus(arrangementSeat);
     }
 
@@ -258,7 +259,9 @@ public class ArrangementImpl
 
     @Override
     public boolean isSeatBeenLocked(int arrangementID, int seatID) {
-        return arrangementSeatMapper.select(new ArrangementSeat((byte) 1, arrangementID, seatID)).getIsLocked() == 1;
+        return arrangementSeatMapper.select(
+                ArrangementSeat.assembleArrangementSeat((byte) 1, arrangementID, seatID)
+        ).getIsLocked() == 1;
     }
 
     /**
