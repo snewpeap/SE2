@@ -126,9 +126,10 @@ public class StatisticsImpl implements Statistics, StatisticsInfo {
             List<Movie> movies = movieManagement.getReleasedMovies();
             List<MoviePopularityVO> moviePopularityVOS = new ArrayList<>();
             for (Movie movie : movies) {
-                BaseMovieVO baseMovieVO = BaseMovieVO.assembleMovieVO(movie);
+                ManagerMovieVO movieVO = new ManagerMovieVO();
+                BaseMovieVO.assembleMovieVO(movie, movieVO);
                 float boxOffice = ticketStatistics.getBoxOfficeByMovieIDAndDay(movie.getId(), startDate, today);
-                moviePopularityVOS.add(new MoviePopularityVO(baseMovieVO, boxOffice));
+                moviePopularityVOS.add(new MoviePopularityVO(movieVO, boxOffice));
             }
             moviePopularityVOS.sort((MoviePopularityVO m1, MoviePopularityVO m2) -> (int) m2.getBoxOffice() - (int) m1.getBoxOffice());
             List<MoviePopularityVO> resultVOs = new ArrayList<>();

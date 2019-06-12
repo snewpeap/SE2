@@ -67,8 +67,18 @@
         where user_id=#{userID};
     </select>
 
+    <select id="selectByMovieGroupByDate" resultType="java.util.HashMap">
+        select `date`, count(movie_id)
+        from movie_like
+        where movie_id = #{movieID,jdbcType=INTEGER}
+        group by date
+        order by date
+    </select>
+
     <delete id="deleteByUserAndMovie" parameterType="edu.nju.cinemasystem.data.po.MovieLike">
-        delete from movie_like
-        where user_id=#{id} and movie_id=#{movieId};
+        delete
+        from movie_like
+        where user_id = #{id}
+          and movie_id = #{movieId};
     </delete>
 </mapper>

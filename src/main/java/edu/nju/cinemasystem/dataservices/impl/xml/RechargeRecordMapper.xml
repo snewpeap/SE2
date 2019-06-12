@@ -79,32 +79,4 @@
             </if>
         </trim>
     </insert>
-
-    <!--<update id="updateByPrimaryKeySelective" parameterType="edu.nju.cinemasystem.data.po.RechargeRecord">
-        update recharge_record
-        <set>
-            <if test="originalAmount != null">
-                original_amount = #{originalAmount,jdbcType=REAL},
-            </if>
-            <if test="discountAmount != null">
-                discount_amount = #{discountAmount,jdbcType=REAL},
-            </if>
-            <if test="date != null">
-                date = #{date,jdbcType=DATE},
-            </if>
-            <if test="id != null">
-                user_id = #{id,jdbcType=INTEGER},
-            </if>
-        </set>
-        where id = #{id,jdbcType=INTEGER}
-    </update>
-
-    <update id="updateByPrimaryKey" parameterType="edu.nju.cinemasystem.data.po.RechargeRecord">
-        update recharge_record
-        set original_amount = #{originalAmount,jdbcType=REAL},
-            discount_amount = #{discountAmount,jdbcType=REAL},
-            date            = #{date,jdbcType=DATE},
-            user_id         = #{id,jdbcType=INTEGER}
-        where id = #{id,jdbcType=INTEGER}
-    </update>-->
 </mapper>

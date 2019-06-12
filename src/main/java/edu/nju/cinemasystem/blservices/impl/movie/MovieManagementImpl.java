@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class MovieManagementImpl implements MovieManagement {
     public Response addMovie(MovieForm movieForm) {
         Response response = Response.success();
         Movie movie = BaseMovieVO.assembleMoviePO(movieForm);
-        if (movieMapper.insert(movie)==0){
+        if (movieMapper.insertSelective(movie) == 0) {
             response = Response.fail();
             response.setMessage(movieMsg.getOperationFailed());
         } else {
@@ -83,7 +84,9 @@ public class MovieManagementImpl implements MovieManagement {
     public Response getMovie(@NotNull int movieID) {
         Response response = Response.success();
         if (movieID <= 0) {
-            response.setContent(movieMapper.selectAll());
+            List<ManagerMovieVO> managerMovieVOS = new ArrayList<>();
+            movieMapper.selectAll().forEach(movie -> managerMovieVOS.add(assembleManagerMovieVO(movie)));
+            response.setContent(managerMovieVOS);
         } else {
             Movie movie = movieMapper.selectByPrimaryKey(movieID);
             if (movie != null) {
@@ -105,9 +108,12 @@ public class MovieManagementImpl implements MovieManagement {
     }
 
     private ManagerMovieVO assembleManagerMovieVO(Movie movie) {
-        ManagerMovieVO movieVO = (ManagerMovieVO) BaseMovieVO.assembleMovieVO(movie);
+        ManagerMovieVO movieVO = new ManagerMovieVO();
+        BaseMovieVO.assembleMovieVO(movie, movieVO);
+        movieVO.setReleaseDate(movie.getReleaseDate());
         movieVO.setLikeNum(movieLike.getLikeAmount(movieVO.getId()));
         movieVO.setStatus(movie.getStatusBoolean());
+        movieVO.setLikeData(movieLike.getLikeDataOf(movie.getId()));
         return movieVO;
     }
 }

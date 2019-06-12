@@ -30,7 +30,8 @@ public class GlobalAuthenticationSuccessHandler extends SavedRequestAwareAuthent
         HttpSession session = request.getSession();
         String username = authentication.getName();
         UserVO userVO = account.getUserVOByName(username);
-        session.setAttribute(CustomWebSecurityConfiguration.SESSION_KEY, userVO);
+        session.setAttribute(CustomWebSecurityConfiguration.KEY_ID, userVO.getID());
+        session.setAttribute(CustomWebSecurityConfiguration.KEY_NAME, username);
         System.out.println(username + "登录成功");
 //        request.getRequestDispatcher(authentication.getAuthorities()
 //                .contains(new SimpleGrantedAuthority("ROLE_" + roleProperty.getAudience())) ?

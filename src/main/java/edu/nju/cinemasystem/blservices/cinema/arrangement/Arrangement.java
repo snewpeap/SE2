@@ -40,12 +40,11 @@ public interface Arrangement {
 
     /**
      * 改变座位的状态
-     *
      * @param arrangementID 排片ID
      * @param seatID        座位ID
-     * @param status        状态
+     * @param locked        状态
      */
-    void changeArrangementSeatStatus(int arrangementID, int seatID, Byte status);
+    void changeArrangementSeatStatus(int arrangementID, int seatID, boolean locked);
 
     /**
      * 检查排片是否开始放映
@@ -87,4 +86,6 @@ public interface Arrangement {
      * @return boolean值
      */
     boolean haveArrangementAfterCurrentTime(int hallID, Date currentTime);
+
+    boolean isSeatBeenLocked(int arrangementID, int seatID);
 }

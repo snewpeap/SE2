@@ -1,17 +1,25 @@
 package edu.nju.cinemasystem.blservices.impl.sale.ticket;
 
+import edu.nju.cinemasystem.data.po.Ticket;
+
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
-
-import edu.nju.cinemasystem.data.po.Ticket;
 
 public class DelayedTask implements Delayed {
 
     private long ID;
     private Date startTime;
     private List<Ticket> tickets;
+    private int couponID;
+
+    DelayedTask(long iD, Date startTime, List<Ticket> tickets, int couponID) {
+        ID = iD;
+        this.startTime = startTime;
+        this.tickets = tickets;
+        this.couponID = couponID;
+    }
 
     @Override
     public int compareTo(Delayed o) {
@@ -48,10 +56,12 @@ public class DelayedTask implements Delayed {
         this.tickets = tickets;
     }
 
-    DelayedTask(long iD, Date startTime, List<Ticket> tickets) {
-        ID = iD;
-        this.startTime = startTime;
-        this.tickets = tickets;
+    public int getCouponID() {
+        return couponID;
+    }
+
+    public void setCouponID(int couponID) {
+        this.couponID = couponID;
     }
 
 }

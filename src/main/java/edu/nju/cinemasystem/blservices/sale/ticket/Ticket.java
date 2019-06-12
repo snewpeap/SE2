@@ -1,9 +1,9 @@
 package edu.nju.cinemasystem.blservices.sale.ticket;
 
-import java.util.Date;
-import java.util.List;
-
+import com.alipay.api.AlipayApiException;
 import edu.nju.cinemasystem.data.vo.Response;
+
+import java.util.List;
 
 public interface Ticket {
 
@@ -19,14 +19,21 @@ public interface Ticket {
      * 
      * @return 是否成功
      */
-    Response payOrder(long orderID, int userID, int couponID);
+    //Response payOrder(long orderID, int userID, int couponID);
+
+    Response payable(long orderID, int couponID, int userID);
+
+    //TODO
+    String requestAlipay(long orderID) throws AlipayApiException;
+
+    Response payOrder(long orderID, int userID);
 
     /**
      * 通过会员卡，完成购票，并且给用户送优惠券
      * 
      * @return 是否成功
      */
-    Response payOrderByVIPCard(long orderID, int userID, int couponID);
+    Response payOrderByVIPCard(long orderID, int userID);
 
     /**
      * 取消订单

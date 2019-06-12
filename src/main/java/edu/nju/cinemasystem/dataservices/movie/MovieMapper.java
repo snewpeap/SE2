@@ -46,20 +46,6 @@ public interface MovieMapper {
     int updateByPrimaryKeySelective(Movie record);
 
     /**
-     * 通过id唯一更新一部电影，更新description
-     * @param record MoviePO
-     * @return 操作的行数
-     */
-    int updateByPrimaryKeyWithBLOBs(Movie record);
-
-    /**
-     * 通过id唯一更新一部电影，不更新description
-     * @param record MoviePO
-     * @return 操作的行数
-     */
-    int updateByPrimaryKey(Movie record);
-
-    /**
      * 查询所有电影
      * @return 所有电影
      */

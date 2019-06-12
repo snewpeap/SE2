@@ -19,6 +19,15 @@
         </if>
     </select>
 
+    <select id="selectByAmount" parameterType="java.lang.Float" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from vipcard_recharge_reduction
+        where target_amount &lt;= #{amount,jdbcType=REAL}
+        order by discount_amount desc
+        limit 1
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
         from vipcard_recharge_reduction

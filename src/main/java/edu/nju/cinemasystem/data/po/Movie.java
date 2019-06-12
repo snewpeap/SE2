@@ -23,9 +23,11 @@ public class Movie {
 
     private Integer duration;
 
-    private Date startDate;
+    private Date releaseDate;//上架时间
 
-    private Byte status;
+    private Date startDate;//上映时间
+
+    private Byte status;//0:上架 1:上映 2:下映 3:下架
 
     private String description;
 
@@ -109,6 +111,14 @@ public class Movie {
         this.duration = duration;
     }
 
+    public Date getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(Date releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
     public Date getStartDate() {
         return startDate;
     }
@@ -121,8 +131,8 @@ public class Movie {
         return status;
     }
 
-    public boolean getStatusBoolean(){
-        return status==1;
+    public boolean getStatusBoolean() {
+        return status == 1;
     }
 
     public void setStatus(Byte status) {

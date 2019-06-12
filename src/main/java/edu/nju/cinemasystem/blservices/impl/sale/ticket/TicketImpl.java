@@ -1,5 +1,10 @@
 package edu.nju.cinemasystem.blservices.impl.sale.ticket;
 
+import com.alipay.api.AlipayApiException;
+import com.alipay.api.AlipayClient;
+import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.domain.AlipayTradePayModel;
+import com.alipay.api.request.AlipayTradePayRequest;
 import edu.nju.cinemasystem.blservices.cinema.arrangement.Arrangement;
 import edu.nju.cinemasystem.blservices.cinema.hall.HallManage;
 import edu.nju.cinemasystem.blservices.movie.Movie;
@@ -13,11 +18,13 @@ import edu.nju.cinemasystem.data.vo.*;
 import edu.nju.cinemasystem.dataservices.sale.OrderMapper;
 import edu.nju.cinemasystem.dataservices.sale.ticket.RefundStrategyMapper;
 import edu.nju.cinemasystem.dataservices.sale.ticket.TicketsMapper;
-import edu.nju.cinemasystem.util.properties.message.ArrangementMsg;
-import edu.nju.cinemasystem.util.properties.message.GlobalMsg;
+import edu.nju.cinemasystem.util.properties.AlipayProperties;
 import edu.nju.cinemasystem.util.properties.message.TicketMsg;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
@@ -25,46 +32,36 @@ import java.util.concurrent.DelayQueue;
 import java.util.concurrent.Executors;
 
 @Service
-public class TicketImpl implements
-        edu.nju.cinemasystem.blservices.sale.ticket.Ticket,
-        SalesInfo {
+public class TicketImpl
+        implements edu.nju.cinemasystem.blservices.sale.ticket.Ticket, SalesInfo {
 
-    private final TicketsMapper ticketsMapper;
-    private final //这个是业务逻辑层的接口
-            Arrangement arrangement;
-    private final //这个是业务逻辑层的接口
-            Coupon coupon;
-    private final
-    GlobalMsg globalMsg;
-    private final
-    ArrangementMsg arrangementMsg;
-    private final //这个是业务逻辑层的接口
-            VIPCard vipCard;
-    private final
-    TicketMsg ticketMsg;
-    private final
-    OrderMapper orderMapper;
-    private final
-    RefundStrategyMapper refundStrategyMapper;
-    private final
-    HallManage hallManage;
+    private static final Logger LOG = LoggerFactory.getLogger(TicketImpl.class);
+
+    private final Arrangement arrangement; //这个是业务逻辑层的接口
+    private final Coupon coupon;//这个是业务逻辑层的接口
+    private final VIPCard vipCard;//这个是业务逻辑层的接口
+    private final HallManage hallManage;
     private final Movie movie;
-
-    private static DelayQueue<DelayedTask> delayQueue = new DelayQueue<>();
+    private final OrderMapper orderMapper;
+    private final TicketsMapper ticketsMapper;
+    private final RefundStrategyMapper refundStrategyMapper;
+    private final AlipayProperties alipayProperties;
+    private final TicketMsg ticketMsg;
+    private OrderHolder orderHolder;
 
     @Autowired
-    public TicketImpl(TicketsMapper ticketsMapper, Arrangement arrangement, Coupon coupon, GlobalMsg globalMsg, ArrangementMsg arrangementMsg, VIPCard vipCard, TicketMsg ticketMsg, OrderMapper orderMapper, RefundStrategyMapper refundStrategyMapper, HallManage hallManage, Movie movie) {
+    public TicketImpl(TicketsMapper ticketsMapper, Arrangement arrangement, Coupon coupon, VIPCard vipCard, TicketMsg ticketMsg, OrderMapper orderMapper, RefundStrategyMapper refundStrategyMapper, HallManage hallManage, Movie movie, AlipayProperties alipayProperties) {
         this.ticketsMapper = ticketsMapper;
         this.arrangement = arrangement;
         this.coupon = coupon;
-        this.globalMsg = globalMsg;
-        this.arrangementMsg = arrangementMsg;
         this.vipCard = vipCard;
         this.ticketMsg = ticketMsg;
         this.orderMapper = orderMapper;
         this.refundStrategyMapper = refundStrategyMapper;
         this.hallManage = hallManage;
         this.movie = movie;
+        this.alipayProperties = alipayProperties;
+        orderHolder = new OrderHolder();
     }
 
     /**
@@ -72,143 +69,175 @@ public class TicketImpl implements
      */
     @PostConstruct
     public void processTimeoutOrdersByDelayQueue() {
-        Executors.newSingleThreadExecutor().execute(() -> {
-            DelayedTask delayedTask;
-            while (true) {
-                try {
-                    delayedTask = delayQueue.take();
-                    makeOrderInvalid(delayedTask);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        orderHolder.run();
     }
 
     @Override
+    @Transactional
     public Response lockSeat(List<Integer> seatIDs, int userID, int arrangementID) {
-        Response response;
+        //TODO 检查观众在同一排片没有票
         if (arrangement.isArrangementStart(arrangementID)) {
-            response = Response.fail();
-            response.setMessage(arrangementMsg.getArrangementStart());
-            return response;
+            return Response.fail(ticketMsg.getArrangementStart());
         }
         Date date = new Date();
         float realAmount = arrangement.getFareByID(arrangementID);
         float totalAmount = realAmount * seatIDs.size();
-        long orderID = Long.parseLong(String.valueOf(date) + String.valueOf((long) (1 + Math.random() * (100))));
-        Order order = new Order(orderID, totalAmount, totalAmount, date, (byte) 2);
+        long orderID = Long.parseLong(date.getTime() + String.valueOf(1 + (long) (Math.random() * 100)));
 
-        orderMapper.insert(order);
+        Order order = new Order(orderID, totalAmount, totalAmount, date, (byte) 2);
+        orderMapper.insertSelective(order);
         List<Ticket> tickets = new ArrayList<>();
         for (int seatID : seatIDs) {
+            if (arrangement.isSeatBeenLocked(arrangementID, seatID)) {
+                orderMapper.deleteByPrimaryKey(orderID);
+                return Response.fail(ticketMsg.getSeatBeenLocked());
+            }
+            arrangement.changeArrangementSeatStatus(arrangementID, seatID, true);
             Ticket ticket = new Ticket(userID, arrangementID, seatID, date, (byte) 0, realAmount, orderID);
             ticketsMapper.insertSelective(ticket);
-            arrangement.changeArrangementSeatStatus(arrangementID, seatID, (byte) 1);
             tickets.add(ticket);
         }
+        orderHolder.addTask(new DelayedTask(orderID, date, tickets, 0));//此时没有优惠券
         OrderWithCouponVO orderWithCouponVO = assembleOrderWithCouponVO(tickets, userID, orderID, totalAmount);
-        DelayedTask delayedTask = new DelayedTask(orderID, date, tickets);
-        delayQueue.add(delayedTask);
-        response = Response.success();
+        Response response = Response.success();
         response.setContent(orderWithCouponVO);
 
         return response;
     }
 
     @Override
-    public Response payOrder(long orderID, int userID, int couponID) {
-        Response response;
-        float couponAmount = coupon.getCouponAmountByID(couponID);
+    @Transactional
+    public Response payable(long orderID, int couponID, int userID) {
         Order order = orderMapper.selectByPrimaryKey(orderID);
-        coupon.removeCouponByID(couponID);
-        List<Ticket> tickets = completeTicket(orderID, couponAmount);
-        order.setRealAmount(order.getOriginalAmount() - couponAmount);
-        order.setDate(new Date());
-        order.setUseVipcard((byte) 0);
-        orderMapper.updateByPrimaryKeySelective(order);
+        if (order.getStatus() != 2 || orderMapper.selectByUserAndOrderID(userID, orderID).isEmpty()) {
+            return Response.fail(ticketMsg.getOrderInvalid());
+        }
+        List<CouponVO> coupons = coupon.getAvailableCouponsByUserAndTickets(userID, order.getOriginalAmount());
+        CouponVO thecoupon = null;
+        for (CouponVO couponVO : coupons) {
+            if (couponVO.getID() == couponID) {
+                thecoupon = couponVO;
+                break;
+            }
+        }
+        if (thecoupon != null) {
+            order.setRealAmount(order.getOriginalAmount() - thecoupon.getDiscountAmount());
+            orderMapper.updateByPrimaryKeySelective(order);
+            List<Ticket> tickets = ticketsMapper.selectByOrderID(orderID);
+            float original = arrangement.getFareByID(tickets.get(0).getArrangementId());
+            float minus = thecoupon.getDiscountAmount() / (float) tickets.size();
+            tickets.forEach(
+                    ticket -> {
+                        ticket.setRealAmount(original - minus);
+                        ticketsMapper.updateByPrimaryKeySelective(ticket);
+                    }
+            );
+            if (orderHolder.setCouponToOrder(orderID, couponID)) {
+                return Response.success();
+            }else {
+                return Response.fail(ticketMsg.getOrderInvalid());
+            }
+        } else {
+            return Response.fail(ticketMsg.getCouponInvalid());
+        }
+    }
+
+    @Override
+    public String requestAlipay(long orderID) throws AlipayApiException {
+        Order order = orderMapper.selectByPrimaryKey(orderID);
+        AlipayClient alipayClient = new DefaultAlipayClient(
+                alipayProperties.getAliGateway(),
+                alipayProperties.getAppId(),
+                alipayProperties.getMerchantPrivateKey(),
+                "json",
+                alipayProperties.getCharset(),
+                alipayProperties.getAliPublicKey(),
+                alipayProperties.getSignType()
+        );
+        AlipayTradePayModel payModel = new AlipayTradePayModel();
+        payModel.setOutTradeNo(String.valueOf(orderID));
+        payModel.setTotalAmount(String.valueOf(order.getRealAmount()));
+        payModel.setSubject("电影票订单-" + order.getId());
+        payModel.setTimeoutExpress("15min");
+        AlipayTradePayRequest payRequest = new AlipayTradePayRequest();
+        payRequest.setNotifyUrl(alipayProperties.getNotifyUrl());
+        payRequest.setReturnUrl(alipayProperties.getReturnUrl());
+        payRequest.setBizModel(payModel);
+        return alipayClient.pageExecute(payRequest).getBody();
+    }
+
+
+    @Override
+    public Response payOrder(long orderID, int userID) {
+        List<Ticket> tickets = ticketsMapper.selectByOrderID(orderID);
+        //TODO coupon.removeCouponByID(couponID);
+        orderHolder.completeOrder(tickets, orderID, false);
         int movieID = arrangement.getMovieIDbyID(tickets.get(0).getArrangementId());
         coupon.sendCouponsToUser(userID, movieID);
-        response = Response.success();
-        response.setMessage(globalMsg.getOperationSuccess());
-        return response;
+        return Response.success();
     }
 
     @Override
-    public Response payOrderByVIPCard(long orderID, int userID, int couponID) {
-        Response response;
-        float couponAmount = coupon.getCouponAmountByID(couponID);
-        List<Ticket> tickets = ticketsMapper.selectByOrderID(orderID);
-        int arrangementID = tickets.get(0).getArrangementId();
-        int movieID = arrangement.getMovieIDbyID(arrangementID);
-        float totalAmount = arrangement.getFareByID(arrangementID) * tickets.size();
+    @Transactional
+    public Response payOrderByVIPCard(long orderID, int userID) {
         Order order = orderMapper.selectByPrimaryKey(orderID);
-        if (vipCard.reduceVIPBalance(userID, totalAmount - couponAmount)) {
-            completeTicket(orderID, couponAmount);
-            order.setRealAmount(order.getOriginalAmount() - couponAmount);
-            order.setDate(new Date());
-            order.setUseVipcard((byte) 1);
-            orderMapper.updateByPrimaryKeySelective(order);
+        Response payResult = vipCard.pay(userID, order.getRealAmount());
+        if (payResult.isSuccess()) {
+            List<Ticket> tickets = ticketsMapper.selectByOrderID(orderID);
+            int arrangementID = tickets.get(0).getArrangementId();
+            int movieID = arrangement.getMovieIDbyID(arrangementID);
+            orderHolder.completeOrder(tickets, orderID, true);
             coupon.sendCouponsToUser(userID, movieID);
-            response = Response.success();
-            response.setMessage(globalMsg.getOperationSuccess());
+            return Response.success(ticketMsg.getOperationSuccess());
         } else {
-            response = Response.fail();
-            response.setMessage(ticketMsg.getBalanceNotEnough());
+            return payResult;
         }
-        return response;
     }
 
     @Override
+    @Transactional
     public Response cancelOrder(int userID, long orderID) {
-        Response response;
+        Order order = orderMapper.selectByPrimaryKey(orderID);
+        if (order.getStatus() != 2 || order.getUserId() != userID) {
+            return Response.fail(ticketMsg.getOrderInvalid());
+        }
         List<Ticket> tickets = ticketsMapper.selectByOrderID(orderID);
         for (Ticket ticket : tickets) {
             ticketsMapper.deleteByPrimaryKey(ticket.getId());
-            int seatID = ticket.getSeatId();
-            arrangement.changeArrangementSeatStatus(ticket.getArrangementId(), seatID, (byte) 0);
+            arrangement.changeArrangementSeatStatus(ticket.getArrangementId(), ticket.getSeatId(), false);
         }
         orderMapper.deleteByPrimaryKey(orderID);
-        for (DelayedTask or : delayQueue) {
-            if (or.getID() == orderID) {
-                delayQueue.remove(or);
-            }
-        }
-        response = Response.success();
-        response.setMessage(globalMsg.getOperationSuccess());
-        return response;
+        orderHolder.removeTask(orderID);
+        return Response.success(ticketMsg.getOperationSuccess());
     }
 
     @Override
+    @Transactional
     public Response refundTicket(int userID, int ticketID) {
         Ticket ticket = ticketsMapper.selectByPrimaryKey(ticketID);
-        List<RefundStrategy> refundStrategies = refundStrategyMapper.selectAll();
-        refundStrategies.sort((RefundStrategy r1, RefundStrategy r2) -> r2.getDay() - r1.getDay());
-        Date today = new Date();
-        float amount = 0;
-        Response response;
-        for (RefundStrategy refundStrategy : refundStrategies) {
-            if (today.compareTo(addDate(ticket.getDate(), refundStrategy.getDay())) > 0) {
-                amount = ticket.getRealAmount() * refundStrategy.getPercentage();
-            }
+        Order order = orderMapper.selectByPrimaryKey(ticket.getOrderID());
+        if (order.getStatus() > 1) {
+            return Response.fail(ticketMsg.getOrderInvalid());
         }
-        if (amount == 0) {
-            response = Response.fail();
-            response.setMessage(ticketMsg.getRefundDisable());
-            return response;
+        Date arrangementStartTime = arrangement.getStartDateAndEndDate(ticket.getArrangementId())[0];
+        Date currentTime = new Date();
+        if (arrangementStartTime.before(currentTime)) {
+            return Response.fail(ticketMsg.getArrangementStart());
         }
-        long orderID = ticket.getOrderID();
-        Order order = orderMapper.selectByPrimaryKey(orderID);
-        if (order.getUseVipcard() == (byte) 1) {
-            vipCard.addVIPBalance(ticket.getUserId(), amount);
+        long datToCome = (arrangementStartTime.getTime() - currentTime.getTime()) / (1000 * 3600 * 24);
+        RefundStrategy refundStrategy = refundStrategyMapper.selectByDay(datToCome);
+        if (!refundStrategy.isRefundable()) {
+            return Response.fail(ticketMsg.getRefundDisable());
+        }
+        float refundAmount = ticket.getRealAmount() * refundStrategy.getPercentage();
+        if (order.getStatus() == 1) {
+            vipCard.addVIPBalance(ticket.getUserId(), refundAmount);
         }
         ticket.setStatus((byte) 3);
-        int seatID = ticket.getSeatId();
-        arrangement.changeArrangementSeatStatus(ticket.getArrangementId(), seatID, (byte) 0);
         ticketsMapper.updateByPrimaryKeySelective(ticket);
-        response = Response.success();
-        response.setMessage(globalMsg.getOperationSuccess());
-        return response;
+        int seatID = ticket.getSeatId();
+        arrangement.changeArrangementSeatStatus(ticket.getArrangementId(), seatID, false);
+        return Response.success();
     }
 
     @Override
@@ -300,46 +329,6 @@ public class TicketImpl implements
     }
 
     /**
-     * 使订单失效
-     *
-     * @param delayedTask 延时任务
-     */
-    private void makeOrderInvalid(DelayedTask delayedTask) {
-        long orderID = delayedTask.getID();
-        List<Ticket> tickets = ticketsMapper.selectByOrderID(orderID);
-        Order order = orderMapper.selectByPrimaryKey(orderID);
-        for (Ticket ticket : tickets) {
-            ticket.setStatus((byte) 2);
-            ticketsMapper.updateByPrimaryKeySelective(ticket);
-            arrangement.changeArrangementSeatStatus(ticket.getArrangementId(), ticket.getSeatId(), (byte) 0);
-        }
-        order.setUseVipcard((byte) 3);
-        orderMapper.updateByPrimaryKeySelective(order);
-    }
-
-    /**
-     * 把订单上的票的状态改为已完成并且将其移出延时队列,并且返回订单里的所有票（为了知道是什么电影和算钱）
-     *
-     * @param orderID 订单ID
-     */
-    private List<Ticket> completeTicket(long orderID, float couponAmount) {
-        List<Ticket> tickets = ticketsMapper.selectByOrderID(orderID);
-        float realAmount = couponAmount / (float) tickets.size();
-        for (Ticket ticket : tickets) {
-            ticket.setStatus((byte) 1);
-            ticket.setDate(new Date());
-            ticket.setRealAmount(realAmount);
-            ticketsMapper.updateByPrimaryKeySelective(ticket);
-        }
-        for (DelayedTask or : delayQueue) {
-            if (or.getID() == orderID) {
-                delayQueue.remove(or);
-            }
-        }
-        return tickets;
-    }
-
-    /**
      * 组装一个OrderWithCouponVO
      *
      * @param tickets     Ticket列表
@@ -411,4 +400,89 @@ public class TicketImpl implements
         return new TicketVO(id, orderID, userID, arrangementId, status, realAmount, row, column);
     }
 
+    private class OrderHolder implements Runnable {
+
+        DelayQueue<DelayedTask> delayQueue = new DelayQueue<>();
+
+        @Override
+        public void run() {
+            Executors.newSingleThreadExecutor().execute(() -> {
+                DelayedTask delayedTask;
+                while (true) {
+                    try {
+                        delayedTask = delayQueue.take();
+                        invalidateOrder(delayedTask);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+
+        public void addTask(DelayedTask delayedTask) {
+            delayQueue.add(delayedTask);
+        }
+
+        /**
+         * 使订单失效
+         *
+         * @param delayedTask 延时任务
+         */
+        @Transactional
+        public void invalidateOrder(DelayedTask delayedTask) {
+            long orderID = delayedTask.getID();
+            Order order = orderMapper.selectByPrimaryKey(orderID);
+            if (order.getStatus() == 2) {
+                List<Ticket> tickets = ticketsMapper.selectByOrderID(orderID);
+                for (Ticket ticket : tickets) {
+                    ticket.setStatus((byte) 2);
+                    ticketsMapper.updateByPrimaryKeySelective(ticket);
+                    arrangement.changeArrangementSeatStatus(ticket.getArrangementId(), ticket.getSeatId(), false);
+                }
+                order.setUseVipcard((byte) 3);
+                orderMapper.updateByPrimaryKeySelective(order);
+                LOG.info("将订单 " + orderID + " 失效");
+            } else {
+                LOG.info("订单 " + orderID + " 在失效前已完成");
+            }
+        }
+
+        public void removeTask(long orderID) {
+            for (DelayedTask task : delayQueue) {
+                if (task.getID() == orderID) {
+                    delayQueue.remove(task);
+                }
+            }
+        }
+
+        /**
+         * 把订单上的票的状态改为已完成并且将其移出延时队列,并且返回订单里的所有票（为了知道是什么电影和算钱）
+         *
+         * @param tickets
+         */
+        @Transactional
+        public void completeOrder(List<Ticket> tickets, long orderID, boolean useVIP) {
+            Order order = orderMapper.selectByPrimaryKey(orderID);
+            for (Ticket ticket : tickets) {
+                ticket.setStatus((byte) 1);
+                ticket.setDate(new Date());
+                ticketsMapper.updateByPrimaryKeySelective(ticket);
+            }
+            order.setDate(new Date());
+            order.setUseVipcard(useVIP ? (byte) 1 : (byte) 0);
+            orderMapper.updateByPrimaryKeySelective(order);
+            removeTask(orderID);
+        }
+
+        boolean setCouponToOrder(long orderID, int couponID) {
+            boolean set = false;
+            for (DelayedTask task:delayQueue){
+                if (task.getID() == orderID){
+                    task.setCouponID(couponID);
+                    set = true;
+                }
+            }
+            return set;
+        }
+    }
 }

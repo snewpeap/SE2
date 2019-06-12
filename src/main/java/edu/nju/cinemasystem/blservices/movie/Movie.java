@@ -6,9 +6,10 @@ public interface Movie {
     /**
      * 非整数代表查询所有电影
      * @param movieID 电影ID
+     * @param userID
      * @return 为正整数返回一部电影；为非正数返回所有电影列表
      */
-    Response getMovie(int movieID);
+    Response getMovie(int movieID, int userID);
 
     /**
      * 查找电影，关键字我也不知道能查到啥

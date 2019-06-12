@@ -27,4 +27,6 @@ public interface RefundStrategyMapper {
      * @return 所有退票策略列表
      */
     List<RefundStrategy> selectAll();
+
+    RefundStrategy selectByDay(long dayToCome);
 }

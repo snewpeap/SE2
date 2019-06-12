@@ -12,6 +12,7 @@
         <result column="country" jdbcType="VARCHAR" property="country"/>
         <result column="language" jdbcType="VARCHAR" property="language"/>
         <result column="duration" jdbcType="INTEGER" property="duration"/>
+        <result column="release_date" jdbcType="TIMESTAMP" property="releaseDate"/>
         <result column="start_date" jdbcType="DATE" property="startDate"/>
         <result column="status" jdbcType="TINYINT" property="status"/>
     </resultMap>
@@ -21,7 +22,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, `name`, poster, director, screen_writer, starring, type, country, `language`, duration,
+        id, `name`, poster, director, screen_writer, starring, type, country, `language`, duration, release_date,
         start_date, `status`
     </sql>
 
@@ -192,39 +193,6 @@
                 `description` = #{description,jdbcType=LONGVARCHAR},
             </if>
         </set>
-        where id = #{id,jdbcType=INTEGER}
-    </update>
-
-    <update id="updateByPrimaryKeyWithBLOBs" parameterType="edu.nju.cinemasystem.data.po.Movie">
-        update movie
-        set `name`        = #{name,jdbcType=VARCHAR},
-            poster        = #{poster,jdbcType=VARCHAR},
-            director      = #{director,jdbcType=VARCHAR},
-            screen_writer = #{screenWriter,jdbcType=VARCHAR},
-            starring      = #{starring,jdbcType=VARCHAR},
-            type          = #{type,jdbcType=VARCHAR},
-            country       = #{country,jdbcType=VARCHAR},
-            `language`    = #{language,jdbcType=VARCHAR},
-            duration      = #{duration,jdbcType=INTEGER},
-            start_date    = #{startDate,jdbcType=DATE},
-            `status`      = #{status,jdbcType=TINYINT},
-            `description` = #{description,jdbcType=LONGVARCHAR}
-        where id = #{id,jdbcType=INTEGER}
-    </update>
-
-    <update id="updateByPrimaryKey" parameterType="edu.nju.cinemasystem.data.po.Movie">
-        update movie
-        set `name`        = #{name,jdbcType=VARCHAR},
-            poster        = #{poster,jdbcType=VARCHAR},
-            director      = #{director,jdbcType=VARCHAR},
-            screen_writer = #{screenWriter,jdbcType=VARCHAR},
-            starring      = #{starring,jdbcType=VARCHAR},
-            type          = #{type,jdbcType=VARCHAR},
-            country       = #{country,jdbcType=VARCHAR},
-            `language`    = #{language,jdbcType=VARCHAR},
-            duration      = #{duration,jdbcType=INTEGER},
-            start_date    = #{startDate,jdbcType=DATE},
-            `status`      = #{status,jdbcType=TINYINT}
         where id = #{id,jdbcType=INTEGER}
     </update>
 </mapper>

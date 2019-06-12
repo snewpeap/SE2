@@ -3,7 +3,7 @@ package edu.nju.cinemasystem.data.po;
 public class RefundStrategy {
     private Integer day;
 
-    private Byte refundable;
+    private Byte refundable;//0为不可退票，1为可以退票
 
     private Float percentage;
 
@@ -17,6 +17,10 @@ public class RefundStrategy {
 
     public Byte getRefundable() {
         return refundable;
+    }
+
+    public boolean isRefundable(){
+        return refundable == 1;
     }
 
     public void setRefundable(Byte refundable) {
