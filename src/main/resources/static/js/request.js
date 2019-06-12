@@ -35,19 +35,6 @@ function login(url,data,onSuccess,onError) {
     })
 }
 
-function deleteRequest(url, data, onSuccess, onError) {
-    $.ajax({
-        type: 'DELETE',
-        url: url,
-        async: true,
-        data: JSON.stringify(data),
-        contentType: 'application/json',
-        processData: false,
-        success: onSuccess,
-        error: onError
-    });
-}
-
 function getCookie(cname)
 {
     var name = cname + "=";
@@ -62,13 +49,22 @@ function getCookie(cname)
 
 function formatDate(date){
     var year = date.getFullYear();
-    var month = date.getMonth()+1+'';
-    var day = date.getDate()+'';
+    var month = date.getMonth() + 1 + '';
+    var day = date.getDate() + '';
     month.length===1 && (month = '0'+month);
     day.length===1 && (day = '0'+day);
     return year+'-'+month+'-'+day;
 }
 
+function plusDateByDay(date,days) {
+    date.setDate(date.getDate() + days );
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1 + '';
+    var day = date.getDate() + '';
+    month.length===1 && (month = '0'+month);
+    day.length===1 && (day = '0'+day);
+    return year+'-'+month+'-'+day;
+}
 function formatTime(date){
     var hour = date.getHours()+'';
     var minutes = date.getMinutes()+'';

@@ -1,23 +1,27 @@
-.schedule-container {
+ul{
+    padding: 0;
+}
+
+.arrangement-container {
     display: flex;
     padding: 0 20px;
 }
 
-.schedule-time-line {
+.arrangement-time-line {
     width: 80px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
 
-.schedule-item-line {
+.arrangement-item-line {
     height: 960px;
     width: 150px;
     border-left: 1px solid #ccc;
     position: relative;
 }
 
-.schedule-item {
+.arrangement-item {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -27,14 +31,14 @@
     overflow-y: scroll;
 }
 
-.schedule-date-container {
-    padding-left: 100px;
+.arrangement-date-container {
+    padding-left: 95px;
     height: 40px;
     line-height: 30px;
     display: flex;
 }
 
-.schedule-date {
-    width: 150px;
+.arrangement-date {
+    width: 135px;
     text-align: center;
 }

@@ -23,16 +23,15 @@ function getMovie(movieId) {
 }
 
 function renderMovieDetail(){
-    !isLike ? $('.icon-heart').removeClass('error-text') : $('.icon-heart').addClass('error-text');
-    $('#movie-img').attr('src',movie.poster);
+    $('#movie-img').attr('src',movie.poster || "/images/defaultPoster.jpg");
     $('#movie-name').text(movie.name);
     $('#movie-description').text(movie.description);
-    $('#movie-startDate').text(new Date(movie.startDate).toLocaleDateString());
+    $('#movie-startDate').text(formatDate(new Date(movie.startDate)));
     $('#movie-type').text(movie.type);
     $('#movie-country').text(movie.country);
     $('#movie-language').text(movie.language);
     $('#movie-director').text(movie.director);
     $('#movie-starring').text(movie.starring);
     $('#movie-writer').text(movie.screenWriter);
-    $('#movie-length').text(movie.length);
+    $('#movie-duration').text(movie.duration);
 }

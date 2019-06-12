@@ -23,13 +23,6 @@ public class TicketController {
         return ticket.lockSeat(seatId, userId, arrangementId);
     }
 
-    //TODO 删去
-//    @PostMapping("/user/ticket/pay")
-//    public Response payOrder(@RequestBody long orderId,HttpSession session,@RequestParam int couponId){
-//        int userId = (Integer)session.getAttribute("id");
-//        return ticket.payOrder(orderId,userId,couponId);
-//    }
-
     @PostMapping("/user/vip/pay/{orderID}")
     public Response payOrderByVIP(@PathVariable long orderID, HttpSession session, @RequestParam int couponID) {
         int userID = (Integer) session.getAttribute("id");
@@ -41,8 +34,7 @@ public class TicketController {
         }
     }
 
-    //TODO 去掉ticket
-    @GetMapping("/user/ticket/purchaseRecord")
+    @GetMapping("/user/purchaseRecord")
     public Response getPurchaseRecord(HttpSession session) {
         int userId = (Integer) session.getAttribute("id");
         return ticket.getHistoricalConsumptionsByUserId(userId);
@@ -60,27 +52,18 @@ public class TicketController {
         return ticket.refundTicket(userId, ticketId);
     }
 
-//    //TODO 删去
-//    @GetMapping("/user/ticket/get")
-//    public Response getAllTickets(HttpSession session) {
-//        int userId = (Integer) session.getAttribute("id");
-//        return ticket.getAllTicketsByUserId(userId);
-//    }
-
     @GetMapping("/user/ticket/get/existing")
     public Response getExistingTickets(@PathVariable int scheduleId, HttpSession session) {
         int userId = (Integer) session.getAttribute("id");
         return ticket.getOrderByScheduleIdAndUserId(userId, scheduleId);
     }
 
-    //TODO /ticket/refundStrategy -> /refund
-    @PostMapping("/admin/ticket/refundStrategy/add")
+    @PostMapping("/admin/refund/add")
     public Response addRefundStrategy(@RequestBody RefundStrategyForm refundStrategyForm) {
         return refundTicketManage.addRefundTicketManage(refundStrategyForm);
     }
 
-    //TODO /ticket/refundStrategy -> /refund
-    @PostMapping("/admin/ticket/refundStrategy/modify")
+    @PostMapping("/admin/refund/modify")
     public Response modifyRefundStrategy(@RequestBody RefundStrategyForm refundStrategyForm) {
         return refundTicketManage.modifyRefundTicketManage(refundStrategyForm);
     }
