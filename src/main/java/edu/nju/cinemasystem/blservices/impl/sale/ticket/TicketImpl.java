@@ -226,7 +226,7 @@ public class TicketImpl
         }
         long datToCome = (arrangementStartTime.getTime() - currentTime.getTime()) / (1000 * 3600 * 24);
         RefundStrategy refundStrategy = refundStrategyMapper.selectByDay(datToCome);
-        if (!refundStrategy.isRefundable()) {
+        if (!refundStrategy.canRefund()) {
             return Response.fail(ticketMsg.getRefundDisable());
         }
         float refundAmount = ticket.getRealAmount() * refundStrategy.getPercentage();

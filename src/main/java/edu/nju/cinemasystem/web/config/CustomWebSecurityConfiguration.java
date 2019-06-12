@@ -20,7 +20,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class CustomWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
-    public final static String SESSION_KEY = "user";
     public final static String KEY_ID = "id";
     public final static String KEY_NAME = "name";
 
@@ -67,7 +66,7 @@ public class CustomWebSecurityConfiguration extends WebSecurityConfigurerAdapter
                 .antMatchers("/root/**", "/actuator", "/actuator/**")
                 .hasRole(roleProperty.getRoot())
                 //.regexMatchers("^/(?!manage|admin|root|index|register|login|logout|error|actuator).*$")
-                .regexMatchers("/user/**")
+                .antMatchers("/user/**")
                 .hasRole(roleProperty.getAudience())
                 .anyRequest().authenticated()
                 .and()
@@ -81,7 +80,7 @@ public class CustomWebSecurityConfiguration extends WebSecurityConfigurerAdapter
                 .logout()
                 .logoutUrl("/logout")
                 .clearAuthentication(true)
-                .deleteCookies()
+                .deleteCookies("id","name","role")
                 .logoutSuccessUrl("/login")
                 .permitAll()
                 .and()
@@ -89,7 +88,7 @@ public class CustomWebSecurityConfiguration extends WebSecurityConfigurerAdapter
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 .maximumSessions(1)
                 .maxSessionsPreventsLogin(false)
-                .expiredUrl("/login")
+                .expiredUrl("/logout")
                 .and()
                 .and()
                 .csrf()

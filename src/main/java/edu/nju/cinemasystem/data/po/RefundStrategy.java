@@ -19,7 +19,7 @@ public class RefundStrategy {
         return refundable;
     }
 
-    public boolean isRefundable(){
+    public boolean canRefund(){
         return refundable == 1;
     }
 
