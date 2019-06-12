@@ -50,4 +50,11 @@ public interface VipcardRechargeReductionMapper {
      * @return 操作的条数
      */
     int updateByPrimaryKey(VipcardRechargeReduction record);
+
+    /**
+     * 通过金额来寻找最适合的充值策略
+     * @param amount 金额
+     * @return 选中的充值策略
+     */
+    VipcardRechargeReduction selectByAmount(float amount);
 }

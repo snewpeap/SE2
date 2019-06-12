@@ -10,6 +10,9 @@ public class TicketMsg extends ArrangementMsg {
     private String balanceNotEnough;
     private String refundStrategyExist;
     private String refundDisable;
+    private String seatBeenLocked;
+    private String orderInvalid;
+    private String couponInvalid;
 
     public String getRefundStrategyExist() {
         return refundStrategyExist;
@@ -33,5 +36,29 @@ public class TicketMsg extends ArrangementMsg {
 
     public void setBalanceNotEnough(String balanceNotEnough) {
         this.balanceNotEnough = balanceNotEnough;
+    }
+
+    public String getSeatBeenLocked() {
+        return seatBeenLocked;
+    }
+
+    public void setSeatBeenLocked(String seatBeenLocked) {
+        this.seatBeenLocked = seatBeenLocked;
+    }
+
+    public String getOrderInvalid() {
+        return orderInvalid;
+    }
+
+    public void setOrderInvalid(String orderInvalid) {
+        this.orderInvalid = orderInvalid;
+    }
+
+    public String getCouponInvalid() {
+        return couponInvalid;
+    }
+
+    public void setCouponInvalid(String couponInvalid) {
+        this.couponInvalid = couponInvalid;
     }
 }

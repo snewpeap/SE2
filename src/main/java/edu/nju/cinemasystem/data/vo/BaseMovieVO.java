@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.util.Date;
 
-public abstract class BaseMovieVO {
+public class BaseMovieVO {
     private Integer id;
 
     @NotBlank
@@ -161,10 +161,8 @@ public abstract class BaseMovieVO {
     }
 
 
-    public static BaseMovieVO assembleMovieVO(Movie movie) {
-        AudienceMovieVO movieVO = new AudienceMovieVO();
-        int id = movie.getId();
-        movieVO.setId(id);
+    public static void assembleMovieVO(Movie movie, BaseMovieVO movieVO) {
+        movieVO.setId(movie.getId());
         movieVO.setCountry(movie.getCountry());
         movieVO.setDescription(movie.getDescription());
         movieVO.setDirector(movie.getDirector());
@@ -176,7 +174,6 @@ public abstract class BaseMovieVO {
         movieVO.setStarring(movie.getStarring());
         movieVO.setStartDate(movie.getStartDate());
         movieVO.setType(movie.getType());
-        return movieVO;
     }
 
 }

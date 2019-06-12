@@ -20,54 +20,56 @@ public class MovieController {
     private MovieManagement movieManagement;
 
     @GetMapping("/user/movie/all")
-    public Response getAllMovie(){
-        return movie.getMovie(0);
+    public Response getAllMovie(HttpSession session) {
+        int userID = (Integer) session.getAttribute("id");
+        return movie.getMovie(0, userID);
     }
-    
+
     @GetMapping("/user/movie/get/{movieId}")
-    public Response getOneMovie(@PathVariable int movieId){
-        return movie.getMovie(movieId);
+    public Response getOneMovie(@PathVariable int movieId, HttpSession session) {
+        int userID = (Integer) session.getAttribute("id");
+        return movie.getMovie(movieId, userID);
     }
-    
+
     @GetMapping("/user/movie/search")
-    public Response searchMovies(@RequestParam String query){
+    public Response searchMovies(@RequestParam String query) {
         return movie.searchMovies(query);
     }
-    
+
     @PostMapping("/user/movie/like/{movieId}")
-    public Response likeMovie(@PathVariable int movieId,HttpSession session){
+    public Response likeMovie(@PathVariable int movieId, HttpSession session) {
         int userId = Integer.parseInt(String.valueOf(session.getAttribute("id")));
-        return movieLike.like(userId,movieId);
+        return movieLike.like(userId, movieId);
     }
-    
+
     @PostMapping("/user/movie/unlike/{movieId}")
-    public Response unlikeMovie(HttpSession session,@PathVariable int movieId){
+    public Response unlikeMovie(HttpSession session, @PathVariable int movieId) {
         int userId = Integer.parseInt(String.valueOf(session.getAttribute("id")));
-        return movieLike.unlike(userId,movieId);
+        return movieLike.unlike(userId, movieId);
     }
-    
+
     @PostMapping("/manage/movie/add")
-    public Response addMovie(@RequestBody MovieForm movieForm){
+    public Response addMovie(@RequestBody MovieForm movieForm) {
         return movieManagement.addMovie(movieForm);
     }
-    
+
     @PostMapping("/manage/movie/modify")
-    public Response modifyMovie(@RequestBody MovieForm movieForm){
+    public Response modifyMovie(@RequestBody MovieForm movieForm) {
         return movieManagement.modifyMovie(movieForm);
     }
-    
+
     @PostMapping("/manage/movie/remove")
-    public Response removeMovie(@RequestParam int movieId){
+    public Response removeMovie(@RequestParam int movieId) {
         return movieManagement.removeMovie(movieId);
     }
-    
+
     @GetMapping("/manage/movie/all")
-    public Response adminGetAllMovie(){
+    public Response adminGetAllMovie() {
         return movieManagement.getMovie(0);
     }
-    
+
     @GetMapping("/manage/movie/get/{movieId}")
-    public Response adminGetOneMovie(@PathVariable int movieId){
+    public Response adminGetOneMovie(@PathVariable int movieId) {
         return movieManagement.getMovie(movieId);
     }
 }

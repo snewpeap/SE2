@@ -13,6 +13,8 @@ public class Order {
 
     private Byte useVipcard; //0，1，2，3分别代表银行卡支付，会员卡支付，未支付，已失效
 
+    private Integer userId;
+
     public Long getId() {
         return id;
     }
@@ -45,12 +47,20 @@ public class Order {
         this.date = date;
     }
 
-    public Byte getUseVipcard() {
+    public Byte getStatus() {
         return useVipcard;
     }
 
     public void setUseVipcard(Byte useVipcard) {
         this.useVipcard = useVipcard;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public Order(Long id, Float realAmount, Float originalAmount, Date date, Byte useVipcard) {

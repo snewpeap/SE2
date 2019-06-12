@@ -6,7 +6,7 @@
 SET @OLD_UNIQUE_CHECKS = @@UNIQUE_CHECKS, UNIQUE_CHECKS = 0;
 SET @OLD_FOREIGN_KEY_CHECKS = @@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS = 0;
 SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE =
-        'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+        'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
 -- Schema mydb
@@ -58,16 +58,18 @@ CREATE TABLE IF NOT EXISTS `cinema`.`movie`
     `country`       VARCHAR(45)      NOT NULL,
     `language`      VARCHAR(45)      NOT NULL,
     `duration`      INT(10) UNSIGNED NOT NULL,
+    `release_date`  TIMESTAMP        NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `start_date`    DATE             NOT NULL,
     `description`   TEXT             NOT NULL,
-    `status`        TINYINT(4)       NOT NULL DEFAULT '1',
+    `status`        TINYINT(4)       NOT NULL DEFAULT '0',
     PRIMARY KEY (`id`)
 )
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
 
-INSERT INTO movie (`name`, director, screen_writer, starring, type, country, `language`, duration, start_date, `description`)
-VALUES ('随便','赖宝光','赖宝光','赖宝光','赖宝光','日本','日语',123,'2019-6-1','农夫山泉始终坚持水源地建厂的理念，以确保天然品质');
+INSERT INTO movie (`name`, director, screen_writer, starring, type, country, `language`, duration, start_date,
+                   `description`)
+VALUES ('随便', '赖宝光', '赖宝光', '赖宝光', '赖宝光', '日本', '日语', 123, '2019-6-1', '农夫山泉始终坚持水源地建厂的理念，以确保天然品质');
 
 -- -----------------------------------------------------
 -- Table `cinema`.`arrangement`
@@ -77,8 +79,8 @@ DROP TABLE IF EXISTS `cinema`.`arrangement`;
 CREATE TABLE IF NOT EXISTS `cinema`.`arrangement`
 (
     `id`           INT(11)        NOT NULL AUTO_INCREMENT,
-    `start_time`   DATE           NOT NULL,
-    `end_time`     DATE           NOT NULL,
+    `start_time`   TIMESTAMP      NOT NULL,
+    `end_time`     TIMESTAMP      NOT NULL,
     `fare`         FLOAT UNSIGNED NOT NULL,
     `hall_id`      INT(11)        NOT NULL,
     `movie_id`     INT(11)        NOT NULL,
@@ -191,10 +193,10 @@ CREATE TABLE IF NOT EXISTS `cinema`.`user`
     DEFAULT CHARACTER SET = utf8;
 
 insert into cinema.user
-values (4,'root', 'root'),
-       (3,'manager', 'manager'),
-       (2,'staff', 'staff'),
-       (1,'audience', 'audience');
+values (4, 'root', 'root'),
+       (3, 'manager', 'manager'),
+       (2, 'staff', 'staff'),
+       (1, 'audience', 'audience');
 
 -- -----------------------------------------------------
 -- Table `cinema`.`coupon`
@@ -234,7 +236,7 @@ CREATE TABLE IF NOT EXISTS `cinema`.`movie_like`
 (
     `user_id`  INT(11) NOT NULL,
     `movie_id` INT(11) NOT NULL,
-    `completeTime`     DATE    NOT NULL,
+    `date`     DATE    NOT NULL,
     INDEX `fk_user_has_movie_movie1_idx` (`movie_id` ASC),
     INDEX `fk_user_has_movie_user1_idx` (`user_id` ASC),
     CONSTRAINT `fk_user_has_movie_movie1`
@@ -262,7 +264,7 @@ CREATE TABLE IF NOT EXISTS `cinema`.`recharge_record`
     `id`              INT(11)        NOT NULL,
     `original_amount` FLOAT UNSIGNED NOT NULL,
     `discount_amount` FLOAT          NOT NULL,
-    `completeTime`            DATE           NOT NULL,
+    `date`            TIMESTAMP      NOT NULL,
     `user_id`         INT(11)        NOT NULL,
     PRIMARY KEY (`id`),
     INDEX `fk_recharge_record_user1_idx` (`user_id` ASC),
@@ -301,9 +303,16 @@ CREATE TABLE IF NOT EXISTS `cinema`.`order`
     `id`              BIGINT(20)     NOT NULL,
     `real_amount`     FLOAT UNSIGNED NOT NULL,
     `original_amount` FLOAT UNSIGNED NOT NULL,
-    `completeTime`            DATE           NOT NULL,
-    `use_VIPcard`     TINYINT(4)     NOT NULL,
-    PRIMARY KEY (`id`)
+    `date`            TIMESTAMP      NOT NULL,
+    `use_VIPcard`     TINYINT(4)     NOT NULL DEFAULT 2,
+    `user_id`         INT(11)        NOT NULL,
+    PRIMARY KEY (`id`),
+    INDEX `fk_order_user1_idx` (`user_id` ASC),
+    CONSTRAINT `fk_order_user1`
+        FOREIGN KEY (`user_id`)
+            REFERENCES `cinema`.`user` (`id`)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE
 )
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
@@ -319,7 +328,7 @@ CREATE TABLE IF NOT EXISTS `cinema`.`tickets`
     `user_id`        INT(11)        NOT NULL,
     `arrangement_id` INT(11)        NOT NULL,
     `seat_id`        INT(11)        NOT NULL,
-    `completeTime`           DATE           NOT NULL,
+    `date`           TIMESTAMP      NOT NULL,
     `status`         TINYINT(4)     NOT NULL,
     `real_amount`    FLOAT UNSIGNED NOT NULL,
     `orderID`        BIGINT(20)     NOT NULL,
@@ -462,7 +471,10 @@ CREATE TABLE IF NOT EXISTS `cinema`.`user_has_role`
     DEFAULT CHARACTER SET = utf8;
 
 INSERT INTO user_has_role
-VALUES (1,1),(2,2),(3,3),(4,4);
+VALUES (1, 1),
+       (2, 2),
+       (3, 3),
+       (4, 4);
 
 CREATE or replace
     ALGORITHM = UNDEFINED

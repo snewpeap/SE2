@@ -1,6 +1,8 @@
 package edu.nju.cinemasystem.blservices.impl.vip;
 
+import edu.nju.cinemasystem.data.po.RechargeRecord;
 import edu.nju.cinemasystem.data.po.Vipcard;
+import edu.nju.cinemasystem.data.po.VipcardRechargeReduction;
 import edu.nju.cinemasystem.data.vo.Response;
 import edu.nju.cinemasystem.dataservices.vip.RechargeRecordMapper;
 import edu.nju.cinemasystem.dataservices.vip.VipcardMapper;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 @Service
 public class VIPCardImpl implements edu.nju.cinemasystem.blservices.vip.VIPCard {
@@ -73,17 +76,16 @@ public class VIPCardImpl implements edu.nju.cinemasystem.blservices.vip.VIPCard 
 
     @Override
     public Response deposit(int userID, float amount) {
-        Response response = Response.success();
-        Vipcard vipcard = vipcardMapper.selectByPrimaryKey(userID);
-        if (vipcard == null) {
-            return Response.fail(vipMsg.getNoVIPCard());
-        }
-        vipcard.setBalance(vipcard.getBalance() + amount);
-        if (vipcardMapper.updateByPrimaryKeySelective(vipcard) == 0) {
-            response = Response.fail(vipMsg.getOperationFailed());
-            response.setStatusCode(500);
-        } else {
-            response.setContent(vipcardMapper.selectByPrimaryKey(userID));
+        VipcardRechargeReduction reduction = reductionMapper.selectByAmount(amount);
+        float discountAmount = amount - reduction.getDiscountAmount();
+        Response response = addVIPBalance(userID, amount);
+        if (response.isSuccess()){
+            RechargeRecord rechargeRecord = new RechargeRecord();
+            rechargeRecord.setDate(new Date());
+            rechargeRecord.setUserId(userID);
+            rechargeRecord.setOriginalAmount(amount);
+            rechargeRecord.setDiscountAmount(discountAmount);
+            recordMapper.insertSelective(rechargeRecord);
         }
         return response;
     }
@@ -108,12 +110,19 @@ public class VIPCardImpl implements edu.nju.cinemasystem.blservices.vip.VIPCard 
     }
 
     @Override
-    public boolean reduceVIPBalance(int userID, float totalAmount) {
-        return false;
-    }
-
-    @Override
-    public void addVIPBalance(int userID, float amount) {
-
+    public Response addVIPBalance(int userID, float amount) {
+        Response response = Response.success();
+        Vipcard vipcard = vipcardMapper.selectByPrimaryKey(userID);
+        if (vipcard == null) {
+            return Response.fail(vipMsg.getNoVIPCard());
+        }
+        vipcard.setBalance(vipcard.getBalance() + amount);
+        if (vipcardMapper.updateByPrimaryKeySelective(vipcard) == 0) {
+            response = Response.fail(vipMsg.getOperationFailed());
+            response.setStatusCode(500);
+        } else {
+            response.setContent(vipcardMapper.selectByPrimaryKey(userID));
+        }
+        return response;
     }
 }

@@ -5,12 +5,13 @@
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="real_amount" jdbcType="REAL" property="realAmount"/>
         <result column="original_amount" jdbcType="REAL" property="originalAmount"/>
-        <result column="date" jdbcType="DATE" property="date"/>
+        <result column="date" jdbcType="TIMESTAMP" property="date"/>
         <result column="use_VIPcard" jdbcType="TINYINT" property="useVipcard"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, real_amount, original_amount, `date`, use_VIPcard
+        id, real_amount, original_amount, `date`, use_VIPcard, user_id
     </sql>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -18,6 +19,21 @@
         <include refid="Base_Column_List"/>
         from `order`
         where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByUserAndOrderID" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from `order`
+        <trim prefix="where" suffix="" suffixOverrides="and">
+            <if test="userID != null">
+                user_id = #{userID}
+            </if>
+            <if test="orderID != null">
+                id = #{orderID,jdbcType=BIGINT}
+            </if>
+        </trim>
+
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
@@ -28,9 +44,9 @@
 
     <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.Order">
         insert into `order` (id, real_amount, original_amount,
-                             `date`, use_VIPcard)
+                             `date`, use_VIPcard, user_id)
         values (#{id,jdbcType=BIGINT}, #{realAmount,jdbcType=REAL}, #{originalAmount,jdbcType=REAL},
-                #{date,jdbcType=DATE}, #{useVipcard,jdbcType=TINYINT})
+                #{date,jdbcType=TIMESTAMP}, #{useVipcard,jdbcType=TINYINT}, #{userId,jdbcType=INTEGER})
     </insert>
 
     <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.Order">
@@ -51,6 +67,9 @@
             <if test="useVipcard != null">
                 use_VIPcard,
             </if>
+            <if test="userId != null">
+                user_id
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -63,10 +82,13 @@
                 #{originalAmount,jdbcType=REAL},
             </if>
             <if test="date != null">
-                #{date,jdbcType=DATE},
+                #{date,jdbcType=TIMESTAMP},
             </if>
             <if test="useVipcard != null">
                 #{useVipcard,jdbcType=TINYINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER}
             </if>
         </trim>
     </insert>
@@ -81,10 +103,13 @@
                 original_amount = #{originalAmount,jdbcType=REAL},
             </if>
             <if test="date != null">
-                `date` = #{date,jdbcType=DATE},
+                `date` = #{date,jdbcType=TIMESTAMP},
             </if>
             <if test="useVipcard != null">
                 use_VIPcard = #{useVipcard,jdbcType=TINYINT},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER}
             </if>
         </set>
         where id = #{id,jdbcType=BIGINT}
@@ -94,8 +119,9 @@
         update `order`
         set real_amount     = #{realAmount,jdbcType=REAL},
             original_amount = #{originalAmount,jdbcType=REAL},
-            `date`          = #{date,jdbcType=DATE},
-            use_VIPcard     = #{useVipcard,jdbcType=TINYINT}
+            `date`          = #{date,jdbcType=TIMESTAMP},
+            use_VIPcard     = #{useVipcard,jdbcType=TINYINT},
+            user_id         = #{userId,jdbcType=INTEGER}
         where id = #{id,jdbcType=BIGINT}
     </update>
 </mapper>

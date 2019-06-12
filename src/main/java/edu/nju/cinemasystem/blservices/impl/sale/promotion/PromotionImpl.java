@@ -17,7 +17,10 @@ import edu.nju.cinemasystem.util.properties.message.GlobalMsg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class PromotionImpl implements
@@ -185,16 +188,16 @@ public class PromotionImpl implements
     @Override
     public void presentCouponTo(int userID, List<Integer> promotionIDs) throws ServiceException {
         List<Integer> success = new ArrayList<>();
-        for (int ID : promotionIDs){
-            Promotion promotion = promotionMapper.selectByPrimaryKey(ID);
-            Date endTime = addDate(new Date(),promotion.getCouponExpiration());
-            Coupon coupon = new Coupon(endTime,ID,userID);
+        for (int promotionID : promotionIDs) {
+            Promotion promotion = promotionMapper.selectByPrimaryKey(promotionID);
+            Date endTime = addDate(new Date(), promotion.getCouponExpiration());
+            Coupon coupon = new Coupon(endTime, promotionID, userID);
             int i = couponMapper.insertSelective(coupon);
-            if(i != 0){
-                success.add(ID);
-            }else {
+            if (i != 0) {
+                success.add(promotionID);
+            } else {
                 ServiceException serviceException = new ServiceException();
-                serviceException.setFail(ID);
+                serviceException.setFail(promotionID);
                 serviceException.setSuccessList(success);
                 throw serviceException;
             }
@@ -205,13 +208,12 @@ public class PromotionImpl implements
      * 给指定的日期加上天数
      *
      * @param date 指定的日期
-     * @param day 天数
+     * @param day  天数
      * @return 增加天数后的日期
      */
     private Date addDate(Date date, int day) {
         long time = date.getTime();
         long delayTime = day * 24 * 60 * 60 * 1000L;
-        time += delayTime;
-        return new Date(time);
+        return new Date(time + delayTime);
     }
 }

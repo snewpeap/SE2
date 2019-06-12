@@ -5,6 +5,7 @@ import java.util.List;
 public class AudienceMovieVO extends BaseMovieVO {
     private List<Integer> joinedPromotions;
     private int LikeNum;
+    private boolean isLiked;
     private double heat;
 
     public double getHeat() {
@@ -29,5 +30,13 @@ public class AudienceMovieVO extends BaseMovieVO {
 
     public void setJoinedPromotions(List<Integer> joinedPromotions) {
         this.joinedPromotions = joinedPromotions;
+    }
+
+    public boolean isLiked() {
+        return isLiked;
+    }
+
+    public void setLiked(boolean liked) {
+        isLiked = liked;
     }
 }

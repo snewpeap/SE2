@@ -18,8 +18,4 @@ public interface RechargeRecordMapper {
     RechargeRecord selectByPrimaryKey(Integer id);
 
     List<RechargeRecord> selectByUserID(Integer userID);
-
-    //int updateByPrimaryKeySelective(RechargeRecord record);
-
-    //int updateByPrimaryKey(RechargeRecord record);
 }

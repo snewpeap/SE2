@@ -31,7 +31,7 @@ public class MovieImpl implements edu.nju.cinemasystem.blservices.movie.Movie {
     }
 
     @Override
-    public Response getMovie(@NotNull int movieID) {
+    public Response getMovie(@NotNull int movieID, int userID) {
         Response response = Response.success();
         if (movieID <= 0) {
             List<Movie> allMovies = movieMapper.selectAll();
@@ -45,12 +45,13 @@ public class MovieImpl implements edu.nju.cinemasystem.blservices.movie.Movie {
             if (movie != null && !movie.getStatusBoolean()) {
                 response = Response.fail();
                 response.setStatusCode(401);
-            } else if (movie != null) {
-                AudienceMovieVO movieVO = assembleAudienceMovieVO(movie);
-                response.setContent(movieVO);
-            } else {
+            } else if (movie == null) {
                 response = Response.fail();
                 response.setStatusCode(404);
+            } else {
+                AudienceMovieVO movieVO = assembleAudienceMovieVO(movie);
+                movieVO.setLiked(movieLikeInfo.getIsLike(userID, movieID));
+                response.setContent(movieVO);
             }
         }
         return response;
@@ -67,8 +68,9 @@ public class MovieImpl implements edu.nju.cinemasystem.blservices.movie.Movie {
         return movieMapper.selectByPrimaryKey(movieID).getName();
     }
 
-    private AudienceMovieVO assembleAudienceMovieVO(Movie movie){
-        AudienceMovieVO movieVO = (AudienceMovieVO) BaseMovieVO.assembleMovieVO(movie);
+    private AudienceMovieVO assembleAudienceMovieVO(Movie movie) {
+        AudienceMovieVO movieVO = new AudienceMovieVO();
+        BaseMovieVO.assembleMovieVO(movie, movieVO);
         int movieID = movieVO.getId();
         movieVO.setJoinedPromotions(promotionInfo.getJoinedPromotionOf(movieID));
         movieVO.setLikeNum(movieLikeInfo.getLikeAmount(movieID));

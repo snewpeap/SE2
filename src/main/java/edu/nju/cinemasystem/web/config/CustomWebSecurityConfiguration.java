@@ -21,6 +21,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableWebSecurity
 public class CustomWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     public final static String SESSION_KEY = "user";
+    public final static String KEY_ID = "id";
+    public final static String KEY_NAME = "name";
 
     private final RoleProperty roleProperty;
     private GlobalUserDetailService globalUserDetailService;
@@ -55,7 +57,7 @@ public class CustomWebSecurityConfiguration extends WebSecurityConfigurerAdapter
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/index", "/register", "/logout", "/login", "/error").permitAll()
+                .antMatchers("/", "/index", "/register", "/logout", "/login", "/error").permitAll()
                 .antMatchers("/manage/**")
                 .hasAnyRole(
                         roleProperty.getStaff(), roleProperty.getManager(), roleProperty.getRoot())
@@ -64,7 +66,8 @@ public class CustomWebSecurityConfiguration extends WebSecurityConfigurerAdapter
                         roleProperty.getRoot(), roleProperty.getManager())
                 .antMatchers("/root/**", "/actuator", "/actuator/**")
                 .hasRole(roleProperty.getRoot())
-                .regexMatchers("^/(?!manage|admin|root|index|register|login|logout|error|actuator).*$")
+                //.regexMatchers("^/(?!manage|admin|root|index|register|login|logout|error|actuator).*$")
+                .regexMatchers("/user/**")
                 .hasRole(roleProperty.getAudience())
                 .anyRequest().authenticated()
                 .and()

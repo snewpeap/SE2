@@ -22,6 +22,15 @@
         select *
         from refund_strategy
     </select>
+    
+    <select id="selectByDay" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from refund_strategy
+        where `day` &lt;= #{dayToCome,jdbcType=BIGINT}
+        order by day desc
+        limit 1
+    </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete

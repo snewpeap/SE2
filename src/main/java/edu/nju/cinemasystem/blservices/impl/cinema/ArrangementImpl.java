@@ -117,8 +117,8 @@ public class ArrangementImpl
     }
 
     @Override
-    public void changeArrangementSeatStatus(int arrangementID, int seatID, Byte status) {
-        ArrangementSeat arrangementSeat = new ArrangementSeat(status, arrangementID, seatID);
+    public void changeArrangementSeatStatus(int arrangementID, int seatID, boolean locked) {
+        ArrangementSeat arrangementSeat = new ArrangementSeat(locked ? (byte) 1 : (byte) 0, arrangementID, seatID);
         arrangementSeatMapper.updateSeatStatus(arrangementSeat);
     }
 
@@ -241,6 +241,11 @@ public class ArrangementImpl
     @Override
     public boolean haveArrangementAfterCurrentTime(int hallID, Date currentTime) {
         return arrangementMapper.selectByHallIDAndCurrentTime(hallID, currentTime) != null;
+    }
+
+    @Override
+    public boolean isSeatBeenLocked(int arrangementID, int seatID) {
+        return arrangementSeatMapper.select(new ArrangementSeat((byte) 1, arrangementID, seatID)).getIsLocked() == 1;
     }
 
     /**
