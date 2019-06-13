@@ -68,7 +68,7 @@
     </select>
 
     <select id="selectByMovieGroupByDate" resultType="java.util.HashMap">
-        select `date`, count(movie_id)
+        select `date`, count(movie_id) as `likeAmount`
         from movie_like
         where movie_id = #{movieID,jdbcType=INTEGER}
         group by date

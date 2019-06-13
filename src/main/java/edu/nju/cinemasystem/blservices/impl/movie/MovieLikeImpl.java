@@ -9,8 +9,9 @@ import edu.nju.cinemasystem.util.properties.message.GlobalMsg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -68,20 +69,24 @@ public class MovieLikeImpl implements edu.nju.cinemasystem.blservices.movie.Movi
     }
 
     @Override
-    public List<Map<Date, Integer>> getLikeDataOf(int movieID) {
-        List<Map<Date, Integer>> rawDate = movieLikeMapper.selectByMovieGroupByDate(movieID);
+    public List<Map<String, Object>> getLikeDataOf(int movieID) {
+        List<Map<String, Object>> rawDate = movieLikeMapper.selectByMovieGroupByDate(movieID);
         Movie movie = movieMapper.selectByPrimaryKey(movieID);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date startDate = movie.getReleaseDate();
+        try {
+            startDate = sdf.parse(sdf.format(startDate));
+        }catch (ParseException ignored){
+
+        }
+        final Date theStart = startDate;
         Date endDate = new Date();
         endDate = endDate.before(movie.getStartDate()) ? endDate : movie.getStartDate();
         final Date theEnd = endDate;
-        rawDate.removeIf(preDayData -> {
-            Iterator<Map.Entry<Date, Integer>> iterator = preDayData.entrySet().iterator();
-            Date date = null;
-            while (iterator.hasNext()) {
-                date = iterator.next().getKey();
-            }
-            return date==null||date.before(startDate)||date.after(theEnd);
+
+        rawDate.removeIf(perDayData -> {
+            Date date = (Date) perDayData.get("date");
+            return date==null||date.before(theStart)||date.after(theEnd);
         });
         return rawDate;
     }

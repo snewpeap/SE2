@@ -9,7 +9,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.Assert.*;
 
@@ -23,11 +22,10 @@ public class MovieLikeTest {
     private MovieLikeMapper movieLikeMapper;
 
     @Test
-    @Transactional
     public void testLike1(){
         Response response = movieLike.like(1,1);
         assertTrue(response.isSuccess());
-        edu.nju.cinemasystem.data.po.MovieLike po = movieLikeMapper.selectByUserAndMovie(new edu.nju.cinemasystem.data.po.MovieLike(1,1));
+        edu.nju.cinemasystem.data.po.MovieLike po = movieLikeMapper.selectByUserAndMovie(edu.nju.cinemasystem.data.po.MovieLike.assembleMovieLikePO(1,1));
         assertNotNull(po);
         assertEquals(1,po.getMovieId().intValue());
         assertEquals(1,po.getUserId().intValue());
