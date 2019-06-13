@@ -34,6 +34,10 @@ function renderMovieDetail(){
     $('#movie-starring').text(movie.starring);
     $('#movie-writer').text(movie.screenWriter);
     $('#movie-duration').text(movie.duration);
+    if(movie.status===3){
+        $('#delete-btn > span').text('已下架');
+        $('#delete-btn').attr('disabled','disabled');
+    }
 }
 
 function getMovieLikeChart(data) {
@@ -78,7 +82,7 @@ $('#modify-btn').click(function () {
     $("#movie-edit-language-input").val(movie.language);
     $("#movie-edit-director-input").val(movie.director);
     $("#movie-edit-starring-input").val(movie.starring);
-    $("#movie-edit-writer-input").val(movie.director);
+    $("#movie-edit-writer-input").val(movie.screenWriter);
 });
 
 $('#movie-edit-form-btn').click(function () {
@@ -88,7 +92,7 @@ $('#movie-edit-form-btn').click(function () {
         alert("上映时间不能为空！")
     } else if($('#movie-edit-img-input').val() === ''){
         alert("电影海报不能为空！")
-    }else if(parseInt($('#movie-edit-length-input').val()) <= 0){
+    }else if($('#movie-edit-duration-input').val() <= 0){
         alert("片长不能小于等于零！")
     }
     else{
@@ -98,8 +102,7 @@ $('#movie-edit-form-btn').click(function () {
             formData,
             function (res) {
                 if(res.success){
-                    console.log(res);
-                    getMovie();
+                    getMovie(movieId);
                     $("#movieEditModal").modal('hide');
                 } else {
                     alert(res.message);
@@ -117,12 +120,12 @@ function getMovieEditForm() {
         id: movieId,
         name: $('#movie-edit-name-input').val(),
         startDate: $('#movie-edit-date-input').val(),
-        posterUrl: $('#movie-edit-img-input').val(),
+        poster: $('#movie-edit-img-input').val(),
         description: $('#movie-edit-description-input').val(),
         type: $('#movie-edit-type-input').val(),
-        length: $('#movie-edit-length-input').val(),
+        duration: $('#movie-edit-duration-input').val(),
         country: $('#movie-edit-country-input').val(),
-        starring: $('#movie-edit-star-input').val(),
+        starring: $('#movie-edit-starring-input').val(),
         director: $('#movie-edit-director-input').val(),
         screenWriter: $('#movie-edit-writer-input').val(),
         language: $('#movie-edit-language-input').val()
@@ -138,6 +141,8 @@ $('#delete-btn').click(function () {
             function (res) {
                 if(res.success){
                     alert("下架成功！");
+                    $('#delete-btn > span').text('已下架');
+                    $('#delete-btn').attr('disabled','disabled');
                 } else{
                     alert(res.message);
                 }
