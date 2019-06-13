@@ -13,13 +13,13 @@
 
     <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.MovieLike">
         insert into movie_like (user_id, movie_id, date)
-        values (#{id,jdbcType=INTEGER}, #{movieId,jdbcType=INTEGER}, #{date,jdbcType=DATE})
+        values (#{userId,jdbcType=INTEGER}, #{movieId,jdbcType=INTEGER}, #{date,jdbcType=DATE})
     </insert>
 
     <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.MovieLike">
         insert into movie_like
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
+            <if test="userId != null">
                 user_id,
             </if>
             <if test="movieId != null">
@@ -28,8 +28,8 @@
             `date`,
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id,jdbcType=INTEGER},
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
             </if>
             <if test="movieId != null">
                 #{movieId,jdbcType=INTEGER},
@@ -49,7 +49,7 @@
         select
         <include refid="Base_Column_List"/>
         from movie_like
-        where user_id=#{id} and movie_id=#{movieId}
+        where user_id=#{userId} and movie_id=#{movieId}
         limit 1;
     </select>
 
@@ -78,7 +78,7 @@
     <delete id="deleteByUserAndMovie" parameterType="edu.nju.cinemasystem.data.po.MovieLike">
         delete
         from movie_like
-        where user_id = #{id}
+        where user_id = #{userId}
           and movie_id = #{movieId};
     </delete>
 </mapper>

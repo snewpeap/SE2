@@ -7,6 +7,8 @@ import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public abstract class BaseMovieVO {
@@ -157,6 +159,12 @@ public abstract class BaseMovieVO {
         movie.setStarring(movieVO.getStarring());
         movie.setStartDate(movieVO.getStartDate());
         movie.setType(movieVO.getType());
+        Date today = getNowDay();
+        if(today.compareTo(movieVO.getStartDate()) >= 0){
+            movie.setStatus((byte)1);
+        }else {
+            movie.setStatus((byte)0);
+        }
         return movie;
     }
 
@@ -176,4 +184,11 @@ public abstract class BaseMovieVO {
         movieVO.setType(movie.getType());
     }
 
+    private static Date getNowDay() {
+        Date currentTime = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String dateString = formatter.format(currentTime);
+        ParsePosition pos = new ParsePosition(0);
+        return formatter.parse(dateString,pos);
+    }
 }

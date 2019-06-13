@@ -29,21 +29,24 @@ public class MovieLikeImpl implements edu.nju.cinemasystem.blservices.movie.Movi
 
     @Override
     public Response like(int userID, int movieID) {
-        Response response = Response.success();
-        MovieLike record = new MovieLike(userID, movieID);
+        Response response;
+        MovieLike record = MovieLike.assembleMovieLikePO(userID, movieID);
         if (movieLikeMapper.selectByUserAndMovie(record) != null) {
             if (movieLikeMapper.deleteByUserAndMovie(record) == 0) {
                 response = Response.fail();
                 response.setMessage(globalMsg.getOperationFailed());
+                return response;
             }
         }
+        movieLikeMapper.insertSelective(record);
+        response = Response.success();
         return response;
     }
 
     @Override
     public Response unlike(int userID, int movieID) {
         Response response = Response.success();
-        MovieLike record = new MovieLike(userID, movieID);
+        MovieLike record = MovieLike.assembleMovieLikePO(userID, movieID);
         if (movieLikeMapper.selectByUserAndMovie(record) == null) {
             record.setDate(new Date());
             if (movieLikeMapper.insert(record) == 0) {
@@ -61,7 +64,7 @@ public class MovieLikeImpl implements edu.nju.cinemasystem.blservices.movie.Movi
 
     @Override
     public boolean getIsLike(int userID, int movieID) {
-        return movieLikeMapper.selectByUserAndMovie(new MovieLike(userID, movieID)) != null;
+        return movieLikeMapper.selectByUserAndMovie(MovieLike.assembleMovieLikePO(userID, movieID)) != null;
     }
 
     @Override
