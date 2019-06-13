@@ -61,6 +61,7 @@ public class VIPCardImpl implements edu.nju.cinemasystem.blservices.vip.VIPCard 
         Response response = Response.success();
         Integer allReduction = null;
         response.setContent(reductionMapper.selectByPrimaryKey(allReduction));
+        //TODO
         return response;
     }
 

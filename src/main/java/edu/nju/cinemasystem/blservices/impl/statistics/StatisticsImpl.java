@@ -41,7 +41,16 @@ public class StatisticsImpl implements Statistics, StatisticsInfo {
 
     @Override
     public double getHeatOf(int movieID) {
-        return 0;
+        List<MovieTotalBoxOfficeVO> movieTotalBoxOfficeVOS = getDescendingMovieTotalBoxOffices();
+        double movieBoxOffice = 0;
+        for (MovieTotalBoxOfficeVO movieTotalBoxOfficeVO : movieTotalBoxOfficeVOS) {
+            if (movieTotalBoxOfficeVO.getMovieId() == movieID) {
+                movieBoxOffice = movieTotalBoxOfficeVO.getBoxOffice();
+                break;
+            }
+        }
+        double maxBoxOffice = movieTotalBoxOfficeVOS.get(0).getBoxOffice() == 0 ? 1 : movieTotalBoxOfficeVOS.get(0).getBoxOffice();
+        return movieBoxOffice / maxBoxOffice;
     }
 
     @Override
@@ -188,15 +197,7 @@ public class StatisticsImpl implements Statistics, StatisticsInfo {
 
     @Override
     public Response getTotalBoxOffice() {
-        List<Movie> movies = movieManagement.getReleasedMovies();
-        List<MovieTotalBoxOfficeVO> movieTotalBoxOfficeVOS = new ArrayList<>();
-        for (Movie movie : movies) {
-            int movieID = movie.getId();
-            String name = movie.getName();
-            float totalBoxOffice = ticketStatistics.getTotalBoxOfficeByMovieID(movieID);
-            movieTotalBoxOfficeVOS.add(new MovieTotalBoxOfficeVO(movieID, totalBoxOffice, name));
-        }
-        movieTotalBoxOfficeVOS.sort((MovieTotalBoxOfficeVO m1, MovieTotalBoxOfficeVO m2) -> (int) m2.getBoxOffice() - (int) m1.getBoxOffice());
+        List<MovieTotalBoxOfficeVO> movieTotalBoxOfficeVOS = getDescendingMovieTotalBoxOffices();
         Response response = Response.success();
         response.setContent(movieTotalBoxOfficeVOS);
         return response;
@@ -215,5 +216,24 @@ public class StatisticsImpl implements Statistics, StatisticsInfo {
         calendarTime.add(Calendar.DAY_OF_YEAR, num);
         return calendarTime.getTime();
     }
+
+    /**
+     * 获得降序排列的电影票房VOs
+     *
+     * @return List<MovieTotalBoxOfficeVO>
+     */
+    private List<MovieTotalBoxOfficeVO> getDescendingMovieTotalBoxOffices() {
+        List<Movie> movies = movieManagement.getReleasedMovies();
+        List<MovieTotalBoxOfficeVO> movieTotalBoxOfficeVOS = new ArrayList<>();
+        for (Movie movie : movies) {
+            int movieID = movie.getId();
+            String name = movie.getName();
+            float totalBoxOffice = ticketStatistics.getTotalBoxOfficeByMovieID(movieID);
+            movieTotalBoxOfficeVOS.add(new MovieTotalBoxOfficeVO(movieID, totalBoxOffice, name));
+        }
+        movieTotalBoxOfficeVOS.sort((MovieTotalBoxOfficeVO m1, MovieTotalBoxOfficeVO m2) -> (int) m2.getBoxOffice() - (int) m1.getBoxOffice());
+        return movieTotalBoxOfficeVOS;
+    }
+
 
 }
