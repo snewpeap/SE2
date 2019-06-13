@@ -20,6 +20,7 @@ public class MovieTest {
     private MovieMapper movieMapper;
 
     @Test
+    @Transactional
     public void testSelectByID(){
         Movie movie = movieMapper.selectByPrimaryKey(1);
         assertNotNull(movie);
@@ -27,12 +28,14 @@ public class MovieTest {
     }
 
     @Test
+    @Transactional
     public void testSelectByIDFail_NoSuch(){
         Movie movie = movieMapper.selectByPrimaryKey(0);
         assertNull(movie);
     }
 
     @Test
+    @Transactional
     public void testSelectByIDFail_Null(){
         Movie movie = movieMapper.selectByPrimaryKey(null);
     }
