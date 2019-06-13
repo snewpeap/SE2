@@ -3,10 +3,19 @@ package edu.nju.cinemasystem.data.vo;
 import java.util.List;
 
 public class AudienceMovieVO extends BaseMovieVO {
+    private Byte status;
     private List<Integer> joinedPromotions;
     private int LikeNum;
     private boolean isLiked;
     private double heat;
+
+    public Byte getStatus() {
+        return status;
+    }
+
+    public void setStatus(Byte status) {
+        this.status = status;
+    }
 
     public double getHeat() {
         return heat;

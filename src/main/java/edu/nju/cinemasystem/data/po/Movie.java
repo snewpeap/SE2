@@ -132,7 +132,7 @@ public class Movie {
     }
 
     public boolean audienceVisible() {
-        return status >= 3;
+        return status <= 3;
     }
 
     public void setStatus(Byte status) {

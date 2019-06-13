@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.util.Date;
 
-public class BaseMovieVO {
+public abstract class BaseMovieVO {
     private Integer id;
 
     @NotBlank
