@@ -32,8 +32,7 @@ public class HallTest {
         hall.setIs3d((byte) 1);
         hall.setIsImax((byte) 1);
         int i = hallMapper.insertSelective(hall);
-        assertEquals((int)hall.getId(),i);
-        throw new RuntimeException();
+        assertTrue(hall.getId()!=0);
     }
 
     @Test
@@ -47,8 +46,21 @@ public class HallTest {
         hall.setIs3d((byte) 0);
         hall.setIsImax((byte) 1);
         int i = hallMapper.insert(hall);
-        assertEquals(1,i);
-        throw new RuntimeException();
+        assertTrue(i!=0);
+    }
+
+    @Test
+    @Transactional
+    public void insertSelectiveTestNull() {
+        Hall hall = new Hall();
+        hall.setName("TestNull");
+        hall.setColumn(15);
+        hall.setRow(8);
+        hall.setSize((byte) 2);
+        hall.setIs3d(null);
+        hall.setIsImax(null);
+        int i = hallMapper.insertSelective(hall);
+        assertEquals(0, i);
     }
 
     @Test

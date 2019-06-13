@@ -53,4 +53,7 @@ public class Seat {
         this.row = row;
         this.hallId = hallId;
     }
+
+    public Seat() {
+    }
 }

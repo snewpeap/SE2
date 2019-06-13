@@ -25,6 +25,7 @@ public class ArrangementManageTest {
     ArrangementManage arrangementManage;
 
     @Test
+    @Transactional
     public void addArrangementTest1(){
         ArrangementForm arrangementForm = new ArrangementForm();
         arrangementForm.setHallId(1);
@@ -43,6 +44,7 @@ public class ArrangementManageTest {
     }
 
     @Test
+    @Transactional
     public void addArrangementTest2(){
         ArrangementForm arrangementForm = new ArrangementForm();
         arrangementForm.setHallId(1);
@@ -79,6 +81,7 @@ public class ArrangementManageTest {
     }
 
     @Test
+    @Transactional
     public void modifyArrangementTest1(){
         ArrangementForm arrangementForm = new ArrangementForm();
         int id = 3;
