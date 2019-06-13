@@ -70,7 +70,7 @@ public class ArrangementManageTest {
         arrangementForm.setFare((float)24);
         arrangementForm.setMovieId(1);
         String startTimeString = "2019-6-14 13:12";
-        String endTimeString = "2019-6-14 20:50";
+        String endTimeString = "2019-6-14 13:59";
         Date[] dates = conversionTime(startTimeString,endTimeString,startTimeString);
         arrangementForm.setStartTime(dates[0]);
         arrangementForm.setEndTime(dates[1]);

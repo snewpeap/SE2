@@ -2,6 +2,7 @@ package edu.nju.cinemasystem.blservices.impl.cinema;
 
 import edu.nju.cinemasystem.blservices.cinema.arrangement.ArrangementManage;
 import edu.nju.cinemasystem.blservices.movie.ArrangementInfo;
+import edu.nju.cinemasystem.blservices.movie.Movie;
 import edu.nju.cinemasystem.data.po.Arrangement;
 import edu.nju.cinemasystem.data.po.ArrangementSeat;
 import edu.nju.cinemasystem.data.po.Seat;
@@ -13,6 +14,7 @@ import edu.nju.cinemasystem.dataservices.cinema.arrangement.ArrangementMapper;
 import edu.nju.cinemasystem.dataservices.cinema.arrangement.ArrangementSeatMapper;
 import edu.nju.cinemasystem.dataservices.cinema.hall.HallMapper;
 import edu.nju.cinemasystem.dataservices.cinema.hall.SeatMapper;
+import edu.nju.cinemasystem.dataservices.movie.MovieMapper;
 import edu.nju.cinemasystem.util.properties.message.ArrangementMsg;
 import edu.nju.cinemasystem.util.properties.message.GlobalMsg;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,15 +41,17 @@ public class ArrangementImpl
     ArrangementMsg arrangementMsg;
     private final
     HallMapper hallMapper;
+    private final MovieMapper movieMapper;
 
     @Autowired
-    public ArrangementImpl(ArrangementMapper arrangementMapper, GlobalMsg globalMsg, ArrangementSeatMapper arrangementSeatMapper, SeatMapper seatMapper, ArrangementMsg arrangementMsg, HallMapper hallMapper) {
+    public ArrangementImpl(ArrangementMapper arrangementMapper, GlobalMsg globalMsg, ArrangementSeatMapper arrangementSeatMapper, SeatMapper seatMapper, ArrangementMsg arrangementMsg, HallMapper hallMapper, MovieMapper movieMapper) {
         this.arrangementMapper = arrangementMapper;
         this.globalMsg = globalMsg;
         this.arrangementSeatMapper = arrangementSeatMapper;
         this.seatMapper = seatMapper;
         this.arrangementMsg = arrangementMsg;
         this.hallMapper = hallMapper;
+        this.movieMapper = movieMapper;
     }
 
     @Override
@@ -278,8 +282,10 @@ public class ArrangementImpl
      */
     private boolean unCensorArrangementForm(ArrangementForm arrangementForm) {
         Date date = new Date();
+        Date completeTime = new Date(arrangementForm.getStartTime().getTime()+ (movieMapper.selectByPrimaryKey(arrangementForm.getMovieId()).getDuration() * 60 * 1000));
         return (arrangementForm.getStartTime().compareTo(arrangementForm.getEndTime()) >= 0)
-                ||(arrangementForm.getFare() <= 0) || (arrangementForm.getStartTime().compareTo(date) < 0) || (arrangementForm.getEndTime().compareTo(date) < 0);
+                ||(arrangementForm.getFare() <= 0) || (arrangementForm.getStartTime().compareTo(date) < 0) || (arrangementForm.getEndTime().compareTo(date) < 0)
+                || arrangementForm.getEndTime().before(completeTime);
     }
 
     /**

@@ -40,7 +40,8 @@ CREATE TABLE IF NOT EXISTS `cinema`.`hall`
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
 
-
+insert into cinema.hall
+    values (1,'小小小小厅',3,2,2,0,0);
 -- -----------------------------------------------------
 -- Table `cinema`.`movie`
 -- -----------------------------------------------------
@@ -125,6 +126,13 @@ CREATE TABLE IF NOT EXISTS `cinema`.`seat`
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
 
+insert into cinema.seat
+    values (1,1,1,1),
+        (2,2,1,1),
+        (3,3,1,1),
+        (4,1,2,1),
+        (5,2,2,1),
+        (6,3,2,1);
 
 -- -----------------------------------------------------
 -- Table `cinema`.`arrangement_seat`
@@ -174,6 +182,8 @@ CREATE TABLE IF NOT EXISTS `cinema`.`promotion`
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
 
+insert into cinema.promotion (`name`, `description`, `start_time`,`end_time`, `specify_movies`, `target_amount`, `coupon_amount`, `coupon_expiration`)
+values ('东东开业大酬宾','全都送','2019-6-1','2019-7-3',0,20,19,6);
 
 -- -----------------------------------------------------
 -- Table `cinema`.`user`
@@ -189,11 +199,12 @@ CREATE TABLE IF NOT EXISTS `cinema`.`user`
     UNIQUE INDEX `name_UNIQUE` (`name` ASC)
 )
     ENGINE = InnoDB
-    AUTO_INCREMENT = 4
+    AUTO_INCREMENT = 6
     DEFAULT CHARACTER SET = utf8;
 
 insert into cinema.user
-values (4, 'root', 'root'),
+values (5, 'vip', 'vip'),
+        (4, 'root', 'root'),
        (3, 'manager', 'manager'),
        (2, 'staff', 'staff'),
        (1, 'audience', 'audience');
@@ -380,6 +391,8 @@ CREATE TABLE IF NOT EXISTS `cinema`.`vipcard`
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
 
+insert into cinema.vipcard
+    values (3000,5);
 
 -- -----------------------------------------------------
 -- Table `cinema`.`vipcard_recharge_reduction`
@@ -471,7 +484,8 @@ CREATE TABLE IF NOT EXISTS `cinema`.`user_has_role`
     DEFAULT CHARACTER SET = utf8;
 
 INSERT INTO user_has_role
-VALUES (1, 1),
+VALUES (5,1),
+        (1, 1),
        (2, 2),
        (3, 3),
        (4, 4);
