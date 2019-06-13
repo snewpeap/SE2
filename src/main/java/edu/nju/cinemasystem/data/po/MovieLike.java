@@ -9,9 +9,8 @@ public class MovieLike {
 
     private Date date;
 
-    public MovieLike(Integer userId, Integer movieId) {
-        this.userId = userId;
-        this.movieId = movieId;
+    public MovieLike(){
+
     }
 
     public Integer getUserId() {
@@ -36,5 +35,13 @@ public class MovieLike {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public static MovieLike assembleMovieLikePO(Integer userId, Integer movieId){
+        MovieLike movieLike = new MovieLike();
+        movieLike.setUserId(userId);
+        movieLike.setMovieId(movieId);
+        movieLike.setDate(new Date());
+        return movieLike;
     }
 }

@@ -57,7 +57,7 @@ public class ArrangementImpl
     @Override
     public boolean movieHasArrangement(int movieID) {
         List<Arrangement> arrangementList = arrangementMapper.selectByMovieID(movieID);
-        return arrangementList != null;
+        return arrangementList.size()!=0;
     }
 
     @Override

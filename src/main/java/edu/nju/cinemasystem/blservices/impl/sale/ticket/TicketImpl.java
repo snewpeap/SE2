@@ -256,7 +256,7 @@ public class TicketImpl
         List<Ticket> needTickets = new ArrayList<>();
         long orderID = 0L;
         float totalAmount = 0;
-        if (tickets != null) {
+        if (tickets.size()!=0) {
             for (Ticket ticket : tickets) {
                 if (ticket.getArrangementId() == scheduleId && ticket.getStatus() == (byte) 0) {
                     needTickets.add(ticket);
@@ -275,7 +275,7 @@ public class TicketImpl
     public Response getAllTicketsByUserId(int userId) {
         List<Ticket> tickets = ticketsMapper.selectByUserID(userId);
         List<TicketVO> ticketVOS = new ArrayList<>();
-        if (tickets != null) {
+        if (tickets.size()!=0) {
             for (Ticket ticket : tickets) {
                 if (!(ticket.getStatus() == (byte) 0 && (ticket.getStatus() == (byte) 4))) {
                     ticketVOS.add(assembleTicketVO(ticket));
@@ -291,7 +291,7 @@ public class TicketImpl
     public Response getHistoricalConsumptionsByUserId(int userID) {
         List<Ticket> tickets = ticketsMapper.selectByUserID(userID);
         Response response;
-        if (tickets == null) {
+        if (tickets.size() == 0) {
             response = Response.success();
             response.setContent(null);
             return response;
