@@ -134,7 +134,7 @@ public class TicketImpl
             );
             if (orderHolder.setCouponToOrder(orderID, couponID)) {
                 return Response.success();
-            }else {
+            } else {
                 return Response.fail(ticketMsg.getOrderInvalid());
             }
         } else {
@@ -166,15 +166,25 @@ public class TicketImpl
         return alipayClient.pageExecute(payRequest).getBody();
     }
 
-
     @Override
-    public Response payOrder(long orderID, int userID) {
+    @Transactional
+    public Response payOrder(long orderID, float amount) {
+        Order order = orderMapper.selectByPrimaryKey(orderID);
+        if (order.getStatus() == 3 || Math.abs(order.getRealAmount() - amount) > 0.01) {
+            return Response.fail(ticketMsg.getOrderInvalid());
+        }
         List<Ticket> tickets = ticketsMapper.selectByOrderID(orderID);
-        //TODO coupon.removeCouponByID(couponID);
-        orderHolder.completeOrder(tickets, orderID, false);
-        int movieID = arrangement.getMovieIDbyID(tickets.get(0).getArrangementId());
-        coupon.sendCouponsToUser(userID, movieID);
-        return Response.success();
+        int couponID = orderHolder.getCouponID(orderID);
+        if (couponID > 0) {
+            coupon.removeCouponByID(couponID);
+            orderHolder.completeOrder(tickets, order, false);
+            int movieID = arrangement.getMovieIDbyID(tickets.get(0).getArrangementId());
+            int userID = order.getUserId();
+            coupon.sendCouponsToUser(userID, movieID);
+            return Response.success();
+        } else {
+            return Response.fail(ticketMsg.getOrderInvalid());
+        }
     }
 
     @Override
@@ -186,7 +196,7 @@ public class TicketImpl
             List<Ticket> tickets = ticketsMapper.selectByOrderID(orderID);
             int arrangementID = tickets.get(0).getArrangementId();
             int movieID = arrangement.getMovieIDbyID(arrangementID);
-            orderHolder.completeOrder(tickets, orderID, true);
+            orderHolder.completeOrder(tickets, order, true);
             coupon.sendCouponsToUser(userID, movieID);
             return Response.success(ticketMsg.getOperationSuccess());
         } else {
@@ -459,10 +469,10 @@ public class TicketImpl
          * 把订单上的票的状态改为已完成并且将其移出延时队列,并且返回订单里的所有票（为了知道是什么电影和算钱）
          *
          * @param tickets
+         * @param order
          */
         @Transactional
-        public void completeOrder(List<Ticket> tickets, long orderID, boolean useVIP) {
-            Order order = orderMapper.selectByPrimaryKey(orderID);
+        public void completeOrder(List<Ticket> tickets, Order order, boolean useVIP) {
             for (Ticket ticket : tickets) {
                 ticket.setStatus((byte) 1);
                 ticket.setDate(new Date());
@@ -471,18 +481,28 @@ public class TicketImpl
             order.setDate(new Date());
             order.setUseVipcard(useVIP ? (byte) 1 : (byte) 0);
             orderMapper.updateByPrimaryKeySelective(order);
-            removeTask(orderID);
+            removeTask(order.getId());
         }
 
         boolean setCouponToOrder(long orderID, int couponID) {
             boolean set = false;
-            for (DelayedTask task:delayQueue){
-                if (task.getID() == orderID){
+            for (DelayedTask task : delayQueue) {
+                if (task.getID() == orderID) {
                     task.setCouponID(couponID);
                     set = true;
                 }
             }
             return set;
+        }
+
+        int getCouponID(long orderID) {
+            int couponID = -1;
+            for (DelayedTask task : delayQueue) {
+                if (task.getID() == orderID) {
+                    couponID = task.getCouponID();
+                }
+            }
+            return couponID;
         }
     }
 }
