@@ -195,4 +195,8 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
+    
+    <update id="makeMovieShowing" parameterType="edu.nju.cinemasystem.data.po.Movie">
+        update movie set status = 1 where datediff(start_date,current_date) = 0 and status = 0;
+    </update>
 </mapper>

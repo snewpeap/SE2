@@ -2,6 +2,7 @@ package edu.nju.cinemasystem.dataservices.movie;
 
 import edu.nju.cinemasystem.data.po.Movie;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -50,4 +51,7 @@ public interface MovieMapper {
      * @return 所有电影
      */
     List<Movie> selectAll();
+
+    @Scheduled(cron = "0 0 0 * * ?")
+    void makeMovieShowing();
 }
