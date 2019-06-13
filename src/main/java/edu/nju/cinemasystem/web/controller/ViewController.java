@@ -115,4 +115,9 @@ public class ViewController {
     public String getUserMovieDetail() {
         return "user/viewMovieDetail";
     }
+
+    @RequestMapping("/user/pay/success")
+    public String getUserPaySuccess(){
+        return "user/paySuccess";
+    }
 }
