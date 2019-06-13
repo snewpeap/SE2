@@ -49,11 +49,12 @@ public class MovieManagementImpl implements MovieManagement {
 
     @Override
     public Response modifyMovie(@NotNull MovieForm movieForm) {
-        Response response = Response.success();
-        if (movieMapper.selectByPrimaryKey(movieForm.getId()) == null) {
-            response = Response.fail();
-            response.setMessage(movieMsg.getNotExist());
-        } else if (movieMapper.updateByPrimaryKeySelective(BaseMovieVO.assembleMoviePO(movieForm)) == 0) {
+        Response response;
+        response = movieCanBeEdit(movieForm.getId());
+        if (!response.isSuccess()) {
+            return response;
+        }
+        if (movieMapper.updateByPrimaryKeySelective(BaseMovieVO.assembleMoviePO(movieForm)) == 0) {
             response = Response.fail();
             response.setMessage(movieMsg.getOperationFailed());
         } else {
@@ -65,19 +66,26 @@ public class MovieManagementImpl implements MovieManagement {
 
     @Override
     public Response removeMovie(@NotNull int movieID) {
+        /*
         Response response = Response.fail();
-        Movie movie = movieMapper.selectByPrimaryKey(movieID);
-        if (movie == null) {
-            response.setMessage(movieMsg.getNotExist());
-        } else if (arrangementInfo.movieHasArrangement(movieID)) {
-            response.setMessage(movieMsg.getHasArrangement());
-        } else if (movieMapper.deleteByPrimaryKey(movieID) == 0) {
+        response = movieCanBeEdit(movieID);
+        if (!response.isSuccess()) {
+            return response;
+        }
+        if (movieMapper.deleteByPrimaryKey(movieID) == 0) {
             response.setMessage(movieMsg.getOperationFailed());
         } else {
             response = Response.success();
             response.setMessage(movieMsg.getOperationSuccess());
         }
         return response;
+        */
+        return updateMovieStatus(movieID,(byte)3);
+    }
+
+    @Override
+    public Response downwardMovie(@NotNull int movieID) {
+        return updateMovieStatus(movieID,(byte)2);
     }
 
     @Override
@@ -115,5 +123,39 @@ public class MovieManagementImpl implements MovieManagement {
         movieVO.setStatus(movie.getStatus());
         movieVO.setLikeData(movieLike.getLikeDataOf(movie.getId()));
         return movieVO;
+    }
+
+    /**
+     * 检查电影是否能被编辑
+     * @param movieID 电影id
+     * @return Response
+     */
+    private Response movieCanBeEdit(int movieID) {
+        Response response = Response.fail();
+        Movie movie = movieMapper.selectByPrimaryKey(movieID);
+        if (movie == null) {
+            response.setMessage(movieMsg.getNotExist());
+        } else if (arrangementInfo.movieHasArrangement(movieID)) {
+            response.setMessage(movieMsg.getHasArrangement());
+        } else {
+            response = Response.success();
+        }
+        return response;
+    }
+
+    private Response updateMovieStatus(@NotNull int movieID,@NotNull byte status){
+        Response response = movieCanBeEdit(movieID);
+        if (!response.isSuccess()) {
+            return response;
+        }
+        Movie movie = movieMapper.selectByPrimaryKey(movieID);
+        movie.setStatus(status);
+        if (movieMapper.updateByPrimaryKeySelective(movie) == 0) {
+            response.setMessage(movieMsg.getOperationFailed());
+        } else {
+            response = Response.success();
+            response.setMessage(movieMsg.getOperationSuccess());
+        }
+        return response;
     }
 }

@@ -2,9 +2,9 @@ package edu.nju.cinemasystem.blservices.impl.cinema;
 
 import edu.nju.cinemasystem.blservices.cinema.arrangement.ArrangementManage;
 import edu.nju.cinemasystem.blservices.movie.ArrangementInfo;
-import edu.nju.cinemasystem.blservices.movie.Movie;
 import edu.nju.cinemasystem.data.po.Arrangement;
 import edu.nju.cinemasystem.data.po.ArrangementSeat;
+import edu.nju.cinemasystem.data.po.Movie;
 import edu.nju.cinemasystem.data.po.Seat;
 import edu.nju.cinemasystem.data.vo.ArrangementSeatVO;
 import edu.nju.cinemasystem.data.vo.ArrangementVO;
@@ -132,10 +132,8 @@ public class ArrangementImpl
     @Override
     @Transactional
     public Response addArrangement(ArrangementForm arrangementForm) {
-        Response response;
-        if (unCensorArrangementForm(arrangementForm)) {
-            response = Response.fail();
-            response.setMessage(globalMsg.getWrongParam());
+        Response response = unCensorArrangementForm(arrangementForm);
+        if (!response.isSuccess()) {
             return response;
         }
         response = censorTimeConflict(arrangementForm,0);
@@ -164,9 +162,8 @@ public class ArrangementImpl
             response.setMessage(arrangementMsg.getVisibleToAudience());
             return response;
         }
-        if (unCensorArrangementForm(arrangementForm)) {
-            response = Response.fail();
-            response.setMessage(globalMsg.getWrongParam());
+        response = unCensorArrangementForm(arrangementForm);
+        if (!response.isSuccess()) {
             return response;
         }
         response = censorTimeConflict(arrangementForm,ID);
@@ -280,12 +277,23 @@ public class ArrangementImpl
      * @param arrangementForm 排片表单
      * @return boolean值
      */
-    private boolean unCensorArrangementForm(ArrangementForm arrangementForm) {
+    private Response unCensorArrangementForm(ArrangementForm arrangementForm) {
+        Response response = Response.fail();
         Date date = new Date();
+        Movie movie = movieMapper.selectByPrimaryKey(arrangementForm.getMovieId());
         Date completeTime = new Date(arrangementForm.getStartTime().getTime()+ (movieMapper.selectByPrimaryKey(arrangementForm.getMovieId()).getDuration() * 60 * 1000));
-        return (arrangementForm.getStartTime().compareTo(arrangementForm.getEndTime()) >= 0)
-                ||(arrangementForm.getFare() <= 0) || (arrangementForm.getStartTime().compareTo(date) < 0) || (arrangementForm.getEndTime().compareTo(date) < 0)
-                || arrangementForm.getEndTime().before(completeTime);
+       if (arrangementForm.getStartTime().compareTo(arrangementForm.getEndTime()) >= 0  || (arrangementForm.getStartTime().compareTo(date) < 0)||(arrangementForm.getEndTime().compareTo(date) < 0)){
+           response.setMessage(arrangementMsg.getTimeConflict());
+       }else if((arrangementForm.getFare() <= 0)){
+           response.setMessage(arrangementMsg.getFareCannotBeNegative());
+       }else if(arrangementForm.getEndTime().before(completeTime)){
+           response.setMessage(arrangementMsg.getDurationIsShort());
+       }else if(arrangementForm.getStartTime().before(movie.getStartDate()) ||movie.getStatus() == (byte)2 || movie.getStatus() == (byte)3){
+           response.setMessage(arrangementMsg.getMovieUnReleased());
+       }else {
+           response = Response.success();
+       }
+       return response;
     }
 
     /**

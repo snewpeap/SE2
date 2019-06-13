@@ -71,7 +71,12 @@ arrangement-msg:
   visible-to-audience: "排片已对观众可见"
   arrangement-start: "排片已开始放映"
   is-still-have-arrangement: "该影厅后续还有排片"
-  is-already-have-arrangement: "时间段冲突"
+  is-already-have-arrangement: "该时间段内该影厅已有排片"
+  time-conflict: "开始时间或结束时间冲突"
+  fare-cannot-be-negative: "票价不能为0"
+  movie-unReleased: "电影不在上映状态"
+  duration-is-short: "排片时间过短"
+
 
 # 管理sale操作信息 #
 ticket-msg:
