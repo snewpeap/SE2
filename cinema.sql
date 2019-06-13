@@ -40,7 +40,8 @@ CREATE TABLE IF NOT EXISTS `cinema`.`hall`
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
 
-
+insert into cinema.hall
+    values (1,'小小小小厅',3,2,2,0,0);
 -- -----------------------------------------------------
 -- Table `cinema`.`movie`
 -- -----------------------------------------------------
@@ -125,6 +126,13 @@ CREATE TABLE IF NOT EXISTS `cinema`.`seat`
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
 
+insert into cinema.seat
+    values (1,1,1,1),
+        (2,2,1,1),
+        (3,3,1,1),
+        (4,1,2,1),
+        (5,2,2,1),
+        (6,3,2,1);
 
 -- -----------------------------------------------------
 -- Table `cinema`.`arrangement_seat`
