@@ -17,7 +17,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
-@Controller("user/alipay")
+@Controller("/user/alipay")
 public class AlipayController {
     @Autowired
     private Ticket ticket;

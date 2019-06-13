@@ -17,7 +17,14 @@
     <link href="/webjars/gentelella/vendors/nprogress/nprogress.css" rel="stylesheet">
     <!-- iCheck -->
     <link href="/webjars/gentelella/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
-
+    <!-- bootstrap-wysiwyg -->
+    <link href="/webjars/gentelella/vendors/google-code-prettify/bin/prettify.min.css" rel="stylesheet">
+    <!-- Select2 -->
+    <link href="/webjars/gentelella/vendors/select2/dist/css/select2.min.css" rel="stylesheet">
+    <!-- Switchery -->
+    <link href="/webjars/gentelella/vendors/switchery/dist/switchery.min.css" rel="stylesheet">
+    <!-- starrr -->
+    <link href="/webjars/gentelella/vendors/starrr/dist/starrr.css" rel="stylesheet">
     <!-- bootstrap-progressbar -->
     <link href="/webjars/gentelella/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
     <!-- JQVMap -->
@@ -26,7 +33,10 @@
     <link href="/webjars/gentelella/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
-    <link href="/webjars/gentelella/build/css/custom.min.css" rel="stylesheet">
+    <link href="/webjars/gentelella/build/css/custom.css" rel="stylesheet">
+    <!-- Personal Theme Style -->
+    <link href="/css/common.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/admin/movieAdd.css" rel="stylesheet" type="text/css">
 </head>
 <body class="nav-md">
 <div class="container body">
@@ -121,7 +131,98 @@
         <div class="right_col" role="main">
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="dashboard_graph">
+                    <div class="col-md-12 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>上架电影</h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <br />
+                                <form class="form-horizontal form-label-left">
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">电影名称 <span class="required">*</span>
+                                        </label>
+                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                            <input type="text" required="required" class="form-control" id="name" placeholder="请输入电影名称">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">上映日期 <span class="required">*</span>
+                                        </label>
+                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                            <input type="date" required="required" class="form-control" id="startDate">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">电影海报 <span class="required">*</span>
+                                        </label>
+                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                            <input type="text" required="required" class="form-control" id="poster" placeholder="请输入海报url">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">剧情介绍</label>
+                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                            <textarea class="form-control" rows="3" id="description" placeholder="请输入电影简介"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">电影类型</label>
+                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                            <input type="text" class="form-control" id="type" placeholder="请输入电影类型">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">片长（分钟）<span class="required">*</span></label>
+                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                            <input type="number" min="1" required="required" class="form-control" id="duration" placeholder="请输入电影时长">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">国家/地区</label>
+                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                            <input type="text" class="form-control" id="country" placeholder="请输入国家/地区">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">电影语言</label>
+                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                            <input type="text" class="form-control" id="language" placeholder="请输入电影语言">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">电影导演</label>
+                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                            <input type="text" class="form-control" id="director" placeholder="请输入电影导演">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">电影主演</label>
+                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                            <input type="text" class="form-control" id="starring" placeholder="请输入电影主演">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">电影编剧</label>
+                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                            <input type="text" class="form-control" id="screenWriter" placeholder="请输入电影编剧">
+                                        </div>
+                                    </div>
+
+                                    <div class="ln_solid"></div>
+                                    <div class="form-group">
+                                        <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                            <button type="button" class="btn btn-default" id="cancel">Cancel</button>
+                                            <button type="reset" class="btn btn-primary">Reset</button>
+                                            <button type="button" class="btn btn-success" id="submit">Submit</button>
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -177,7 +278,24 @@
 <!-- bootstrap-daterangepicker -->
 <script src="/webjars/gentelella/vendors/moment/min/moment.min.js"></script>
 <script src="/webjars/gentelella/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
-
+<!-- bootstrap-wysiwyg -->
+<script src="/webjars/gentelella/vendors/bootstrap-wysiwyg/js/bootstrap-wysiwyg.min.js"></script>
+<script src="/webjars/gentelella/vendors/jquery.hotkeys/jquery.hotkeys.js"></script>
+<script src="/webjars/gentelella/vendors/google-code-prettify/src/prettify.js"></script>
+<!-- jQuery Tags Input -->
+<script src="/webjars/gentelella/vendors/jquery.tagsinput/src/jquery.tagsinput.js"></script>
+<!-- Switchery -->
+<script src="/webjars/gentelella/vendors/switchery/dist/switchery.min.js"></script>
+<!-- Select2 -->
+<script src="/webjars/gentelella/vendors/select2/dist/js/select2.full.min.js"></script>
+<!-- Parsley -->
+<script src="/webjars/gentelella/vendors/parsleyjs/dist/parsley.min.js"></script>
+<!-- Autosize -->
+<script src="/webjars/gentelella/vendors/autosize/dist/autosize.min.js"></script>
+<!-- jQuery autocomplete -->
+<script src="/webjars/gentelella/vendors/devbridge-autocomplete/dist/jquery.autocomplete.min.js"></script>
+<!-- starrr -->
+<script src="/webjars/gentelella/vendors/starrr/dist/starrr.js"></script>
 <!-- Custom Theme Scripts -->
 <script src="/webjars/gentelella/build/js/custom.min.js"></script>
 <script src="/js/request.js"></script>

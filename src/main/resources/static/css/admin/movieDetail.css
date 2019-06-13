@@ -16,8 +16,8 @@
 }
 
 #movie-img {
-    height: 320px;
-    width: 240px;
+    height: 400px;
+    width: 300px;
 }
 
 #movie-description {
@@ -35,4 +35,13 @@
     padding: 20px;
     display: flex;
     justify-content: center;
+}
+#movie-description{
+    max-height: 80px;
+    min-height: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:3;
 }
