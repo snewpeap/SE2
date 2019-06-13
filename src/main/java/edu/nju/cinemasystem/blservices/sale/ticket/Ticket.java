@@ -23,10 +23,9 @@ public interface Ticket {
 
     Response payable(long orderID, int couponID, int userID);
 
-    //TODO
     String requestAlipay(long orderID) throws AlipayApiException;
 
-    Response payOrder(long orderID, int userID);
+    Response payOrder(long orderID, float amount);
 
     /**
      * 通过会员卡，完成购票，并且给用户送优惠券
