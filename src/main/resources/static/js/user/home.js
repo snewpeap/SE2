@@ -31,22 +31,22 @@ function renderMovie() {
     getMostLikes();
 
     firstImageStr = "<img src='"+ (newestList[0].poster||"/images/defaultPoster.jpg") + "' alt='' class='img-responsive' />";
-    $('#newest-movie-image').append(firstImageStr);
+    $('#video').append(firstImageStr);
     var newestMovieInfo = getFirstInfoStr(newestList);
     $('#newest-movie-info').append(newestMovieInfo);
-    $('#one-new-movie').append(getNextInfoStr(newestList));
+    $('#newest-movie-other').append(getNextInfoStr(newestList));
 
     firstImageStr = "<img src='"+ (highestList[0].poster||"/images/defaultPoster.jpg") + "' alt='' class='img-responsive' />";
-    $('#highest-movie-image').append(firstImageStr);
+    $('#video1').append(firstImageStr);
     var highestMovieInfo = getFirstInfoStr(highestList);
     $('#highest-movie-info').append(highestMovieInfo);
-    $('#one-new-movie2').append(getNextInfoStr(highestList));
+    $('#highest-movie-other').append(getNextInfoStr(highestList));
 
     firstImageStr = "<img src='"+ (mostList[0].poster||"/images/defaultPoster.jpg") + "' alt='' class='img-responsive' />";
-    $('#most-movie-image').append(firstImageStr);
+    $('#video2').append(firstImageStr);
     var mostMovieInfo = getFirstInfoStr(mostList);
     $('#most-movie-info').append(mostMovieInfo);
-    $('#one-new-movie3').append(getNextInfoStr(mostList));
+    $('#most-movie-other').append(getNextInfoStr(mostList));
 
     $('#owl-demo').append(getNewestForSlide());
     $('#slide-most-box').append(getMostBoxForSlide());
@@ -79,6 +79,7 @@ function renderMovie() {
         for (var x = 0;x<allMovieList.length;x++){
             newestList.push(allMovieList[x]);
         }
+        console.log(newestList);
     }
 
     //按想看人数排序
@@ -130,7 +131,7 @@ function renderMovie() {
     //拼接下面一堆电影的字符串 图片 名称 想看人数
     function getNextInfoStr(List) {
         var nextInfoStr = "";
-        for (var i = 1;i<6 && i<allMovieList.length;i++){
+        for (var i = 1;i<8 && i<allMovieList.length;i++){
             nextInfoStr +=
                 "<div class=\"w3l-movie-gride-agile\">" + "<a href=\"/user/movie/detail\" class=\"hvr-sweep-to-bottom\"><img src=\"" + (List[i].poster||"/images/defaultPoster.jpg") +
                 "\" title=\"Movies Pro\" class=\"img-responsive\" alt=\" \" /><div class=\"w3l-action-icon\"><i class=\"fa fa-play-circle-o\" aria-hidden=\"true\"></i></div></a>" +
