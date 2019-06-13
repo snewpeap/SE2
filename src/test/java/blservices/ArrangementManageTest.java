@@ -25,6 +25,7 @@ public class ArrangementManageTest {
     ArrangementManage arrangementManage;
 
     @Test
+    @Transactional
     public void addArrangementTest1(){
         ArrangementForm arrangementForm = new ArrangementForm();
         arrangementForm.setHallId(1);
@@ -43,6 +44,7 @@ public class ArrangementManageTest {
     }
 
     @Test
+    @Transactional
     public void addArrangementTest2(){
         ArrangementForm arrangementForm = new ArrangementForm();
         arrangementForm.setHallId(1);
@@ -67,8 +69,8 @@ public class ArrangementManageTest {
         arrangementForm.setHallId(1);
         arrangementForm.setFare((float)24);
         arrangementForm.setMovieId(1);
-        String startTimeString = "2019-6-12 18:12";
-        String endTimeString = "2019-6-12 20:50";
+        String startTimeString = "2019-6-14 13:12";
+        String endTimeString = "2019-6-14 20:50";
         Date[] dates = conversionTime(startTimeString,endTimeString,startTimeString);
         arrangementForm.setStartTime(dates[0]);
         arrangementForm.setEndTime(dates[1]);
@@ -79,14 +81,15 @@ public class ArrangementManageTest {
     }
 
     @Test
+    @Transactional
     public void modifyArrangementTest1(){
         ArrangementForm arrangementForm = new ArrangementForm();
-        int id = 3;
+        int id = 2;
         arrangementForm.setHallId(1);
         arrangementForm.setFare((float)35);
         arrangementForm.setMovieId(1);
-        String startTimeString = "2019-6-17 18:12";
-        String endTimeString = "2019-6-17 20:50";
+        String startTimeString = "2019-6-14 13:10";
+        String endTimeString = "2019-6-14 18:50";
         Date[] dates = conversionTime(startTimeString,endTimeString,startTimeString);
         arrangementForm.setStartTime(dates[0]);
         arrangementForm.setEndTime(dates[1]);

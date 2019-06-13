@@ -28,6 +28,7 @@ public class PromotionTest {
     Promotion promotion;
 
     @Test
+    @Transactional
     public void publishTest1(){
         PromotionForm promotionForm = new PromotionForm();
         promotionForm.setName("优惠1");
@@ -45,6 +46,7 @@ public class PromotionTest {
     }
 
     @Test
+    @Transactional
     public void publishTest2(){
         PromotionForm promotionForm = new PromotionForm();
         promotionForm.setName("优惠2");

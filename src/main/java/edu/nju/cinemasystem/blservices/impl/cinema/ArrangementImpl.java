@@ -134,7 +134,7 @@ public class ArrangementImpl
             response.setMessage(globalMsg.getWrongParam());
             return response;
         }
-        response = censorTimeConflict(arrangementForm);
+        response = censorTimeConflict(arrangementForm,0);
         if (!response.isSuccess()) {
             return response;
         }
@@ -165,7 +165,7 @@ public class ArrangementImpl
             response.setMessage(globalMsg.getWrongParam());
             return response;
         }
-        response = censorTimeConflict(arrangementForm);
+        response = censorTimeConflict(arrangementForm,ID);
         if (!response.isSuccess()) {
             return response;
         }
@@ -279,7 +279,7 @@ public class ArrangementImpl
     private boolean unCensorArrangementForm(ArrangementForm arrangementForm) {
         Date date = new Date();
         return (arrangementForm.getStartTime().compareTo(arrangementForm.getEndTime()) >= 0)
-                || (arrangementForm.getVisibleDate().compareTo(date) < 0) || (arrangementForm.getFare() <= 0) || (arrangementForm.getStartTime().compareTo(date) < 0) || (arrangementForm.getEndTime().compareTo(date) < 0);
+                ||(arrangementForm.getFare() <= 0) || (arrangementForm.getStartTime().compareTo(date) < 0) || (arrangementForm.getEndTime().compareTo(date) < 0);
     }
 
     /**
@@ -304,18 +304,27 @@ public class ArrangementImpl
      * @param arrangementForm 排片表单
      * @return 没有返回success
      */
-    private Response censorTimeConflict(ArrangementForm arrangementForm) {
+    private Response censorTimeConflict(ArrangementForm arrangementForm,int ID) {
         int hallID = arrangementForm.getHallId();
         List<Arrangement> arrangements = arrangementMapper.selectByDay(arrangementForm.getStartTime(), arrangementForm.getEndTime());
         for (Arrangement arrangement : arrangements) {
-            if (arrangement.getHallId() == hallID) {
+            if (arrangement.getHallId() == hallID && ((ID != 0 && arrangement.getId() != ID)||ID == 0)) {
                 return Response.fail(arrangementMsg.getIsAlreadyHaveArrangement());
             }
         }
         return Response.success();
     }
 
-
+    /**
+     * 通过参数组装一个ArrangementPO
+     * @param startTime 开始时间
+     * @param endTime 结束时间
+     * @param fare 票价
+     * @param hallId 影厅ID
+     * @param movieId 电影ID
+     * @param visibleDate 可见时间
+     * @return ArrangementPO
+     */
     private Arrangement assembleArrangement(Date startTime, Date endTime, Float fare, Integer hallId, Integer movieId, Date visibleDate) {
         Arrangement arrangement = new Arrangement();
         arrangement.setStartTime(startTime);

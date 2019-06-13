@@ -9,28 +9,26 @@ var colors = [
 ];
 
 var hallId,
-    scheduleDate = formatDate(new Date()),
+    arrangementDate = formatDate(new Date()),
     halls = [],
     arrangements = [],
     movieList = [];
-var movieSelect;
 
 $(document).ready(function () {
     initData();
 });
 
 function initData() {
-    $('#schedule-date-input').val(scheduleDate);
+    $('#arrangement-date-input').val(arrangementDate);
     getHalls();
-    getPreAndOnMovies();
 
     // 过滤条件变化后重新查询
     $('#hall-select').change (function () {
         hallId=$(this).children('option:selected').val();
         getArrangements();
     });
-    $('#schedule-date-input').change(function () {
-        scheduleDate = $('#schedule-date-input').val();
+    $('#arrangement-date-input').change(function () {
+        arrangementDate = $('#arrangement-date-input').val();
         getArrangements();
     });
 }
@@ -44,8 +42,8 @@ function getHalls() {
                 hallId = halls[0].id;
                 halls.forEach(function (hall) {
                     $('#hall-select').append("<option value="+ hall.id +">"+hall.name+"</option>");
-                    $('#schedule-hall-input').append("<option value="+ hall.id +">"+hall.name+"</option>");
-                    $('#schedule-edit-hall-input').append("<option value="+ hall.id +">"+hall.name+"</option>");
+                    $('#arrangement-hall-input').append("<option value="+ hall.id +">"+hall.name+"</option>");
+                    $('#arrangement-edit-hall-input').append("<option value="+ hall.id +">"+hall.name+"</option>");
                 });
                 getArrangements();
             }else{
@@ -64,12 +62,13 @@ function getPreAndOnMovies() {
         function (res) {
             if(res.success){
                 res.content.forEach(function (movie) {
-                    if(movie.state<2){
-                        movieList.push(movie);
-                        $('#schedule-movie-input').append("<option value="+ movie.id +">"+movie.name+"</option>");
-                        $("#schedule-edit-movie-input").append("<option value="+ movie.id +">"+movie.name+"</option>");
+                    if(movie.status<2){
+                        $('#arrangement-movie-input').append("<option value="+ movie.id +">"+movie.name+"</option>");
+                        $("#arrangement-edit-movie-input").append("<option value="+ movie.id +">"+movie.name+"</option>");
                     }
+                    movieList.push(movie);
                 });
+                renderArrangements();
             }else{
                 alert(res.message);
             }
@@ -82,11 +81,11 @@ function getPreAndOnMovies() {
 
 function getArrangements() {
     getRequest(
-        '/manage/arrangement/get?hallId='+hallId+'&startDate='+scheduleDate.replace(/-/g,'/'),
+        '/manage/arrangement/get?hallId='+hallId+'&startDate='+arrangementDate.replace(/-/g,'/'),
         function (res) {
             if(res.success){
                 arrangements = res.content;
-                renderArrangements();
+                getPreAndOnMovies();
             }else{
                 alert(res.message);
             }
@@ -98,21 +97,33 @@ function getArrangements() {
 }
 
 function renderArrangements() {
-    $('.schedule-date-container').empty();
-    $(".schedule-time-line").siblings().remove();
-    arrangements.forEach(function (arrangement) {
-        $('.schedule-date-container').append("<div class='schedule-date'>"+formatDate(new Date(arrangement.startTime))+"</div>");
-        var arrangementDateDom = $(" <ul class='schedule-item-line'></ul>");
-        $(".schedule-container").append(arrangementDateDom);
-        var arrangementStyle = mapArrangementStyle(arrangement);
-        var arrangementItemDom =$(
-            "<li id='schedule-"+ arrangement.id +"' class='schedule-item' data-schedule='"+JSON.stringify(arrangement)+"' style='background:"+arrangementStyle.color+";top:"+arrangementStyle.top+";height:"+arrangementStyle.height+"'>"+
-            "<span>"+arrangement.movieId+"</span>"+
-            "<span class='error-text'>¥"+arrangement.fare+"</span>"+
-            "<span>"+formatTime(new Date(arrangement.startTime))+"-"+formatTime(new Date(arrangement.endTime))+"</span>"+
-            "</li>"
-        );
-        arrangementDateDom.append(arrangementItemDom);
+    $('.arrangement-date-container').empty();
+    $(".arrangement-time-line").siblings().remove();
+    var i = 0;
+    arrangements.forEach(function (arrangementOfDate) {
+        var beginDate = new Date(arrangementDate);
+        var date = plusDateByDay(beginDate,i);
+        $('.arrangement-date-container').append("<div class='arrangement-date'>"+date+"</div>");
+        var arrangementDateDom = $(" <ul class='arrangement-item-line'></ul>");
+        $(".arrangement-container").append(arrangementDateDom);
+        arrangementOfDate.forEach(function (arrangement) {
+            var movieName = '默认电影名';
+            movieList.forEach(function (movie) {
+                if(movie.id===arrangement.movieId){
+                    movieName = movie.name;
+                }
+            });
+            var arrangementStyle = mapArrangementStyle(arrangement);
+            var arrangementItemDom =
+                "<li id='arrangement-"+ arrangement.id +"' class='arrangement-item' data-arrangement='"+JSON.stringify(arrangement)+"' style='background:"+arrangementStyle.color+";top:"+arrangementStyle.top+";height:"+arrangementStyle.height+"'>"+
+                "<span>"+movieName+"</span>"+
+                "<span class='error-text'>¥"+arrangement.fare+"</span>"+
+                "<span>"+formatTime(new Date(arrangement.startTime))+"-"+formatTime(new Date(arrangement.endTime))+"</span>"+
+                "</li>";
+
+            arrangementDateDom.append(arrangementItemDom);
+        });
+        i += 1;
     })
 }
 
@@ -125,3 +136,161 @@ function mapArrangementStyle(arrangement) {
         height: 40*(end-start)+'px'
     }
 }
+
+$('#arrangement-form-btn').click(function () {
+    var movieLength;
+    for (var i = 0;i<movieList.length;i++){
+        if (movieList[i].id === parseInt($("#arrangement-movie-input").children('option:selected').val())){
+            movieLength = movieList[i].duration;
+        }
+    }
+    var start = new Date($("#arrangement-start-date-input").val()).getTime();
+    var end = new Date($("#arrangement-end-date-input").val()).getTime();
+    var startDate = new Date($("#arrangement-start-date-input").val()).getDate();
+    var endDate = new Date($("#arrangement-end-date-input").val()).getDate();
+    var price = $("#arrangement-price-input");
+    if ($("#arrangement-start-date-input").val() === ''){
+        alert("开始时间不完整")
+    }
+    else if ($("#arrangement-end-date-input").val() === ''){
+        alert("结束时间不完整")
+    }
+    else if(start>end){
+        alert("开始时间不得晚于结束时间")
+    }
+    else if(movieLength > (end - start)/60000){
+        alert("排片时间差应大于等于片长")
+    }else if(startDate!==endDate){
+        alert("不可跨天排片")
+    }
+    else if (parseInt(price.val()) <= 0){
+        alert("票价应该大于零")
+    }
+    else{
+        var form = {
+            hallId: $("#arrangement-hall-input").children('option:selected').val(),
+            movieId : $("#arrangement-movie-input").children('option:selected').val(),
+            startTime: new Date($("#arrangement-start-date-input").val()),
+            endTime: new Date($("#arrangement-end-date-input").val()),
+            fare: $("#arrangement-price-input").val(),
+            visibleDate:new Date($("#arrangement-visible-date-input").val())
+        };
+
+        postRequest(
+            '/manage/arrangement/add',
+            form,
+            function (res) {
+                if(res.success){
+                    $("#arrangementModal").modal('hide');
+                    getArrangements();
+                } else {
+                    alert(res.message);
+                }
+            },
+            function (error) {
+                alert(error.message);
+            }
+        );
+    }
+});
+
+$(document).on('click','.arrangement-item',function (e) {
+    var arrangement = JSON.parse(e.target.dataset.arrangement);
+    $("#arrangement-edit-hall-input").children('option[value='+arrangement.hallId+']').attr('selected',true);
+    $("#arrangement-edit-movie-input").children('option[value='+arrangement.movieId+']').attr('selected',true);
+    $("#arrangement-edit-start-date-input").val(arrangement.startTime.slice(0,16));
+    $("#arrangement-edit-end-date-input").val(arrangement.endTime.slice(0,16));
+    $("#arrangement-edit-price-input").val(arrangement.fare);
+    $("#arrangement-edit-visible-date-input").val(arrangement.visibleDate.slice(0,10));
+    $('#arrangementEditModal').modal('show');
+    $('#arrangementEditModal')[0].dataset.arrangementId = arrangement.id;
+    console.log(arrangement);
+});
+
+$('#arrangement-edit-form-btn').click(function () {
+    var movieLength;
+    for (var i = 0;i<movieList.length;i++){
+        if (movieList[i].id === parseInt($("#arrangement-edit-movie-input").children('option:selected').val())){
+            movieLength = movieList[i].duration;
+        }
+    }
+    var start = new Date($("#arrangement-edit-start-date-input").val()).getTime();
+    var end = new Date($("#arrangement-edit-end-date-input").val()).getTime();
+    var startDate = new Date($("#arrangement-edit-start-date-input").val()).getDate();
+    var endDate = new Date($("#arrangement-edit-end-date-input").val()).getDate();
+    var price = $("#arrangement-edit-price-input");
+    if ($("#arrangement-edit-start-date-input").val() === ''){
+        alert("开始时间不完整")
+    }
+    else if ($("#arrangement-edit-end-date-input").val() === ''){
+        alert("结束时间不完整")
+    }
+    else if(start>end){
+        alert("开始时间不得晚于结束时间")
+    }
+    else if(movieLength > (end - start)/60000){
+        alert("排片时间差应大于等于片长")
+    }else if(startDate!==endDate){
+        alert("不可跨天排片")
+    }
+    else if (parseInt(price.val()) <= 0){
+        alert("票价应该大于零")
+    }
+    else{
+        var form = {
+            hallId: $("#arrangement-edit-hall-input").children('option:selected').val(),
+            movieId : $("#arrangement-edit-movie-input").children('option:selected').val(),
+            startTime: new Date($("#arrangement-edit-start-date-input").val()),
+            endTime: new Date($("#arrangement-edit-end-date-input").val()),
+            fare: $("#arrangement-edit-price-input").val(),
+            visibleDate:new Date($("#arrangement-edit-visible-date-input").val())
+        };
+
+        postRequest(
+            '/manage/arrangement/modify?arrangementId='+Number($('#arrangementEditModal')[0].dataset.arrangementId),
+            form,
+            function (res) {
+                if(res.success){
+                    $("#arrangementEditModal").modal('hide');
+                    getArrangements();
+                } else{
+                    alert(res.message);
+                }
+            },
+            function (error) {
+                alert(error.message);
+            }
+        );
+    }
+});
+
+$("#arrangement-edit-remove-btn").click(function () {
+    var r=confirm("确认要删除该排片信息吗");
+    if (r) {
+        postRequest(
+            '/manage/arrangement/remove?arrangementId='+Number($('#arrangementEditModal')[0].dataset.arrangementId),
+            {},
+            function (res) {
+                if(res.success){
+                    $("#arrangementEditModal").modal('hide');
+                    getArrangements();
+                } else{
+                    alert(res.message);
+                }
+            },
+            function (error) {
+                alert(error.message);
+            }
+        );
+    }
+});
+
+$(".toggle").click(function () {
+    if( $(".arrangement-date-container").css('padding-left')==='95px'){
+        $(".arrangement-date-container").css('padding-left','100px');
+        $('.arrangement-date').css('width','150px')
+    }else {
+        $(".arrangement-date-container").css('padding-left','95px');
+        $('.arrangement-date').css('width','135px')
+    }
+});
