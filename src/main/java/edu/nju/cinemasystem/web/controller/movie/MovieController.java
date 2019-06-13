@@ -8,6 +8,7 @@ import edu.nju.cinemasystem.data.vo.form.MovieForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @RestController
@@ -19,12 +20,18 @@ public class MovieController {
     @Autowired
     private MovieManagement movieManagement;
 
+    //TODO 去掉all
     @GetMapping("/user/movie/all")
-    public Response getAllMovie(HttpSession session) {
+    public Response getAllMovie(HttpSession session, HttpServletResponse response) {
         int userID = (Integer) session.getAttribute("id");
+        Response res = movie.getMovie(0,userID);
+        if (!res.isSuccess()){
+            response.setStatus(res.getStatusCode());
+        }
         return movie.getMovie(0, userID);
     }
 
+    //TODO 去掉get
     @GetMapping("/user/movie/get/{movieId}")
     public Response getOneMovie(@PathVariable int movieId, HttpSession session) {
         int userID = (Integer) session.getAttribute("id");
@@ -63,11 +70,13 @@ public class MovieController {
         return movieManagement.removeMovie(movieId);
     }
 
+    //TODO 去掉all
     @GetMapping("/manage/movie/all")
     public Response adminGetAllMovie() {
         return movieManagement.getMovie(0);
     }
 
+    //TODO 去掉all
     @GetMapping("/manage/movie/get/{movieId}")
     public Response adminGetOneMovie(@PathVariable int movieId) {
         return movieManagement.getMovie(movieId);

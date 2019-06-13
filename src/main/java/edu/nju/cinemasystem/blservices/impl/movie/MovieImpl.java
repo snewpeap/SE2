@@ -37,15 +37,17 @@ public class MovieImpl implements edu.nju.cinemasystem.blservices.movie.Movie {
             List<Movie> allMovies = movieMapper.selectAll();
             allMovies.removeIf(movie -> !movie.audienceVisible());
             List<AudienceMovieVO> allMovieVOs = new ArrayList<>(allMovies.size());
-            allMovies.forEach(
-                    movie -> allMovieVOs.add(assembleAudienceMovieVO(movie))
-            );
+            if (!allMovies.isEmpty()) {
+                allMovies.forEach(
+                        movie -> allMovieVOs.add(assembleAudienceMovieVO(movie))
+                );
+            }
             response.setContent(allMovieVOs);
         } else {
             Movie movie = movieMapper.selectByPrimaryKey(movieID);
             if (movie != null && !movie.audienceVisible()) {
                 response = Response.fail();
-                response.setStatusCode(401);
+                response.setStatusCode(403);
             } else if (movie == null) {
                 response = Response.fail();
                 response.setStatusCode(404);
@@ -76,6 +78,7 @@ public class MovieImpl implements edu.nju.cinemasystem.blservices.movie.Movie {
         movieVO.setJoinedPromotions(promotionInfo.getJoinedPromotionOf(movieID));
         movieVO.setLikeNum(movieLikeInfo.getLikeAmount(movieID));
         movieVO.setHeat(statisticsInfo.getHeatOf(movieID));
+        movieVO.setStatus(movie.getStatus());
         return movieVO;
     }
 }
