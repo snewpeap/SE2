@@ -17,8 +17,8 @@ public class HallController {
     }
 
     @PostMapping("/admin/hall/modify")
-    public Response updateHall(@RequestBody HallForm hallForm, @RequestParam int ID){
-        return hallManage.modifyHallInfo(hallForm,ID);
+    public Response updateHall(@RequestBody HallForm hallForm, @RequestParam int hallId){
+        return hallManage.modifyHallInfo(hallForm,hallId);
     }
 
     @GetMapping("/manage/hall/get")

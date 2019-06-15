@@ -27,6 +27,10 @@
 
     <!-- Custom Theme Style -->
     <link href="/webjars/gentelella/build/css/custom.min.css" rel="stylesheet">
+    <!-- Personal Theme Style -->
+    <link href="/css/admin/hallManage.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/common.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 </head>
 <body class="nav-md">
 <div class="container body">
@@ -121,7 +125,144 @@
         <div class="right_col" role="main">
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="dashboard_graph">
+                    <div class="x_panel">
+                        <div class>
+                            <div class="hall-manage-header">
+                                <h2>所有影厅</h2>
+                                <button type="button" class="btn btn-primary" data-backdrop="static" data-toggle="modal" data-target="#hallModal"><i class="icon-plus-sign"></i> 添加影厅</button>
+                            </div>
+                            <div class="content-card card" id="hall-card"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="hallModal" tabindex="-1" role="dialog" aria-labelledby="hallModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">新增影厅</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="hall-name-input"><span class="error-text">*</span>影厅名称</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="hall-name-input" placeholder="请输入影厅名称">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="hall-row-input"><span class="error-text">*</span>影厅行数</label>
+                                <div class="col-sm-10">
+                                    <input type="number" min="1" class="form-control" id="hall-row-input" placeholder="请输入影厅行数">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="hall-column-input"><span class="error-text">*</span>影厅列数</label>
+                                <div class="col-sm-10">
+                                    <input type="number" min="1" class="form-control" id="hall-column-input" placeholder="请输入影厅列数">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="hall-size-input"><span class="error-text">*</span>影厅大小</label>
+                                <div class="col-sm-10">
+                                    <select id="hall-size-input" class="form-control">
+                                        <option value='大'> 大 </option>
+                                        <option value='中'> 中 </option>
+                                        <option value='小'> 小 </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="hall-imax-input"><span class="error-text">*</span>是否是imax</label>
+                                <div class="col-sm-10">
+                                    <select id="hall-imax-input" class="form-control">
+                                        <option value='true'> 是 </option>
+                                        <option value='false'> 否 </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="hall-3D-input"><span class="error-text">*</span>是否是3D</label>
+                                <div class="col-sm-10">
+                                    <select id="hall-3D-input" class="form-control">
+                                        <option value='true'> 是 </option>
+                                        <option value='false'> 否 </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary" id="hall-form-btn">确认</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="editHallModal" tabindex="-1" role="dialog" aria-labelledby="hallEditModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">修改影厅</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="hall-edit-name-input"><span class="error-text">*</span>影厅名称</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="hall-edit-name-input" placeholder="请输入影厅名称">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="hall-edit-row-input"><span class="error-text">*</span>影厅行数</label>
+                                <div class="col-sm-10">
+                                    <input type="number" min="1" class="form-control" id="hall-edit-row-input" placeholder="请输入影厅行数">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="hall-edit-column-input"><span class="error-text">*</span>影厅列数</label>
+                                <div class="col-sm-10">
+                                    <input type="number" min="1" class="form-control" id="hall-edit-column-input" placeholder="请输入影厅列数">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="hall-edit-size-input"><span class="error-text">*</span>影厅大小</label>
+                                <div class="col-sm-10">
+                                    <select id="hall-edit-size-input" class="form-control">
+                                        <option value='0'>大</option>
+                                        <option value='1'>中</option>
+                                        <option value='2'>小</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="hall-edit-imax-input"><span class="error-text">*</span>是否是imax</label>
+                                <div class="col-sm-10">
+                                    <select id="hall-edit-imax-input" class="form-control">
+                                        <option value='true'> 是 </option>
+                                        <option value='false'> 否 </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="hall-edit-3D-input"><span class="error-text">*</span>是否是3D</label>
+                                <div class="col-sm-10">
+                                    <select id="hall-edit-3D-input" class="form-control">
+                                        <option value='true'> 是 </option>
+                                        <option value='false'> 否 </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary" id="hall-edit-form-btn">确认</button>
                     </div>
                 </div>
             </div>
