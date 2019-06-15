@@ -10,6 +10,7 @@ public interface MovieManagement {
     Response addMovie(MovieForm movieForm);
     Response modifyMovie(MovieForm movieForm);
     Response removeMovie(int movieID);
+    Response downwardMovie(int movieID);
 
     /**
      * 负数代表查询所有电影
@@ -20,7 +21,7 @@ public interface MovieManagement {
 
     /**
      * 获取所有已上映和已下架的电影
-     * @return
+     * @return 所有已上映和已下架的电影
      */
     List<Movie> getReleasedMovies();
 }

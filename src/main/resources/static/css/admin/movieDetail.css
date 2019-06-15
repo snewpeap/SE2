@@ -5,7 +5,7 @@
 .movie-basic-info {
     flex: 1;
     padding: 0 20px;
-    height: 320px;
+    height: 400px;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -16,8 +16,8 @@
 }
 
 #movie-img {
-    height: 320px;
-    width: 240px;
+    height: 400px;
+    width: 300px;
 }
 
 #movie-description {
@@ -36,3 +36,12 @@
     display: flex;
     justify-content: center;
 }
+/*#movie-description{*/
+/*    max-height: 80px;*/
+/*    min-height: 40px;*/
+/*    overflow: hidden;*/
+/*    text-overflow: ellipsis;*/
+/*    display:-webkit-box;*/
+/*    -webkit-box-orient:vertical;*/
+/*    -webkit-line-clamp:3;*/
+/*}*/

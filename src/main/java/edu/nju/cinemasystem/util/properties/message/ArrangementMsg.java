@@ -11,6 +11,10 @@ public class ArrangementMsg extends GlobalMsg {
     private String arrangementStart;
     private String isStillHaveArrangement;
     private String isAlreadyHaveArrangement;
+    private String timeConflict;
+    private String fareCannotBeNegative;
+    private String movieUnReleased;
+    private  String durationIsShort;
 
     public String getArrangementStart() {
         return arrangementStart;
@@ -42,5 +46,37 @@ public class ArrangementMsg extends GlobalMsg {
 
     public void setIsAlreadyHaveArrangement(String isAlreadyHaveArrangement) {
         this.isAlreadyHaveArrangement = isAlreadyHaveArrangement;
+    }
+
+    public String getTimeConflict() {
+        return timeConflict;
+    }
+
+    public void setTimeConflict(String timeConflict) {
+        this.timeConflict = timeConflict;
+    }
+
+    public String getFareCannotBeNegative() {
+        return fareCannotBeNegative;
+    }
+
+    public void setFareCannotBeNegative(String fareCannotBeNegative) {
+        this.fareCannotBeNegative = fareCannotBeNegative;
+    }
+
+    public String getMovieUnReleased() {
+        return movieUnReleased;
+    }
+
+    public void setMovieUnReleased(String movieUnReleased) {
+        this.movieUnReleased = movieUnReleased;
+    }
+
+    public String getDurationIsShort() {
+        return durationIsShort;
+    }
+
+    public void setDurationIsShort(String durationIsShort) {
+        this.durationIsShort = durationIsShort;
     }
 }

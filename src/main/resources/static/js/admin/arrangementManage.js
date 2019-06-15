@@ -170,10 +170,10 @@ $('#arrangement-form-btn').click(function () {
         var form = {
             hallId: $("#arrangement-hall-input").children('option:selected').val(),
             movieId : $("#arrangement-movie-input").children('option:selected').val(),
-            startTime: new Date($("#arrangement-start-date-input").val()),
-            endTime: new Date($("#arrangement-end-date-input").val()),
+            startTime: $("#arrangement-start-date-input").val(),
+            endTime: $("#arrangement-end-date-input").val(),
             fare: $("#arrangement-price-input").val(),
-            visibleDate:new Date($("#arrangement-visible-date-input").val())
+            visibleDate:$("#arrangement-visible-date-input").val()
         };
 
         postRequest(
@@ -240,10 +240,10 @@ $('#arrangement-edit-form-btn').click(function () {
         var form = {
             hallId: $("#arrangement-edit-hall-input").children('option:selected').val(),
             movieId : $("#arrangement-edit-movie-input").children('option:selected').val(),
-            startTime: new Date($("#arrangement-edit-start-date-input").val()),
-            endTime: new Date($("#arrangement-edit-end-date-input").val()),
+            startTime: $("#arrangement-edit-start-date-input").val(),
+            endTime: $("#arrangement-edit-end-date-input").val(),
             fare: $("#arrangement-edit-price-input").val(),
-            visibleDate:new Date($("#arrangement-edit-visible-date-input").val())
+            visibleDate:$("#arrangement-edit-visible-date-input").val()
         };
 
         postRequest(

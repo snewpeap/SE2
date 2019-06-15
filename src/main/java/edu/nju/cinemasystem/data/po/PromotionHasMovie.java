@@ -21,8 +21,10 @@ public class PromotionHasMovie {
         this.movieId = movieId;
     }
 
-    public PromotionHasMovie(Integer promotionId, Integer movieId) {
-        this.promotionId = promotionId;
-        this.movieId = movieId;
+    public static PromotionHasMovie assemblePromotionHasMoviePO(Integer promotionId, Integer movieId){
+        PromotionHasMovie promotionHasMovie = new PromotionHasMovie();
+        promotionHasMovie.setPromotionId(promotionId);
+        promotionHasMovie.setMovieId(movieId);
+        return promotionHasMovie;
     }
 }

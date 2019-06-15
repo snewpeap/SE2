@@ -8,7 +8,7 @@ public class ManagerMovieVO extends BaseMovieVO {
     private Date releaseDate;
     private Byte status;
     private int LikeNum;
-    private List<Map<Date, Integer>> likeData;
+    private List<Map<String, Object>> likeData;
 
     public Date getReleaseDate() {
         return releaseDate;
@@ -34,11 +34,11 @@ public class ManagerMovieVO extends BaseMovieVO {
         this.status = status;
     }
 
-    public List<Map<Date, Integer>> getLikeData() {
+    public List<Map<String, Object>> getLikeData() {
         return likeData;
     }
 
-    public void setLikeData(List<Map<Date, Integer>> likeData) {
+    public void setLikeData(List<Map<String, Object>> likeData) {
         this.likeData = likeData;
     }
 }

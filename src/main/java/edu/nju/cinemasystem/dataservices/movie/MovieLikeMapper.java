@@ -4,7 +4,6 @@ import edu.nju.cinemasystem.data.po.MovieLike;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -40,7 +39,7 @@ public interface MovieLikeMapper {
      */
     List<MovieLike> selectByMovieID(int movieID);
 
-    List<Map<Date, Integer>> selectByMovieGroupByDate(int movieID);
+    List<Map<String, Object>> selectByMovieGroupByDate(int movieID);
 
     /**
      * 通过用户id查询用户的想看记录

@@ -1351,7 +1351,7 @@ ul.w3l-sider-list li i{
 }
 .w3agile_footer_copy {
     padding: 1em 0;
-	background: #02a388;
+	background: #ffffff;
 }
 #contact h2 {
     text-align: center;
@@ -1973,14 +1973,14 @@ h4.b-log a  span{
     width: 33%;
 }
 .w3agile_footer_copy p {
-       color: #fff;
+       color: #000000;
     line-height: 1.8em;
     text-align: center;
     font-size: 0.9em;
     letter-spacing: 1px;
 }
 .w3agile_footer_copy p a {
-      color: #0c0d0d;
+      color: #2a3f54;
 }
 ul.w3-tag2 li a {
       font-size: 14px;

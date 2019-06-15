@@ -13,7 +13,6 @@ function getAllMovie() {
         function (res) {
             if(res.success===true){
                 movieList = res.content;
-                console.log(movieList);
                 movieList.forEach(function (movie) {
                     if(movie.status < 2){
                         preAndOnShowMovieList.push(movie);
@@ -70,5 +69,5 @@ function renderMovie() {
             "</div>"+
             "</li>";
     });
-    $('.dashboard_graph').append(movieDom);
+    $('.x_panel').append(movieDom);
 }

@@ -2,7 +2,6 @@ package edu.nju.cinemasystem.blservices.movie;
 
 import edu.nju.cinemasystem.data.vo.Response;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -15,5 +14,5 @@ public interface MovieLike {
 
     boolean getIsLike(int userID, int movieID);
 
-    List<Map<Date, Integer>> getLikeDataOf(int movieID);
+    List<Map<String, Object>> getLikeDataOf(int movieID);
 }
