@@ -8,7 +8,10 @@ import edu.nju.cinemasystem.util.properties.AlipayProperties;
 import edu.nju.cinemasystem.web.config.CustomWebSecurityConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,46 +20,45 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
-@Controller("/user/alipay")
+@Controller
 public class AlipayController {
-    @Autowired
-    private Ticket ticket;
-    @Autowired
-    private AlipayProperties alipayProperties;
+    private final Ticket ticket;
+    private final AlipayProperties alipayProperties;
 
-    @RequestMapping("/pay/{orderID}")
-    public Response alipay(@PathVariable long orderID, @RequestBody int couponID, HttpSession session) throws AlipayApiException {
+    @Autowired
+    public AlipayController(Ticket ticket, AlipayProperties alipayProperties) {
+        this.ticket = ticket;
+        this.alipayProperties = alipayProperties;
+    }
+
+    @RequestMapping("/user/alipay/pay/{orderID}")
+    public @ResponseBody String alipay(@PathVariable long orderID/*, @RequestBody int couponID*/, HttpSession session, HttpServletResponse servletResponse) throws AlipayApiException {
         int userID = (Integer) session.getAttribute(CustomWebSecurityConfiguration.KEY_ID);
-        Response response = ticket.payable(orderID, couponID, userID);
+        Response response = ticket.payable(orderID,0/* couponID*/, userID);
         if (response.isSuccess()) {
-            return Response.success(ticket.requestAlipay(orderID));
+            return ticket.requestAlipay(orderID);
         } else {
-            return response;
+            servletResponse.setStatus(400);
+            return response.getMessage();
         }
     }
 
-    @RequestMapping("/return")
-    public Response alipay_return(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @RequestMapping("/alipay/return")
+    public String alipay_return(HttpServletRequest request, HttpServletResponse response) throws Exception {
         boolean signVerify = verifySign(request);
-        Response payResponse = Response.success();
         if (signVerify) {
             //我们自己的订单号
             String out_trade_no = new String(request.getParameter("out_trade_no").getBytes("ISO-8859-1"), "UTF-8");
             //付款金额
             String total_amount = new String(request.getParameter("total_amount").getBytes("ISO-8859-1"), "UTF-8");
-
-            Map<String, String> payData = new HashMap<>(2);
-            payData.put("orderID", out_trade_no);
-            payData.put("amount", total_amount);
-            payResponse.setContent(payData);
         } else {
-            payResponse = Response.fail();
+            System.out.println("fail");
         }
-        return payResponse;
+        return "user/paySuccess";
     }
 
     @ResponseBody
-    @PostMapping("/notify")
+    @PostMapping("/alipay/notify")
     public String alipay_notify(HttpServletRequest request) throws Exception {
         boolean signVerify = verifySign(request);
         if (signVerify) {//验证成功
@@ -76,6 +78,11 @@ public class AlipayController {
             //验证失败
             return "fail";
         }
+    }
+
+    @RequestMapping("/user/testAli")
+    public String testAli(){
+        return "user/testAli";
     }
 
     private boolean verifySign(HttpServletRequest request) throws UnsupportedEncodingException, AlipayApiException {

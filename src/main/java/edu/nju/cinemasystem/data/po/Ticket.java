@@ -83,14 +83,15 @@ public class Ticket {
         this.orderID = orderID;
     }
 
-    public Ticket(int userId, int arrangementId, int seatId, Date date, Byte status, Float realAmount,
-            Long orderID) {
-        this.userId = userId;
-        this.arrangementId = arrangementId;
-        this.seatId = seatId;
-        this.date = date;
-        this.status = status;
-        this.realAmount = realAmount;
-        this.orderID = orderID;
+    public static Ticket assembleTicketPO(int userID, int arrangementID, int seatID, Date date, byte status, float realAmount, long orderID){
+        Ticket ticket = new Ticket();
+        ticket.setUserId(userID);
+        ticket.setArrangementId(arrangementID);
+        ticket.setSeatId(seatID);
+        ticket.setDate(date);
+        ticket.setStatus(status);
+        ticket.setRealAmount(realAmount);
+        ticket.setOrderID(orderID);
+        return ticket;
     }
 }

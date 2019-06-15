@@ -179,7 +179,7 @@ public class PromotionImpl implements
             c.setTime(date);
             c.add(Calendar.DATE, promotion.getCouponExpiration());
             Date endTime = c.getTime();
-            Coupon coupon = new Coupon(endTime, promotion.getId(), userID);
+            Coupon coupon = Coupon.assembleCouponPO(endTime, promotion.getId(), userID);
             couponMapper.insertSelective(coupon);
         }
     }
@@ -196,7 +196,7 @@ public class PromotionImpl implements
         for (int promotionID : promotionIDs) {
             Promotion promotion = promotionMapper.selectByPrimaryKey(promotionID);
             Date endTime = addDate(new Date(), promotion.getCouponExpiration());
-            Coupon coupon = new Coupon(endTime, promotionID, userID);
+            Coupon coupon = Coupon.assembleCouponPO(endTime, promotionID, userID);
             int i = couponMapper.insertSelective(coupon);
             if (i != 0) {
                 success.add(promotionID);

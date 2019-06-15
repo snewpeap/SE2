@@ -3,7 +3,7 @@
 <mapper namespace="edu.nju.cinemasystem.dataservices.sale.ticket.TicketsMapper">
     <resultMap id="BaseResultMap" type="edu.nju.cinemasystem.data.po.Ticket">
         <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="user_id" jdbcType="INTEGER" property="id"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
         <result column="arrangement_id" jdbcType="INTEGER" property="arrangementId"/>
         <result column="seat_id" jdbcType="INTEGER" property="seatId"/>
         <result column="date" jdbcType="TIMESTAMP" property="date"/>
@@ -75,7 +75,7 @@
         insert into tickets (id, user_id, arrangement_id,
                              seat_id, `date`, `status`,
                              real_amount, orderID)
-        values (#{id,jdbcType=INTEGER}, #{id,jdbcType=INTEGER}, #{arrangementId,jdbcType=INTEGER},
+        values (#{id,jdbcType=INTEGER}, #{user_id,jdbcType=INTEGER}, #{arrangementId,jdbcType=INTEGER},
                 #{seatId,jdbcType=INTEGER}, #{date,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT},
                 #{realAmount,jdbcType=REAL}, #{orderID,jdbcType=BIGINT})
     </insert>
@@ -87,7 +87,7 @@
             <if test="id != null">
                 id,
             </if>
-            <if test="id != null">
+            <if test="userId != null">
                 user_id,
             </if>
             <if test="arrangementId != null">
@@ -113,8 +113,8 @@
             <if test="id != null">
                 #{id,jdbcType=INTEGER},
             </if>
-            <if test="id != null">
-                #{id,jdbcType=INTEGER},
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
             </if>
             <if test="arrangementId != null">
                 #{arrangementId,jdbcType=INTEGER},
@@ -140,7 +140,7 @@
     <update id="updateByPrimaryKeySelective" parameterType="edu.nju.cinemasystem.data.po.Ticket">
         update tickets
         <set>
-            <if test="id != null">
+            <if test="user_id != null">
                 user_id = #{id,jdbcType=INTEGER},
             </if>
             <if test="arrangementId != null">
@@ -167,7 +167,7 @@
 
     <update id="updateByPrimaryKey" parameterType="edu.nju.cinemasystem.data.po.Ticket">
         update tickets
-        set user_id        = #{id,jdbcType=INTEGER},
+        set user_id        = #{user_id,jdbcType=INTEGER},
             arrangement_id = #{arrangementId,jdbcType=INTEGER},
             seat_id        = #{seatId,jdbcType=INTEGER},
             `date`           = #{date,jdbcType=TIMESTAMP},

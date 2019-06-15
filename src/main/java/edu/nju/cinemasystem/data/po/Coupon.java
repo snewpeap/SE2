@@ -43,9 +43,11 @@ public class Coupon {
         this.userId = userId;
     }
 
-    public Coupon(Date endTime, Integer promotionId, Integer userId) {
-        this.endTime = endTime;
-        this.promotionId = promotionId;
-        this.userId = userId;
+    public static Coupon assembleCouponPO(Date endTime, int promotionId, int userId){
+        Coupon coupon = new Coupon();
+        coupon.endTime = endTime;
+        coupon.promotionId = promotionId;
+        coupon.userId = userId;
+        return coupon;
     }
 }

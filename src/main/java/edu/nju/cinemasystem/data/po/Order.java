@@ -63,11 +63,14 @@ public class Order {
         this.userId = userId;
     }
 
-    public Order(Long id, Float realAmount, Float originalAmount, Date date, Byte useVipcard) {
-        this.id = id;
-        this.realAmount = realAmount;
-        this.originalAmount = originalAmount;
-        this.date = date;
-        this.useVipcard = useVipcard;
+    public static Order assembleOrderPO(Long id, Float realAmount, Float originalAmount, Date date, Byte useVipcard, Integer userId) {
+        Order order = new Order();
+        order.id = id;
+        order.realAmount = realAmount;
+        order.originalAmount = originalAmount;
+        order.date = date;
+        order.useVipcard = useVipcard;
+        order.userId = userId;
+        return order;
     }
 }

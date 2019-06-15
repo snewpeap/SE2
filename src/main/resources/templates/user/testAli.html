@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input id="id" type="text">
+<button onclick="send()">
+    send
+</button>
+<script src="/js/jquery.js"></script>
+<script type="text/javascript">
+    function send() {
+        $.ajax({
+            type: 'POST',
+            url: 'http://localhost:8080/user/alipay/pay/' + $('#id').val(),
+            async: true,
+            processData: false,
+            success: function (res) {
+                document.write(res)
+            },
+            error: function (err) {
+                alert(err)
+            }
+        })
+    }
+</script>
+</body>
+</html>

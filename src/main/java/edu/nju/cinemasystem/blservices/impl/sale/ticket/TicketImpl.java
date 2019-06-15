@@ -3,8 +3,8 @@ package edu.nju.cinemasystem.blservices.impl.sale.ticket;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
-import com.alipay.api.domain.AlipayTradePayModel;
-import com.alipay.api.request.AlipayTradePayRequest;
+import com.alipay.api.domain.AlipayTradePagePayModel;
+import com.alipay.api.request.AlipayTradePagePayRequest;
 import edu.nju.cinemasystem.blservices.cinema.arrangement.Arrangement;
 import edu.nju.cinemasystem.blservices.cinema.hall.HallManage;
 import edu.nju.cinemasystem.blservices.movie.Movie;
@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.DelayQueue;
 import java.util.concurrent.Executors;
@@ -84,7 +85,7 @@ public class TicketImpl
         float totalAmount = realAmount * seatIDs.size();
         long orderID = Long.parseLong(date.getTime() + String.valueOf(1 + (long) (Math.random() * 100)));
 
-        Order order = new Order(orderID, totalAmount, totalAmount, date, (byte) 2);
+        Order order = Order.assembleOrderPO(orderID, totalAmount, totalAmount, date, (byte) 2, userID);
         orderMapper.insertSelective(order);
         List<Ticket> tickets = new ArrayList<>();
         for (int seatID : seatIDs) {
@@ -93,7 +94,7 @@ public class TicketImpl
                 return Response.fail(ticketMsg.getSeatBeenLocked());
             }
             arrangement.changeArrangementSeatStatus(arrangementID, seatID, true);
-            Ticket ticket = new Ticket(userID, arrangementID, seatID, date, (byte) 0, realAmount, orderID);
+            Ticket ticket = Ticket.assembleTicketPO(userID, arrangementID, seatID, date, (byte) 0, realAmount, orderID);
             ticketsMapper.insertSelective(ticket);
             tickets.add(ticket);
         }
@@ -112,33 +113,37 @@ public class TicketImpl
         if (order.getStatus() != 2 || orderMapper.selectByUserAndOrderID(userID, orderID).isEmpty()) {
             return Response.fail(ticketMsg.getOrderInvalid());
         }
-        List<CouponVO> coupons = coupon.getAvailableCouponsByUserAndTickets(userID, order.getOriginalAmount());
-        CouponVO thecoupon = null;
-        for (CouponVO couponVO : coupons) {
-            if (couponVO.getID() == couponID) {
-                thecoupon = couponVO;
-                break;
+        if (couponID != 0) {
+            List<CouponVO> coupons = coupon.getAvailableCouponsByUserAndTickets(userID, order.getOriginalAmount());
+            CouponVO thecoupon = null;
+            for (CouponVO couponVO : coupons) {
+                if (couponVO.getID() == couponID) {
+                    thecoupon = couponVO;
+                    break;
+                }
             }
-        }
-        if (thecoupon != null) {
-            order.setRealAmount(order.getOriginalAmount() - thecoupon.getDiscountAmount());
-            orderMapper.updateByPrimaryKeySelective(order);
-            List<Ticket> tickets = ticketsMapper.selectByOrderID(orderID);
-            float original = arrangement.getFareByID(tickets.get(0).getArrangementId());
-            float minus = thecoupon.getDiscountAmount() / (float) tickets.size();
-            tickets.forEach(
-                    ticket -> {
-                        ticket.setRealAmount(original - minus);
-                        ticketsMapper.updateByPrimaryKeySelective(ticket);
-                    }
-            );
-            if (orderHolder.setCouponToOrder(orderID, couponID)) {
-                return Response.success();
+            if (thecoupon != null) {
+                order.setRealAmount(order.getOriginalAmount() - thecoupon.getDiscountAmount());
+                orderMapper.updateByPrimaryKeySelective(order);
+                List<Ticket> tickets = ticketsMapper.selectByOrderID(orderID);
+                float original = arrangement.getFareByID(tickets.get(0).getArrangementId());
+                float minus = thecoupon.getDiscountAmount() / (float) tickets.size();
+                tickets.forEach(
+                        ticket -> {
+                            ticket.setRealAmount(original - minus);
+                            ticketsMapper.updateByPrimaryKeySelective(ticket);
+                        }
+                );
+                if (orderHolder.setCouponToOrder(orderID, couponID)) {
+                    return Response.success();
+                } else {
+                    return Response.fail(ticketMsg.getOrderInvalid());
+                }
             } else {
-                return Response.fail(ticketMsg.getOrderInvalid());
+                return Response.fail(ticketMsg.getCouponInvalid());
             }
         } else {
-            return Response.fail(ticketMsg.getCouponInvalid());
+            return Response.success();
         }
     }
 
@@ -154,12 +159,13 @@ public class TicketImpl
                 alipayProperties.getAliPublicKey(),
                 alipayProperties.getSignType()
         );
-        AlipayTradePayModel payModel = new AlipayTradePayModel();
+        AlipayTradePagePayModel payModel = new AlipayTradePagePayModel();
         payModel.setOutTradeNo(String.valueOf(orderID));
-        payModel.setTotalAmount(String.valueOf(order.getRealAmount()));
-        payModel.setSubject("电影票订单-" + order.getId());
-        payModel.setTimeoutExpress("15min");
-        AlipayTradePayRequest payRequest = new AlipayTradePayRequest();
+        payModel.setProductCode("FAST_INSTANT_TRADE_PAY");
+        payModel.setTotalAmount(new DecimalFormat("0.00").format(order.getRealAmount()));
+        payModel.setSubject("电影票订单" + order.getId());
+        payModel.setTimeoutExpress("15m");
+        AlipayTradePagePayRequest payRequest = new AlipayTradePagePayRequest();
         payRequest.setNotifyUrl(alipayProperties.getNotifyUrl());
         payRequest.setReturnUrl(alipayProperties.getReturnUrl());
         payRequest.setBizModel(payModel);
@@ -256,7 +262,7 @@ public class TicketImpl
         List<Ticket> needTickets = new ArrayList<>();
         long orderID = 0L;
         float totalAmount = 0;
-        if (tickets.size()!=0) {
+        if (tickets.size() != 0) {
             for (Ticket ticket : tickets) {
                 if (ticket.getArrangementId() == scheduleId && ticket.getStatus() == (byte) 0) {
                     needTickets.add(ticket);
@@ -275,7 +281,7 @@ public class TicketImpl
     public Response getAllTicketsByUserId(int userId) {
         List<Ticket> tickets = ticketsMapper.selectByUserID(userId);
         List<TicketVO> ticketVOS = new ArrayList<>();
-        if (tickets.size()!=0) {
+        if (tickets.size() != 0) {
             for (Ticket ticket : tickets) {
                 if (!(ticket.getStatus() == (byte) 0 && (ticket.getStatus() == (byte) 4))) {
                     ticketVOS.add(assembleTicketVO(ticket));
@@ -409,6 +415,7 @@ public class TicketImpl
         int column = seats[1];
         return new TicketVO(id, orderID, userID, arrangementId, status, realAmount, row, column);
     }
+
 
     private class OrderHolder implements Runnable {
 

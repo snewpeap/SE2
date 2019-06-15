@@ -56,7 +56,7 @@ public class CustomWebSecurityConfiguration extends WebSecurityConfigurerAdapter
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/", "/index", "/register", "/logout", "/login", "/error").permitAll()
+                .antMatchers("/", "/index", "/register", "/logout", "/login", "/error","/alipay/**").permitAll()
                 .antMatchers("/manage/**")
                 .hasAnyRole(
                         roleProperty.getStaff(), roleProperty.getManager(), roleProperty.getRoot())

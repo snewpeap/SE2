@@ -18,8 +18,8 @@ alipay:
   sign-type: "RSA2"
   charset: "utf-8"
   ali-gateway: "https://openapi.alipaydev.com/gateway.do"
-  notify-url: "http://snewpeap.free.idcfengye.com/user/alipay/notify"
-  return-url: "http://snewpeap.free.idcfengye.com/user/alipay/return"
+  notify-url: "http://snewpeap.free.idcfengye.com/alipay/notify"
+  return-url: "http://snewpeap.free.idcfengye.com/alipay/return"
 
 ################ 应用配置 ################
 # 全局消息 #

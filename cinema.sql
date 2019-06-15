@@ -18,12 +18,14 @@ SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE =
 -- -----------------------------------------------------
 -- Schema cinema
 -- -----------------------------------------------------
+
 CREATE SCHEMA IF NOT EXISTS `cinema` DEFAULT CHARACTER SET utf8;
 USE `cinema`;
 
 -- -----------------------------------------------------
 -- Table `cinema`.`hall`
 -- -----------------------------------------------------
+
 DROP TABLE IF EXISTS `cinema`.`hall`;
 
 CREATE TABLE IF NOT EXISTS `cinema`.`hall`
@@ -42,9 +44,11 @@ CREATE TABLE IF NOT EXISTS `cinema`.`hall`
 
 insert into cinema.hall
     values (1,'小小小小厅',3,2,2,0,0);
+
 -- -----------------------------------------------------
 -- Table `cinema`.`movie`
 -- -----------------------------------------------------
+
 DROP TABLE IF EXISTS `cinema`.`movie`;
 
 CREATE TABLE IF NOT EXISTS `cinema`.`movie`
@@ -62,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `cinema`.`movie`
     `release_date`  TIMESTAMP        NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `start_date`    DATE             NOT NULL,
     `description`   TEXT             NOT NULL,
-    `status`        TINYINT(4)       NOT NULL DEFAULT '0',
+    `status`        TINYINT(4)       NOT NULL DEFAULT 0,
     PRIMARY KEY (`id`)
 )
     ENGINE = InnoDB
@@ -70,11 +74,12 @@ CREATE TABLE IF NOT EXISTS `cinema`.`movie`
 
 INSERT INTO movie (`name`, director, screen_writer, starring, type, country, `language`, duration, start_date,
                    `description`)
-VALUES ('随便', '赖宝光', '赖宝光', '赖宝光', '赖宝光', '日本', '日语', 123, '2019-6-1', '农夫山泉始终坚持水源地建厂的理念，以确保天然品质');
+VALUES ('随便', '赖宝光', '赖宝光', '赖宝光', '赖宝光', '日本', '日语', 123, '2019-6-20', '农夫山泉始终坚持水源地建厂的理念，以确保天然品质');
 
 -- -----------------------------------------------------
 -- Table `cinema`.`arrangement`
 -- -----------------------------------------------------
+
 DROP TABLE IF EXISTS `cinema`.`arrangement`;
 
 CREATE TABLE IF NOT EXISTS `cinema`.`arrangement`
@@ -103,10 +108,13 @@ CREATE TABLE IF NOT EXISTS `cinema`.`arrangement`
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
 
+INSERT INTO `arrangement`(id, start_time, end_time, fare, hall_id, movie_id, visible_date)
+    VALUES (1, '2019-06-21 14:00:00','2019-06-21 17:00:00', 40, 1, 1, '2019-06-14');
 
 -- -----------------------------------------------------
 -- Table `cinema`.`seat`
 -- -----------------------------------------------------
+
 DROP TABLE IF EXISTS `cinema`.`seat`;
 
 CREATE TABLE IF NOT EXISTS `cinema`.`seat`
@@ -137,6 +145,7 @@ insert into cinema.seat
 -- -----------------------------------------------------
 -- Table `cinema`.`arrangement_seat`
 -- -----------------------------------------------------
+
 DROP TABLE IF EXISTS `cinema`.`arrangement_seat`;
 
 CREATE TABLE IF NOT EXISTS `cinema`.`arrangement_seat`
@@ -159,6 +168,9 @@ CREATE TABLE IF NOT EXISTS `cinema`.`arrangement_seat`
 )
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
+
+INSERT INTO `arrangement_seat`(arrangement_id, seat_id)
+    VALUES (1,1),(1,2),(1,3),(1,4),(1,5),(1,6);
 
 
 -- -----------------------------------------------------
@@ -204,7 +216,7 @@ CREATE TABLE IF NOT EXISTS `cinema`.`user`
 
 insert into cinema.user
 values (5, 'vip', 'vip'),
-        (4, 'root', 'root'),
+       (4, 'root', 'root'),
        (3, 'manager', 'manager'),
        (2, 'staff', 'staff'),
        (1, 'audience', 'audience');
@@ -264,6 +276,8 @@ CREATE TABLE IF NOT EXISTS `cinema`.`movie_like`
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
 
+INSERT INTO movie_like
+    VALUES (1,1,'2019-06-20');
 
 -- -----------------------------------------------------
 -- Table `cinema`.`recharge_record`
@@ -292,6 +306,7 @@ CREATE TABLE IF NOT EXISTS `cinema`.`recharge_record`
 -- -----------------------------------------------------
 -- Table `cinema`.`refund_strategy`
 -- -----------------------------------------------------
+
 DROP TABLE IF EXISTS `cinema`.`refund_strategy`;
 
 CREATE TABLE IF NOT EXISTS `cinema`.`refund_strategy`
@@ -327,6 +342,9 @@ CREATE TABLE IF NOT EXISTS `cinema`.`order`
 )
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
+
+INSERT INTO `order`
+    VALUES (1561089984,40,40,'2019-06-21 12:06:24',1,1);
 
 -- -----------------------------------------------------
 -- Table `cinema`.`tickets`
@@ -371,6 +389,8 @@ CREATE TABLE IF NOT EXISTS `cinema`.`tickets`
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
 
+INSERT INTO tickets
+    VALUES (1,1,1,1,'2019-06-21 12:06:24',1,40,1561089984);
 
 -- -----------------------------------------------------
 -- Table `cinema`.`vipcard`
@@ -392,7 +412,7 @@ CREATE TABLE IF NOT EXISTS `cinema`.`vipcard`
     DEFAULT CHARACTER SET = utf8;
 
 insert into cinema.vipcard
-    values (3000,5);
+    values (3000,5),(1000,1);
 
 -- -----------------------------------------------------
 -- Table `cinema`.`vipcard_recharge_reduction`
@@ -484,8 +504,8 @@ CREATE TABLE IF NOT EXISTS `cinema`.`user_has_role`
     DEFAULT CHARACTER SET = utf8;
 
 INSERT INTO user_has_role
-VALUES (5,1),
-        (1, 1),
+VALUES (5, 1),
+       (1, 1),
        (2, 2),
        (3, 3),
        (4, 4);

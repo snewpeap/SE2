@@ -25,14 +25,10 @@
         select
         <include refid="Base_Column_List"/>
         from `order`
-        <trim prefix="where" suffix="" suffixOverrides="and">
-            <if test="userID != null">
-                user_id = #{userID}
-            </if>
-            <if test="orderID != null">
-                id = #{orderID,jdbcType=BIGINT}
-            </if>
-        </trim>
+        where user_id = #{userID}
+        <if test="orderID != null">
+            and id = #{orderID,jdbcType=BIGINT}
+        </if>
 
     </select>
 
