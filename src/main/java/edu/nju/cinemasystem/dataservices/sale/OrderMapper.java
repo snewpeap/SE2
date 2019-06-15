@@ -2,6 +2,7 @@ package edu.nju.cinemasystem.dataservices.sale;
 
 import edu.nju.cinemasystem.data.po.Order;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,5 +22,5 @@ public interface OrderMapper {
 
     int updateByPrimaryKey(Order record);
 
-    List<Order> selectByUserAndOrderID(int userID,long orderID);
+    List<Order> selectByUserAndOrderID(@Param("userID") int userID, @Param("orderID") long orderID);
 }

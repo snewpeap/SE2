@@ -49,8 +49,13 @@ public class StatisticsImpl implements Statistics, StatisticsInfo {
                 break;
             }
         }
-        double maxBoxOffice = movieTotalBoxOfficeVOS.get(0).getBoxOffice() == 0 ? 1 : movieTotalBoxOfficeVOS.get(0).getBoxOffice();
-        return movieBoxOffice / maxBoxOffice;
+        if(movieTotalBoxOfficeVOS.size()!=0) {
+            double maxBoxOffice = movieTotalBoxOfficeVOS.get(0).getBoxOffice() == 0 ? 1 : movieTotalBoxOfficeVOS.get(0).getBoxOffice();
+            return movieBoxOffice / maxBoxOffice;
+        }else {
+            return 0;
+        }
+
     }
 
     @Override
