@@ -87,7 +87,7 @@ public class PromotionImpl implements
         Float couponAmount = promotionForm.getCouponAmount();
         Integer couponExpiration = promotionForm.getCouponExpiration();
         String description = promotionForm.getDescription();
-        Promotion promotion = new Promotion(name, startTime, endTime, specifyMovies, targetAmount, couponAmount,
+        Promotion promotion = Promotion.assemblePromotionPO(name, startTime, endTime, specifyMovies, targetAmount, couponAmount,
                 couponExpiration, description);
         Response response;
         try {
@@ -95,7 +95,7 @@ public class PromotionImpl implements
             int promotionID = promotion.getId();
             if (promotionForm.getSpecifyMovies()) {
                 List<Integer> movieIDs = promotionForm.getMovieIDs();
-                movieIDs.forEach(movieID -> promotionHasMovieMapper.insertSelective(new PromotionHasMovie(promotionID, movieID)));
+                movieIDs.forEach(movieID -> promotionHasMovieMapper.insertSelective(PromotionHasMovie.assemblePromotionHasMoviePO(promotionID, movieID)));
             }
             response = Response.success();
             response.setMessage(globalMsg.getOperationSuccess());

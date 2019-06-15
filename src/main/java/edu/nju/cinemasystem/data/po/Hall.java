@@ -71,14 +71,14 @@ public class Hall {
         this.is3d = is3d;
     }
 
-    public Hall(String name, Integer column, Integer row, Byte size, Byte isImax, Byte is3d) {
-        this.name = name;
-        this.column = column;
-        this.row = row;
-        this.size = size;
-        this.isImax = isImax;
-        this.is3d = is3d;
+    public static  Hall assembleHallPO(String name, Integer column, Integer row, Byte size, Byte isImax, Byte is3d) {
+        Hall hall = new Hall();
+        hall.setName(name);
+        hall.setColumn(column);
+        hall.setRow(row);
+        hall.setSize(size);
+        hall.setIsImax(isImax);
+        hall.setIs3d(is3d);
+        return hall;
     }
-
-    public Hall() { }
 }

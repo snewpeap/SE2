@@ -26,7 +26,7 @@
     <!--//web-fonts-->
 </head>
 <body>
-<!--todo:audience 只显示了"优惠券" 点进卡包再点充值记录的时候页面上也只有优惠券 从别的地方点进充值记录就不会-->
+<!--todo:audience 只显示了"优惠券" -->
 <div id="demo-1" class="banner-inner">
     <div class="banner-inner-dott">
 <div class="header-w3-agileits" id="home">
@@ -48,7 +48,7 @@
                     <li><a href="/user/movie">电影列表</a></li>
                     <li><a href="/user/ticket">我的电影票</a></li>
                     <li><a href="#">卡包</a></li>
-                    <li><a href="/user/cardPocket">订单记录</a></li>
+                    <li><a href="/user/consumeRecord">订单记录</a></li>
                     <li><a href="/user/rechargeRecord">充值记录</a></li>
                     <li><a href="/logout">登出</a></li>
                 </ul>
@@ -70,15 +70,15 @@
             <div>成为VIP会员</div>
             <hr/>
         </div>
-        <div class="info">
-            <div class="price"><b id="member-buy-price"></b>元/张</div>
-            <div id="member-buy-description" class="description"></div>
-            <button onclick="buyClick()">立即购买</button>
+        <div class="info" id="toBuy">
+<!--            <div class="price"><b id="member-buy-price"></b>元/张</div>-->
+<!--            <div id="member-buy-description" class="description"></div>-->
+<!--            <button onclick="buyClick()">立即购买</button>-->
         </div>
     </div>
 
     <!--会员-->
-    <div class="card col-md-8 col-md-offset-2" id="member-card" style="visibility: hidden;">
+    <div class="card col-md-8 col-md-offset-2" id="member-card" style="display: none;">
         <div class="header">
             <div class="title">会员卡</div>
             <div class="state">VIP</div>
@@ -155,5 +155,8 @@
     </div>
 </div>
 
+<script src="/js/bootstrap.js"></script>
+<script src="/js/request.js"></script>
+<script src="/js/cardPocket.js"></script>
 </body>
 </html>

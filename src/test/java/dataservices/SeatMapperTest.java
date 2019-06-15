@@ -55,7 +55,8 @@ public class SeatMapperTest {
     @Test
     @Transactional
     public void updateSelectiveTestBySeat(){
-        Seat seat = new Seat(31,2,2,2);
+        Seat seat = Seat.assembleSeatPO(2,2,2);
+        seat.setId(31);
         assertTrue(seatMapper.updateByPrimaryKeySelective(seat)!=0);
     }
 

@@ -41,19 +41,11 @@ public class Seat {
         this.hallId = hallId;
     }
 
-    public Seat(Integer column, Integer row, Integer hallId) {
-        this.column = column;
-        this.row = row;
-        this.hallId = hallId;
-    }
-
-    public Seat(Integer id, Integer column, Integer row, Integer hallId) {
-        this.id = id;
-        this.column = column;
-        this.row = row;
-        this.hallId = hallId;
-    }
-
-    public Seat() {
+    public static Seat assembleSeatPO(Integer column, Integer row, Integer hallId){
+        Seat seat = new Seat();
+        seat.setColumn(column);
+        seat.setRow(row);
+        seat.setHallId(hallId);
+        return seat;
     }
 }

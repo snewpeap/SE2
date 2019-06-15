@@ -14,36 +14,40 @@ function getVIP() {
         function (res) {
             if (res.success) {
                 // 是会员
-                $("#member-card").css("visibility", "visible");
+                //$("#member-card").css("visibility", "visible");
                 $("#member-card").css("display", "");
-                $("#nonmember-card").css("display", "none");
+                //$("#nonmember-card").css("display", "none");
 
-                vipCardId = res.content.id;
-                $("#member-id").text(res.content.id);
-                $("#member-balance").text("¥" + res.content.balance.toFixed(2));
-                $("#member-joinDate").text(res.content.joinDate.substring(0, 10));
+                vipCardId = res.content.getId();
+                $("#member-id").text(vipCardId);
+                $("#member-balance").text("¥" + res.content.getBalance().toFixed(2));
+                //$("#member-joinDate").text(res.content.joinDate.substring(0, 10));
             } else {
                 // 非会员
-                $("#member-card").css("display", "none");
+                //$("#member-card").css("display", "none");
                 $("#nonmember-card").css("display", "");
+                //$("#nonmember-card").css("visibility", "visible");
             }
         },
         function (error) {
             alert(error);
         });
 
-    //todo:user获得vipcard的充值优惠
+
     getRequest(
-        '/vip/getVIPInfo',
+        '/user/vip/rechargeReduction',
         function (res) {
             if (res.success) {
-                $("#member-buy-price").text(res.content.price);
-                $("#member-buy-description").text("充值优惠：" + res.content.description + "。永久有效");
-                $("#member-description").text(res.content.description);
+                let str = "";
+                res.content.forEach(function (one) {
+                    str += "<div class=\"price\"><b>" + one.getPrice() + "</b>" +
+                        "<div class='description'>充值优惠：满"+ one.getTargetAmount() + "减"+ one.getDiscountAmount +"</div>" +
+                        "<button onclick=\"buyClick()\">立即购买</button>"
+                });
+                $("#toBuy").append(str);
             } else {
                 alert(res.content);
             }
-
         },
         function (error) {
             alert(error);
@@ -52,14 +56,14 @@ function getVIP() {
 
 function buyClick() {
     clearForm();
-    $('#buyModal').modal('show')
+    $('#buyModal').modal('show');
     $("#userMember-amount-group").css("display", "none");
     isBuyState = true;
 }
 
 function chargeClick() {
     clearForm();
-    $('#buyModal').modal('show')
+    $('#buyModal').modal('show');
     $("#userMember-amount-group").css("display", "");
     isBuyState = false;
 }
