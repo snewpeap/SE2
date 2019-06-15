@@ -27,22 +27,25 @@ $(document).ready(function () {
 
 function renderMovie() {
     getNewest();
+    console.log(newestList);
     getHighestBox();
+    console.log(highestList);
     getMostLikes();
+    console.log(mostList);
 
-    firstImageStr = "<img src='"+ (newestList[0].poster||"/images/defaultPoster.jpg") + "' alt='' class='img-responsive' />";
+    firstImageStr = "<a href='/user/movie/detail?movieId="+newestList[i].id+"' class='hvr-sweep-to-bottom'><img src='"+ (newestList[0].poster||"/images/defaultPoster.jpg") + "' alt='' class='img-responsive' /></a>";
     $('#video').append(firstImageStr);
     var newestMovieInfo = getFirstInfoStr(newestList);
     $('#newest-movie-info').append(newestMovieInfo);
     $('#newest-movie-other').append(getNextInfoStr(newestList));
 
-    firstImageStr = "<img src='"+ (highestList[0].poster||"/images/defaultPoster.jpg") + "' alt='' class='img-responsive' />";
+    firstImageStr = "<a href='/user/movie/detail?movieId="+highestList[i].id+"' class='hvr-sweep-to-bottom'><img src='"+ (highestList[0].poster||"/images/defaultPoster.jpg") + "' alt='' class='img-responsive' /></a>";
     $('#video1').append(firstImageStr);
     var highestMovieInfo = getFirstInfoStr(highestList);
     $('#highest-movie-info').append(highestMovieInfo);
     $('#highest-movie-other').append(getNextInfoStr(highestList));
 
-    firstImageStr = "<img src='"+ (mostList[0].poster||"/images/defaultPoster.jpg") + "' alt='' class='img-responsive' />";
+    firstImageStr = "<a href='/user/movie/detail?movieId="+mostList[i].id+"' class='hvr-sweep-to-bottom'><img src='"+ (mostList[0].poster||"/images/defaultPoster.jpg") + "' alt='' class='img-responsive' /></a>";
     $('#video2').append(firstImageStr);
     var mostMovieInfo = getFirstInfoStr(mostList);
     $('#most-movie-info').append(mostMovieInfo);
@@ -133,7 +136,7 @@ function renderMovie() {
         var nextInfoStr = "";
         for (var i = 1;i<8 && i<allMovieList.length;i++){
             nextInfoStr +=
-                "<div class=\"w3l-movie-gride-agile\">" + "<a href=\"/user/movie/detail\" class=\"hvr-sweep-to-bottom\"><img src=\"" + (List[i].poster||"/images/defaultPoster.jpg") +
+                "<div class=\"w3l-movie-gride-agile\">" + "<a href=\"/user/movie/detail?movieId="+List[i].id+"\" class=\"hvr-sweep-to-bottom\"><img src=\"" + (List[i].poster||"/images/defaultPoster.jpg") +
                 "\" title=\"Movies Pro\" class=\"img-responsive\" alt=\" \" /><div class=\"w3l-action-icon\"><i class=\"fa fa-play-circle-o\" aria-hidden=\"true\"></i></div></a>" +
                 "<div class=\"mid-1 agileits_w3layouts_mid_1_home\">" +
                 "<div class=\"w3l-movie-text\"><h6><a href=\"/user/movie/detail\">" + List[i].name + "</a></h6></div>" +
@@ -148,15 +151,27 @@ function renderMovie() {
         var newMovie = "";
         for (var i = 0;i<newestList.length;i++){
             newMovie +=
-                "<div class=\"item\">" + "<div class=\"w3l-movie-gride-agile w3l-movie-gride-slider \">" +
-                "<a href=\"/user/movie/detail\" class=\"hvr-sweep-to-bottom\"><img src=\" "+ (newestList[i].poster||"/images/defaultPoster.jpg") +"\" title=\"Movies Pro\" class=\"img-responsive\" alt=\" \" />" +
-                "<div class=\"w3l-action-icon\"><i class=\"fa fa-play-circle-o\" aria-hidden=\"true\"></i></div></a>" +
-                "<div class=\"mid-1 agileits_w3layouts_mid_1_home\">" +
-                "<div class=\"w3l-movie-text\">" +
-                "<h6><a href=\"/user/movie/detail\">" + newestList[i].name + "</a></h6></div>" +
-                "<div class=\"mid-2 agile_mid_2_home\"><p>" + newestList[i].startDate.slice(0,10) +
-                "</p><div>想看人数：" + newestList[i].likeNum + "</div><div class=\"clearfix\"></div></div></div>" +
-                joinedPromotion(newestList,i,newMovie) + "</div></div>";
+                "<div class=\"item\">" +
+                    "<div class=\"w3l-movie-gride-agile w3l-movie-gride-slider \">" +
+                        "<a href=\"/user/movie/detail?movieId="+newestList[i].id+"\" class=\"hvr-sweep-to-bottom\"><img src=\" "+ (newestList[i].poster||"/images/defaultPoster.jpg") +"\" title=\"Movies Pro\" class=\"img-responsive\" alt=\" \" />" +
+                            "<div class=\"w3l-action-icon\"><i class=\"fa fa-play-circle-o\" aria-hidden=\"true\"></i></div>" +
+                        "</a>" +
+                        "<div class=\"mid-1 agileits_w3layouts_mid_1_home\">" +
+                            "<div class=\"w3l-movie-text\">" +
+                                "<h6><a href=\"/user/movie/detail\">" + newestList[i].name + "</a></h6>" +
+                            "</div>" +
+                            "<div class=\"mid-2 agile_mid_2_home\">" +
+                                "<p>" + newestList[i].startDate.slice(0,10) + "</p>"+
+                                "<div>想看人数：" + newestList[i].likeNum +
+                                "</div>" +
+                                "<div class=\"clearfix\"></div>" +
+                            "</div>" +
+                        "</div>" +
+                        joinedPromotion(newestList,i,newMovie) +
+                        "<div class=\"clearfix\"></div>" +
+                        "<div class=\"ribben one\"><p>NEW</p></div>" +
+                    "</div>" +
+                "</div>";
         }
         return newMovie;
     }
@@ -165,7 +180,7 @@ function renderMovie() {
         var res = "";
         for (var i = 0;i<highestList.length;i++){
             res += "<div class=\"col-md-2 w3l-movie-gride-agile requested-movies\">" +
-                "<a href=\"single.html\" class=\"hvr-sweep-to-bottom\"><img src=\"" + (highestList[i].poster||"/images/defaultPoster.jpg") + "\" title=\"Movies Pro\" class=\"img-responsive\" alt=\" \">" +
+                "<a href=\"/user/movie/detail?movieId="+highestList[i].id+"\" class=\"hvr-sweep-to-bottom\"><img src=\"" + (highestList[i].poster||"/images/defaultPoster.jpg") + "\" title=\"Movies Pro\" class=\"img-responsive\" alt=\" \">" +
                 "<div class=\"w3l-action-icon\"><i class=\"fa fa-play-circle-o\" aria-hidden=\"true\"></i></div></a>" +
                 "<div class=\"mid-1 agileits_w3layouts_mid_1_home\">" + "<div class=\"w3l-movie-text\">" +
                 "<h6><a href=\"/user/movie/detail\">" + highestList[i].name + "</a></h6></div>" +
@@ -180,7 +195,7 @@ function renderMovie() {
         var res = '';
         for (var i = 1;i<mostList.length;i++){
             res += "<div class=\"w3l-movie-gride-agile\">" +
-                "<a href=\"/user/movie/detail\" class=\"hvr-sweep-to-bottom\"><img src=\"" + (mostList[i].poster||"/images/defaultPoster.jpg") + "\" title=\"Movies Pro\" class=\"img-responsive\" alt=\" \">" +
+                "<a href=\"/user/movie/detail?movieId="+mostList[i].id+"\" class=\"hvr-sweep-to-bottom\"><img src=\"" + (mostList[i].poster||"/images/defaultPoster.jpg") + "\" title=\"Movies Pro\" class=\"img-responsive\" alt=\" \">" +
                 "<div class=\"w3l-action-icon\"><i class=\"fa fa-play-circle-o\" aria-hidden=\"true\"></i></div></a>" +
                 "<div class=\"mid-1 agileits_w3layouts_mid_1_home\">" +
                 "<div class=\"w3l-movie-text\">" +

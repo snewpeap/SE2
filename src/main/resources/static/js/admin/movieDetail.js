@@ -44,8 +44,8 @@ function getMovieLikeChart(data) {
     var dateArray = [],
         numberArray = [];
     data.forEach(function (item) {
-        dateArray.push(item.likeTime);
-        numberArray.push(item.likeNum);
+        dateArray.push(item.date);
+        numberArray.push(item.likeAmount);
     });
 
     var myChart = echarts.init($("#like-date-chart")[0]);
