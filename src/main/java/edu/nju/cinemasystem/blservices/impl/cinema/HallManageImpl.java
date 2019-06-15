@@ -65,12 +65,12 @@ public class HallManageImpl implements HallManage {
 
         byte isImax = (byte) (hallForm.getIsImax() ? 1 : 0);
         byte is3d = (byte) (hallForm.getIs3d() ? 1 : 0);
-        Hall hall = new Hall(name, column, row, size, isImax, is3d);
+        Hall hall = Hall.assembleHallPO(name, column, row, size, isImax, is3d);
         hallMapper.insertSelective(hall);
         int id = hall.getId();
         for (int i = 1; i <= hallForm.getRow(); i++) {
             for (int j = 1; j <= hallForm.getColumn(); j++) {
-                Seat seat = new Seat(j, i, id);
+                Seat seat = Seat.assembleSeatPO(j, i, id);
                 seatMapper.insertSelective(seat);
             }
         }
@@ -109,13 +109,13 @@ public class HallManageImpl implements HallManage {
             if (hallForm.getColumn() >= oldHall.getColumn() || hallForm.getRow() >= oldHall.getRow()) {
                 for (int r = oldHall.getRow() + 1; r <= hallForm.getRow(); r++) {
                     for (int c = 1; c <= hallForm.getColumn(); c++) {
-                        Seat seat = new Seat(c, r, ID);
+                        Seat seat = Seat.assembleSeatPO(c, r, ID);
                         seatMapper.insert(seat);
                     }
                 }
                 for (int r = 1; r <= oldHall.getRow(); r++) {
                     for (int c = oldHall.getColumn() + 1; c <= hallForm.getColumn(); c++) {
-                        Seat seat = new Seat(c, r, ID);
+                        Seat seat = Seat.assembleSeatPO(c, r, ID);
                         seatMapper.insertSelective(seat);
                     }
                 }
@@ -123,7 +123,7 @@ public class HallManageImpl implements HallManage {
                 seatMapper.deleteByHallID(ID);
                 for (int i = 1; i <= hallForm.getRow(); i++) {
                     for (int j = 1; j <= hallForm.getColumn(); j++) {
-                        Seat seat = new Seat(j, i, ID);
+                        Seat seat = Seat.assembleSeatPO(j, i, ID);
                         seatMapper.insertSelective(seat);
                     }
                 }
@@ -197,6 +197,6 @@ public class HallManageImpl implements HallManage {
 
         byte isIMax = (byte) (hallForm.getIsImax() ? 1 : 0);
         byte is3d = (byte) (hallForm.getIs3d() ? 1 : 0);
-        return new Hall(name, column, row, size, isIMax, is3d);
+        return Hall.assembleHallPO(name, column, row, size, isIMax, is3d);
     }
 }

@@ -19,7 +19,7 @@ public class RefundStrategy {
         return refundable;
     }
 
-    public boolean canRefund(){
+    public boolean canRefund() {
         return refundable == 1;
     }
 
@@ -35,9 +35,11 @@ public class RefundStrategy {
         this.percentage = percentage;
     }
 
-    public RefundStrategy(Integer day, Byte refundable, Float percentage) {
-        this.day = day;
-        this.refundable = refundable;
-        this.percentage = percentage;
+    public static RefundStrategy assembleRefundStrategyPO(Integer day, Byte refundable, Float percentage) {
+        RefundStrategy refundStrategy = new RefundStrategy();
+        refundStrategy.setDay(day);
+        refundStrategy.setRefundable(refundable);
+        refundStrategy.setPercentage(percentage);
+        return refundStrategy;
     }
 }

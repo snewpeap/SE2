@@ -41,7 +41,7 @@ public class RefundTicketManageImpl implements RefundTicketManage {
         }
         byte refundable = refundStrategyForm.getRefundable() ? (byte) 1 : (byte) 0;
         float percentage = refundStrategyForm.getPercentage();
-        refundStrategyMapper.insert(new RefundStrategy(days, refundable, percentage));
+        refundStrategyMapper.insert(RefundStrategy.assembleRefundStrategyPO(days, refundable, percentage));
         response = Response.success();
         response.setMessage(globalMsg.getOperationSuccess());
         return response;
@@ -54,7 +54,7 @@ public class RefundTicketManageImpl implements RefundTicketManage {
         int days = refundStrategyForm.getDay();
         byte refundable = refundStrategyForm.getRefundable() ? (byte) 1 : (byte) 0;
         float percentage = refundStrategyForm.getPercentage();
-        refundStrategyMapper.updateByPrimaryKeySelective(new RefundStrategy(days, refundable, percentage));
+        refundStrategyMapper.updateByPrimaryKeySelective(RefundStrategy.assembleRefundStrategyPO(days, refundable, percentage));
         response = Response.success();
         response.setMessage(globalMsg.getOperationSuccess());
         return response;

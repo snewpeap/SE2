@@ -93,15 +93,17 @@ public class Promotion {
         this.description = description == null ? null : description.trim();
     }
 
-    public Promotion(String name, Date startTime, Date endTime, Byte specifyMovies, Float targetAmount,
-            Float couponAmount, Integer couponExpiration, String description) {
-        this.name = name;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.specifyMovies = specifyMovies;
-        this.targetAmount = targetAmount;
-        this.couponAmount = couponAmount;
-        this.couponExpiration = couponExpiration;
-        this.description = description;
+    public static Promotion assemblePromotionPO(String name, Date startTime, Date endTime, Byte specifyMovies, Float targetAmount,
+                     Float couponAmount, Integer couponExpiration, String description) {
+        Promotion promotion = new Promotion();
+        promotion.setName(name);
+        promotion.setStartTime(startTime);
+        promotion.setEndTime(endTime);
+        promotion.setSpecifyMovies(specifyMovies);
+        promotion.setTargetAmount(targetAmount);
+        promotion.setCouponAmount(couponAmount);
+        promotion.setCouponExpiration(couponExpiration);
+        promotion.setDescription(description);
+        return promotion;
     }
 }
