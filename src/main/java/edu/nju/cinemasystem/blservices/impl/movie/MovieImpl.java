@@ -35,6 +35,7 @@ public class MovieImpl implements edu.nju.cinemasystem.blservices.movie.Movie {
         Response response = Response.success();
         if (movieID <= 0) {
             List<Movie> allMovies = movieMapper.selectAll();
+            allMovies.removeIf(movie -> !movie.audienceVisible());
             List<AudienceMovieVO> allMovieVOs = new ArrayList<>(allMovies.size());
             allMovies.forEach(
                     movie -> allMovieVOs.add(assembleAudienceMovieVO(movie))

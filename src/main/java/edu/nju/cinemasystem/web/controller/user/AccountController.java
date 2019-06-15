@@ -6,6 +6,7 @@ import edu.nju.cinemasystem.data.vo.form.RegistryForm;
 import edu.nju.cinemasystem.util.properties.RoleProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.Collection;
 
 /**
  * Created by weijin on 2019/6/4
@@ -34,16 +36,18 @@ public class AccountController {
     @RequestMapping("/index")
     public void getIndex(HttpServletResponse response) throws IOException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String redirect = auth.getAuthorities()
-                .contains(new SimpleGrantedAuthority("ROLE_" + roleProperty.getAudience())) ?
-                "/user/home" : "/manage/movieAll";
+        Collection<? extends GrantedAuthority> auths = auth.getAuthorities();
+        String redirect = auths.contains(new SimpleGrantedAuthority("ROLE_ANONYMOUS")) ?
+                "/login" : (auths.contains(new SimpleGrantedAuthority("ROLE_" + roleProperty.getAudience())) ?
+                "/user/home" :
+                "/manage/movieAll"
+        );
         response.sendRedirect(redirect);
     }
 
 
     @PostMapping("/register")
     public Response register(@RequestBody @Valid RegistryForm registryForm, HttpServletResponse servletResponse) throws IOException {
-        Response response = account.register(registryForm);
-        return response;
+        return account.register(registryForm);
     }
 }

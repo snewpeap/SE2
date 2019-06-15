@@ -10,11 +10,6 @@ $(document).ready(function () {
             '/login',
             formData,
             function (date,status,xhr) {
-                // if (res.success) {
-                // var redirect = xhr.getResponseHeader("Location");
-                // if (redirect){
-                //     window.location.href = redirect;
-                // }
                 var role = getCookie('role');
                 if (role === "audience") {
                     sessionStorage.setItem('role', 'audience');
@@ -22,12 +17,10 @@ $(document).ready(function () {
                     sessionStorage.setItem('role', 'staff');
                 }
                 window.location.href = "/index"
-                // } else {
-                //     alert(res.message);
-                // }
+
             },
-            function (error) {
-                alert(error);
+            function (XMLHttpRequest) {
+                alert(XMLHttpRequest.responseText);
             });
     });
 

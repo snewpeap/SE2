@@ -33,14 +33,9 @@ public class GlobalAuthenticationSuccessHandler extends SavedRequestAwareAuthent
         session.setAttribute(CustomWebSecurityConfiguration.KEY_ID, userVO.getID());
         session.setAttribute(CustomWebSecurityConfiguration.KEY_NAME, username);
         System.out.println(username + "登录成功");
-//        request.getRequestDispatcher(authentication.getAuthorities()
-//                .contains(new SimpleGrantedAuthority("ROLE_" + roleProperty.getAudience())) ?
-//                "/home" : "/admin/movieManage").forward(request,response);
         response.addCookie(generateCookie("id", String.valueOf(userVO.getID())));
         response.addCookie(generateCookie("username", username));
         response.addCookie(generateCookie("role", getRole(authentication.getAuthorities())));
-        super.setDefaultTargetUrl("/index");
-        super.onAuthenticationSuccess(request, response, authentication);
     }
 
     private Cookie generateCookie(String key, String value) {

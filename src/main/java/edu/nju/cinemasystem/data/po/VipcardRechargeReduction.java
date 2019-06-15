@@ -1,6 +1,7 @@
 package edu.nju.cinemasystem.data.po;
 
 public class VipcardRechargeReduction {
+
     private Integer targetAmount;
 
     private Float discountAmount;
