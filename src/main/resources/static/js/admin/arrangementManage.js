@@ -45,7 +45,7 @@ function getHalls() {
                     $('#arrangement-hall-input').append("<option value="+ hall.id +">"+hall.name+"</option>");
                     $('#arrangement-edit-hall-input').append("<option value="+ hall.id +">"+hall.name+"</option>");
                 });
-                getArrangements();
+                getPreAndOnMovies();
             }else{
                 alert(res.message);
             }
@@ -58,7 +58,7 @@ function getHalls() {
 
 function getPreAndOnMovies() {
     getRequest(
-        '/manage/movie/all',
+        '/manage/movie',
         function (res) {
             if(res.success){
                 res.content.forEach(function (movie) {
@@ -68,7 +68,7 @@ function getPreAndOnMovies() {
                     }
                     movieList.push(movie);
                 });
-                renderArrangements();
+                getArrangements();
             }else{
                 alert(res.message);
             }
@@ -85,7 +85,7 @@ function getArrangements() {
         function (res) {
             if(res.success){
                 arrangements = res.content;
-                getPreAndOnMovies();
+                renderArrangements();
             }else{
                 alert(res.message);
             }
@@ -204,7 +204,6 @@ $(document).on('click','.arrangement-item',function (e) {
     $("#arrangement-edit-visible-date-input").val(arrangement.visibleDate.slice(0,10));
     $('#arrangementEditModal').modal('show');
     $('#arrangementEditModal')[0].dataset.arrangementId = arrangement.id;
-    console.log(arrangement);
 });
 
 $('#arrangement-edit-form-btn').click(function () {

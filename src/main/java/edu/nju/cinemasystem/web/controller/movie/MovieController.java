@@ -20,7 +20,6 @@ public class MovieController {
     @Autowired
     private MovieManagement movieManagement;
 
-    //TODO 去掉all
     @GetMapping("/user/movie/all")
     public Response getAllMovie(HttpSession session, HttpServletResponse response) {
         int userID = (Integer) session.getAttribute("id");
@@ -31,8 +30,7 @@ public class MovieController {
         return movie.getMovie(0, userID);
     }
 
-    //TODO 去掉get
-    @GetMapping("/user/movie/get/{movieId}")
+    @GetMapping("/user/movie/{movieId}")
     public Response getOneMovie(@PathVariable int movieId, HttpSession session) {
         int userID = (Integer) session.getAttribute("id");
         return movie.getMovie(movieId, userID);
@@ -70,14 +68,12 @@ public class MovieController {
         return movieManagement.removeMovie(movieId);
     }
 
-    //TODO 去掉all
-    @GetMapping("/manage/movie/all")
+    @GetMapping("/manage/movie")
     public Response adminGetAllMovie() {
         return movieManagement.getMovie(0);
     }
 
-    //TODO 去掉all
-    @GetMapping("/manage/movie/get/{movieId}")
+    @GetMapping("/manage/movie/{movieId}")
     public Response adminGetOneMovie(@PathVariable int movieId) {
         return movieManagement.getMovie(movieId);
     }

@@ -16,7 +16,7 @@ public class StatisticsController {
     @Autowired
     private Statistics statistics;
 
-    @GetMapping("/scheduleRate")
+    @GetMapping("/arrangementRate")
     public Response getScheduleRateByDate(@RequestParam Date date){
         return statistics.getScheduleRateByDate(date);
     }

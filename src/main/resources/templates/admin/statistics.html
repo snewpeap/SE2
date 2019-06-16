@@ -27,6 +27,9 @@
 
     <!-- Custom Theme Style -->
     <link href="/webjars/gentelella/build/css/custom.min.css" rel="stylesheet">
+    <!-- Personal Theme Style -->
+    <link href="/css/common.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/admin/statistics.css" rel="stylesheet" type="text/css">
 </head>
 <body class="nav-md">
 <div class="container body">
@@ -121,7 +124,43 @@
         <div class="right_col" role="main">
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="dashboard_graph">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>影院统计</h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <div class="card table-container" id="schedule-rate-container">
+                            </div>
+                            <div class="card table-container" id="box-office-container">
+                            </div>
+                            <div class="card table-container" id="audience-price-container">
+                            </div>
+                            <div class="card">
+                                <div style="text-align: center;padding-top: 3px;font-weight: bold;font-size: 19px">上座率</div>
+                                <div style="text-align: center;padding-top: 10px">
+                                    <span>选择要查看的日期 </span>
+                                    <input type="date" class="form-control" id="place-rate-date-input" style="display: inline-block;width: 180px;" onchange="getPlacingRate()">
+                                </div>
+                                <div class="card table-container" id="place-rate-container" style="margin-top: 0">
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div style="text-align: center;padding-top: 3px;font-weight: bold;font-size: 19px">最受欢迎电影</div>
+                                <div style="display: flex;justify-content: center">
+                                    <div style="text-align: center;padding-top: 10px">
+                                        <span>选择要查看的天数 </span>
+                                        <input type="number" min="1" class="form-control" id="favorite-movie-days-input" style="display: inline-block;width: 180px;" onchange="getPopularMovie()">
+                                    </div>
+                                    <div style="text-align: center;padding-top: 10px">
+                                        <span style="padding-left: 10px">选择要查看的影片数 </span>
+                                        <input type="number" min="1" class="form-control" id="favorite-movie-number-input" style="display: inline-block;width: 180px;" onchange="getPopularMovie()">
+                                    </div>
+                                </div>
+                                <div class="card table-container" id="popular-movie-container">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -180,6 +219,7 @@
 
 <!-- Custom Theme Scripts -->
 <script src="/webjars/gentelella/build/js/custom.min.js"></script>
+<script src="/js/echarts.js"></script>
 <script src="/js/request.js"></script>
 <script src="/js/admin/common.js"></script>
 <script src="/js/admin/statistics.js"></script>

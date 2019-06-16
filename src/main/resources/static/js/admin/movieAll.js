@@ -9,7 +9,7 @@ $(document).ready(function () {
 
 function getAllMovie() {
     getRequest(
-        '/manage/movie/all',
+        '/manage/movie',
         function (res) {
             if(res.success===true){
                 movieList = res.content;

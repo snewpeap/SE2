@@ -6,7 +6,7 @@ $(document).ready(function () {
 
 function getMovie(movieId) {
     getRequest(
-        '/manage/movie/get/'+movieId,
+        '/manage/movie/'+movieId,
         function (res) {
             if (res.success===true){
                 movie = res.content;

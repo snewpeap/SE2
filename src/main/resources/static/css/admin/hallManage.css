@@ -1,0 +1,81 @@
+.hall-manage-header{
+    border-bottom: 2px solid #E6E9ED;
+    padding: 6px 5px 1px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.cinema-hall {
+    margin-bottom: 20px;
+}
+
+.cinema-hall-card {
+    margin: 0 0 10px;
+    border-bottom: 2px solid #e6e9ed;
+    display: flex;
+    justify-content: space-between;
+}
+
+.cinema-hall-name {
+    font-size: 18px;
+    color: #14c09c;
+}
+
+.cinema-hall-size {
+    margin: 0 5px 0;
+    font-size: 14px;
+    color: #999;
+}
+
+.cinema-hall-modify {
+    color: #14c09c;
+    margin: 0 20px 0;
+}
+
+.cinema-hall-seat {
+    background: url("../../images/seat.png");
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    margin: 3px;
+
+    border: none;
+    outline: none;
+}
+
+.cinema-hall-seat-choose {
+    background: url("../../images/seatChoose.png");
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    margin: 3px;
+
+    border: none;
+    outline: none;
+}
+
+.cinema-hall-seat-lock {
+    background: url("../../images/seatLock.png");
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    margin: 3px;
+
+    border: none;
+    outline: none;
+}
+
+.hall-label{
+    padding: 2px 10px 2px;
+    color: #fff;
+    border-radius: 10px!important;
+    margin: 0 2px;
+    display: inline;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+}

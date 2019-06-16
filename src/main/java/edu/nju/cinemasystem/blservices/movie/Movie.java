@@ -2,6 +2,7 @@ package edu.nju.cinemasystem.blservices.movie;
 
 import edu.nju.cinemasystem.data.vo.Response;
 
+
 public interface Movie {
     /**
      * 非整数代表查询所有电影

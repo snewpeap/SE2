@@ -73,7 +73,6 @@ ul {
     height: 100%;
     background: #e4e7ea;
     padding: 20px;
-    overflow-y: scroll;
 }
 .content-item {
     margin-bottom: 30px;

@@ -3,11 +3,11 @@ var movieId;
 var isLike;
 
 $(document).ready(function () {
-    // $(".gray-text")[0].innerText = sessionStorage.getItem("username");
-
-    movieId = parseInt(window.location.href.split('?')[1].split('&')[0].split('=')[1]);
+    movieId = parseInt(window.location.href.split('?')[1].split('=')[1]);
 
     getSchedule();
+    // getIfLike();
+    renderMovie();
 
     function getSchedule() {
         getRequest(
@@ -27,26 +27,67 @@ $(document).ready(function () {
         );
     }
 
-    //todo get Like
-    function getIfLike() {
+    // //todo get Like
+    // function getIfLike() {
+    //     getRequest(
+    //         '/user/movie/'+ movieId,
+    //         function (res) {
+    //             if (res.success){
+    //                 let m = res.content;
+    //                 isLike = m.liked;
+    //                 if (isLike){
+    //                     $('#like-btn span').text("已想看");
+    //                 }
+    //             } else {
+    //                 alert(res.message);
+    //             }
+    //         },
+    //         function (error) {
+    //             alert(error);
+    //         }
+    //     )
+    //
+    // }
+
+    function renderMovie() {
         getRequest(
-            'user/movie/get/'+ movieId,
+            '/user/movie/' + movieId,
             function (res) {
                 if (res.success){
-                    let m = res.content;
-                    isLike = m.isLike;
+                    let movie = res.content;
+                    isLike = movie.liked;
                     if (isLike){
                         $('#like-btn span').text("已想看");
                     }
+                    let imgStr = "<img style='width:280px' src=";
+                    if (movie.poster!=null){
+                        imgStr += movie.poster;
+                    } else {
+                        imgStr += '/images/defaultPoster.jpg';
+                    }
+                    imgStr += "/>";
+                    // imgStr = "<img src=" + (movie.poster || 'images/defaultPoster.jpg')+ "/>";
+                    // console.log(imgStr);
+                    // console.log($("#movie-img"));
+                    $("#movie-img").append(imgStr);
+                    // console.log($("#movie-img"));
+                    $("#movie-name").append(movie.name);
+                    $("#movie-description").append(movie.description);
+                    $("#movie-startDate").append((movie.startDate).substring(0,10));
+                    $("#movie-type").append(movie.type);
+                    $("#movie-country").append(movie.country);
+                    $("#movie-language").append(movie.language);
+                    $("#movie-director").append(movie.director);
+                    $("#movie-starring").append(movie.starring);
+                    $("#movie-writer").append(movie.screenWriter);
                 } else {
-                    alert(res.message);
+                    alert(res.message)
                 }
             },
-            function (error) {
-                alert(error);
+            function error() {
+                alert(error)
             }
         )
-
     }
 
 });
@@ -55,8 +96,8 @@ function repaintScheduleDate(curDateLoc) {
     var dateContent = "";
     for (var i = 0; i < dates.length; i++) {
         var date = dates[i].date.substring(5, 7) + "月" + dates[i].date.substring(8, 10) + "日";
-        if (i == 0) date += "（今天）";
-        else if (i == 1) date += "（明天）";
+        if (i === 0) date += "（今天）";
+        else if (i === 1) date += "（明天）";
         dateContent += '<li role="presentation" id="schedule-date' + i + '"><a href="#"  onclick="repaintScheduleDate(\'' + i + '\')">' + date + '</a></li>';
     }
     $('#schedule-date').html(dateContent);
