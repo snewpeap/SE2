@@ -1,4 +1,4 @@
-package edu.nju.cinemasystem.data.vo;
+package edu.nju.cinemasystem.data.vo.statisticsVO;
 
 import java.util.Date;
 

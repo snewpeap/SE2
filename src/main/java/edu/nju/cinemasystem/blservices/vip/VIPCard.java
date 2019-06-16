@@ -32,9 +32,9 @@ public interface VIPCard {
 
     /**
      * 给会员卡退款时调用
-     * @param userID
+     * @param userID 用户id
      * @param amount 退款的总额
-     * @return
+     * @return 结果
      */
     Response addVIPBalance(int userID, float amount);
 

@@ -46,6 +46,13 @@
         from movie
     </select>
 
+    <select id="query" resultMap="BaseResultMap">
+        select *
+        from movie
+        where name like concat('%',#{query},'%')
+            or description like concat('%',#{query},'%')
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
         from movie

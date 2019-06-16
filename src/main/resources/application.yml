@@ -32,6 +32,9 @@ global-msg:
 movie-msg:
   not-exist: "电影不存在"
   has-arrangement: "电影还有后续排片"
+  wrong-param: "电影参数错误"
+  operation-failed: "操作失败"
+  operation-success: "操作成功"
 
 # 账户操作消息 #
 account-msg:
@@ -42,6 +45,9 @@ account-msg:
   login-success: "登录成功"
   registry-success: "注册成功"
   registry-failed: "注册失败"
+  wrong-param: "账户参数错误"
+  operation-failed: "操作失败"
+  operation-success: "操作成功"
 
 # 员工管理操作信息 #
 staff-msg:
@@ -51,6 +57,9 @@ staff-msg:
   staff-already-exist: "员工已存在"
   staff-not-exist: "不存在此员工"
   add-failed: "添加员工失败"
+  wrong-param: "员工参数错误"
+  operation-failed: "操作失败"
+  operation-success: "操作成功"
 
 vip-msg:
   add-failed: "服务器开小差了，购卡失败"
@@ -58,6 +67,8 @@ vip-msg:
   no-v-i-p-card: "你还没有会员卡"
   out-of-balance: "你的会员卡余额不足"
   has-v-i-p-card: "你已经有会员卡了"
+  operation-failed: "操作失败"
+  operation-success: "操作成功"
 
 # 角色名 #
 role:
@@ -73,14 +84,21 @@ arrangement-msg:
   is-still-have-arrangement: "该影厅后续还有排片"
   is-already-have-arrangement: "该时间段内该影厅已有排片"
   time-conflict: "开始时间或结束时间冲突"
-  fare-cannot-be-negative: "票价不能为0"
+  fare-cannot-be-negative: "票价不能小于等于0"
   movie-unReleased: "电影不在上映状态"
   duration-is-short: "排片时间过短"
-
+  wrong-param: "排片参数错误"
+  operation-failed: "操作失败"
+  operation-success: "操作成功"
 
 # 管理sale操作信息 #
 ticket-msg:
   balance-not-enough: "余额不足"
   refund-strategy-exist: "该天数的购票策略已存在，只能修改"
   refund-disable: "这张票已经不能退了"
+  arrangement-start: "拍片已经开始，无法买票"
+  coupon-invalid: "选择的优惠券无效"
+  order-invalid: "订单已失效"
+  wrong-param: "电影票参数错误"
+  seat-been-locked: "该座位已经被锁定，请选择其他座位"
 

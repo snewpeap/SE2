@@ -37,6 +37,8 @@ public class PromotionForm {
     @NotNull
     private String description;
 
+    private List<Integer> movieIDs;
+
     public List<Integer> getMovieIDs() {
         return movieIDs;
     }
@@ -44,8 +46,6 @@ public class PromotionForm {
     public void setMovieIDs(List<Integer> movieIDs) {
         this.movieIDs = movieIDs;
     }
-
-    private List<Integer> movieIDs;
 
     public String getName() {
         return name;

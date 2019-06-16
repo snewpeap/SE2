@@ -35,13 +35,14 @@ public class MovieImpl implements edu.nju.cinemasystem.blservices.movie.Movie {
         Response response = Response.success();
         if (movieID <= 0) {
             List<Movie> allMovies = movieMapper.selectAll();
+            if (allMovies == null || allMovies.isEmpty()) {
+                return response;
+            }
             allMovies.removeIf(movie -> !movie.audienceVisible());
             List<AudienceMovieVO> allMovieVOs = new ArrayList<>(allMovies.size());
-            if (!allMovies.isEmpty()) {
-                allMovies.forEach(
-                        movie -> allMovieVOs.add(assembleAudienceMovieVO(movie))
-                );
-            }
+            allMovies.forEach(
+                    movie -> allMovieVOs.add(assembleAudienceMovieVO(movie))
+            );
             response.setContent(allMovieVOs);
         } else {
             Movie movie = movieMapper.selectByPrimaryKey(movieID);
@@ -61,9 +62,22 @@ public class MovieImpl implements edu.nju.cinemasystem.blservices.movie.Movie {
     }
 
     @Override
-    public Response searchMovies(String query) {
-        //TODO
-        return null;
+    public Response searchMovies(String query, int userID) {
+        Response response = Response.success();
+        if (query.isEmpty()) {
+            return getMovie(0, userID);
+        }
+        List<Movie> movies = movieMapper.query(query);
+        if (movies == null||movies.isEmpty()){
+            return response;
+        }
+        movies.removeIf(movie -> !movie.audienceVisible());
+        List<AudienceMovieVO> allMovieVOs = new ArrayList<>(movies.size());
+        movies.forEach(
+                movie -> allMovieVOs.add(assembleAudienceMovieVO(movie))
+        );
+        response.setContent(allMovieVOs);
+        return response;
     }
 
     @Override

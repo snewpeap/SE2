@@ -1,5 +1,6 @@
 package edu.nju.cinemasystem.blservices.vip;
 
+import edu.nju.cinemasystem.data.vo.RechargeReductionVO;
 import edu.nju.cinemasystem.data.vo.Response;
 
 import java.util.List;
@@ -19,4 +20,10 @@ public interface VIPManagement {
     Response getVIPs(double money);
 
     Response presentCoupon(List<Integer> vips, List<Integer> couponIDs);
+
+    Response addReduction(RechargeReductionVO reductionVO);
+
+    Response modifyReduction(RechargeReductionVO reductionVO);
+
+    Response removeReduction(int id);
 }

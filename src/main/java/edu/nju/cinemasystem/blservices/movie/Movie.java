@@ -7,7 +7,7 @@ public interface Movie {
     /**
      * 非整数代表查询所有电影
      * @param movieID 电影ID
-     * @param userID
+     * @param userID 用户id
      * @return 为正整数返回一部电影；为非正数返回所有电影列表
      */
     Response getMovie(int movieID, int userID);
@@ -17,7 +17,7 @@ public interface Movie {
      * @param query 查询关键字
      * @return 查到的电影列表
      */
-    Response searchMovies(String query);
+    Response searchMovies(String query,int userID);
 
     /**
      * 通过电影ID获取电影名称

@@ -1,16 +1,17 @@
-package edu.nju.cinemasystem.data.vo;
+package edu.nju.cinemasystem.data.vo.statisticsVO;
 
-public class MovieTotalBoxOfficeVO {
+public class MovieScheduleTimesVO {
+
     private Integer movieId;
     /**
-     * 票房(单位：元)
+     * 排片次数
      */
-    private float boxOffice;
+    private Integer times;
     private String name;
 
-    public MovieTotalBoxOfficeVO(Integer movieId, float boxOffice, String name) {
+    public MovieScheduleTimesVO(Integer movieId, Integer times, String name) {
         this.movieId = movieId;
-        this.boxOffice = boxOffice;
+        this.times = times;
         this.name = name;
     }
 
@@ -22,12 +23,12 @@ public class MovieTotalBoxOfficeVO {
         this.movieId = movieId;
     }
 
-    public float getBoxOffice() {
-        return boxOffice;
+    public Integer getTimes() {
+        return times;
     }
 
-    public void setBoxOffice(float boxOffice) {
-        this.boxOffice = boxOffice;
+    public void setTimes(Integer times) {
+        this.times = times;
     }
 
     public String getName() {

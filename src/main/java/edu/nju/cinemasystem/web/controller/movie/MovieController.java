@@ -37,8 +37,9 @@ public class MovieController {
     }
 
     @GetMapping("/user/movie/search")
-    public Response searchMovies(@RequestParam String query) {
-        return movie.searchMovies(query);
+    public Response searchMovies(@RequestParam String query, HttpSession session) {
+        int userID = (Integer) session.getAttribute("id");
+        return movie.searchMovies(query, userID);
     }
 
     @PostMapping("/user/movie/like/{movieId}")

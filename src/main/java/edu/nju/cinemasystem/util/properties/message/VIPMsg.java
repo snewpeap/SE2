@@ -11,6 +11,7 @@ public class VIPMsg extends GlobalMsg{
     private String noVIPCard;
     private String hasVIPCard;
     private String outOfBalance;
+    private String reductionInexist;
 
     public String getHasVIPCard() {
         return hasVIPCard;
@@ -50,5 +51,13 @@ public class VIPMsg extends GlobalMsg{
 
     public void setRechargeFailed(String rechargeFailed) {
         this.rechargeFailed = rechargeFailed;
+    }
+
+    public String getReductionInexist() {
+        return reductionInexist;
+    }
+
+    public void setReductionInexist(String reductionInexist) {
+        this.reductionInexist = reductionInexist;
     }
 }
