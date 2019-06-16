@@ -39,13 +39,12 @@ public class VipController {
         return vipCard.getRechargeHistory(userId);
     }
 
-    //TODO 去掉card
-    @PostMapping("/user/vip/card/deposit")
+    @PostMapping("/user/vip/deposit")
     public Response depositVIPCard(@RequestParam int userId,@RequestBody float amount){
         return vipCard.deposit(userId,amount);
     }
 
-    @GetMapping("/admin/vip/get/all")
+    @GetMapping("/admin/vip/get")
     public Response getVIPs(){
         return vipManagement.getVIPs();
     }

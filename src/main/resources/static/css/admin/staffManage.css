@@ -2,6 +2,11 @@
     margin: 5px 0 20px;
 }
 
-a{
+.modifyStaff,.deleteStaff,.confirm-modify,.cancel-modify{
     text-decoration: underline;
+    color: #4381ff;
+}
+
+th , td{
+    text-align: center !important;
 }
