@@ -9,16 +9,12 @@ $(document).ready(function () {
             '/user/movie/all',
             function (res) {
                 if (res.success){
-                    console.log(res.content);
                     movieList = res.content;
                     wholeMovieStr += '<tbody id="all-tbody">';
                     movieList.forEach(function (movie) {
                         wholeMovieStr += addMovie(movie);
                     });
                     wholeMovieStr +="</tbody>";
-                    console.log(movieList);
-                    console.log(wholeMovieStr);
-                    console.log($("#table-breakpoint"));
                     $("#table-breakpoint").append(wholeMovieStr);
                 }else {
                     alert(res.message);
@@ -32,19 +28,19 @@ $(document).ready(function () {
 
     function addMovie(movie) {
         let movieStr = '';
-        movieStr += "<tr id='@movie.id' onclick='toDetail(e)'><td>" + movie.name + "</td>";
+        movieStr += "<tr id='"+movie.id+"'><td id='"+movie.id+"'>" + movie.name + "</td>";
         if (movie.status === 0) {
-            movieStr += "<td>未上映</td>"
+            movieStr += "<td id='"+movie.id+"'>未上映</td>"
         }else if (movie.status === 1){
-            movieStr += "<td>热映中</td>"
+            movieStr += "<td id='"+movie.id+"'>热映中</td>"
         } else if (movie.status === 2){
-            movieStr += "<td>已下映</td>"
+            movieStr += "<td id='"+movie.id+"'>已下映</td>"
         }else if (movie.status===3){
-            movieStr += "<td>已下架</td>"
+            movieStr += "<td id='"+movie.id+"'>已下架</td>"
         }
-        movieStr += "<td>" + movie.type + "</td>" +
-            "<td>" + (movie.startDate).substring(0,10) +"</td>" +
-            "<td>" + movie.likeNum + "</td></tr>";
+        movieStr += "<td id='"+movie.id+"'>" + movie.type + "</td>" +
+            "<td id='"+movie.id+"'>" + (movie.startDate).substring(0,10) +"</td>" +
+            "<td id='"+movie.id+"'>" + movie.likeNum + "</td></tr>";
         return movieStr;
     }
 });
@@ -67,8 +63,10 @@ function changeTable(e) {
 }
 
 
-function toDetail(e) {
-    window.location.herf = "/user/movie/detail?id=" + e.target.id;
-}
+$(document).on('click','td',function (e) {
+    console.log(e.target.id);
+    $(window).attr('location',"/user/movie/detail?id=" + e.target.id);
+    return false;
+});
 
 
