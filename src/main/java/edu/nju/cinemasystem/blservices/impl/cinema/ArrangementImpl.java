@@ -21,9 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class ArrangementImpl
@@ -87,8 +87,22 @@ public class ArrangementImpl
         } else {
             List<ArrangementVO> arrangementVOs = new ArrayList<>();
             arrangements.forEach(arrangement -> arrangementVOs.add(new ArrangementVO(arrangement)));
+            Map<Date,List<ArrangementVO>> map = new HashMap<>();
+            for(ArrangementVO arrangementVO: arrangementVOs){
+                Date date = convertDateToDay(arrangementVO.getStartTime());
+                if(!map.containsKey(date)){
+                    map.put(date,new ArrayList<>());
+                }
+                map.get(date).add(arrangementVO);
+            }
+            Map<Date,List<ArrangementVO>> reMap = new HashMap<>();
+            Object[] objects = map.keySet().toArray();
+            Arrays.sort(objects);
+            for(Object o:objects){
+                reMap.put((Date)o,map.get(o));
+            }
             response = Response.success();
-            response.setContent(arrangementVOs);
+            response.setContent(reMap);
             return response;
         }
     }
@@ -282,7 +296,7 @@ public class ArrangementImpl
         Date date = new Date();
         Movie movie = movieMapper.selectByPrimaryKey(arrangementForm.getMovieId());
         Date completeTime = new Date(arrangementForm.getStartTime().getTime()+ (movieMapper.selectByPrimaryKey(arrangementForm.getMovieId()).getDuration() * 60 * 1000));
-       if (arrangementForm.getStartTime().compareTo(arrangementForm.getEndTime()) >= 0  || (arrangementForm.getStartTime().compareTo(date) < 0)||(arrangementForm.getEndTime().compareTo(date) < 0)){
+       if (arrangementForm.getStartTime().compareTo(arrangementForm.getEndTime()) >= 0  || (arrangementForm.getStartTime().compareTo(date) < 0)||(arrangementForm.getEndTime().compareTo(date) < 0) || (convertDateToDay(arrangementForm.getStartTime()).compareTo(convertDateToDay(arrangementForm.getEndTime())) != 0)){
            response.setMessage(arrangementMsg.getTimeConflict());
        }else if((arrangementForm.getFare() <= 0)){
            response.setMessage(arrangementMsg.getFareCannotBeNegative());
@@ -348,5 +362,15 @@ public class ArrangementImpl
         arrangement.setMovieId(movieId);
         arrangement.setVisibleDate(visibleDate);
         return arrangement;
+    }
+
+    private Date convertDateToDay(Date date){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            return sdf.parse(sdf.format(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return  date;
+        }
     }
 }

@@ -14,7 +14,7 @@ public class PromotionVO {
 
     private Date endTime;
 
-    private List<Integer> movieList;
+    private List<String> movieList;
 
     private Float targetAmount;
 
@@ -56,11 +56,11 @@ public class PromotionVO {
         this.endTime = endTime;
     }
 
-    public List<Integer> getMovieList() {
+    public List<String> getMovieList() {
         return movieList;
     }
 
-    public void setMovieList(List<Integer> movieList) {
+    public void setMovieList(List<String> movieList) {
         this.movieList = movieList;
     }
 
