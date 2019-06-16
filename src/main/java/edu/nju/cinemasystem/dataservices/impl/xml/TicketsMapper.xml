@@ -40,11 +40,11 @@
         where user_id = #{userID,jdbcType=INTEGER}
     </select>
 
-    <select id="selectByOrderID" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <select id="selectByOrderID" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from tickets
-        where orderID = #{orderID,jdbcType=INTEGER}
+        where orderID = #{orderID,jdbcType=BIGINT}
     </select>
 
     <select id="selectByMovieID" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -75,7 +75,7 @@
         insert into tickets (id, user_id, arrangement_id,
                              seat_id, `date`, `status`,
                              real_amount, orderID)
-        values (#{id,jdbcType=INTEGER}, #{user_id,jdbcType=INTEGER}, #{arrangementId,jdbcType=INTEGER},
+        values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{arrangementId,jdbcType=INTEGER},
                 #{seatId,jdbcType=INTEGER}, #{date,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT},
                 #{realAmount,jdbcType=REAL}, #{orderID,jdbcType=BIGINT})
     </insert>
@@ -140,8 +140,8 @@
     <update id="updateByPrimaryKeySelective" parameterType="edu.nju.cinemasystem.data.po.Ticket">
         update tickets
         <set>
-            <if test="user_id != null">
-                user_id = #{id,jdbcType=INTEGER},
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
             </if>
             <if test="arrangementId != null">
                 arrangement_id = #{arrangementId,jdbcType=INTEGER},
@@ -167,7 +167,7 @@
 
     <update id="updateByPrimaryKey" parameterType="edu.nju.cinemasystem.data.po.Ticket">
         update tickets
-        set user_id        = #{user_id,jdbcType=INTEGER},
+        set user_id        = #{userId,jdbcType=INTEGER},
             arrangement_id = #{arrangementId,jdbcType=INTEGER},
             seat_id        = #{seatId,jdbcType=INTEGER},
             `date`           = #{date,jdbcType=TIMESTAMP},

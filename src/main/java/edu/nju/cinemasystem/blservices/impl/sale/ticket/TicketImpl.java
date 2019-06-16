@@ -428,8 +428,9 @@ public class TicketImpl
                 while (true) {
                     try {
                         delayedTask = delayQueue.take();
+                        LOG.info("take");
                         invalidateOrder(delayedTask);
-                    } catch (Exception e) {
+                    } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }

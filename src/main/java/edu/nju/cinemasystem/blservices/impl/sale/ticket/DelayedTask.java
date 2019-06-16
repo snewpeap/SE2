@@ -28,7 +28,7 @@ public class DelayedTask implements Delayed {
 
     @Override
     public long getDelay(TimeUnit unit) {
-        long DELAY = 15 * 60 * 1000L;
+        long DELAY = 15L * 60 * 1000;
         return unit.convert(this.startTime.getTime() + DELAY - System.currentTimeMillis(), TimeUnit.MILLISECONDS);
     }
 
