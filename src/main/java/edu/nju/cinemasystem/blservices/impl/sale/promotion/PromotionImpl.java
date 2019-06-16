@@ -3,12 +3,14 @@ package edu.nju.cinemasystem.blservices.impl.sale.promotion;
 import edu.nju.cinemasystem.blservices.movie.PromotionInfo;
 import edu.nju.cinemasystem.blservices.vip.VIPCouponBusiness;
 import edu.nju.cinemasystem.data.po.Coupon;
+import edu.nju.cinemasystem.data.po.Movie;
 import edu.nju.cinemasystem.data.po.Promotion;
 import edu.nju.cinemasystem.data.po.PromotionHasMovie;
 import edu.nju.cinemasystem.data.vo.CouponVO;
 import edu.nju.cinemasystem.data.vo.PromotionVO;
 import edu.nju.cinemasystem.data.vo.Response;
 import edu.nju.cinemasystem.data.vo.form.PromotionForm;
+import edu.nju.cinemasystem.dataservices.movie.MovieMapper;
 import edu.nju.cinemasystem.dataservices.sale.promotion.CouponMapper;
 import edu.nju.cinemasystem.dataservices.sale.promotion.PromotionHasMovieMapper;
 import edu.nju.cinemasystem.dataservices.sale.promotion.PromotionMapper;
@@ -38,13 +40,16 @@ public class PromotionImpl implements
     GlobalMsg globalMsg;
     private final
     CouponMapper couponMapper;
+    private final MovieMapper movieMapper;
+
 
     @Autowired
-    public PromotionImpl(PromotionMapper promotionMapper, PromotionHasMovieMapper promotionHasMovieMapper, GlobalMsg globalMsg, CouponMapper couponMapper) {
+    public PromotionImpl(PromotionMapper promotionMapper, PromotionHasMovieMapper promotionHasMovieMapper, GlobalMsg globalMsg, CouponMapper couponMapper, MovieMapper movieMapper) {
         this.promotionMapper = promotionMapper;
         this.promotionHasMovieMapper = promotionHasMovieMapper;
         this.globalMsg = globalMsg;
         this.couponMapper = couponMapper;
+        this.movieMapper = movieMapper;
     }
 
     @Override
@@ -54,13 +59,20 @@ public class PromotionImpl implements
         List<PromotionVO> promotionVOs = new ArrayList<>();
         for (Promotion promotion : promotions) {
             PromotionVO promotionVO = new PromotionVO(promotion);
+            List<String> movieList = new ArrayList<>();
             if (promotion.getSpecifyMovies() == 1) {
                 List<PromotionHasMovie> promotionHasMovies = promotionHasMovieMapper
                         .selectByPromotionID(promotion.getId());
-                List<Integer> movieList = new ArrayList<>();
-                promotionHasMovies.forEach(promotionHasMovie -> movieList.add(promotionHasMovie.getMovieId()));
-                promotionVO.setMovieList(movieList);
+                promotionHasMovies.forEach(promotionHasMovie -> movieList.add(movieMapper.selectByPrimaryKey(promotionHasMovie.getMovieId()).getName()));
+            }else {
+                List<Movie> movies = movieMapper.selectAll();
+                movies.forEach(movie -> {
+                    if(movie.getStatus()==(byte)0||movie.getStatus()==(byte)1){
+                        movieList.add(movie.getName());
+                    }
+                });
             }
+            promotionVO.setMovieList(movieList);
             promotionVOs.add(promotionVO);
         }
         response = Response.success();
