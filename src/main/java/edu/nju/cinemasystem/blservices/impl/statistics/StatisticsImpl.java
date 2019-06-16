@@ -117,7 +117,10 @@ public class StatisticsImpl implements Statistics, StatisticsInfo {
                 }
                 double averageSeatNum = (double) seatNum / (double) oneArrangementList.size();
                 //Double rate = audienceNum/oneArrangementList.size()/hallManage.getAverageSeatNum();
-                Double rate = audienceNum / oneArrangementList.size() / averageSeatNum;
+                Double rate = (double)0;
+                if(oneArrangementList.size()!=0 && averageSeatNum!=0) {
+                    rate = audienceNum / oneArrangementList.size() / averageSeatNum;
+                }
                 moviePlacingRateVOS.add(new MoviePlacingRateVO(date, movieID, rate, movieName));
             }
             response = Response.success();
@@ -147,8 +150,12 @@ public class StatisticsImpl implements Statistics, StatisticsInfo {
             }
             moviePopularityVOS.sort((MoviePopularityVO m1, MoviePopularityVO m2) -> (int) m2.getBoxOffice() - (int) m1.getBoxOffice());
             List<MoviePopularityVO> resultVOs = new ArrayList<>();
-            for (int i = 0; i < movieNum; i++) {
-                resultVOs.add(moviePopularityVOS.get(i));
+            if(moviePopularityVOS.size() > movieNum) {
+                for (int i = 0; i < movieNum; i++) {
+                    resultVOs.add(moviePopularityVOS.get(i));
+                }
+            }else {
+                resultVOs.addAll(moviePopularityVOS);
             }
             response = Response.success();
             response.setContent(resultVOs);

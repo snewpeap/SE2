@@ -42,7 +42,11 @@ public class TicketStatisticsImpl implements TicketStatistics {
                 totalAmount += ticket.getRealAmount();
             }
         }
-        return totalAmount / (float) effectiveTickets.size();
+        float ef = (float) effectiveTickets.size();
+        if(ef == 0){
+            ef = 1;
+        }
+        return totalAmount / ef;
     }
 
     @Override
