@@ -58,7 +58,7 @@ function getHalls() {
 
 function getPreAndOnMovies() {
     getRequest(
-        '/manage/movie/all',
+        '/manage/movie',
         function (res) {
             if(res.success){
                 res.content.forEach(function (movie) {

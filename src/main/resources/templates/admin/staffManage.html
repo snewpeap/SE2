@@ -21,12 +21,15 @@
     <!-- bootstrap-progressbar -->
     <link href="/webjars/gentelella/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
     <!-- JQVMap -->
-    <link href="/webjars/gentelella/vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet"/>
+    <link href="/webjars/gentelella/vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet">
     <!-- bootstrap-daterangepicker -->
     <link href="/webjars/gentelella/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
     <link href="/webjars/gentelella/build/css/custom.min.css" rel="stylesheet">
+    <!-- Personal Theme Style -->
+    <link href="/css/common.css" rel="stylesheet" type="text/css">
+    <link href="/css/admin/staffManage.css" rel="stylesheet" type="text/css">
 </head>
 <body class="nav-md">
 <div class="container body">
@@ -121,7 +124,37 @@
         <div class="right_col" role="main">
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="dashboard_graph">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>员工管理</h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <div class="roleHeader">
+                                <span >选择你要查看的员工身份：</span>
+                                <span>
+                                    <select id="roleSelect" class="form-control" style="display: inline-block;width: 100px;">
+                                        <option value="all">所有</option>
+                                        <option value="manager">经理</option>
+                                        <option value="staff">员工</option>
+                                    </select>
+                                </span>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-striped jambo_table bulk_action">
+                                    <thead>
+                                    <tr class="headings">
+                                        <th class="column-title">员工号码</th>
+                                        <th class="column-title">名称</th>
+                                        <th class="column-title">密码</th>
+                                        <th class="column-title">角色</th>
+                                        <th class="column-title no-link last"><span class="nobr">操作</span></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="tbody"></tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

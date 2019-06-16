@@ -25,7 +25,7 @@ function getArrangementRate() {
             var data = res.content||[];
             var tableData = data.map(function (item) {
                 return {
-                    value: item.time,
+                    value: item.times,
                     name: item.name
                 };
             });
@@ -65,7 +65,7 @@ function getArrangementRate() {
                     {
                         name:'影片',
                         type:'pie',
-                        radius : [30, 110],
+                        radius : [50, 110],
                         // center : ['50%', '50%'],
                         // roseType : 'area',
                         data:tableData
@@ -76,7 +76,7 @@ function getArrangementRate() {
             scheduleRateChart.setOption(option);
         },
         function (error) {
-            alert(JSON.stringify(error));
+            alert(error.message);
         }
     );
 }
@@ -117,7 +117,7 @@ function getBoxOffice() {
             scheduleRateChart.setOption(option);
         },
         function (error) {
-            alert(JSON.stringify(error));
+            alert(error.message);
         });
 }
 
@@ -129,7 +129,7 @@ function getAudiencePrice() {
             var tableData = data.map(function (item) {
                 return item.price;
             });
-            var nameList = data.map(function (item) {
+            var dateList = data.map(function (item) {
                 return formatDate(new Date(item.date));
             });
             var option = {
@@ -139,7 +139,7 @@ function getAudiencePrice() {
                 },
                 xAxis: {
                     type: 'category',
-                    data: nameList,
+                    data: dateList,
                     axisLabel:{
                         interval: 0
                     }
@@ -156,7 +156,7 @@ function getAudiencePrice() {
             scheduleRateChart.setOption(option);
         },
         function (error) {
-            alert(JSON.stringify(error));
+            alert(error.message);
         });
 }
 
@@ -196,7 +196,7 @@ function getPlacingRate() {
             scheduleRateChart.setOption(option);
         },
         function (error) {
-            alert(JSON.stringify(error));
+            alert(error.message);
         });
 }
 
@@ -263,7 +263,7 @@ function getPopularMovie() {
             scheduleRateChart.setOption(option);
         },
         function (error) {
-            alert(JSON.stringify(error));
+            alert(error.message);
         }
     );
 }

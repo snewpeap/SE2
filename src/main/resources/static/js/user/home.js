@@ -33,25 +33,35 @@ function renderMovie() {
     getMostLikes();
     console.log(mostList);
 
-    firstImageStr = "<a href='/user/movie/detail?movieId="+newestList[i].id+"' class='hvr-sweep-to-bottom'><img src='"+ (newestList[0].poster||"/images/defaultPoster.jpg") + "' alt='' class='img-responsive' /></a>";
+    firstImageStr = "<a href='/user/movie/detail?movieId="+newestList[0].id+"' class='hvr-sweep-to-bottom'><img src='"+ (newestList[0].poster||"/images/defaultPoster.jpg") + "' title=\"Movies Pro\"  alt='' class='img-responsive' />" +
+        "<div class=\"w3l-action-icon\"><i class=\"fa fa-play-circle-o\" aria-hidden=\"true\"></i></div></a>";
     $('#video').append(firstImageStr);
-    var newestMovieInfo = getFirstInfoStr(newestList);
+var newestMovieInfo = getFirstInfoStr(newestList);
     $('#newest-movie-info').append(newestMovieInfo);
     $('#newest-movie-other').append(getNextInfoStr(newestList));
 
-    firstImageStr = "<a href='/user/movie/detail?movieId="+highestList[i].id+"' class='hvr-sweep-to-bottom'><img src='"+ (highestList[0].poster||"/images/defaultPoster.jpg") + "' alt='' class='img-responsive' /></a>";
+    firstImageStr = "<a href='/user/movie/detail?movieId="+highestList[0].id+"' class='hvr-sweep-to-bottom'><img src='"+ (highestList[0].poster||"/images/defaultPoster.jpg") + "' alt='' class='img-responsive' /></a>";
     $('#video1').append(firstImageStr);
     var highestMovieInfo = getFirstInfoStr(highestList);
     $('#highest-movie-info').append(highestMovieInfo);
     $('#highest-movie-other').append(getNextInfoStr(highestList));
 
-    firstImageStr = "<a href='/user/movie/detail?movieId="+mostList[i].id+"' class='hvr-sweep-to-bottom'><img src='"+ (mostList[0].poster||"/images/defaultPoster.jpg") + "' alt='' class='img-responsive' /></a>";
+    firstImageStr = "<a href='/user/movie/detail?movieId="+mostList[0].id+"' class='hvr-sweep-to-bottom'><img src='"+ (mostList[0].poster||"/images/defaultPoster.jpg") + "' alt='' class='img-responsive' /></a>";
     $('#video2').append(firstImageStr);
     var mostMovieInfo = getFirstInfoStr(mostList);
     $('#most-movie-info').append(mostMovieInfo);
     $('#most-movie-other').append(getNextInfoStr(mostList));
 
     $('#owl-demo').append(getNewestForSlide());
+    $("#owl-demo").owlCarousel({
+        autoPlay: 3000, //Set AutoPlay to 3 seconds
+        autoPlay : true,
+        navigation :true,
+
+        items : 5,
+        itemsDesktop : [640,4],
+        itemsDesktopSmall : [414,3]
+    });
     $('#slide-most-box').append(getMostBoxForSlide());
     $('#second-top-movies').append(getSecondTopMovies());
     $('#top-movie-image').append(getTopMovieImage());
@@ -123,7 +133,7 @@ function renderMovie() {
     function getFirstInfoStr(List) {
         var firstMovieInfo = "";
         firstMovieInfo += "<p class=\"fexi_header\">"+ List[0].name+"</p>" +
-            "<p class=\"fexi_header_para\"><span class=\"conjuring_w3\">内容简介<label>:</label></span>"+ List[0].description+"</p>"+
+            "<p class=\"fexi_header_para\"><span>内容简介<label>:</label></span>"+ List[0].description+"</p>"+
             "<p class=\"fexi_header_para\"><span>上映日期<label>:</label></span>"+ List[0].startDate.slice(0,10)+"</p>" +
             "<p class=\"fexi_header_para\"><span>类型<label>:</label></span>"+ List[0].type+"</p>" +
             "<p class=\"fexi_header_para\"><span>想看人数<label>:</label></span>"+ List[0].likeNum+"</p>" +
@@ -134,7 +144,7 @@ function renderMovie() {
     //拼接下面一堆电影的字符串 图片 名称 想看人数
     function getNextInfoStr(List) {
         var nextInfoStr = "";
-        for (var i = 1;i<8 && i<allMovieList.length;i++){
+        for (var i = 1;i<=8 && i<allMovieList.length;i++){
             nextInfoStr +=
                 "<div class=\"w3l-movie-gride-agile\">" + "<a href=\"/user/movie/detail?movieId="+List[i].id+"\" class=\"hvr-sweep-to-bottom\"><img src=\"" + (List[i].poster||"/images/defaultPoster.jpg") +
                 "\" title=\"Movies Pro\" class=\"img-responsive\" alt=\" \" /><div class=\"w3l-action-icon\"><i class=\"fa fa-play-circle-o\" aria-hidden=\"true\"></i></div></a>" +
@@ -162,13 +172,12 @@ function renderMovie() {
                             "</div>" +
                             "<div class=\"mid-2 agile_mid_2_home\">" +
                                 "<p>" + newestList[i].startDate.slice(0,10) + "</p>"+
-                                "<div>想看人数：" + newestList[i].likeNum +
-                                "</div>" +
+                                "<div>想看人数：" + newestList[i].likeNum + "</div>" +
                                 "<div class=\"clearfix\"></div>" +
                             "</div>" +
                         "</div>" +
-                        joinedPromotion(newestList,i,newMovie) +
-                        "<div class=\"clearfix\"></div>" +
+                        // joinedPromotion(newestList,i,newMovie) +
+                        // "<div class=\"clearfix\"></div>" +
                         "<div class=\"ribben one\"><p>NEW</p></div>" +
                     "</div>" +
                 "</div>";
@@ -178,7 +187,7 @@ function renderMovie() {
 
     function getMostBoxForSlide() {
         var res = "";
-        for (var i = 0;i<highestList.length;i++){
+        for (var i = 0;i<=10 && i<highestList.length;i++){
             res += "<div class=\"col-md-2 w3l-movie-gride-agile requested-movies\">" +
                 "<a href=\"/user/movie/detail?movieId="+highestList[i].id+"\" class=\"hvr-sweep-to-bottom\"><img src=\"" + (highestList[i].poster||"/images/defaultPoster.jpg") + "\" title=\"Movies Pro\" class=\"img-responsive\" alt=\" \">" +
                 "<div class=\"w3l-action-icon\"><i class=\"fa fa-play-circle-o\" aria-hidden=\"true\"></i></div></a>" +
@@ -193,7 +202,7 @@ function renderMovie() {
 
     function getSecondTopMovies() {
         var res = '';
-        for (var i = 1;i<mostList.length;i++){
+        for (var i = 1;i<=8 && i<mostList.length;i++){
             res += "<div class=\"w3l-movie-gride-agile\">" +
                 "<a href=\"/user/movie/detail?movieId="+mostList[i].id+"\" class=\"hvr-sweep-to-bottom\"><img src=\"" + (mostList[i].poster||"/images/defaultPoster.jpg") + "\" title=\"Movies Pro\" class=\"img-responsive\" alt=\" \">" +
                 "<div class=\"w3l-action-icon\"><i class=\"fa fa-play-circle-o\" aria-hidden=\"true\"></i></div></a>" +
@@ -208,14 +217,15 @@ function renderMovie() {
 
     function getTopMovieImage() {
         var res = '';
-        res += "<img src=\"" + (mostList[0].poster||"/images/defaultPoster.jpg") + "\" alt=\"\" class=\"img-responsive\" />";
+        res += "<a href='/user/movie/detail?movieId="+mostList[0].id+"'><img src=\"" + (mostList[0].poster||"/images/defaultPoster.jpg") + "\" alt=\"\" class=\"img-responsive\" />" +
+            "<div class=\"w3l-action-icon\"><i class=\"fa fa-play-circle-o\" aria-hidden=\"true\"></i></div></a>";
         return res;
     }
 
     function getTopMovieInfo() {
         var res = '';
-        res += "<p class=\"fexi_header\"> </p>" +
-            "<p class=\"fexi_header_para\"><span class=\"conjuring_w3\">内容简介<label>:</label></span>"+mostList[0].description+"</p>" +
+        res += "<p class=\"fexi_header\">"+mostList[0].name+"</p>" +
+            "<p class=\"fexi_header_para\"><span>内容简介<label>:</label></span>"+mostList[0].description+"</p>" +
             "<p class=\"fexi_header_para\"><span>上映日期<label>:</label></span>" + mostList[0].startDate.slice(0,10) + "</p>" +
             "<p class=\"fexi_header_para\"><span>类型<label>:</label> </span>" + mostList[0].type +
             "<p class=\"fexi_header_para fexi_header_para1\"><span>想看人数<label>:</label></span>" + mostList[0].likeNum + "</p>";

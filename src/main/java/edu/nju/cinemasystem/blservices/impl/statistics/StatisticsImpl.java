@@ -130,7 +130,7 @@ public class StatisticsImpl implements Statistics, StatisticsInfo {
             response = Response.fail();
             response.setMessage(e.getMessage());
         }
-        return null;
+        return response;
     }
 
     @Override
