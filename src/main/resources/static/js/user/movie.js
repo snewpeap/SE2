@@ -32,38 +32,43 @@ $(document).ready(function () {
 
     function addMovie(movie) {
         let movieStr = '';
-        movieStr += "<tr onclick='toDetail()'><td>" + movie.name + "</td>" +
-            "<td>" + movie.status + "</td>" +
-            "<td>" + movie.type + "</td>" +
-            "<td>" + movie.startDate +"</td>" +
+        movieStr += "<tr id='@movie.id' onclick='toDetail(e)'><td>" + movie.name + "</td>";
+        if (movie.status === 0) {
+            movieStr += "<td>未上映</td>"
+        }else if (movie.status === 1){
+            movieStr += "<td>热映中</td>"
+        } else if (movie.status === 2){
+            movieStr += "<td>已下映</td>"
+        }else if (movie.status===3){
+            movieStr += "<td>已下架</td>"
+        }
+        movieStr += "<td>" + movie.type + "</td>" +
+            "<td>" + (movie.startDate).substring(0,10) +"</td>" +
             "<td>" + movie.likeNum + "</td></tr>";
         return movieStr;
     }
 });
+
 // todo abcdefg
 function changeTable(e) {
     let id = e.target.id;
     let tbody = $(id+"-tbody");
-    if (tbody!==null){
-        let movieStr = "";
+    if (tbody===null){
+        let bodyId = id + "-tbody";
+        let movieStr = "<tbody id= bodyId>";
         movieList.forEach(function (movie) {
-            if(judgeNameStartWith(movie.name,id)){
                 let easyName = pinyin.getCamelChars(movie.name);
-            }
-
+                if (easyName.charAt(0)==id){
+                    movieStr += addMovie(movie);
+                }
         });
-        $("#table-breakpoint").append();
+        $("#table-breakpoint").append(movieStr);
     }
 }
 
 
-function judgeNameStartWith(str,c) {
-
-
-}
-
 function toDetail(e) {
-    window.location.herf = "/user/movie/detail?id=" + e.target.id + "&name=" + e.target.name;
+    window.location.herf = "/user/movie/detail?id=" + e.target.id;
 }
 
 

@@ -59,7 +59,6 @@ $(document).ready(function(){
             function (error) {
                 alert(error)
             }
-            
         )
 
     }

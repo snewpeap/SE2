@@ -5,9 +5,10 @@ var isLike;
 $(document).ready(function () {
     // $(".gray-text")[0].innerText = sessionStorage.getItem("username");
 
-    movieId = parseInt(window.location.href.split('?')[1].split('&')[0].split('=')[1]);
+    movieId = parseInt(window.location.href.split('?')[1].split('=')[1]);
 
     getSchedule();
+    getIfLike();
 
     function getSchedule() {
         getRequest(
@@ -34,7 +35,7 @@ $(document).ready(function () {
             function (res) {
                 if (res.success){
                     let m = res.content;
-                    isLike = m.isLike;
+                    isLike = m.liked;
                     if (isLike){
                         $('#like-btn span').text("已想看");
                     }
