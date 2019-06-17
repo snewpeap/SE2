@@ -2,6 +2,7 @@ package edu.nju.cinemasystem.dataservices.sale.promotion;
 
 import edu.nju.cinemasystem.data.po.PromotionHasMovie;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -27,5 +28,5 @@ public interface PromotionHasMovieMapper {
      * @param movieID 电影id
      * @return 电影参与的所有优惠活动
      */
-    List<PromotionHasMovie> selectByMovieID(int movieID);
+    List<PromotionHasMovie> selectByMovieID(@Param("movieID") Integer movieID);
 }

@@ -33,9 +33,10 @@ public class AlipayController {
 
     @RequestMapping("/user/alipay/pay/{orderID}")
     //TODO 去掉优惠券的注释
-    public @ResponseBody String alipay(@PathVariable long orderID/*, @RequestBody int couponID*/, HttpSession session, HttpServletResponse servletResponse) throws AlipayApiException {
+    public @ResponseBody
+    String alipay(@PathVariable long orderID/*, @RequestBody int couponID*/, HttpSession session, HttpServletResponse servletResponse) throws AlipayApiException {
         int userID = (Integer) session.getAttribute(CustomWebSecurityConfiguration.KEY_ID);
-        Response response = ticket.payable(orderID,0/* couponID*/, userID);
+        Response response = ticket.payable(orderID, 0/* couponID*/, userID);
         if (response.isSuccess()) {
             return ticket.requestAlipay(orderID);
         } else {
@@ -72,9 +73,11 @@ public class AlipayController {
             if (trade_status.equals("TRADE_FINISHED")) {
                 return "success";
             } else if (trade_status.equals("TRADE_SUCCESS")) {
-                ticket.payOrder(Long.parseLong(out_trade_no), Float.parseFloat(total_amount));
+                return ticket.payOrder(Long.parseLong(out_trade_no), Float.parseFloat(total_amount)).isSuccess() ?
+                        "success" : "fail";
+            } else {
+                return "fail";
             }
-            return "success";
         } else {
             //验证失败
             return "fail";
@@ -82,7 +85,7 @@ public class AlipayController {
     }
 
     @RequestMapping("/user/testAli")
-    public String testAli(){
+    public String testAli() {
         return "user/testAli";
     }
 
@@ -90,7 +93,7 @@ public class AlipayController {
         Map<String, String> params = new HashMap<>();
         Map<String, String[]> requestParams = request.getParameterMap();
         for (String name : requestParams.keySet()) {
-            String[] values = (String[]) requestParams.get(name);
+            String[] values = requestParams.get(name);
             String valueStr = "";
             for (int i = 0; i < values.length; i++) {
                 valueStr = (i == values.length - 1) ? valueStr + values[i]

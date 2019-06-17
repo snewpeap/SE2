@@ -7,7 +7,9 @@
     </resultMap>
 
     <select id="selectByUserID" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-        select user_id, role_id from user_has_role where user_id=#{userID};
+        select user_id, role_id
+        from user_has_role
+        where user_id = #{userID};
     </select>
 
     <delete id="deleteByUserID" parameterType="java.lang.Integer">
@@ -40,4 +42,10 @@
             </if>
         </trim>
     </insert>
+
+    <update id="updateByUserID" parameterType="edu.nju.cinemasystem.data.po.UserHasRoleKey">
+        update user_has_role
+        set role_id = #{roleId}
+        where user_id = #{userId}
+    </update>
 </mapper>

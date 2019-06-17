@@ -17,8 +17,8 @@
         where id = #{id,jdbcType=INTEGER}
     </select>
 
-    <select id="selectRoleIDByName" parameterType="java.lang.String" resultType="java.lang.Integer">
-        select id
+    <select id="selectRoleByName" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select *
         from role
         where role_name = #{role_name}
         limit 1

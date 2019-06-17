@@ -29,6 +29,7 @@
         where movie_id = #{movieID,jdbcType=INTEGER}
         and start_time >= now()
         and start_time >= visible_date
+        order by start_time
     </select>
 
     <select id="selectByHallIDAndStartDate" resultMap="BaseResultMap">

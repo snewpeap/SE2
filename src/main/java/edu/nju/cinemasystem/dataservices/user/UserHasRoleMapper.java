@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 public interface UserHasRoleMapper {
     int deleteByUserID(int userID);
 
+    int updateByUserID(UserHasRoleKey record);
+
     int insert(UserHasRoleKey record);
 
     int insertSelective(UserHasRoleKey record);

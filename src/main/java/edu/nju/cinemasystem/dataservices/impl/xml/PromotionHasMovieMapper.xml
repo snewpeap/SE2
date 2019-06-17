@@ -47,6 +47,8 @@
     <select id="selectByMovieID" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select *
         from promotion_has_movie
-        where movie_id = #{movieID}
+        <if test="movieID != null">
+            where movie_id = #{movieID}
+        </if>
     </select>
 </mapper>

@@ -140,11 +140,7 @@ public class PromotionImpl implements
     @Override
     @Transactional
     public void removeCouponByID(int ID) {
-        try {
-            couponMapper.deleteByPrimaryKey(ID);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        couponMapper.deleteByPrimaryKey(ID);
     }
 
     @Override
@@ -155,7 +151,7 @@ public class PromotionImpl implements
         Date date = new Date();
         for (Promotion promotion : allPromotions) {
             if (promotion.getSpecifyMovies() == (byte) 0 &&
-                    date.compareTo(promotion.getStartTime()) >= 0 && date.compareTo(promotion.getEndTime()) <= 0) {
+                    date.after(promotion.getStartTime()) && date.before(promotion.getEndTime())) {
                 availablePromotions.add(promotion);
             }
         }
@@ -164,7 +160,7 @@ public class PromotionImpl implements
         promotionHasMovies.forEach(promotionHasMovie -> promotionIDs.add(promotionHasMovie.getPromotionId()));
         for (int ID : promotionIDs) {
             Promotion promotion = promotionMapper.selectByPrimaryKey(ID);
-            if (date.compareTo(promotion.getStartTime()) >= 0 && date.compareTo(promotion.getEndTime()) <= 0) {
+            if (date.after(promotion.getStartTime()) && date.before(promotion.getEndTime())) {
                 availablePromotions.add(promotion);
             }
         }

@@ -1,10 +1,7 @@
 package edu.nju.cinemasystem.blservices.impl.user;
 
 import edu.nju.cinemasystem.blservices.user.StaffManagement;
-import edu.nju.cinemasystem.data.po.Manager;
-import edu.nju.cinemasystem.data.po.Staff;
-import edu.nju.cinemasystem.data.po.User;
-import edu.nju.cinemasystem.data.po.UserHasRoleKey;
+import edu.nju.cinemasystem.data.po.*;
 import edu.nju.cinemasystem.data.vo.Response;
 import edu.nju.cinemasystem.data.vo.StaffVO;
 import edu.nju.cinemasystem.data.vo.form.StaffForm;
@@ -93,7 +90,7 @@ public class StaffManagementImpl implements StaffManagement {
         } else {
             UserHasRoleKey uhr = new UserHasRoleKey();
             uhr.setUserId(staffAccount.getId());
-            uhr.setRoleId(roleMapper.selectRoleIDByName(roleProperty.getStaff()));
+            uhr.setRoleId(roleMapper.selectRoleByName(roleProperty.getStaff()).getId());
             if (userHasRoleMapper.insert(uhr) == 0) {
                 response = Response.fail(staffMsg.getAddFailed());
             } else {
@@ -124,7 +121,7 @@ public class StaffManagementImpl implements StaffManagement {
         } else {
             UserHasRoleKey uhr = new UserHasRoleKey();
             uhr.setUserId(managerAccount.getId());
-            uhr.setRoleId(roleMapper.selectRoleIDByName(roleProperty.getManager()));
+            uhr.setRoleId(roleMapper.selectRoleByName(roleProperty.getManager()).getId());
             if (userHasRoleMapper.insert(uhr) == 0) {
                 response = Response.fail(staffMsg.getAddFailed());
             } else {
@@ -152,7 +149,20 @@ public class StaffManagementImpl implements StaffManagement {
     @Transactional
     public Response changeRole(StaffForm staffForm) {
         //TODO
-        return null;
+        String roleName = staffForm.getRole();
+        if (!roleName.equals(roleProperty.getManager()) || !roleName.equals(roleProperty.getStaff())) {
+            return Response.fail(staffMsg.getWrongParam());
+        }
+        Role role = roleMapper.selectRoleByName(staffForm.getRole());
+        UserHasRoleKey uhr = userHasRoleMapper.selectByUserID(staffForm.getId());
+        uhr.setRoleId(role.getId());
+        userHasRoleMapper.updateByUserID(uhr);
+        Response response = Response.success(staffMsg.getOperationSuccess());
+        response.setContent(
+                roleName.equals(roleProperty.getStaff()) ?
+                        userMapper.selectStaffByName(staffForm.getName()) : userMapper.selectManagerByName(staffForm.getName())
+        );
+        return response;
     }
 
     private User assembleStaffAccount(StaffForm staffForm) {

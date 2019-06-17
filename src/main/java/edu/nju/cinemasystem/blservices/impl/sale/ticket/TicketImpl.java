@@ -116,7 +116,7 @@ public class TicketImpl
         if (order.getStatus() != 2 || orderMapper.selectByUserAndOrderID(userID, orderID).isEmpty()) {
             return Response.fail(ticketMsg.getOrderInvalid());
         }
-        if (couponID != 0) {
+        if (couponID > 0) {
             List<CouponVO> coupons = coupon.getAvailableCouponsByUserAndTickets(userID, order.getOriginalAmount());
             CouponVO thecoupon = null;
             for (CouponVO couponVO : coupons) {
@@ -182,18 +182,16 @@ public class TicketImpl
         if (order.getStatus() == 3 || Math.abs(order.getRealAmount() - amount) > 0.01) {
             return Response.fail(ticketMsg.getOrderInvalid());
         }
-        List<Ticket> tickets = ticketsMapper.selectByOrderID(orderID);
         int couponID = orderHolder.getCouponID(orderID);
         if (couponID > 0) {
             coupon.removeCouponByID(couponID);
-            orderHolder.completeOrder(tickets, order, false);
-            int movieID = arrangement.getMovieIDbyID(tickets.get(0).getArrangementId());
-            int userID = order.getUserId();
-            coupon.sendCouponsToUser(userID, movieID);
-            return Response.success();
-        } else {
-            return Response.fail(ticketMsg.getOrderInvalid());
         }
+        List<Ticket> tickets = ticketsMapper.selectByOrderID(orderID);
+        orderHolder.completeOrder(tickets, order, false);
+        int movieID = arrangement.getMovieIDbyID(tickets.get(0).getArrangementId());
+        int userID = order.getUserId();
+        coupon.sendCouponsToUser(userID, movieID);
+        return Response.success();
     }
 
     @Override
@@ -473,7 +471,6 @@ public class TicketImpl
                 while (true) {
                     try {
                         delayedTask = delayQueue.take();
-                        LOG.info("take");
                         invalidateOrder(delayedTask);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
