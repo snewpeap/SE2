@@ -34,10 +34,10 @@ public class ArrangementImpl
     private final ArrangementMsg arrangementMsg;
     private final HallMapper hallMapper;
     private final MovieMapper movieMapper;
-    private final edu.nju.cinemasystem.blservices.movie.Movie movie;
+    private edu.nju.cinemasystem.blservices.movie.Movie movieService;
 
     @Autowired
-    public ArrangementImpl(ArrangementMapper arrangementMapper, GlobalMsg globalMsg, ArrangementSeatMapper arrangementSeatMapper, SeatMapper seatMapper, ArrangementMsg arrangementMsg, HallMapper hallMapper, MovieMapper movieMapper, edu.nju.cinemasystem.blservices.movie.Movie movie) {
+    public ArrangementImpl(ArrangementMapper arrangementMapper, GlobalMsg globalMsg, ArrangementSeatMapper arrangementSeatMapper, SeatMapper seatMapper, ArrangementMsg arrangementMsg, HallMapper hallMapper, MovieMapper movieMapper) {
         this.arrangementMapper = arrangementMapper;
         this.globalMsg = globalMsg;
         this.arrangementSeatMapper = arrangementSeatMapper;
@@ -45,7 +45,11 @@ public class ArrangementImpl
         this.arrangementMsg = arrangementMsg;
         this.hallMapper = hallMapper;
         this.movieMapper = movieMapper;
-        this.movie = movie;
+    }
+
+    @Autowired
+    public void setMovieService(edu.nju.cinemasystem.blservices.movie.Movie movieService) {
+        this.movieService = movieService;
     }
 
     @Override
@@ -129,7 +133,7 @@ public class ArrangementImpl
         detailVO.setEndTime(arrangement.getEndTime());
         detailVO.setFare(arrangement.getFare());
         detailVO.setHall(hallMapper.selectByPrimaryKey(arrangement.getHallId()).getName());
-        detailVO.setMovie(movie.getMovieNameByID(arrangement.getMovieId()));
+        detailVO.setMovie(movieService.getMovieNameByID(arrangement.getMovieId()));
         response = Response.success();
         response.setContent(detailVO);
         return response;
