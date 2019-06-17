@@ -61,51 +61,43 @@ function getInfo() {
                 $('#order-schedule-time').text(startTime.substring(5, 7) + "月" + startTime.substring(8, 10) + "日 " + startTime.substring(11, 16) + "场");
                 let hallDomStr = "";
                 let seat = "";
+                for (let i = 0;i<seats.length;i++){
+                    let tempStr = "";
+                    for (let j = 0;j<seats.length;j++){
+                        if (seats[i][j].isLocked){
+                            tempStr += "<button class='cinema-hall-seat-lock'></button>";
+                        } else {
+                            tempStr += "<button class='cinema-hall-seat-choose' id='" + seats[i][j].seatId + "' onclick='seatClick(\"" + seats[i][j].seatId  + "\"," + i + "," + j + ")'></button>";
+                        }
+                    }
 
+                    seat += "<div>" + tempStr + "</div>";
+                }
+                let hallDom =
+                    "<div class='cinema-hall'>" +
+                    "<div>" +
+                    "<span class='cinema-hall-name'>" + hall + "</span>" +
+                    "<span class='cinema-hall-size'>" + seats.length + '*' + seats[0].length + "</span>" +
+                    "</div>" +
+                    "<div class='cinema-seat'>" + seat +
+                    "</div>" +
+                    "</div>";
+                hallDomStr += hallDom;
+                $('#hall-card').html(hallDomStr);
 
+                price = fare;
+
+                setTimeout(getExistingTicket,100);
             }},
         function (error) {
             alert(JSON.stringify(error));
         }
     );
 }
-function renderSchedule(schedule, seats) {
-    for (var i = 0; i < seats.length; i++) {
-        var temp = "";
-        for (var j = 0; j < seats[i].length; j++) {
-            var id = "seat" + i + j;
-
-            if (seats[i][j] === 0) {
-                // 未选
-                temp += "<button class='cinema-hall-seat-choose' id='" + id + "' onclick='seatClick(\"" + id + "\"," + i + "," + j + ")'></button>";
-            } else {
-                // 已选中
-                temp += "<button class='cinema-hall-seat-lock'></button>";
-            }
-        }
-        seat += "<div>" + temp + "</div>";
-    }
-    var hallDom =
-        "<div class='cinema-hall'>" +
-        "<div>" +
-        "<span class='cinema-hall-name'>" + schedule.hallName + "</span>" +
-        "<span class='cinema-hall-size'>" + seats.length + '*' + seats[0].length + "</span>" +
-        "</div>" +
-        "<div class='cinema-seat'>" + seat +
-        "</div>" +
-        "</div>";
-    hallDomStr += hallDom;
-
-    $('#hall-card').html(hallDomStr);
-
-    price = schedule.fare;
-
-    setTimeout(getExistingTicket,100);
-}
 
 function getExistingTicket() {
     getRequest(
-        "/user/ticket/get/existing?scheduleId=" + scheduleId + "&userId=" + getCookie('id'),
+        "/user/ticket/get/existing?scheduleId=" + scheduleId,
         function (res) {
             if (res.success){
                 let tickets = res.content;
