@@ -18,7 +18,7 @@ public interface Arrangement {
      * 用电影ID查找电影的所有排片
      *
      * @param movieID 电影ID
-     * @return 一个List
+     * @return 一个Map，key是日期，value是相应的排片list
      */
     Response getByMovieID(int movieID);
 

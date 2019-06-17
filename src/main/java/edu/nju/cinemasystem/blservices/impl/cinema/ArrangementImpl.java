@@ -1,7 +1,6 @@
 package edu.nju.cinemasystem.blservices.impl.cinema;
 
 import edu.nju.cinemasystem.blservices.cinema.arrangement.ArrangementManage;
-import edu.nju.cinemasystem.blservices.movie.ArrangementInfo;
 import edu.nju.cinemasystem.data.po.Arrangement;
 import edu.nju.cinemasystem.data.po.ArrangementSeat;
 import edu.nju.cinemasystem.data.po.Movie;
@@ -80,21 +79,22 @@ public class ArrangementImpl
         } else {
             List<ArrangementVO> arrangementVOs = new ArrayList<>();
             arrangements.forEach(arrangement -> arrangementVOs.add(new ArrangementVO(arrangement)));
-            Map<Date,List<ArrangementVO>> map = new HashMap<>();
-            for(ArrangementVO arrangementVO: arrangementVOs){
+            Map<Date, List<ArrangementVO>> map = new HashMap<>();
+            for (ArrangementVO arrangementVO : arrangementVOs) {
                 Date date = convertDateToDay(arrangementVO.getStartTime());
-                if(!map.containsKey(date)){
-                    map.put(date,new ArrayList<>());
+                if (!map.containsKey(date)) {
+                    map.put(date, new ArrayList<>());
                 }
                 map.get(date).add(arrangementVO);
             }
-            List<List<ArrangementVO>> result = new ArrayList<>();
-            for(Map.Entry<Date,List<ArrangementVO>> entry:map.entrySet()){
-                int dayNum = calculateDaysFromToday(entry.getKey());
-                result.set(dayNum,entry.getValue());
+            Map<Date, List<ArrangementVO>> reMap = new HashMap<>();
+            Object[] objects = map.keySet().toArray();
+            Arrays.sort(objects);
+            for (Object o : objects) {
+                reMap.put((Date) o, map.get(o));
             }
             response = Response.success();
-            response.setContent(result);
+            response.setContent(reMap);
             return response;
         }
     }
@@ -142,7 +142,7 @@ public class ArrangementImpl
         if (!response.isSuccess()) {
             return response;
         }
-        response = censorTimeConflict(arrangementForm,0);
+        response = censorTimeConflict(arrangementForm, 0);
         if (!response.isSuccess()) {
             return response;
         }
@@ -172,7 +172,7 @@ public class ArrangementImpl
         if (!response.isSuccess()) {
             return response;
         }
-        response = censorTimeConflict(arrangementForm,ID);
+        response = censorTimeConflict(arrangementForm, ID);
         if (!response.isSuccess()) {
             return response;
         }
@@ -287,19 +287,19 @@ public class ArrangementImpl
         Response response = Response.fail();
         Date date = new Date();
         Movie movie = movieMapper.selectByPrimaryKey(arrangementForm.getMovieId());
-        Date completeTime = new Date(arrangementForm.getStartTime().getTime()+ (movieMapper.selectByPrimaryKey(arrangementForm.getMovieId()).getDuration() * 60 * 1000));
-       if (arrangementForm.getStartTime().compareTo(arrangementForm.getEndTime()) >= 0  || (arrangementForm.getStartTime().compareTo(date) < 0)||(arrangementForm.getEndTime().compareTo(date) < 0) || (convertDateToDay(arrangementForm.getStartTime()).compareTo(convertDateToDay(arrangementForm.getEndTime())) != 0)){
-           response.setMessage(arrangementMsg.getTimeConflict());
-       }else if((arrangementForm.getFare() <= 0)){
-           response.setMessage(arrangementMsg.getFareCannotBeNegative());
-       }else if(arrangementForm.getEndTime().before(completeTime)){
-           response.setMessage(arrangementMsg.getDurationIsShort());
-       }else if(arrangementForm.getStartTime().before(movie.getStartDate()) ||movie.getStatus() == (byte)2 || movie.getStatus() == (byte)3){
-           response.setMessage(arrangementMsg.getMovieUnReleased());
-       }else {
-           response = Response.success();
-       }
-       return response;
+        Date completeTime = new Date(arrangementForm.getStartTime().getTime() + (movieMapper.selectByPrimaryKey(arrangementForm.getMovieId()).getDuration() * 60 * 1000));
+        if (arrangementForm.getStartTime().compareTo(arrangementForm.getEndTime()) >= 0 || (arrangementForm.getStartTime().compareTo(date) < 0) || (arrangementForm.getEndTime().compareTo(date) < 0) || (convertDateToDay(arrangementForm.getStartTime()).compareTo(convertDateToDay(arrangementForm.getEndTime())) != 0)) {
+            response.setMessage(arrangementMsg.getTimeConflict());
+        } else if ((arrangementForm.getFare() <= 0)) {
+            response.setMessage(arrangementMsg.getFareCannotBeNegative());
+        } else if (arrangementForm.getEndTime().before(completeTime)) {
+            response.setMessage(arrangementMsg.getDurationIsShort());
+        } else if (arrangementForm.getStartTime().before(movie.getStartDate()) || movie.getStatus() == (byte) 2 || movie.getStatus() == (byte) 3) {
+            response.setMessage(arrangementMsg.getMovieUnReleased());
+        } else {
+            response = Response.success();
+        }
+        return response;
     }
 
     /**
@@ -324,11 +324,11 @@ public class ArrangementImpl
      * @param arrangementForm 排片表单
      * @return 没有返回success
      */
-    private Response censorTimeConflict(ArrangementForm arrangementForm,int ID) {
+    private Response censorTimeConflict(ArrangementForm arrangementForm, int ID) {
         int hallID = arrangementForm.getHallId();
         List<Arrangement> arrangements = arrangementMapper.selectByDay(arrangementForm.getStartTime(), arrangementForm.getEndTime());
         for (Arrangement arrangement : arrangements) {
-            if (arrangement.getHallId() == hallID && ((ID != 0 && arrangement.getId() != ID)||ID == 0)) {
+            if (arrangement.getHallId() == hallID && ((ID != 0 && arrangement.getId() != ID) || ID == 0)) {
                 return Response.fail(arrangementMsg.getIsAlreadyHaveArrangement());
             }
         }
@@ -337,11 +337,12 @@ public class ArrangementImpl
 
     /**
      * 通过参数组装一个ArrangementPO
-     * @param startTime 开始时间
-     * @param endTime 结束时间
-     * @param fare 票价
-     * @param hallId 影厅ID
-     * @param movieId 电影ID
+     *
+     * @param startTime   开始时间
+     * @param endTime     结束时间
+     * @param fare        票价
+     * @param hallId      影厅ID
+     * @param movieId     电影ID
      * @param visibleDate 可见时间
      * @return ArrangementPO
      */
@@ -356,18 +357,13 @@ public class ArrangementImpl
         return arrangement;
     }
 
-    private Date convertDateToDay(Date date){
+    private Date convertDateToDay(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try {
             return sdf.parse(sdf.format(date));
         } catch (ParseException e) {
             e.printStackTrace();
-            return  date;
+            return date;
         }
-    }
-
-    private int calculateDaysFromToday(Date date){
-        Date now = convertDateToDay(new Date());
-        return (int)(date.getTime()-now.getTime())/(24*60*60*1000);
     }
 }
