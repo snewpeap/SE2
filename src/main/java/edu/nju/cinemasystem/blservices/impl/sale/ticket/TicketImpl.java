@@ -262,14 +262,13 @@ public class TicketImpl
         } else {
             refundResponse = aliRefund(order.getId(), ticketID, refundAmount);
         }
-        if (refundResponse.isSuccess()){
+        if (refundResponse.isSuccess()) {
             ticket.setStatus((byte) 3);
             ticketsMapper.updateByPrimaryKeySelective(ticket);
             int seatID = ticket.getSeatId();
             arrangement.changeArrangementSeatStatus(ticket.getArrangementId(), seatID, false);
             return Response.success();
-        }
-        else {
+        } else {
             return refundResponse;
         }
     }
@@ -318,9 +317,11 @@ public class TicketImpl
             orderID = needTickets.get(0).getOrderID();
             totalAmount = needTickets.size() * needTickets.get(0).getRealAmount();
         }
-        OrderWithCouponVO orderWithCouponVO = assembleOrderWithCouponVO(needTickets, userId, orderID, totalAmount);
         Response response = Response.success();
-        response.setContent(orderWithCouponVO);
+        if (needTickets.size() > 0) {
+            OrderWithCouponVO orderWithCouponVO = assembleOrderWithCouponVO(needTickets, userId, orderID, totalAmount);
+            response.setContent(orderWithCouponVO);
+        }
         return response;
     }
 

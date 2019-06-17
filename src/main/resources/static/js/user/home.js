@@ -71,7 +71,11 @@ function renderMovie() {
     //判断是否参加了活动 如果参加了添加小标签
     function joinedPromotion(List,n) {
         if (List[n].joinedPromotions!==null && List[n].joinedPromotions.length!==0){
-            return "<div class=\"ribben one\"><p>"+List[n].joinedPromotions[0]+"</p></div>";
+            if(List[n].joinedPromotions.length >1){
+                return "<div class=\"ribben one\"><p>活动:"+List[n].joinedPromotions[0]+",...</p></div>";
+            }else{
+                return "<div class=\"ribben one\"><p>活动:"+List[n].joinedPromotions[0]+"</p></div>";
+            }
         }else {
             return "";
         }
@@ -236,7 +240,8 @@ function renderMovie() {
             "<p class=\"fexi_header_para\"><span>内容简介<label>:</label></span>"+mostList[0].description+"</p>" +
             "<p class=\"fexi_header_para\"><span>上映日期<label>:</label></span>" + mostList[0].startDate.slice(0,10) + "</p>" +
             "<p class=\"fexi_header_para\"><span>类型<label>:</label> </span>" + mostList[0].type +
-            "<p class=\"fexi_header_para fexi_header_para1\"><span>想看人数<label>:</label></span>" + mostList[0].likeNum + "</p>";
+            "<p class=\"fexi_header_para fexi_header_para1\"><span>想看人数<label>:</label></span>" + mostList[0].likeNum + "" +
+            joinedPromotion(mostList,0);
         return res;
     }
 }

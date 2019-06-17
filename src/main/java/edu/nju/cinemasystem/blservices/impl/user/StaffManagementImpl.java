@@ -148,7 +148,6 @@ public class StaffManagementImpl implements StaffManagement {
     @Override
     @Transactional
     public Response changeRole(StaffForm staffForm) {
-        //TODO
         String roleName = staffForm.getRole();
         if (!roleName.equals(roleProperty.getManager()) && !roleName.equals(roleProperty.getStaff())) {
             return Response.fail(staffMsg.getWrongParam());

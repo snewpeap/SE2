@@ -53,7 +53,7 @@ public class TicketController {
     }
 
     @GetMapping("/user/ticket/get/existing")
-    public Response getExistingTickets(@PathVariable int scheduleId, HttpSession session) {
+    public Response getExistingTickets(@RequestParam int scheduleId, HttpSession session) {
         int userId = (Integer) session.getAttribute("id");
         return ticket.getOrderByScheduleIdAndUserId(userId, scheduleId);
     }

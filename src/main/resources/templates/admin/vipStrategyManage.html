@@ -30,6 +30,7 @@
     <!-- Personal Theme Style -->
     <link href="/css/common.css" rel="stylesheet" type="text/css">
     <link href="/css/admin/vipStrategyManage.css" rel="stylesheet" type="text/css">
+    <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 </head>
 <body class="nav-md">
 <div class="container body">
@@ -147,11 +148,24 @@
                             <div class="clearfix"></div>
                         </div>
                         <div class="x_content">
-                            <div class="target-amount-box">
-                                <p>需要达到金额：<i>满</i><label for="targetAmount-input"><span class="targetAmount"></span></label><input type="number" min="1" class="form-control" id="targetAmount-input" style="display: none;"></p>
+                            <div style="display: flex;justify-content: space-between;">
+                                <div style="margin: 15px 0 20px;font-size: 18px">
+                                    <span >所有会员充值优惠策略</span>
+                                </div>
+                                <button type="button" class="btn btn-primary" onclick="addStrategy()" style="margin: 5px 0 20px;"><i class="icon-plus-sign"></i> 添加充值策略</button>
                             </div>
-                            <div>
-                                <p>优惠：<label for="discountType"><i class="discount"></i></label><select id="discountType" class="form-control" style="display: none;"><option value="0">减</option><option value="1">送</option></select><span class="discountAmount"></span></p>
+                            <div class="table-responsive">
+                                <table class="table table-striped jambo_table bulk_action">
+                                    <thead>
+                                    <tr class="headings">
+                                        <th class="column-title">目标金额（元）</th>
+                                        <th class="column-title">优惠方式</th>
+                                        <th class="column-title">优惠金额（元）</th>
+                                        <th class="column-title no-link last"><span class="nobr">操作</span></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="tbody"></tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
