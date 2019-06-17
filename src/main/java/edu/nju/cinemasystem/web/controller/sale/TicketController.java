@@ -58,6 +58,12 @@ public class TicketController {
         return ticket.getOrderByScheduleIdAndUserId(userId, scheduleId);
     }
 
+
+    @GetMapping("/admin/refund/get")
+    public Response getRefundStrategy(){
+        return refundTicketManage.getAllRefunds();
+    }
+
     @PostMapping("/admin/refund/add")
     public Response addRefundStrategy(@RequestBody RefundStrategyForm refundStrategyForm) {
         return refundTicketManage.addRefundTicketManage(refundStrategyForm);

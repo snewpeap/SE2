@@ -27,6 +27,10 @@
 
     <!-- Custom Theme Style -->
     <link href="/webjars/gentelella/build/css/custom.min.css" rel="stylesheet">
+    <!-- Personal Theme Style -->
+    <link href="/css/common.css" rel="stylesheet" type="text/css">
+    <link href="/css/admin/staffManage.css" rel="stylesheet" type="text/css">
+    <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 </head>
 <body class="nav-md">
 <div class="container body">
@@ -142,6 +146,27 @@
                         <div class="x_title">
                             <h2>退票策略</h2>
                             <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <div style="display: flex;justify-content: space-between;">
+                                <div style="margin: 15px 0 20px;font-size: 18px">
+                                    <span >所有退票策略</span>
+                                </div>
+                                <button type="button" class="btn btn-primary" onclick="addRefund()" style="margin: 5px 0 20px;"><i class="icon-plus-sign"></i> 添加退票策略</button>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-striped jambo_table bulk_action">
+                                    <thead>
+                                    <tr class="headings">
+                                        <th class="column-title">距开场时间（天）</th>
+                                        <th class="column-title">退票百分比（%）</th>
+                                        <th class="column-title">使用状态</th>
+                                        <th class="column-title no-link last"><span class="nobr">操作</span></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="tbody"></tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

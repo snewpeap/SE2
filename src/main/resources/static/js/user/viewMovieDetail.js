@@ -16,7 +16,7 @@ $(document).ready(function () {
                 if (res.success) {
                     $('#schedule').css("display", "");
                     allArrangement = res.content;
-                    getTabs();
+                    getTabs(0);
                 } else {
                     $('#none-hint').css("display", "");
                 }
@@ -33,7 +33,7 @@ $(document).ready(function () {
     //         '/user/movie/'+ movieId,
     //         function (res) {
     //             if (res.success){
-    //                 let m = res.content;
+    //                 var m = res.content;
     //                 isLike = m.liked;
     //                 if (isLike){
     //                     $('#like-btn span').text("已想看");
@@ -54,18 +54,22 @@ $(document).ready(function () {
             '/user/movie/' + movieId,
             function (res) {
                 if (res.success){
-                    let movie = res.content;
+                    var movie = res.content;
                     isLike = movie.liked;
                     if (isLike){
-                        $('#like-btn span').text("已想看");
+                        $('#like-btn').css('display','none');
+                        $('#unlike-btn').css('display','');
+                    }else{
+                        $('#like-btn').css('display','');
+                        $('#unlike-btn').css('display','none');
                     }
-                    let imgStr = "<img style='width:280px' src=";
-                    if (movie.poster!=null){
+                    var imgStr = "<img style='width:280px' src='";
+                    if (movie.poster!=null&&movie.poster!==''){
                         imgStr += movie.poster;
                     } else {
                         imgStr += '/images/defaultPoster.jpg';
                     }
-                    imgStr += "/>";
+                    imgStr += "'/>";
                     // imgStr = "<img src=" + (movie.poster || 'images/defaultPoster.jpg')+ "/>";
                     // console.log(imgStr);
                     // console.log($("#movie-img"));
@@ -92,22 +96,35 @@ $(document).ready(function () {
 
 });
 
-function getTabs() {
-    let dateContent = "";
-    for (let date in allArrangement){
-        let dateStr = date.substring(5,7)+ "月" + date.substring(8,10) + "日";
-        dateContent += '<li role="presentation" id="@date"><a href="#"  onclick="repaintScheduleBody(e)">' + dateStr + '</a></li>';
+function getTabs(i) {
+    var dateContent = "";
+    var index = 0;
+    for (var date in allArrangement){
+        var dateStr = date.substring(5,7)+ "月" + date.substring(8,10) + "日";
+        if(date.substring(0,10)===formatDate(new Date())){
+            dateStr += '（今天）';
+        }else if(date.substring(0,10)===plusDateByDay(new Date(),1)){
+            dateStr += '（明天）';
+        }else if(date.substring(0,10)===plusDateByDay(new Date(),2)){
+            dateStr += '（后天）';
+        }
+        dateContent += '<li role="presentation" class="arrangement-date'+index+'"><a onclick="getTabs('+index+')">' + dateStr + '</a></li>';
+        if(index===i){
+            renderArrangements(date);
+        }
+        index += 1;
     }
     $('#schedule-date').html(dateContent);
+    $('.arrangement-date'+i).addClass('active');
     // $('#' + date).addClass("active");
     //repaintScheduleBody(curDateLoc);
 }
 
 // function repaintScheduleDate(e) {
-//     let dateContent = "";
-//     let arrangementListOneDay = allArrangement.get(curDate);
-//     for (let i = 0; i<arrangementListOneDay.length;i++){
-//         let dateSt
+//     var dateContent = "";
+//     var arrangementListOneDay = allArrangement.get(curDate);
+//     for (var i = 0; i<arrangementListOneDay.length;i++){
+//         var dateSt
 //         dateContent += '<li role="presentation" id="schedule-date' + i + '"><a href="#"  onclick="repaintScheduleDate(\'' + i + '\')">' + date + '</a></li>';
 //     }
 //     for (date in allArrangement){
@@ -127,58 +144,56 @@ function getTabs() {
 //     repaintScheduleBody(curDateLoc);
 // }
 
-function repaintScheduleBody(e) {
-    let date = e.target.id;
-    let scheduleItems = allArrangement.get(date);
+function renderArrangements(date) {
+    var scheduleItems = allArrangement[date];
     if (scheduleItems.length === 0) {
         $('#date-none-hint').css("display", "");
     } else {
         $('#date-none-hint').css("display", "none");
     }
-    let bodyContent = "";
-    for (let i = 0; i < scheduleItems.length; i++) {
+    var bodyContent = "";
+    for (var i = 0; i < scheduleItems.length; i++) {
         bodyContent += "<tr><td>" + scheduleItems[i].startTime.substring(11, 16) + "</td>" +
             "<td>预计" + scheduleItems[i].endTime.substring(11, 16) + "散场</td>" +
             "<td>" + scheduleItems[i].hallId + "</td>" +
             "<td><b>" + scheduleItems[i].fare.toFixed(2) + "</b></td>" +
-            "<td><a class='btn btn-primary' href='/user/movieDetail/buy?id=" + movieId + "&scheduleId=" + scheduleItems[i].id + "' role='button'>选座购票</a></td></tr>";
+            "<td><a class='btn btn-primary' href='/user/buy?id=" + movieId + "&scheduleId=" + scheduleItems[i].id + "' role='button'>选座购票</a></td></tr>";
     }
     $('#schedule-body').html(bodyContent);
 }
 
-//todo:like unlike
 $('#like-btn').click(function () {
-    if (!isLike){
-        postRequest(
-            '/user/movie/like/' + movieId +"?userId=" + getCookie('id'),
-            null,
-            function (res) {
-                if (res.success){
-                    // alert("操作成功!");
-                    $('#like-btn span').text("已想看");
-                } else {
-                    alert(res.message);
-                }
-            },
-            function (error) {
-                alert(error);
+    postRequest(
+        '/user/movie/like/' + movieId +"?userId=" + getCookie('id'),
+        {},
+        function (res) {
+            if (res.success){
+                $('#like-btn').css('display','none');
+                $('#unlike-btn').css('display','');
+            } else {
+                alert(res.message);
             }
-        );
-    } else {
-        postRequest(
-            '/user/movie/unlike/' + movieId +"?userId=" + getCookie('id'),
-            null,
-            function (res) {
-                if (res.success){
-                    // alert("操作成功!");
-                    $('#like-btn span').text("想 看");
-                } else {
-                    alert(res.message);
-                }
-            },
-            function (error) {
-                alert(error);
+        },
+        function (error) {
+            alert(error);
+        }
+    );
+});
+
+$('#unlike-btn').click(function () {
+    postRequest(
+        '/user/movie/unlike/' + movieId +"?userId=" + getCookie('id'),
+        {},
+        function (res) {
+            if (res.success){
+                $('#like-btn').css('display','');
+                $('#unlike-btn').css('display','none');
+            } else {
+                alert(res.message);
             }
-        );
-    }
+        },
+        function (error) {
+            alert(error);
+        }
+    );
 });

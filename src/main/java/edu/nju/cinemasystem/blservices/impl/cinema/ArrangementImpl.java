@@ -1,6 +1,7 @@
 package edu.nju.cinemasystem.blservices.impl.cinema;
 
 import edu.nju.cinemasystem.blservices.cinema.arrangement.ArrangementManage;
+import edu.nju.cinemasystem.blservices.movie.ArrangementInfo;
 import edu.nju.cinemasystem.data.po.Arrangement;
 import edu.nju.cinemasystem.data.po.ArrangementSeat;
 import edu.nju.cinemasystem.data.po.Movie;
@@ -26,7 +27,8 @@ import java.util.*;
 
 @Service
 public class ArrangementImpl
-        implements edu.nju.cinemasystem.blservices.cinema.arrangement.Arrangement, ArrangementManage {
+        implements edu.nju.cinemasystem.blservices.cinema.arrangement.Arrangement,
+        ArrangementManage, ArrangementInfo {
     private final
     ArrangementMapper arrangementMapper;
     private final
@@ -277,6 +279,12 @@ public class ArrangementImpl
         return arrangementSeatMapper.select(
                 ArrangementSeat.assembleArrangementSeat((byte) 1, arrangementID, seatID)
         ).getIsLocked() == 1;
+    }
+
+    @Override
+    public boolean movieHasArrangement(int movieID) {
+        List<Arrangement> arrangementList = arrangementMapper.selectByMovieID(movieID);
+        return arrangementList.size()!=0;
     }
 
     /**

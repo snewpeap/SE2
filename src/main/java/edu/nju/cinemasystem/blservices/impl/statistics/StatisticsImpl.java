@@ -20,7 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
-public class StatisticsImpl implements Statistics{
+public class StatisticsImpl implements Statistics, StatisticsInfo{
 
     private final
     TicketStatistics ticketStatistics;
@@ -197,6 +197,24 @@ public class StatisticsImpl implements Statistics{
         Response response = Response.success();
         response.setContent(movieTotalBoxOfficeVOS);
         return response;
+    }
+
+    @Override
+    public double getHeatOf(int movieID) {
+        List<MovieTotalBoxOfficeVO> movieTotalBoxOfficeVOS = getDescendingMovieTotalBoxOffices();
+        double movieBoxOffice = 0;
+        for (MovieTotalBoxOfficeVO movieTotalBoxOfficeVO : movieTotalBoxOfficeVOS) {
+            if (movieTotalBoxOfficeVO.getMovieId() == movieID) {
+                movieBoxOffice = movieTotalBoxOfficeVO.getBoxOffice();
+                break;
+            }
+        }
+        if(movieTotalBoxOfficeVOS.size()!=0) {
+            double maxBoxOffice = movieTotalBoxOfficeVOS.get(0).getBoxOffice() == 0 ? 1 : movieTotalBoxOfficeVOS.get(0).getBoxOffice();
+            return movieBoxOffice / maxBoxOffice;
+        }else {
+            return 0;
+        }
     }
 
     /**

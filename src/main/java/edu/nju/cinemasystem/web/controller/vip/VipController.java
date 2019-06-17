@@ -73,4 +73,9 @@ public class VipController {
     public Response removeReduction(@PathVariable int id){
         return vipManagement.removeReduction(id);
     }
+
+    @GetMapping("/admin/vip/reduction/get")
+    public Response getReduction(){
+        return vipCard.getRechargeReduction();
+    }
 }
