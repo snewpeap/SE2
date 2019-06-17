@@ -29,4 +29,8 @@ public interface Movie {
     String getMovieNameByID(int movieID);
 
     Date getReleaseTimeByID(int movieID);
+
+    edu.nju.cinemasystem.data.po.Movie getMoviePOByID(int movieID);
+
+    int getDurationTimeByID(int movieID);
 }

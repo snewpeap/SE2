@@ -41,17 +41,21 @@ public class ArrangementImpl
     ArrangementMsg arrangementMsg;
     private final
     HallMapper hallMapper;
-    private final MovieMapper movieMapper;
+    private edu.nju.cinemasystem.blservices.movie.Movie movieBl;
 
     @Autowired
-    public ArrangementImpl(ArrangementMapper arrangementMapper, GlobalMsg globalMsg, ArrangementSeatMapper arrangementSeatMapper, SeatMapper seatMapper, ArrangementMsg arrangementMsg, HallMapper hallMapper, MovieMapper movieMapper) {
+    public void setMovieBl(edu.nju.cinemasystem.blservices.movie.Movie movieBl) {
+        this.movieBl = movieBl;
+    }
+
+    @Autowired
+    public ArrangementImpl(ArrangementMapper arrangementMapper, GlobalMsg globalMsg, ArrangementSeatMapper arrangementSeatMapper, SeatMapper seatMapper, ArrangementMsg arrangementMsg, HallMapper hallMapper) {
         this.arrangementMapper = arrangementMapper;
         this.globalMsg = globalMsg;
         this.arrangementSeatMapper = arrangementSeatMapper;
         this.seatMapper = seatMapper;
         this.arrangementMsg = arrangementMsg;
         this.hallMapper = hallMapper;
-        this.movieMapper = movieMapper;
     }
 
     @Override
@@ -82,25 +86,30 @@ public class ArrangementImpl
             List<ArrangementVO> arrangementVOs = new ArrayList<>();
             arrangements.forEach(arrangement -> arrangementVOs.add(new ArrangementVO(arrangement)));
             Map<Date, List<ArrangementVO>> map = new HashMap<>();
+            Date maxDate = null;
             for (ArrangementVO arrangementVO : arrangementVOs) {
                 Date date = convertDateToDay(arrangementVO.getStartTime());
                 if (!map.containsKey(date)) {
                     map.put(date, new ArrayList<>());
+                    if(maxDate == null || maxDate.after(date)){
+                        maxDate = date;
+                    }
                 }
                 map.get(date).add(arrangementVO);
             }
-            Map<Date, List<ArrangementVO>> reMap = new HashMap<>();
-            Object[] objects = map.keySet().toArray();
-            Arrays.sort(objects);
-            for (Object o : objects) {
-                List<ArrangementVO> as = map.get(o);
-                as.sort((ArrangementVO a1, ArrangementVO a2)->(int)((a1.getStartTime().getTime() - a2.getStartTime().getTime())/(60*1000)));
-                reMap.put((Date) o, as);
+            List<List<ArrangementVO>> reList = new ArrayList<>();
+            if(maxDate != null) {
+                int size = calculateDaysFromToday(maxDate) + 1;
+                for (int i = 0; i < size; i++) {
+                    reList.add(new ArrayList<>());
+                }
+                for(Map.Entry<Date,List<ArrangementVO>> entry:map.entrySet()){
+                    int dayNum = calculateDaysFromToday(entry.getKey());
+                    reList.set(dayNum,entry.getValue());
+                }
             }
-            List<Map<Date, List<ArrangementVO>>> listMap = new ArrayList<>();
-            listMap.add(reMap);
             response = Response.success();
-            response.setContent(listMap);
+            response.setContent(reList);
             return response;
         }
     }
@@ -298,8 +307,8 @@ public class ArrangementImpl
     private Response unCensorArrangementForm(ArrangementForm arrangementForm) {
         Response response = Response.fail();
         Date date = new Date();
-        Movie movie = movieMapper.selectByPrimaryKey(arrangementForm.getMovieId());
-        Date completeTime = new Date(arrangementForm.getStartTime().getTime() + (movieMapper.selectByPrimaryKey(arrangementForm.getMovieId()).getDuration() * 60 * 1000));
+        Movie movie = movieBl.getMoviePOByID(arrangementForm.getMovieId());
+        Date completeTime = new Date(arrangementForm.getStartTime().getTime() + (movieBl.getDurationTimeByID(arrangementForm.getMovieId()) * 60 * 1000));
         if (arrangementForm.getStartTime().compareTo(arrangementForm.getEndTime()) >= 0 || (arrangementForm.getStartTime().compareTo(date) < 0) || (arrangementForm.getEndTime().compareTo(date) < 0) || (convertDateToDay(arrangementForm.getStartTime()).compareTo(convertDateToDay(arrangementForm.getEndTime())) != 0)) {
             response.setMessage(arrangementMsg.getTimeConflict());
         } else if ((arrangementForm.getFare() <= 0)) {
@@ -378,4 +387,10 @@ public class ArrangementImpl
             return date;
         }
     }
+
+    private int calculateDaysFromToday(Date date){
+        Date now = convertDateToDay(new Date());
+        return (int)(date.getTime()-now.getTime())/(24*60*60*1000);
+    }
+
 }
