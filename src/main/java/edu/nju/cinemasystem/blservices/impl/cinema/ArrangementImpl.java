@@ -2,10 +2,8 @@ package edu.nju.cinemasystem.blservices.impl.cinema;
 
 import edu.nju.cinemasystem.blservices.cinema.arrangement.ArrangementManage;
 import edu.nju.cinemasystem.blservices.movie.ArrangementInfo;
-import edu.nju.cinemasystem.data.po.Arrangement;
-import edu.nju.cinemasystem.data.po.ArrangementSeat;
-import edu.nju.cinemasystem.data.po.Movie;
-import edu.nju.cinemasystem.data.po.Seat;
+import edu.nju.cinemasystem.data.po.*;
+import edu.nju.cinemasystem.data.vo.ArrangementDetailVO;
 import edu.nju.cinemasystem.data.vo.ArrangementSeatVO;
 import edu.nju.cinemasystem.data.vo.ArrangementVO;
 import edu.nju.cinemasystem.data.vo.Response;
@@ -14,7 +12,6 @@ import edu.nju.cinemasystem.dataservices.cinema.arrangement.ArrangementMapper;
 import edu.nju.cinemasystem.dataservices.cinema.arrangement.ArrangementSeatMapper;
 import edu.nju.cinemasystem.dataservices.cinema.hall.HallMapper;
 import edu.nju.cinemasystem.dataservices.cinema.hall.SeatMapper;
-import edu.nju.cinemasystem.dataservices.movie.MovieMapper;
 import edu.nju.cinemasystem.util.properties.message.ArrangementMsg;
 import edu.nju.cinemasystem.util.properties.message.GlobalMsg;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,24 +26,13 @@ import java.util.*;
 public class ArrangementImpl
         implements edu.nju.cinemasystem.blservices.cinema.arrangement.Arrangement,
         ArrangementManage, ArrangementInfo {
-    private final
-    ArrangementMapper arrangementMapper;
-    private final
-    GlobalMsg globalMsg;
-    private final
-    ArrangementSeatMapper arrangementSeatMapper;
-    private final
-    SeatMapper seatMapper;
-    private final
-    ArrangementMsg arrangementMsg;
-    private final
-    HallMapper hallMapper;
-    private edu.nju.cinemasystem.blservices.movie.Movie movieBl;
-
-    @Autowired
-    public void setMovieBl(edu.nju.cinemasystem.blservices.movie.Movie movieBl) {
-        this.movieBl = movieBl;
-    }
+    private final ArrangementMapper arrangementMapper;
+    private final GlobalMsg globalMsg;
+    private final ArrangementSeatMapper arrangementSeatMapper;
+    private final SeatMapper seatMapper;
+    private final ArrangementMsg arrangementMsg;
+    private final HallMapper hallMapper;
+    private edu.nju.cinemasystem.blservices.movie.Movie movieService;
 
     @Autowired
     public ArrangementImpl(ArrangementMapper arrangementMapper, GlobalMsg globalMsg, ArrangementSeatMapper arrangementSeatMapper, SeatMapper seatMapper, ArrangementMsg arrangementMsg, HallMapper hallMapper) {
@@ -56,6 +42,11 @@ public class ArrangementImpl
         this.seatMapper = seatMapper;
         this.arrangementMsg = arrangementMsg;
         this.hallMapper = hallMapper;
+    }
+
+    @Autowired
+    public void setMovieService(edu.nju.cinemasystem.blservices.movie.Movie movieService) {
+        this.movieService = movieService;
     }
 
     @Override
@@ -119,21 +110,34 @@ public class ArrangementImpl
         Response response;
         Arrangement arrangement = arrangementMapper.selectByPrimaryKey(aID);
         if (arrangement == null) {
-            response = Response.fail();
-            response.setMessage(globalMsg.getWrongParam());
-            return response;
+            return Response.fail(globalMsg.getWrongParam());
         }
         Date date = new Date();
-        if (date.compareTo(arrangement.getVisibleDate()) < 0) {
+        if (date.before(arrangement.getVisibleDate())) {
             response = Response.fail();
             response.setStatusCode(401);
             return response;
         }
         List<ArrangementSeat> arrangementSeats = arrangementSeatMapper.selectByArrangementID(aID);
-        List<ArrangementSeatVO> arrangementSeatVOs = new ArrayList<>();
-        arrangementSeats.forEach(arrangementSeat -> arrangementSeatVOs.add(new ArrangementSeatVO(arrangementSeat)));
+        Hall hall = hallMapper.selectByPrimaryKey(arrangement.getHallId());
+        List<List<ArrangementSeatVO>> seatMap = new ArrayList<>(hall.getRow());
+        for (int row = 0; row < hall.getRow(); row++) {
+            seatMap.add(new ArrayList<>(hall.getColumn()));
+        }
+        for (ArrangementSeat as : arrangementSeats) {
+            Seat seat = seatMapper.selectByPrimaryKey(as.getSeatId());
+            seatMap.get(seat.getRow()-1).set(seat.getColumn()-1,new ArrangementSeatVO(as));
+        }
+        ArrangementDetailVO detailVO = new ArrangementDetailVO();
+        detailVO.setSeatMap(seatMap);
+        detailVO.setId(aID);
+        detailVO.setStartTime(arrangement.getStartTime());
+        detailVO.setEndTime(arrangement.getEndTime());
+        detailVO.setFare(arrangement.getFare());
+        detailVO.setHall(hallMapper.selectByPrimaryKey(arrangement.getHallId()).getName());
+        detailVO.setMovie(movieService.getMovieNameByID(arrangement.getMovieId()));
         response = Response.success();
-        response.setContent(arrangementSeatVOs);
+        response.setContent(detailVO);
         return response;
     }
 
@@ -307,8 +311,8 @@ public class ArrangementImpl
     private Response unCensorArrangementForm(ArrangementForm arrangementForm) {
         Response response = Response.fail();
         Date date = new Date();
-        Movie movie = movieBl.getMoviePOByID(arrangementForm.getMovieId());
-        Date completeTime = new Date(arrangementForm.getStartTime().getTime() + (movieBl.getDurationTimeByID(arrangementForm.getMovieId()) * 60 * 1000));
+        Movie movie = movieService.getMoviePOByID(arrangementForm.getMovieId());
+        Date completeTime = new Date(arrangementForm.getStartTime().getTime() + (movieService.getDurationTimeByID(arrangementForm.getMovieId()) * 60 * 1000));
         if (arrangementForm.getStartTime().compareTo(arrangementForm.getEndTime()) >= 0 || (arrangementForm.getStartTime().compareTo(date) < 0) || (arrangementForm.getEndTime().compareTo(date) < 0) || (convertDateToDay(arrangementForm.getStartTime()).compareTo(convertDateToDay(arrangementForm.getEndTime())) != 0)) {
             response.setMessage(arrangementMsg.getTimeConflict());
         } else if ((arrangementForm.getFare() <= 0)) {

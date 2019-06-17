@@ -9,16 +9,37 @@ var coupons = [];
 var activities = [];
 var ticketId = [];
 var orderId;
+var movieId;
 
 $(document).ready(function () {
     // $(".gray-text")[0].innerText = sessionStorage.getItem("username");
-
     scheduleId = parseInt(window.location.href.split('?')[1].split('&')[1].split('=')[1]);
+    movieId = parseInt(window.location.href.split('?')[1].split('&')[0].split('=')[1]);
+    getSchedule();
+    getMovie();
 
-    getInfo();
 
 });
-
+function getMovie() {
+    getRequest(
+        '/user/movie/' + movieId,
+        function (res) {
+            if (res.success){
+                $('#movie-img').append('<img style="width:280px" src=" ' + res.content.poster + '"/>');
+                $('#movie-language').append(res.content.language);
+                $('#movie-type').append(res.content.type);
+                $('#movie-length').append(res.content.duration);
+            } else {
+                alert(res.message);
+            }
+        }
+    )
+}
+function getSchedule() {
+    getRequest(
+        '/user/'
+    )
+}
 function getInfo() {
     getRequest(
         '/user/seat/get?arrangementId=' + scheduleId,
@@ -72,8 +93,8 @@ function cancelTickets() {
 }
 
 function renderSchedule(schedule, seats) {
-    $('#schedule-hall-name').text(schedule.hallName);
-    $('#order-schedule-hall-name').text(schedule.hallName);
+    $('#schedule-hall-name').text(schedule.hallId);
+    $('#order-schedule-hall-name').text(schedule.hallId);
     $('#schedule-fare').text(schedule.fare.toFixed(2));
     $('#order-schedule-fare').text(schedule.fare.toFixed(2));
     $('#schedule-time').text(schedule.startTime.substring(5, 7) + "月" + schedule.startTime.substring(8, 10) + "日 " + schedule.startTime.substring(11, 16) + "场");

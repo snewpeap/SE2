@@ -72,6 +72,7 @@ vip-msg:
   has-v-i-p-card: "你已经有会员卡了"
   operation-failed: "操作失败"
   operation-success: "操作成功"
+  wrong-param: "参数错误"
 
 # 角色名 #
 role:

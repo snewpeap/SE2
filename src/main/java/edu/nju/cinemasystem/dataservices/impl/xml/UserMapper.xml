@@ -21,11 +21,11 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, name, password
+        id, `name`, `password`
     </sql>
 
     <sql id="Manager_Column">
-        id, name, password, is_root
+        id, `name`, `password`, is_root
     </sql>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -58,14 +58,14 @@
         select
         <include refid="Base_Column_List"/>
         from staff_view
-        where name = #{name}
+        where `name` = #{name}
     </select>
 
     <select id="selectManagerByName" parameterType="java.lang.String" resultMap="ManagerMap">
         select
         <include refid="Manager_Column"/>
         from manager_view
-        where name = #{name}
+        where `name` = #{name}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
@@ -76,7 +76,7 @@
 
     <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.User"
             useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        insert into user (id, name, password)
+        insert into user (id, `name`, `password`)
         values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR})
     </insert>
 
@@ -88,10 +88,10 @@
                 id,
             </if>
             <if test="name != null">
-                name,
+                `name`,
             </if>
             <if test="password != null">
-                password,
+                `password`,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -111,10 +111,10 @@
         update user
         <set>
             <if test="name != null">
-                name = #{name,jdbcType=VARCHAR},
+                `name` = #{name,jdbcType=VARCHAR},
             </if>
             <if test="password != null">
-                password = #{password,jdbcType=VARCHAR},
+                `password` = #{password,jdbcType=VARCHAR},
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
@@ -122,8 +122,8 @@
 
     <update id="updateByPrimaryKey" parameterType="edu.nju.cinemasystem.data.po.User">
         update user
-        set name     = #{name,jdbcType=VARCHAR},
-            password = #{password,jdbcType=VARCHAR}
+        set `name`     = #{name,jdbcType=VARCHAR},
+            `password` = #{password,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
 </mapper>
