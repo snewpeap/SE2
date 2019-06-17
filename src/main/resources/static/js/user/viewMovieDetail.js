@@ -27,7 +27,6 @@ $(document).ready(function () {
         );
     }
 
-    // //todo get Like
     // function getIfLike() {
     //     getRequest(
     //         '/user/movie/'+ movieId,
@@ -99,25 +98,26 @@ $(document).ready(function () {
 function getTabs(i) {
     var dateContent = "";
     var index = 0;
-    for (var date in allArrangement){
-        var dateStr = date.substring(5,7)+ "月" + date.substring(8,10) + "日";
-        if(date.substring(0,10)===formatDate(new Date())){
-            dateStr += '（今天）';
-        }else if(date.substring(0,10)===plusDateByDay(new Date(),1)){
-            dateStr += '（明天）';
-        }else if(date.substring(0,10)===plusDateByDay(new Date(),2)){
-            dateStr += '（后天）';
+    allArrangement.forEach(function (arrangements) {
+        for (var date in arrangements){
+            var dateStr = date.substring(5,7)+ "月" + date.substring(8,10) + "日";
+            if(date.substring(0,10)===formatDate(new Date())){
+                dateStr += '（今天）';
+            }else if(date.substring(0,10)===plusDateByDay(new Date(),1)){
+                dateStr += '（明天）';
+            }else if(date.substring(0,10)===plusDateByDay(new Date(),2)){
+                dateStr += '（后天）';
+            }
+            dateContent += '<li role="presentation" class="arrangement-date'+index+'"><a onclick="getTabs('+index+')">' + dateStr + '</a></li>';
+            if(index===i){
+                renderArrangements(date);
+            }
+            index += 1;
         }
-        dateContent += '<li role="presentation" class="arrangement-date'+index+'"><a onclick="getTabs('+index+')">' + dateStr + '</a></li>';
-        if(index===i){
-            renderArrangements(date);
-        }
-        index += 1;
-    }
+
+    });
     $('#schedule-date').html(dateContent);
     $('.arrangement-date'+i).addClass('active');
-    // $('#' + date).addClass("active");
-    //repaintScheduleBody(curDateLoc);
 }
 
 // function repaintScheduleDate(e) {
@@ -145,7 +145,14 @@ function getTabs(i) {
 // }
 
 function renderArrangements(date) {
-    var scheduleItems = allArrangement[date];
+    var scheduleItems = [];
+    allArrangement.forEach(function (arrangements) {
+       for(var key in arrangements){
+           if(key===date){
+               scheduleItems = arrangements[date];
+           }
+       }
+    });
     if (scheduleItems.length === 0) {
         $('#date-none-hint').css("display", "");
     } else {
@@ -157,7 +164,7 @@ function renderArrangements(date) {
             "<td>预计" + scheduleItems[i].endTime.substring(11, 16) + "散场</td>" +
             "<td>" + scheduleItems[i].hallId + "</td>" +
             "<td><b>" + scheduleItems[i].fare.toFixed(2) + "</b></td>" +
-            "<td><a class='btn btn-primary' href='/user/buy?id=" + movieId + "&scheduleId=" + scheduleItems[i].id + "' role='button'>选座购票</a></td></tr>";
+            "<td><a class='btn btn-primary' href='/user/buy?id=" + movieId + "&arrangementId=" + scheduleItems[i].id + "' role='button'>选座购票</a></td></tr>";
     }
     $('#schedule-body').html(bodyContent);
 }

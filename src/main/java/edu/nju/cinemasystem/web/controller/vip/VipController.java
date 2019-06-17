@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
-@Controller
+@RestController
 public class VipController {
     private final VIPCard vipCard;
     private final VIPManagement vipManagement;
@@ -78,9 +78,9 @@ public class VipController {
         return vipManagement.modifyReduction(reductionVO);
     }
 
-    @PostMapping("/admin/vip/reduction/delete/{id}")
-    public Response removeReduction(@PathVariable int id) {
-        return vipManagement.removeReduction(id);
+    @PostMapping("/admin/vip/reduction/delete")
+    public Response removeReduction(@RequestParam int targetAmount) {
+        return vipManagement.removeReduction(targetAmount);
     }
 
     @GetMapping("/admin/vip/reduction/get")

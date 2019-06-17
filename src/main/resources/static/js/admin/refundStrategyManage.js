@@ -194,7 +194,6 @@ $(document).on('click','.confirm-add',function () {
                 form,
                 function (res) {
                     if(res.success){
-                        alert('添加成功！');
                         getRefundStrategy();
                     }else{
                         alert(res.message);
