@@ -8,6 +8,7 @@ import edu.nju.cinemasystem.data.vo.UserVO;
 import edu.nju.cinemasystem.data.vo.form.RegistryForm;
 import edu.nju.cinemasystem.data.vo.form.UserForm;
 import edu.nju.cinemasystem.dataservices.user.UserMapper;
+import edu.nju.cinemasystem.util.properties.AlipayProperties;
 import edu.nju.cinemasystem.util.properties.message.AccountMsg;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,10 +29,13 @@ public class AccountTest {
     private UserMapper userMapper;
     @Autowired
     private AccountMsg accountMsg;
+    @Autowired
+    private AlipayProperties alipayProperties;
 
     @Test(expected = RuntimeException.class)
     @Transactional
     public void testRegister1() {
+        System.out.println(alipayProperties.getNotifyUrl());
         RegistryForm registryForm = generateRF("123","123","123");
         Response response = account.register(registryForm);
         assertTrue(response.isSuccess());
