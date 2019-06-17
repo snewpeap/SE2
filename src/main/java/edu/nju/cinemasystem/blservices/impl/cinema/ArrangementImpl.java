@@ -13,7 +13,6 @@ import edu.nju.cinemasystem.dataservices.cinema.arrangement.ArrangementSeatMappe
 import edu.nju.cinemasystem.dataservices.cinema.hall.HallMapper;
 import edu.nju.cinemasystem.dataservices.cinema.hall.SeatMapper;
 import edu.nju.cinemasystem.util.properties.message.ArrangementMsg;
-import edu.nju.cinemasystem.util.properties.message.GlobalMsg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +26,6 @@ public class ArrangementImpl
         implements edu.nju.cinemasystem.blservices.cinema.arrangement.Arrangement,
         ArrangementManage, ArrangementInfo {
     private final ArrangementMapper arrangementMapper;
-    private final GlobalMsg globalMsg;
     private final ArrangementSeatMapper arrangementSeatMapper;
     private final SeatMapper seatMapper;
     private final ArrangementMsg arrangementMsg;
@@ -35,9 +33,8 @@ public class ArrangementImpl
     private edu.nju.cinemasystem.blservices.movie.Movie movieService;
 
     @Autowired
-    public ArrangementImpl(ArrangementMapper arrangementMapper, GlobalMsg globalMsg, ArrangementSeatMapper arrangementSeatMapper, SeatMapper seatMapper, ArrangementMsg arrangementMsg, HallMapper hallMapper) {
+    public ArrangementImpl(ArrangementMapper arrangementMapper, ArrangementSeatMapper arrangementSeatMapper, SeatMapper seatMapper, ArrangementMsg arrangementMsg, HallMapper hallMapper) {
         this.arrangementMapper = arrangementMapper;
-        this.globalMsg = globalMsg;
         this.arrangementSeatMapper = arrangementSeatMapper;
         this.seatMapper = seatMapper;
         this.arrangementMsg = arrangementMsg;
@@ -60,7 +57,7 @@ public class ArrangementImpl
             return response;
         } else {
             response = Response.fail();
-            response.setMessage(globalMsg.getWrongParam());
+            response.setMessage(arrangementMsg.getWrongParam());
             return response;
         }
     }
@@ -71,33 +68,30 @@ public class ArrangementImpl
         List<Arrangement> arrangements = arrangementMapper.selectByMovieID(movieID);
         if (arrangements == null) {
             response = Response.fail();
-            response.setMessage(globalMsg.getWrongParam());
+            response.setMessage(arrangementMsg.getWrongParam());
             return response;
         } else {
             List<ArrangementVO> arrangementVOs = new ArrayList<>();
             arrangements.forEach(arrangement -> arrangementVOs.add(new ArrangementVO(arrangement)));
             Map<Date, List<ArrangementVO>> map = new HashMap<>();
-            Date maxDate = null;
             for (ArrangementVO arrangementVO : arrangementVOs) {
                 Date date = convertDateToDay(arrangementVO.getStartTime());
                 if (!map.containsKey(date)) {
                     map.put(date, new ArrayList<>());
-                    if(maxDate == null || maxDate.after(date)){
-                        maxDate = date;
-                    }
                 }
                 map.get(date).add(arrangementVO);
             }
+            Map<Date, List<ArrangementVO>> reMap = new HashMap<>();
+            Object[] objects = map.keySet().toArray();
+            Arrays.sort(objects);
+            for (Object o : objects) {
+                List<ArrangementVO> as = map.get(o);
+                as.sort((ArrangementVO a1, ArrangementVO a2) -> (int) ((a1.getStartTime().getTime() - a2.getStartTime().getTime()) / (1000 * 60)));
+                reMap.put((Date) o, map.get(o));
+            }
             List<List<ArrangementVO>> reList = new ArrayList<>();
-            if(maxDate != null) {
-                int size = calculateDaysFromToday(maxDate) + 1;
-                for (int i = 0; i < size; i++) {
-                    reList.add(new ArrayList<>());
-                }
-                for(Map.Entry<Date,List<ArrangementVO>> entry:map.entrySet()){
-                    int dayNum = calculateDaysFromToday(entry.getKey());
-                    reList.set(dayNum,entry.getValue());
-                }
+            for (Map.Entry<Date, List<ArrangementVO>> entry : reMap.entrySet()) {
+                reList.add(entry.getValue());
             }
             response = Response.success();
             response.setContent(reList);
@@ -110,7 +104,7 @@ public class ArrangementImpl
         Response response;
         Arrangement arrangement = arrangementMapper.selectByPrimaryKey(aID);
         if (arrangement == null) {
-            return Response.fail(globalMsg.getWrongParam());
+            return Response.fail(arrangementMsg.getWrongParam());
         }
         Date date = new Date();
         if (date.before(arrangement.getVisibleDate())) {
@@ -126,7 +120,7 @@ public class ArrangementImpl
         }
         for (ArrangementSeat as : arrangementSeats) {
             Seat seat = seatMapper.selectByPrimaryKey(as.getSeatId());
-            seatMap.get(seat.getRow()-1).set(seat.getColumn()-1,new ArrangementSeatVO(as));
+            seatMap.get(seat.getRow() - 1).set(seat.getColumn() - 1, new ArrangementSeatVO(as));
         }
         ArrangementDetailVO detailVO = new ArrangementDetailVO();
         detailVO.setSeatMap(seatMap);
@@ -174,7 +168,7 @@ public class ArrangementImpl
             arrangementSeatMapper.insertSelective(arrangementSeat);
         });
         response = Response.success();
-        response.setMessage(globalMsg.getOperationSuccess());
+        response.setMessage(arrangementMsg.getOperationSuccess());
         return response;
     }
 
@@ -199,7 +193,7 @@ public class ArrangementImpl
         arrangement.setId(ID);
         arrangementMapper.updateByPrimaryKeySelective(arrangement);
         response = Response.success();
-        response.setMessage(globalMsg.getOperationSuccess());
+        response.setMessage(arrangementMsg.getOperationSuccess());
         return response;
     }
 
@@ -216,7 +210,7 @@ public class ArrangementImpl
         arrangementSeats.forEach(arrangementSeatMapper::delete);
         arrangementMapper.deleteByPrimaryKey(ID);
         response = Response.success();
-        response.setMessage(globalMsg.getOperationSuccess());
+        response.setMessage(arrangementMsg.getOperationSuccess());
         return response;
     }
 
@@ -231,7 +225,7 @@ public class ArrangementImpl
             arrangementMapper.updateByPrimaryKeySelective(arrangement);
         });
         response = Response.success();
-        response.setMessage(globalMsg.getOperationSuccess());
+        response.setMessage(arrangementMsg.getOperationSuccess());
         return response;
     }
 
@@ -299,7 +293,7 @@ public class ArrangementImpl
     @Override
     public boolean movieHasArrangement(int movieID) {
         List<Arrangement> arrangementList = arrangementMapper.selectByMovieID(movieID);
-        return arrangementList.size()!=0;
+        return arrangementList.size() != 0;
     }
 
     /**
@@ -390,11 +384,6 @@ public class ArrangementImpl
             e.printStackTrace();
             return date;
         }
-    }
-
-    private int calculateDaysFromToday(Date date){
-        Date now = convertDateToDay(new Date());
-        return (int)(date.getTime()-now.getTime())/(24*60*60*1000);
     }
 
 }
