@@ -91,8 +91,10 @@ public class ArrangementImpl
                 as.sort((ArrangementVO a1, ArrangementVO a2) -> (int) ((a1.getStartTime().getTime() - a2.getStartTime().getTime()) / (60 * 1000)));
                 reMap.put((Date) o, as);
             }
+            List<Map<Date, List<ArrangementVO>>> listMap = new ArrayList<>();
+            listMap.add(reMap);
             response = Response.success();
-            response.setContent(reMap);
+            response.setContent(listMap);
             return response;
         }
     }
