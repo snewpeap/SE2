@@ -77,10 +77,15 @@ public class VIPCardImpl implements edu.nju.cinemasystem.blservices.vip.VIPCard 
 
     @Override
     public Response deposit(int userID, float amount) {
+        if (vipcardMapper.selectByPrimaryKey(userID) == null) {
+            return Response.fail(vipMsg.getNoVIPCard());
+        } else if (amount <= 0) {
+            return Response.fail(vipMsg.getWrongParam() + "金额需大于等于0");
+        }
         VipcardRechargeReduction reduction = reductionMapper.selectByAmount(amount);
         float discountAmount = amount - reduction.getDiscountAmount();
         Response response = addVIPBalance(userID, amount);
-        if (response.isSuccess()){
+        if (response.isSuccess()) {
             TradeRecord tradeRecord = new TradeRecord();
             tradeRecord.setDate(new Date());
             tradeRecord.setUserId(userID);

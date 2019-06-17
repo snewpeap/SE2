@@ -2,10 +2,8 @@ package edu.nju.cinemasystem.blservices.impl.cinema;
 
 import edu.nju.cinemasystem.blservices.cinema.arrangement.ArrangementManage;
 import edu.nju.cinemasystem.blservices.movie.ArrangementInfo;
-import edu.nju.cinemasystem.data.po.Arrangement;
-import edu.nju.cinemasystem.data.po.ArrangementSeat;
-import edu.nju.cinemasystem.data.po.Movie;
-import edu.nju.cinemasystem.data.po.Seat;
+import edu.nju.cinemasystem.data.po.*;
+import edu.nju.cinemasystem.data.vo.ArrangementDetailVO;
 import edu.nju.cinemasystem.data.vo.ArrangementSeatVO;
 import edu.nju.cinemasystem.data.vo.ArrangementVO;
 import edu.nju.cinemasystem.data.vo.Response;
@@ -29,22 +27,17 @@ import java.util.*;
 public class ArrangementImpl
         implements edu.nju.cinemasystem.blservices.cinema.arrangement.Arrangement,
         ArrangementManage, ArrangementInfo {
-    private final
-    ArrangementMapper arrangementMapper;
-    private final
-    GlobalMsg globalMsg;
-    private final
-    ArrangementSeatMapper arrangementSeatMapper;
-    private final
-    SeatMapper seatMapper;
-    private final
-    ArrangementMsg arrangementMsg;
-    private final
-    HallMapper hallMapper;
+    private final ArrangementMapper arrangementMapper;
+    private final GlobalMsg globalMsg;
+    private final ArrangementSeatMapper arrangementSeatMapper;
+    private final SeatMapper seatMapper;
+    private final ArrangementMsg arrangementMsg;
+    private final HallMapper hallMapper;
     private final MovieMapper movieMapper;
+    private final edu.nju.cinemasystem.blservices.movie.Movie movie;
 
     @Autowired
-    public ArrangementImpl(ArrangementMapper arrangementMapper, GlobalMsg globalMsg, ArrangementSeatMapper arrangementSeatMapper, SeatMapper seatMapper, ArrangementMsg arrangementMsg, HallMapper hallMapper, MovieMapper movieMapper) {
+    public ArrangementImpl(ArrangementMapper arrangementMapper, GlobalMsg globalMsg, ArrangementSeatMapper arrangementSeatMapper, SeatMapper seatMapper, ArrangementMsg arrangementMsg, HallMapper hallMapper, MovieMapper movieMapper, edu.nju.cinemasystem.blservices.movie.Movie movie) {
         this.arrangementMapper = arrangementMapper;
         this.globalMsg = globalMsg;
         this.arrangementSeatMapper = arrangementSeatMapper;
@@ -52,6 +45,7 @@ public class ArrangementImpl
         this.arrangementMsg = arrangementMsg;
         this.hallMapper = hallMapper;
         this.movieMapper = movieMapper;
+        this.movie = movie;
     }
 
     @Override
@@ -94,11 +88,13 @@ public class ArrangementImpl
             Arrays.sort(objects);
             for (Object o : objects) {
                 List<ArrangementVO> as = map.get(o);
-                as.sort((ArrangementVO a1, ArrangementVO a2)->(int)((a1.getStartTime().getTime() - a2.getStartTime().getTime())/(60*1000)));
+                as.sort((ArrangementVO a1, ArrangementVO a2) -> (int) ((a1.getStartTime().getTime() - a2.getStartTime().getTime()) / (60 * 1000)));
                 reMap.put((Date) o, as);
             }
+            List<Map<Date, List<ArrangementVO>>> listMap = new ArrayList<>();
+            listMap.add(reMap);
             response = Response.success();
-            response.setContent(reMap);
+            response.setContent(listMap);
             return response;
         }
     }
@@ -108,21 +104,34 @@ public class ArrangementImpl
         Response response;
         Arrangement arrangement = arrangementMapper.selectByPrimaryKey(aID);
         if (arrangement == null) {
-            response = Response.fail();
-            response.setMessage(globalMsg.getWrongParam());
-            return response;
+            return Response.fail(globalMsg.getWrongParam());
         }
         Date date = new Date();
-        if (date.compareTo(arrangement.getVisibleDate()) < 0) {
+        if (date.before(arrangement.getVisibleDate())) {
             response = Response.fail();
             response.setStatusCode(401);
             return response;
         }
         List<ArrangementSeat> arrangementSeats = arrangementSeatMapper.selectByArrangementID(aID);
-        List<ArrangementSeatVO> arrangementSeatVOs = new ArrayList<>();
-        arrangementSeats.forEach(arrangementSeat -> arrangementSeatVOs.add(new ArrangementSeatVO(arrangementSeat)));
+        Hall hall = hallMapper.selectByPrimaryKey(arrangement.getHallId());
+        List<List<ArrangementSeatVO>> seatMap = new ArrayList<>(hall.getRow());
+        for (int row = 0; row < hall.getRow(); row++) {
+            seatMap.add(new ArrayList<>(hall.getColumn()));
+        }
+        for (ArrangementSeat as : arrangementSeats) {
+            Seat seat = seatMapper.selectByPrimaryKey(as.getSeatId());
+            seatMap.get(seat.getRow()-1).set(seat.getColumn()-1,new ArrangementSeatVO(as));
+        }
+        ArrangementDetailVO detailVO = new ArrangementDetailVO();
+        detailVO.setSeatMap(seatMap);
+        detailVO.setId(aID);
+        detailVO.setStartTime(arrangement.getStartTime());
+        detailVO.setEndTime(arrangement.getEndTime());
+        detailVO.setFare(arrangement.getFare());
+        detailVO.setHall(hallMapper.selectByPrimaryKey(arrangement.getHallId()).getName());
+        detailVO.setMovie(movie.getMovieNameByID(arrangement.getMovieId()));
         response = Response.success();
-        response.setContent(arrangementSeatVOs);
+        response.setContent(detailVO);
         return response;
     }
 
@@ -284,7 +293,7 @@ public class ArrangementImpl
     @Override
     public boolean movieHasArrangement(int movieID) {
         List<Arrangement> arrangementList = arrangementMapper.selectByMovieID(movieID);
-        return arrangementList.size()!=0;
+        return arrangementList.size() != 0;
     }
 
     /**

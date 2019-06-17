@@ -8,6 +8,10 @@ public class ArrangementSeatVO{
 
     private Integer seatId;
 
+    private int row;
+
+    private int column;
+
     public boolean isLocked() {
         return isLocked;
     }
@@ -22,6 +26,22 @@ public class ArrangementSeatVO{
 
     public void setSeatId(Integer seatId) {
         this.seatId = seatId;
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public void setRow(int row) {
+        this.row = row;
+    }
+
+    public int getColumn() {
+        return column;
+    }
+
+    public void setColumn(int column) {
+        this.column = column;
     }
 
     public ArrangementSeatVO(ArrangementSeat arrangementSeat) {
