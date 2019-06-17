@@ -88,14 +88,13 @@ public class ArrangementImpl
                 }
                 map.get(date).add(arrangementVO);
             }
-            Map<Date,List<ArrangementVO>> reMap = new HashMap<>();
-            Object[] objects = map.keySet().toArray();
-            Arrays.sort(objects);
-            for(Object o:objects){
-                reMap.put((Date)o,map.get(o));
+            List<List<ArrangementVO>> result = new ArrayList<>();
+            for(Map.Entry<Date,List<ArrangementVO>> entry:map.entrySet()){
+                int dayNum = calculateDaysFromToday(entry.getKey());
+                result.set(dayNum,entry.getValue());
             }
             response = Response.success();
-            response.setContent(reMap);
+            response.setContent(result);
             return response;
         }
     }
@@ -365,5 +364,10 @@ public class ArrangementImpl
             e.printStackTrace();
             return  date;
         }
+    }
+
+    private int calculateDaysFromToday(Date date){
+        Date now = convertDateToDay(new Date());
+        return (int)(date.getTime()-now.getTime())/(24*60*60*1000);
     }
 }
