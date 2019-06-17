@@ -1,4 +1,4 @@
-var dates;
+var allArrangement;
 var movieId;
 var isLike;
 
@@ -15,8 +15,8 @@ $(document).ready(function () {
             function (res) {
                 if (res.success) {
                     $('#schedule').css("display", "");
-                    dates = res.content;
-                    repaintScheduleDate(0);
+                    allArrangement = res.content;
+                    getTabs();
                 } else {
                     $('#none-hint').css("display", "");
                 }
@@ -92,37 +92,57 @@ $(document).ready(function () {
 
 });
 
-function repaintScheduleDate(curDateLoc) {
-    var dateContent = "";
-    for (var i = 0; i < dates.length; i++) {
-        var date = dates[i].date.substring(5, 7) + "月" + dates[i].date.substring(8, 10) + "日";
-        if (i === 0) date += "（今天）";
-        else if (i === 1) date += "（明天）";
-        dateContent += '<li role="presentation" id="schedule-date' + i + '"><a href="#"  onclick="repaintScheduleDate(\'' + i + '\')">' + date + '</a></li>';
+function getTabs() {
+    let dateContent = "";
+    for (let date in allArrangement){
+        let dateStr = date.substring(5,7)+ "月" + date.substring(8,10) + "日";
+        dateContent += '<li role="presentation" id="@date"><a href="#"  onclick="repaintScheduleBody(e)">' + dateStr + '</a></li>';
     }
     $('#schedule-date').html(dateContent);
-
-    $('#schedule-date' + curDateLoc).addClass("active");
-    repaintScheduleBody(curDateLoc);
+    // $('#' + date).addClass("active");
+    //repaintScheduleBody(curDateLoc);
 }
 
-function repaintScheduleBody(curDateLoc) {
-    var scheduleItems = dates[curDateLoc].scheduleItemList;
+// function repaintScheduleDate(e) {
+//     let dateContent = "";
+//     let arrangementListOneDay = allArrangement.get(curDate);
+//     for (let i = 0; i<arrangementListOneDay.length;i++){
+//         let dateSt
+//         dateContent += '<li role="presentation" id="schedule-date' + i + '"><a href="#"  onclick="repaintScheduleDate(\'' + i + '\')">' + date + '</a></li>';
+//     }
+//     for (date in allArrangement){
+//         var dateStr = date.substring(5,7)+ "月" + date.substring(8,10) + "日";
+//
+//     }
+//     // for (var i = 0; i < allArrangement.length; i++) {
+//     //     var date = allArrangement[i].key.substring(5, 7) + "月" + allArrangement[i].key.substring(8, 10) + "日";
+//     //     if (i === 0) date += "（今天）";
+//     //     else if (i === 1) date += "（明天）";
+//     //     else if (i === 2) date += "（后天）";
+//     //     dateContent += '<li role="presentation" id="schedule-date' + i + '"><a href="#"  onclick="repaintScheduleDate(\'' + i + '\')">' + date + '</a></li>';
+//     // }
+//     $('#schedule-date').html(dateContent);
+//
+//     $('#schedule-date' + curDateLoc).addClass("active");
+//     repaintScheduleBody(curDateLoc);
+// }
 
+function repaintScheduleBody(e) {
+    let date = e.target.id;
+    let scheduleItems = allArrangement.get(date);
     if (scheduleItems.length === 0) {
         $('#date-none-hint').css("display", "");
     } else {
         $('#date-none-hint').css("display", "none");
     }
-    var bodyContent = "";
-    for (var i = 0; i < scheduleItems.length; i++) {
+    let bodyContent = "";
+    for (let i = 0; i < scheduleItems.length; i++) {
         bodyContent += "<tr><td>" + scheduleItems[i].startTime.substring(11, 16) + "</td>" +
             "<td>预计" + scheduleItems[i].endTime.substring(11, 16) + "散场</td>" +
-            "<td>" + scheduleItems[i].hallName + "</td>" +
+            "<td>" + scheduleItems[i].hallId + "</td>" +
             "<td><b>" + scheduleItems[i].fare.toFixed(2) + "</b></td>" +
             "<td><a class='btn btn-primary' href='/user/movieDetail/buy?id=" + movieId + "&scheduleId=" + scheduleItems[i].id + "' role='button'>选座购票</a></td></tr>";
     }
-
     $('#schedule-body').html(bodyContent);
 }
 
@@ -134,7 +154,7 @@ $('#like-btn').click(function () {
             null,
             function (res) {
                 if (res.success){
-                    alert("操作成功!");
+                    // alert("操作成功!");
                     $('#like-btn span').text("已想看");
                 } else {
                     alert(res.message);
@@ -150,7 +170,7 @@ $('#like-btn').click(function () {
             null,
             function (res) {
                 if (res.success){
-                    alert("操作成功!");
+                    // alert("操作成功!");
                     $('#like-btn span').text("想 看");
                 } else {
                     alert(res.message);
