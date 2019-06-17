@@ -30,17 +30,20 @@ public class MovieLikeImpl implements edu.nju.cinemasystem.blservices.movie.Movi
 
     @Override
     public Response like(int userID, int movieID) {
-        Response response;
+        Response response = Response.success();
         MovieLike record = MovieLike.assembleMovieLikePO(userID, movieID);
         if (movieLikeMapper.selectByUserAndMovie(record) != null) {
             if (movieLikeMapper.deleteByUserAndMovie(record) == 0) {
                 response = Response.fail();
                 response.setMessage(globalMsg.getOperationFailed());
-                return response;
+                response.setContent(true);
+            } else {
+                response.setContent(false);
             }
         }
         movieLikeMapper.insertSelective(record);
         response = Response.success();
+        response.setContent(true);
         return response;
     }
 
@@ -53,8 +56,14 @@ public class MovieLikeImpl implements edu.nju.cinemasystem.blservices.movie.Movi
             if (movieLikeMapper.insert(record) == 0) {
                 response = Response.fail();
                 response.setMessage(globalMsg.getOperationFailed());
+                response.setContent(false);
+            } else {
+                response.setContent(true);
             }
         }
+        movieLikeMapper.deleteByUserAndMovie(record);
+        response = Response.success();
+        response.setContent(false);
         return response;
     }
 
@@ -76,7 +85,7 @@ public class MovieLikeImpl implements edu.nju.cinemasystem.blservices.movie.Movi
         Date startDate = movie.getReleaseDate();
         try {
             startDate = sdf.parse(sdf.format(startDate));
-        }catch (ParseException ignored){
+        } catch (ParseException ignored) {
 
         }
         final Date theStart = startDate;
@@ -86,7 +95,7 @@ public class MovieLikeImpl implements edu.nju.cinemasystem.blservices.movie.Movi
 
         rawDate.removeIf(perDayData -> {
             Date date = (Date) perDayData.get("date");
-            return date==null||date.before(theStart)||date.after(theEnd);
+            return date == null || date.before(theStart) || date.after(theEnd);
         });
         return rawDate;
     }

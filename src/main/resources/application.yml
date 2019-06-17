@@ -11,111 +11,6 @@ spring:
   jackson:
     time-zone: GMT+8
 
----
-
-spring:
-  profiles: deploy
-
-mybatis:
-  mapper-locations: classpath:edu/nju/cinemasystem/dataservices/impl/xml/*.xml
-
-alipay:
-  app-id: "2016093000629733"
-  merchant-private-key: "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDR7bAU7MDiXvPY7EZwm9j+jm19HsSwG96l0TrDbyepT8pX4i4oFpi5r6pvlKnNuO0l2Jeg7EIOv5muWPIsO4J1FNm9uk2fOLr3JISQY8KMQ0rmEz/wDm2B7DP69xd0WbRYJ5xR3jCHUy5lv5L3VgRSmhYGvGYpAYhlpsCXk/Ipo/ktIw97L7lREPPKSVAklEOwKL39jmOnPc3TjfV1DGszc5pG7xDYnWv0S07G9aC62esCrFQKzKI3SGhWJltryD8dkboRMNnCvHS3/kDHrwByVb60O5aMgRldq2eyYkSnlZ7DBHYi79AuKn8sDeHyi0ZaGAZvsw/UovYI/BfsYgOZAgMBAAECggEAYnxaMVbpHsphKBGg8k+LO9Fh+GMo714D1FMWeH17Y+k1ConoEZKYT/Tjxrk9+G+bgjfc2vg7/WNSHANKignZKEiB5oqyw9H/lNajAoJq0Rb42nuJcXuzUFKaCFFHxaQYAYuDwLy2k6YojD+WGUdXe9EiKELWwsIfVWEn1XTpFTMoA06VKd4Cn7sLX7fRuMiZ6pimorhQIkUkdGjAd64d58uFVbQCEk4V+KY9Y9AUtuKoHAJGEYLmgJXq+GAqdjD5J4lmLGZAPf6/KwEWFA9LxL8KFeb2W5yH8z1ZIUGT1+2k4+Pu4LTuquL6ytpzhBxXJsS8m8lZaxmUKH7Y4ey5AQKBgQD7iHywAuO38xeclIurm6/puwpZWRIgNGPas1xb2RR+zoTD/87LIkR1nSOiKgve+u7kPWeypBACudNnIRUv9gWgRXxE4EmeTw11N8hE75eFf7VhbR+Ep2ElqbklDhhCETKVbXwyMAWxIspvzdkjFE85jP6aoevuZu7+X1Zjam76yQKBgQDVqA8HylWX14YcwMejkFmDWIekz2QkuEPrr4/2fmN8X4aQ3Ba7dcR8UihOhoUSLG50+MV0QgsKNDtwwqvMb/yLKA+/lGpdq76bxUib5isZMmHkxZxK5Fn03tllG4hD0dc/ebpmYY5JnCOUn46Zi4W+aITJEg3CwUHexDdnVUpaUQKBgQCGqUWHvaRIQN6tN2GnGAyPp1EdEHCByUqENW4GxisQ0GOHwxXk7o2UIfKHyNbeI51tl+pCW08vBmlFVxLOwHm2mjyzaxg+prffv2N6dIK8N+jVJeSv0iRSU5EJY4hdJnPcR+crv0Xs1WFnhd7vxtm7R96uzm1PDtB4YnYPd1W+8QKBgFbk+Of0NIeC0jqTdR5isOUodlJjPploj8clKenYUWHd//6eZGhtZzIgv9/f+fMAOxQ7sSKtUYwe3iXoJrMIwK9f5bfHBtN97BGyVOuC2vhucz312LDk2mkq0UO7xNnAWEiqm1LUTmhFpnrlwbtU8VoVbBvSyeHxc3bEWrweBhVhAoGASd44l3Bg8KLCshXDZfLbwZcuL5DmXkyra9QtUs8rN5F/CyivMtOy4QOfnv2Mi51ydaN3SgIeh5vV2nrddtLkvPnB98hhkt7sZtf48aOux6k8jmwM2MrLedT0N84O7kwv2DFQ0LugKE+TxzwzlAUONPiMX4lUMpLdezLMlWuzspI="
-  ali-public-key: "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1Z6dZ058FTO1eMR0nVYyINJT9RRZnefD2bnMwNlAkzB4O/zFbbGdhgTwWOHDG/1O9nNlzQPQlIn/GQwSGmtZq6+DPqJ8wVcTABCKueyRQjj4J76IYoiURc8vQy9gW71Wu+VhuuFopmjTMftX0lyhGXQZa+PjmkrULjslkxopRvFDNee/MMDqOU1SzCTWISg2r2A3q47IoKLlMcw+47F8rhXoWf3+QXs2TswNhKBi0BpXERA2/Q6zdSCveokz05ZEyeDGeup49fT+dm+Q5KeTdaTOgVK0CHreG6NTJZD0+7LiO4swA88ltQ7OYQ3EGjXdEpUs9hZG5Ea1HOUsSKiJ3wIDAQAB"
-  sign-type: "RSA2"
-  charset: "utf-8"
-  ali-gateway: "https://openapi.alipaydev.com/gateway.do"
-  notify-url: "http://120.77.42.11:8080/alipay/notify"
-  return-url: "http://120.77.42.11:8080/alipay/return"
-
-
-################ 应用配置 ################
-# 全局消息 #
-global-msg:
-  operation-failed: "操作失败"
-  operation-success: "操作成功"
-  wrong-param: "参数错误"
-
-# 电影消息 #
-movie-msg:
-  not-exist: "电影不存在"
-  has-arrangement: "电影还有后续排片"
-  wrong-param: "电影参数错误"
-  operation-failed: "操作失败"
-  operation-success: "操作成功"
-
-# 账户操作消息 #
-account-msg:
-  account-not-exist: "用户名不存在"
-  registry-name-already-exist: "用户名已经被注册"
-  password-not-confirmed: "两次输入的密码不同"
-  wrong-password: "密码错误"
-  login-success: "登录成功"
-  registry-success: "注册成功"
-  registry-failed: "注册失败"
-  wrong-param: "账户参数错误"
-  operation-failed: "操作失败"
-  operation-success: "操作成功"
-
-# 员工管理操作信息 #
-staff-msg:
-  add-success: "添加员工成功"
-  manager-already-exist: "管理员已存在"
-  manager-not-exist: "不存在此管理员"
-  staff-already-exist: "员工已存在"
-  staff-not-exist: "不存在此员工"
-  add-failed: "添加员工失败"
-  wrong-param: "员工参数错误"
-  operation-failed: "操作失败"
-  operation-success: "操作成功"
-
-vip-msg:
-  add-failed: "服务器开小差了，购卡失败"
-  recharge-failed: "充值失败了呜呜呜"
-  no-v-i-p-card: "你还没有会员卡"
-  out-of-balance: "你的会员卡余额不足"
-  has-v-i-p-card: "你已经有会员卡了"
-  operation-failed: "操作失败"
-  operation-success: "操作成功"
-
-# 角色名 #
-role:
-  audience: "audience"
-  staff: "staff"
-  manager: "manager"
-  root: "root"
-
-# 管理排片操作信息 #
-arrangement-msg:
-  visible-to-audience: "排片已对观众可见"
-  arrangement-start: "排片已开始放映"
-  is-still-have-arrangement: "该影厅后续还有排片"
-  is-already-have-arrangement: "该时间段内该影厅已有排片"
-  time-conflict: "开始时间或结束时间冲突"
-  fare-cannot-be-negative: "票价不能小于等于0"
-  movie-unReleased: "电影不在上映状态"
-  duration-is-short: "排片时间过短"
-  wrong-param: "排片参数错误"
-  operation-failed: "操作失败"
-  operation-success: "操作成功"
-
-# 管理sale操作信息 #
-ticket-msg:
-  balance-not-enough: "余额不足"
-  refund-strategy-exist: "该天数的购票策略已存在，只能修改"
-  refund-disable: "这张票已经不能退了"
-  arrangement-start: "拍片已经开始，无法买票"
-  coupon-invalid: "选择的优惠券无效"
-  order-invalid: "订单已失效"
-  wrong-param: "电影票参数错误"
-  seat-been-locked: "该座位已经被锁定，请选择其他座位"
-
----
-
-spring:
-  profiles: dev
-
 mybatis:
   mapper-locations: classpath:edu/nju/cinemasystem/dataservices/impl/xml/*.xml
 
@@ -129,7 +24,6 @@ alipay:
   notify-url: "http://snewpeap.free.idcfengye.com/alipay/notify"
   return-url: "http://snewpeap.free.idcfengye.com/alipay/return"
 
-
 ################ 应用配置 ################
 # 全局消息 #
 global-msg:
@@ -210,3 +104,26 @@ ticket-msg:
   order-invalid: "订单已失效"
   wrong-param: "电影票参数错误"
   seat-been-locked: "该座位已经被锁定，请选择其他座位"
+
+---
+
+spring:
+  profiles: deploy
+
+mybatis:
+  mapper-locations: classpath:edu/nju/cinemasystem/dataservices/impl/xml/*.xml
+
+alipay:
+  notify-url: "http://120.77.42.11:8080/alipay/notify"
+  return-url: "http://120.77.42.11:8080/alipay/return"
+---
+
+spring:
+  profiles: dev
+
+mybatis:
+  mapper-locations: classpath:edu/nju/cinemasystem/dataservices/impl/xml/*.xml
+
+alipay:
+  notify-url: "http://snewpeap.free.idcfengye.com/alipay/notify"
+  return-url: "http://snewpeap.free.idcfengye.com/alipay/return"

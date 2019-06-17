@@ -89,7 +89,6 @@ public class StaffManagementImpl implements StaffManagement {
         if (userMapper.insert(staffAccount) == 0) {
             response = Response.fail(staffMsg.getRegistryFailed());
         } else {
-            staffAccount = userMapper.selectStaffByName(staffAccount.getName());
             UserHasRoleKey uhr = new UserHasRoleKey();
             uhr.setUserId(staffAccount.getId());
             uhr.setRoleId(roleMapper.selectRoleIDByName(roleProperty.getStaff()));
@@ -97,7 +96,7 @@ public class StaffManagementImpl implements StaffManagement {
                 response = Response.fail(staffMsg.getAddFailed());
             } else {
                 response.setMessage(staffMsg.getAddSuccess());
-                response.setContent(assembleStaffVO((Staff) staffAccount));
+                response.setContent(assembleStaffVO(userMapper.selectStaffByName(staffAccount.getName())));
             }
         }
         return response;
@@ -128,7 +127,7 @@ public class StaffManagementImpl implements StaffManagement {
                 response = Response.fail(staffMsg.getAddFailed());
             } else {
                 response.setMessage(staffMsg.getAddSuccess());
-                response.setContent(assembleManagerVO((Manager) managerAccount));
+                response.setContent(assembleManagerVO(userMapper.selectManagerByName(managerAccount.getName())));
             }
         }
         return response;
