@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 public class ArrangementDetailVO {
-    private List<List<ArrangementSeatVO>> seatMap;
+    private List<ArrangementSeatVO[]> seatMap;
 
     private Integer id;
 
@@ -18,11 +18,11 @@ public class ArrangementDetailVO {
 
     private String movie;
 
-    public List<List<ArrangementSeatVO>> getSeatMap() {
+    public List<ArrangementSeatVO[]> getSeatMap() {
         return seatMap;
     }
 
-    public void setSeatMap(List<List<ArrangementSeatVO>> seatMap) {
+    public void setSeatMap(List<ArrangementSeatVO[]> seatMap) {
         this.seatMap = seatMap;
     }
 
