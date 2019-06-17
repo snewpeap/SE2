@@ -25,4 +25,6 @@ public interface Movie {
      * @return 电影名称
      */
     String getMovieNameByID(int movieID);
+
+
 }

@@ -27,6 +27,9 @@
 
     <!-- Custom Theme Style -->
     <link href="/webjars/gentelella/build/css/custom.min.css" rel="stylesheet">
+    <!-- Personal Theme Style -->
+    <link href="/css/common.css" rel="stylesheet" type="text/css">
+    <link href="/css/admin/vipStrategyManage.css" rel="stylesheet" type="text/css">
 </head>
 <body class="nav-md">
 <div class="container body">
@@ -90,6 +93,23 @@
 
                 </div>
                 <!-- /sidebar menu -->
+
+                <!-- /menu footer buttons -->
+                <div class="sidebar-footer hidden-small">
+                    <a data-toggle="tooltip" data-placement="top" title="Settings">
+                        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                    </a>
+                    <a data-toggle="tooltip" data-placement="top" title="FullScreen">
+                        <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+                    </a>
+                    <a data-toggle="tooltip" data-placement="top" title="Lock">
+                        <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+                    </a>
+                    <a data-toggle="tooltip" data-placement="top" title="Logout" href="/logout">
+                        <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                    </a>
+                </div>
+                <!-- /menu footer buttons -->
             </div>
         </div>
 
@@ -121,7 +141,19 @@
         <div class="right_col" role="main">
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="dashboard_graph">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>会员充值策略</h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <div class="target-amount-box">
+                                <p>需要达到金额：<i>满</i><label for="targetAmount-input"><span class="targetAmount"></span></label><input type="number" min="1" class="form-control" id="targetAmount-input" style="display: none;"></p>
+                            </div>
+                            <div>
+                                <p>优惠：<label for="discountType"><i class="discount"></i></label><select id="discountType" class="form-control" style="display: none;"><option value="0">减</option><option value="1">送</option></select><span class="discountAmount"></span></p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

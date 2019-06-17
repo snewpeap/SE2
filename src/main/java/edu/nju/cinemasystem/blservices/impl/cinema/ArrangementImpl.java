@@ -27,8 +27,7 @@ import java.util.*;
 
 @Service
 public class ArrangementImpl
-        implements edu.nju.cinemasystem.blservices.cinema.arrangement.Arrangement,
-        ArrangementInfo, ArrangementManage {
+        implements edu.nju.cinemasystem.blservices.cinema.arrangement.Arrangement, ArrangementManage {
     private final
     ArrangementMapper arrangementMapper;
     private final
@@ -52,12 +51,6 @@ public class ArrangementImpl
         this.arrangementMsg = arrangementMsg;
         this.hallMapper = hallMapper;
         this.movieMapper = movieMapper;
-    }
-
-    @Override
-    public boolean movieHasArrangement(int movieID) {
-        List<Arrangement> arrangementList = arrangementMapper.selectByMovieID(movieID);
-        return arrangementList.size()!=0;
     }
 
     @Override
