@@ -2,6 +2,8 @@ package edu.nju.cinemasystem.blservices.movie;
 
 import edu.nju.cinemasystem.data.vo.Response;
 
+import java.util.Date;
+
 
 public interface Movie {
     /**
@@ -26,5 +28,5 @@ public interface Movie {
      */
     String getMovieNameByID(int movieID);
 
-
+    Date getReleaseTimeByID(int movieID);
 }

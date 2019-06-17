@@ -208,11 +208,17 @@ public class PromotionImpl implements
     }
 
     @Override
-    public List<Integer> getJoinedPromotionOf(int movieID) {
+    public List<String> getJoinedPromotionOf(int movieID) {
         List<PromotionHasMovie> promotionHasMovies = promotionHasMovieMapper.selectByMovieID(movieID);
-        List<Integer> promotionIDs = new ArrayList<>();
-        promotionHasMovies.forEach(promotionHasMovie -> promotionIDs.add(promotionHasMovie.getPromotionId()));
-        return promotionIDs;
+        List<Promotion> allPromotions = promotionMapper.selectAll();
+        List<String> promotionNames = new ArrayList<>();
+        for(Promotion promotion:allPromotions){
+            if(promotion.getSpecifyMovies()==(byte)0 && promotion.getEndTime().after(movie.getReleaseTimeByID(movieID))){
+                promotionNames.add(promotion.getName());
+            }
+        }
+        promotionHasMovies.forEach(promotionHasMovie -> promotionNames.add(promotionMapper.selectByPrimaryKey(promotionHasMovie.getPromotionId()).getName()));
+        return promotionNames;
     }
 
     /**
