@@ -6,7 +6,7 @@
         <result column="original_amount" jdbcType="REAL" property="originalAmount"/>
         <result column="discount_amount" jdbcType="REAL" property="discountAmount"/>
         <result column="date" jdbcType="TIMESTAMP" property="date"/>
-        <result column="user_id" jdbcType="INTEGER" property="id"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -38,7 +38,7 @@
         insert into recharge_record (id, original_amount, discount_amount,
                                      `date`, user_id)
         values (#{id,jdbcType=INTEGER}, #{originalAmount,jdbcType=REAL}, #{discountAmount,jdbcType=REAL},
-                #{date,jdbcType=TIMESTAMP}, #{id,jdbcType=INTEGER})
+                #{date,jdbcType=TIMESTAMP}, #{userId,jdbcType=INTEGER})
     </insert>
 
     <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.TradeRecord"
@@ -57,7 +57,7 @@
             <if test="date != null">
                 `date`,
             </if>
-            <if test="id != null">
+            <if test="userId != null">
                 user_id,
             </if>
         </trim>
@@ -74,8 +74,8 @@
             <if test="date != null">
                 #{date,jdbcType=TIMESTAMP},
             </if>
-            <if test="id != null">
-                #{id,jdbcType=INTEGER},
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
             </if>
         </trim>
     </insert>
