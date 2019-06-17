@@ -18,7 +18,7 @@
 
     <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.UserHasRoleKey">
         insert into user_has_role (user_id, role_id)
-        values (#{id,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER})
+        values (#{userId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER})
     </insert>
 
     <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.UserHasRoleKey">
@@ -33,7 +33,7 @@
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
-                #{id,jdbcType=INTEGER},
+                #{userId,jdbcType=INTEGER},
             </if>
             <if test="roleId != null">
                 #{roleId,jdbcType=INTEGER},

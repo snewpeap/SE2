@@ -15,6 +15,7 @@ import edu.nju.cinemasystem.util.properties.RoleProperty;
 import edu.nju.cinemasystem.util.properties.message.StaffMsg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,6 +81,7 @@ public class StaffManagementImpl implements StaffManagement {
      * @return 含有员工信息的vo.Response
      */
     @Override
+    @Transactional
     public Response addStaff(StaffForm staffForm) {
         Response response = Response.success();
         if (userMapper.selectStaffByName(staffForm.getName()) != null) {
@@ -110,12 +112,12 @@ public class StaffManagementImpl implements StaffManagement {
      * @return 含有管理员信息的vo.Response
      */
     @Override
+    @Transactional
     public Response addManager(StaffForm staffForm) {
         Response response = Response.success();
         if (userMapper.selectManagerByName(staffForm.getName()) != null) {
             return Response.fail(staffMsg.getManagerAlreadyExist() + ':' + staffForm.getName());
         }
-
         User managerAccount = assembleStaffAccount(staffForm);
         if (userMapper.insert(managerAccount) == 0) {
             response = Response.fail(staffMsg.getRegistryFailed());
@@ -134,6 +136,7 @@ public class StaffManagementImpl implements StaffManagement {
     }
 
     @Override
+    @Transactional
     public Response removeStaff(int staffID) {
         if (userHasRoleMapper.selectByUserID(staffID) == null) {
             return Response.fail(staffMsg.getStaffNotExist());
@@ -146,6 +149,7 @@ public class StaffManagementImpl implements StaffManagement {
     }
 
     @Override
+    @Transactional
     public Response changeRole(StaffForm staffForm) {
         //TODO
         return null;

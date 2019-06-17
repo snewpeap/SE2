@@ -91,7 +91,9 @@ public class ArrangementImpl
             Object[] objects = map.keySet().toArray();
             Arrays.sort(objects);
             for (Object o : objects) {
-                reMap.put((Date) o, map.get(o));
+                List<ArrangementVO> as = map.get(o);
+                as.sort((ArrangementVO a1, ArrangementVO a2)->(int)((a1.getStartTime().getTime() - a2.getStartTime().getTime())/(60*1000)));
+                reMap.put((Date) o, as);
             }
             response = Response.success();
             response.setContent(reMap);
