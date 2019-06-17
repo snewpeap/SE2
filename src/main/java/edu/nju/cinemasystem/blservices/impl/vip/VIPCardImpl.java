@@ -47,7 +47,9 @@ public class VIPCardImpl implements edu.nju.cinemasystem.blservices.vip.VIPCard 
         if (vipcardMapper.selectByPrimaryKey(userID) != null) {
             return Response.fail(vipMsg.getHasVIPCard());
         }
-        if (vipcardMapper.insertSelective(new Vipcard(userID)) == 0) {
+        Vipcard vipcard = new Vipcard();
+        vipcard.setUserId(userID);
+        if (vipcardMapper.insertSelective(vipcard) == 0) {
             response = Response.fail();
             response.setMessage(vipMsg.getAddFailed());
         } else {

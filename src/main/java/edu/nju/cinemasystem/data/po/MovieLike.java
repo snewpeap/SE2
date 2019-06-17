@@ -9,10 +9,6 @@ public class MovieLike {
 
     private Date date;
 
-    public MovieLike(){
-
-    }
-
     public Integer getUserId() {
         return userId;
     }
