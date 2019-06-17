@@ -12,9 +12,7 @@ import edu.nju.cinemasystem.dataservices.cinema.arrangement.ArrangementMapper;
 import edu.nju.cinemasystem.dataservices.cinema.arrangement.ArrangementSeatMapper;
 import edu.nju.cinemasystem.dataservices.cinema.hall.HallMapper;
 import edu.nju.cinemasystem.dataservices.cinema.hall.SeatMapper;
-import edu.nju.cinemasystem.dataservices.movie.MovieMapper;
 import edu.nju.cinemasystem.util.properties.message.ArrangementMsg;
-import edu.nju.cinemasystem.util.properties.message.GlobalMsg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,23 +26,19 @@ public class ArrangementImpl
         implements edu.nju.cinemasystem.blservices.cinema.arrangement.Arrangement,
         ArrangementManage, ArrangementInfo {
     private final ArrangementMapper arrangementMapper;
-    private final GlobalMsg globalMsg;
     private final ArrangementSeatMapper arrangementSeatMapper;
     private final SeatMapper seatMapper;
     private final ArrangementMsg arrangementMsg;
     private final HallMapper hallMapper;
-    private final MovieMapper movieMapper;
     private edu.nju.cinemasystem.blservices.movie.Movie movieService;
 
     @Autowired
-    public ArrangementImpl(ArrangementMapper arrangementMapper, GlobalMsg globalMsg, ArrangementSeatMapper arrangementSeatMapper, SeatMapper seatMapper, ArrangementMsg arrangementMsg, HallMapper hallMapper, MovieMapper movieMapper) {
+    public ArrangementImpl(ArrangementMapper arrangementMapper, ArrangementSeatMapper arrangementSeatMapper, SeatMapper seatMapper, ArrangementMsg arrangementMsg, HallMapper hallMapper) {
         this.arrangementMapper = arrangementMapper;
-        this.globalMsg = globalMsg;
         this.arrangementSeatMapper = arrangementSeatMapper;
         this.seatMapper = seatMapper;
         this.arrangementMsg = arrangementMsg;
         this.hallMapper = hallMapper;
-        this.movieMapper = movieMapper;
     }
 
     @Autowired
@@ -63,7 +57,7 @@ public class ArrangementImpl
             return response;
         } else {
             response = Response.fail();
-            response.setMessage(globalMsg.getWrongParam());
+            response.setMessage(arrangementMsg.getWrongParam());
             return response;
         }
     }
@@ -74,7 +68,7 @@ public class ArrangementImpl
         List<Arrangement> arrangements = arrangementMapper.selectByMovieID(movieID);
         if (arrangements == null) {
             response = Response.fail();
-            response.setMessage(globalMsg.getWrongParam());
+            response.setMessage(arrangementMsg.getWrongParam());
             return response;
         } else {
             List<ArrangementVO> arrangementVOs = new ArrayList<>();
@@ -92,13 +86,15 @@ public class ArrangementImpl
             Arrays.sort(objects);
             for (Object o : objects) {
                 List<ArrangementVO> as = map.get(o);
-                as.sort((ArrangementVO a1, ArrangementVO a2) -> (int) ((a1.getStartTime().getTime() - a2.getStartTime().getTime()) / (60 * 1000)));
-                reMap.put((Date) o, as);
+                as.sort((ArrangementVO a1, ArrangementVO a2) -> (int) ((a1.getStartTime().getTime() - a2.getStartTime().getTime()) / (1000 * 60)));
+                reMap.put((Date) o, map.get(o));
             }
-            List<Map<Date, List<ArrangementVO>>> listMap = new ArrayList<>();
-            listMap.add(reMap);
+            List<List<ArrangementVO>> reList = new ArrayList<>();
+            for (Map.Entry<Date, List<ArrangementVO>> entry : reMap.entrySet()) {
+                reList.add(entry.getValue());
+            }
             response = Response.success();
-            response.setContent(listMap);
+            response.setContent(reList);
             return response;
         }
     }
@@ -108,7 +104,7 @@ public class ArrangementImpl
         Response response;
         Arrangement arrangement = arrangementMapper.selectByPrimaryKey(aID);
         if (arrangement == null) {
-            return Response.fail(globalMsg.getWrongParam());
+            return Response.fail(arrangementMsg.getWrongParam());
         }
         Date date = new Date();
         if (date.before(arrangement.getVisibleDate())) {
@@ -172,7 +168,7 @@ public class ArrangementImpl
             arrangementSeatMapper.insertSelective(arrangementSeat);
         });
         response = Response.success();
-        response.setMessage(globalMsg.getOperationSuccess());
+        response.setMessage(arrangementMsg.getOperationSuccess());
         return response;
     }
 
@@ -197,7 +193,7 @@ public class ArrangementImpl
         arrangement.setId(ID);
         arrangementMapper.updateByPrimaryKeySelective(arrangement);
         response = Response.success();
-        response.setMessage(globalMsg.getOperationSuccess());
+        response.setMessage(arrangementMsg.getOperationSuccess());
         return response;
     }
 
@@ -214,7 +210,7 @@ public class ArrangementImpl
         arrangementSeats.forEach(arrangementSeatMapper::delete);
         arrangementMapper.deleteByPrimaryKey(ID);
         response = Response.success();
-        response.setMessage(globalMsg.getOperationSuccess());
+        response.setMessage(arrangementMsg.getOperationSuccess());
         return response;
     }
 
@@ -229,7 +225,7 @@ public class ArrangementImpl
             arrangementMapper.updateByPrimaryKeySelective(arrangement);
         });
         response = Response.success();
-        response.setMessage(globalMsg.getOperationSuccess());
+        response.setMessage(arrangementMsg.getOperationSuccess());
         return response;
     }
 
@@ -309,8 +305,8 @@ public class ArrangementImpl
     private Response unCensorArrangementForm(ArrangementForm arrangementForm) {
         Response response = Response.fail();
         Date date = new Date();
-        Movie movie = movieMapper.selectByPrimaryKey(arrangementForm.getMovieId());
-        Date completeTime = new Date(arrangementForm.getStartTime().getTime() + (movieMapper.selectByPrimaryKey(arrangementForm.getMovieId()).getDuration() * 60 * 1000));
+        Movie movie = movieService.getMoviePOByID(arrangementForm.getMovieId());
+        Date completeTime = new Date(arrangementForm.getStartTime().getTime() + (movieService.getDurationTimeByID(arrangementForm.getMovieId()) * 60 * 1000));
         if (arrangementForm.getStartTime().compareTo(arrangementForm.getEndTime()) >= 0 || (arrangementForm.getStartTime().compareTo(date) < 0) || (arrangementForm.getEndTime().compareTo(date) < 0) || (convertDateToDay(arrangementForm.getStartTime()).compareTo(convertDateToDay(arrangementForm.getEndTime())) != 0)) {
             response.setMessage(arrangementMsg.getTimeConflict());
         } else if ((arrangementForm.getFare() <= 0)) {
@@ -389,4 +385,5 @@ public class ArrangementImpl
             return date;
         }
     }
+
 }

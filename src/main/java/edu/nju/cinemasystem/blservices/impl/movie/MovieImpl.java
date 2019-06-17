@@ -99,6 +99,16 @@ public class MovieImpl implements edu.nju.cinemasystem.blservices.movie.Movie {
         return movieMapper.selectByPrimaryKey(movieID).getReleaseDate();
     }
 
+    @Override
+    public Movie getMoviePOByID(int movieID) {
+        return movieMapper.selectByPrimaryKey(movieID);
+    }
+
+    @Override
+    public int getDurationTimeByID(int movieID) {
+        return movieMapper.selectByPrimaryKey(movieID).getDuration();
+    }
+
     private AudienceMovieVO assembleAudienceMovieVO(Movie movie) {
         AudienceMovieVO movieVO = new AudienceMovieVO();
         BaseMovieVO.assembleMovieVO(movie, movieVO);
