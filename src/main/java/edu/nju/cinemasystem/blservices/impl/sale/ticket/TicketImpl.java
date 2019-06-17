@@ -4,7 +4,10 @@ import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.domain.AlipayTradePagePayModel;
+import com.alipay.api.domain.AlipayTradeRefundModel;
 import com.alipay.api.request.AlipayTradePagePayRequest;
+import com.alipay.api.request.AlipayTradeRefundRequest;
+import com.alipay.api.response.AlipayTradeRefundResponse;
 import edu.nju.cinemasystem.blservices.cinema.arrangement.Arrangement;
 import edu.nju.cinemasystem.blservices.cinema.hall.HallManage;
 import edu.nju.cinemasystem.blservices.movie.Movie;
@@ -231,6 +234,11 @@ public class TicketImpl
     @Transactional
     public Response refundTicket(int userID, int ticketID) {
         Ticket ticket = ticketsMapper.selectByPrimaryKey(ticketID);
+        if (ticket == null) {
+            return Response.fail(ticketMsg.getOperationFailed() + " : 票不存在");
+        } else if (ticket.getUserId() != userID) {
+            return Response.fail(ticketMsg.getOperationFailed() + " : 未持有该电影票");
+        }
         Order order = orderMapper.selectByPrimaryKey(ticket.getOrderID());
         if (order.getStatus() > 1) {
             return Response.fail(ticketMsg.getOrderInvalid());
@@ -246,14 +254,51 @@ public class TicketImpl
             return Response.fail(ticketMsg.getRefundDisable());
         }
         float refundAmount = ticket.getRealAmount() * refundStrategy.getPercentage();
+        Response refundResponse;
         if (order.getStatus() == 1) {
-            vipCard.addVIPBalance(ticket.getUserId(), refundAmount);
+            refundResponse = vipCard.addVIPBalance(ticket.getUserId(), refundAmount);
+        } else {
+            refundResponse = aliRefund(order.getId(), ticketID, refundAmount);
         }
-        ticket.setStatus((byte) 3);
-        ticketsMapper.updateByPrimaryKeySelective(ticket);
-        int seatID = ticket.getSeatId();
-        arrangement.changeArrangementSeatStatus(ticket.getArrangementId(), seatID, false);
-        return Response.success();
+        if (refundResponse.isSuccess()){
+            ticket.setStatus((byte) 3);
+            ticketsMapper.updateByPrimaryKeySelective(ticket);
+            int seatID = ticket.getSeatId();
+            arrangement.changeArrangementSeatStatus(ticket.getArrangementId(), seatID, false);
+            return Response.success();
+        }
+        else {
+            return refundResponse;
+        }
+    }
+
+    private Response aliRefund(long orderID, int ticketID, float refundAmount) {
+        AlipayClient alipayClient = new DefaultAlipayClient(
+                alipayProperties.getAliGateway(),
+                alipayProperties.getAppId(),
+                alipayProperties.getMerchantPrivateKey(),
+                "json",
+                alipayProperties.getCharset(),
+                alipayProperties.getAliPublicKey(),
+                alipayProperties.getSignType()
+        );
+        AlipayTradeRefundModel refundModel = new AlipayTradeRefundModel();
+        refundModel.setOutTradeNo(String.valueOf(orderID));
+        refundModel.setOutRequestNo(orderID + String.valueOf(ticketID));
+        refundModel.setRefundAmount(new DecimalFormat("0.00").format(refundAmount));
+        AlipayTradeRefundRequest refundRequest = new AlipayTradeRefundRequest();
+        refundRequest.setBizModel(refundModel);
+        AlipayTradeRefundResponse refundResponse = null;
+        try {
+            refundResponse = alipayClient.execute(refundRequest);
+        } catch (AlipayApiException e) {
+            return Response.fail("支付宝异常");
+        }
+        if (refundResponse.isSuccess()) {
+            return Response.success();
+        } else {
+            return Response.fail(refundResponse.getSubMsg());
+        }
     }
 
     @Override

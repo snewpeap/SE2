@@ -54,6 +54,20 @@
         from manager_view
     </select>
 
+    <select id="selectStaffByName" parameterType="java.lang.String" resultMap="StaffMap">
+        select
+        <include refid="Base_Column_List"/>
+        from staff_view
+        where name = #{name}
+    </select>
+
+    <select id="selectManagerByName" parameterType="java.lang.String" resultMap="ManagerMap">
+        select
+        <include refid="Manager_Column"/>
+        from manager_view
+        where name = #{name}
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
         from user

@@ -55,10 +55,10 @@ CREATE TABLE IF NOT EXISTS `cinema`.`movie`
 (
     `id`            INT(11)          NOT NULL AUTO_INCREMENT,
     `name`          VARCHAR(45)      NOT NULL,
-    `poster`        VARCHAR(255)     NULL     DEFAULT NULL,
+    `poster`        VARCHAR(512)     NULL     DEFAULT NULL,
     `director`      VARCHAR(45)      NOT NULL,
     `screen_writer` VARCHAR(45)      NOT NULL,
-    `starring`      VARCHAR(45)      NOT NULL,
+    `starring`      VARCHAR(255)     NOT NULL,
     `type`          VARCHAR(45)      NOT NULL,
     `country`       VARCHAR(45)      NOT NULL,
     `language`      VARCHAR(45)      NOT NULL,
