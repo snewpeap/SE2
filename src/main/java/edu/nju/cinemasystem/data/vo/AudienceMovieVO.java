@@ -30,7 +30,7 @@ public class AudienceMovieVO extends BaseMovieVO {
     }
 
     public void setLikeNum(int likeNum) {
-        likeNum = likeNum;
+        this.likeNum = likeNum;
     }
 
     public List<Integer> getJoinedPromotions() {
