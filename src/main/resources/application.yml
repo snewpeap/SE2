@@ -105,6 +105,7 @@ ticket-msg:
   order-invalid: "订单已失效"
   wrong-param: "电影票参数错误"
   seat-been-locked: "该座位已经被锁定，请选择其他座位"
+  has-order: "你在本场次已有订单"
 
 ---
 

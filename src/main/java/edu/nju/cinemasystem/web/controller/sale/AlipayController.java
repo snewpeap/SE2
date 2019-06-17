@@ -33,15 +33,13 @@ public class AlipayController {
 
     @RequestMapping("/user/alipay/pay/{orderID}")
     //TODO 去掉优惠券的注释
-    public @ResponseBody String alipay(@PathVariable long orderID/*, @RequestBody int couponID*/, HttpSession session, HttpServletResponse servletResponse) throws AlipayApiException {
+    public @ResponseBody Response alipay(@PathVariable long orderID/*, @RequestBody int couponID*/, HttpSession session, HttpServletResponse servletResponse) throws AlipayApiException {
         int userID = (Integer) session.getAttribute(CustomWebSecurityConfiguration.KEY_ID);
         Response response = ticket.payable(orderID, 0/* couponID*/, userID);
         if (response.isSuccess()) {
-            return ticket.requestAlipay(orderID);
-        } else {
-            servletResponse.setStatus(400);
-            return response.getMessage();
+            response.setContent(ticket.requestAlipay(orderID));
         }
+        return response;
     }
 
     @RequestMapping("/alipay/return")

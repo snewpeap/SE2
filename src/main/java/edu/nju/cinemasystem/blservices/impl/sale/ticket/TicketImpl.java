@@ -79,7 +79,11 @@ public class TicketImpl
     @Override
     @Transactional
     public Response lockSeat(List<Integer> seatIDs, int userID, int arrangementID) {
-        //TODO 检查观众在同一排片没有票
+        for (Ticket ticket:ticketsMapper.selectByArrangementID(arrangementID)){
+            if (ticket.getUserId()==userID){
+                return Response.fail(ticketMsg.getHasOrder());
+            }
+        }
         if (arrangement.isArrangementStart(arrangementID)) {
             return Response.fail(ticketMsg.getArrangementStart());
         }

@@ -18,7 +18,11 @@
             async: true,
             processData: false,
             success: function (res) {
-                document.write(res)
+                if (res.success) {
+                    document.write(res)
+                } else {
+                    alert(res.message);
+                }
             },
             error: function (err) {
                 alert(err)

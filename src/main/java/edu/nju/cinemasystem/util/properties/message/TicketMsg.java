@@ -13,6 +13,7 @@ public class TicketMsg extends ArrangementMsg {
     private String seatBeenLocked;
     private String orderInvalid;
     private String couponInvalid;
+    private String hasOrder;
 
     public String getRefundStrategyExist() {
         return refundStrategyExist;
@@ -60,5 +61,13 @@ public class TicketMsg extends ArrangementMsg {
 
     public void setCouponInvalid(String couponInvalid) {
         this.couponInvalid = couponInvalid;
+    }
+
+    public String getHasOrder() {
+        return hasOrder;
+    }
+
+    public void setHasOrder(String hasOrder) {
+        this.hasOrder = hasOrder;
     }
 }

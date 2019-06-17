@@ -2,6 +2,7 @@ package edu.nju.cinemasystem.dataservices.vip;
 
 import edu.nju.cinemasystem.data.po.VipcardRechargeReduction;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface VipcardRechargeReductionMapper {
      * @param targetAmount 起点金额
      * @return 操作的行数
      */
-    int deleteByPrimaryKey(Integer targetAmount);
+    int deleteByPrimaryKey(@Param("targetAmount") Integer targetAmount);
 
     /**
      * 新增一个充值满减策略
@@ -35,7 +36,7 @@ public interface VipcardRechargeReductionMapper {
      * @param targetAmount 起点金额
      * @return 满减策略
      */
-    List<VipcardRechargeReduction> selectByPrimaryKey(Integer targetAmount);
+    List<VipcardRechargeReduction> selectByPrimaryKey(@Param("targetAmount") Integer targetAmount);
 
     /**
      * 通过起点金额来唯一更新一条满减策略
@@ -56,5 +57,5 @@ public interface VipcardRechargeReductionMapper {
      * @param amount 金额
      * @return 选中的充值策略
      */
-    VipcardRechargeReduction selectByAmount(float amount);
+    VipcardRechargeReduction selectByAmount(@Param("amount") Float amount);
 }

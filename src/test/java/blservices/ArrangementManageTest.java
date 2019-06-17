@@ -1,6 +1,7 @@
 package blservices;
 
 import edu.nju.cinemasystem.Application;
+import edu.nju.cinemasystem.blservices.cinema.arrangement.Arrangement;
 import edu.nju.cinemasystem.blservices.cinema.arrangement.ArrangementManage;
 import edu.nju.cinemasystem.data.vo.Response;
 import edu.nju.cinemasystem.data.vo.form.ArrangementForm;
@@ -15,7 +16,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = Application.class)
@@ -23,6 +25,8 @@ public class ArrangementManageTest {
 
     @Autowired
     ArrangementManage arrangementManage;
+    @Autowired
+    private Arrangement arrangement;
 
     @Test
     @Transactional
