@@ -53,8 +53,14 @@ public class MovieLikeImpl implements edu.nju.cinemasystem.blservices.movie.Movi
             if (movieLikeMapper.insert(record) == 0) {
                 response = Response.fail();
                 response.setMessage(globalMsg.getOperationFailed());
+                return response;
             }
+            movieLikeMapper.insertSelective(record);
+            response.setMessage(globalMsg.getOperationFailed());
+            return response;
         }
+        movieLikeMapper.deleteByUserAndMovie(record);
+        response.setMessage(globalMsg.getOperationSuccess());
         return response;
     }
 

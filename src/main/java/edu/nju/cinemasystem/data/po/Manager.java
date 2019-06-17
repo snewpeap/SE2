@@ -1,7 +1,7 @@
 package edu.nju.cinemasystem.data.po;
 
 public class Manager extends User {
-    private Integer isRoot;
+    private Integer isRoot = 0;
 
     public Integer getIsRoot() {
         return isRoot;
@@ -18,4 +18,5 @@ public class Manager extends User {
     public boolean isRootManager() {
         return isRoot == 1;
     }
+
 }
