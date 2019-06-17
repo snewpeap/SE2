@@ -217,8 +217,26 @@
                                     <directory>src/main/resources/</directory>
                                     <filtering>true</filtering>
                                 </resource>
+
                                 <resource>
-                                    <directory>src/main/resources.${spring.profiles.active}</directory>
+                                    <directory>src/main/java</directory>
+                                    <includes>
+                                        <include>**/*.xml</include>
+                                    </includes>
+                                    <filtering>false</filtering>
+                                </resource>
+
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                    <includes>
+                                        <include>**/*.yml</include>
+                                        <include>**/*.xml</include>
+                                        <include>static/**</include>
+                                        <include>templates/**</include>
+                                    </includes>
+                                    <excludes>
+                                        <exclude>generatorConfig.xml</exclude>
+                                    </excludes>
                                     <filtering>false</filtering>
                                 </resource>
                             </resources>
@@ -227,30 +245,6 @@
                 </executions>
             </plugin>
         </plugins>
-
-        <resources>
-            <resource>
-                <directory>src/main/java</directory>
-                <includes>
-                    <include>**/*.xml</include>
-                </includes>
-                <filtering>false</filtering>
-            </resource>
-
-            <resource>
-                <directory>src/main/resources</directory>
-                <includes>
-                    <include>**/*.yml</include>
-                    <include>**/*.xml</include>
-                    <include>static/**</include>
-                    <include>templates/**</include>
-                </includes>
-                <excludes>
-                    <exclude>generatorConfig.xml</exclude>
-                </excludes>
-                <filtering>false</filtering>
-            </resource>
-        </resources>
     </build>
 
 </project>
