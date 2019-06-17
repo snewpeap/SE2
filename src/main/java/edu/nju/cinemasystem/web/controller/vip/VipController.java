@@ -27,8 +27,8 @@ public class VipController {
         return vipCard.getVIPCard(userId);
     }
 
-    @GetMapping("/user/vip/card/add")
-    public Response addVIPCard(@RequestParam int userId) {
+    @PostMapping("/user/vip/card/add")
+    public Response addVIPCard(@RequestParam int userId){
         return vipCard.addVIPCard(userId);
     }
 

@@ -82,9 +82,13 @@ function confirmCommit() {
                     '/user/vip/card/add?userId=' + getCookie('id'),
                     null,
                     function (res) {
-                        $('#buyModal').modal('hide');
-                        alert("购买会员卡成功");
-                        getVIP();
+                        if (res.success){
+                            $('#buyModal').modal('hide');
+                            alert("购买会员卡成功");
+                            getVIP();
+                        } else {
+                            alert(res.messsage);
+                        }
                     },
                     function (error) {
                         alert(error);
@@ -130,7 +134,7 @@ function validateForm() {
 
 function getCoupon() {
     getRequest(
-        '/user/coupon/get',
+        '/user/coupon/get?userId=' + getCookie('id'),
         function (res) {
             if (res.success) {
                 let couponList = res.content;
