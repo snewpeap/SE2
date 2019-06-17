@@ -20,4 +20,11 @@ public interface RefundTicketManage {
      * @return 是否成功
      */
     Response modifyRefundTicketManage(RefundStrategyForm refundStrategyForm);
+
+    /**
+     * 获取所有退票策略
+     *
+     * @return 所有退票策略
+     */
+    Response getAllRefunds();
 }
