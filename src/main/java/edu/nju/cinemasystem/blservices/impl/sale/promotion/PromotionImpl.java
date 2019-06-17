@@ -1,6 +1,7 @@
 package edu.nju.cinemasystem.blservices.impl.sale.promotion;
 
 import edu.nju.cinemasystem.blservices.movie.Movie;
+import edu.nju.cinemasystem.blservices.movie.PromotionInfo;
 import edu.nju.cinemasystem.blservices.vip.VIPCouponBusiness;
 import edu.nju.cinemasystem.data.po.Coupon;
 import edu.nju.cinemasystem.data.po.Promotion;
@@ -27,7 +28,7 @@ import java.util.List;
 public class PromotionImpl implements
         edu.nju.cinemasystem.blservices.sale.promotion.Promotion,
         edu.nju.cinemasystem.blservices.sale.promotion.Coupon,
-        VIPCouponBusiness {
+        VIPCouponBusiness,PromotionInfo {
 
     private final
     PromotionMapper promotionMapper;
@@ -37,15 +38,18 @@ public class PromotionImpl implements
     GlobalMsg globalMsg;
     private final
     CouponMapper couponMapper;
-    private final
-    Movie movie;
+    private Movie movie;
 
     @Autowired
-    public PromotionImpl(PromotionMapper promotionMapper, PromotionHasMovieMapper promotionHasMovieMapper, GlobalMsg globalMsg, CouponMapper couponMapper, Movie movie) {
+    public PromotionImpl(PromotionMapper promotionMapper, PromotionHasMovieMapper promotionHasMovieMapper, GlobalMsg globalMsg, CouponMapper couponMapper) {
         this.promotionMapper = promotionMapper;
         this.promotionHasMovieMapper = promotionHasMovieMapper;
         this.globalMsg = globalMsg;
         this.couponMapper = couponMapper;
+    }
+
+    @Autowired
+    public void setMovie(Movie movie) {
         this.movie = movie;
     }
 
@@ -201,6 +205,14 @@ public class PromotionImpl implements
                 throw serviceException;
             }
         }
+    }
+
+    @Override
+    public List<Integer> getJoinedPromotionOf(int movieID) {
+        List<PromotionHasMovie> promotionHasMovies = promotionHasMovieMapper.selectByMovieID(movieID);
+        List<Integer> promotionIDs = new ArrayList<>();
+        promotionHasMovies.forEach(promotionHasMovie -> promotionIDs.add(promotionHasMovie.getPromotionId()));
+        return promotionIDs;
     }
 
     /**

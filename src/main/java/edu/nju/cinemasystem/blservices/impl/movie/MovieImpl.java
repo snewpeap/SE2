@@ -23,11 +23,15 @@ public class MovieImpl implements edu.nju.cinemasystem.blservices.movie.Movie {
     private final StatisticsInfo statisticsInfo;
 
     @Autowired
-    public MovieImpl(MovieMapper movieMapper, MovieLike movieLikeInfo, PromotionInfo promotionInfo, StatisticsInfo statisticsInfo) {
+    public MovieImpl(MovieMapper movieMapper, MovieLike movieLikeInfo, StatisticsInfo statisticsInfo) {
         this.movieMapper = movieMapper;
         this.movieLikeInfo = movieLikeInfo;
-        this.promotionInfo = promotionInfo;
         this.statisticsInfo = statisticsInfo;
+    }
+
+    @Autowired
+    public void setPromotionInfo(PromotionInfo promotionInfo) {
+        this.promotionInfo = promotionInfo;
     }
 
     @Override
