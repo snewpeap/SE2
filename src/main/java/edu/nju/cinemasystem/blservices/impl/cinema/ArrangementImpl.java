@@ -118,13 +118,13 @@ public class ArrangementImpl
         }
         List<ArrangementSeat> arrangementSeats = arrangementSeatMapper.selectByArrangementID(aID);
         Hall hall = hallMapper.selectByPrimaryKey(arrangement.getHallId());
-        List<List<ArrangementSeatVO>> seatMap = new ArrayList<>(hall.getRow());
+        List<ArrangementSeatVO[]> seatMap = new ArrayList<>(hall.getRow());
         for (int row = 0; row < hall.getRow(); row++) {
-            seatMap.add(new ArrayList<>(hall.getColumn()));
+            seatMap.add(new ArrangementSeatVO[hall.getColumn()]);
         }
         for (ArrangementSeat as : arrangementSeats) {
             Seat seat = seatMapper.selectByPrimaryKey(as.getSeatId());
-            seatMap.get(seat.getRow()-1).set(seat.getColumn()-1,new ArrangementSeatVO(as));
+            seatMap.get(seat.getRow()-1)[seat.getColumn()-1] = new ArrangementSeatVO(as);
         }
         ArrangementDetailVO detailVO = new ArrangementDetailVO();
         detailVO.setSeatMap(seatMap);
