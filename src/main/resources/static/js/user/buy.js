@@ -15,7 +15,8 @@ var fare;
 var hall;
 var movie;
 var chosenSeatId = [];
-
+var actualTotal = 0.0;
+var VIPCardBalance = 0.0;
 $(document).ready(function () {
     // $(".gray-text")[0].innerText = sessionStorage.getItem("username");
     scheduleId = parseInt(window.location.href.split('?')[1].split('&')[1].split('=')[1]);
@@ -283,6 +284,7 @@ function getOrder() {
             isVIP = res.success;
             useVIP = res.success;
             if (isVIP) {
+                VIPCardBalance = res.content.balance.toFixed(2);
                 $('#member-balance').html("<div><b>会员卡余额：</b>" + res.content.balance.toFixed(2) + "元</div>");
             } else {
                 $("#member-pay").css("display", "none");
@@ -316,7 +318,7 @@ function switchPay(type) {
 function changeCoupon(couponIndex) {
     order.couponId = coupons[couponIndex].id;
     $('#order-discount').text("优惠金额： ¥" + coupons[couponIndex].discountAmount.toFixed(2));
-    var actualTotal = (parseFloat($('#order-total').text()) - parseFloat(coupons[couponIndex].discountAmount)).toFixed(2);
+    actualTotal = (parseFloat($('#order-total').text()) - parseFloat(coupons[couponIndex].discountAmount)).toFixed(2);
     $('#order-actual-total').text(" ¥" + actualTotal);
     $('#pay-amount').html("<div><b>金额：</b>" + actualTotal + "元</div>");
 }
@@ -324,25 +326,53 @@ function changeCoupon(couponIndex) {
 function payConfirmClick() {
     var payMethod = useVIP ? 'vip' : 'alipay';
     //postPayRequest();
-    postRequest('/user/' + payMethod + '/pay/' + orderId,
-        order.couponId
-        ,
-        function (res) {
-            if (res.success) {
-                if (useVIP){
-                    $('#order-state').css("display", "none");
-                    $('#success-state').css("display", "");
-                    $('#buyModal').modal('hide');
+    if (payMethod === 'vip'){
+        if (parseInt(actualTotal) >= parseInt(VIPCardBalance)){
+            alert("会员卡余额不足！请使用支付宝支付或充值后重新支付！")
+        } else {
+            postRequest('/user/vip/pay/' + orderId,
+                order.couponId
+                ,
+                function (res) {
+                    if (res.success) {
+                        if (useVIP){
+                            $('#order-state').css("display", "none");
+                            $('#success-state').css("display", "");
+                            $('#buyModal').modal('hide');
+                        } else {
+                            document.write(res.content);
+                        }
+                    } else {
+                        $('.success-notice').empty();
+                        $('.success-notice').append(res.message);
+                        $('.success-notice').append('<div class="hint">至<a class="hint" href="/user/ticket">“我的电影票”</a>页面查看</div>')
+                    }
+                },
+                function (err) {
+                    alert(err);
+                });
+        }
+    }else {
+        postRequest('/user/alipay/pay/' + orderId,
+            order.couponId
+            ,
+            function (res) {
+                if (res.success) {
+                    if (useVIP){
+                        $('#order-state').css("display", "none");
+                        $('#success-state').css("display", "");
+                        $('#buyModal').modal('hide');
+                    } else {
+                        document.write(res.content);
+                    }
                 } else {
-                    document.write(res.content);
+                    $('.success-notice').empty();
+                    $('.success-notice').append(res.message);
+                    $('.success-notice').append('<div class="hint">至<a class="hint" href="/user/ticket">“我的电影票”</a>页面查看</div>')
                 }
-            } else {
-                $('.success-notice').empty();
-                $('.success-notice').append(res.message);
-                $('.success-notice').append('<div class="hint">至<a class="hint" href="/user/ticket">“我的电影票”</a>页面查看</div>')
-            }
-        },
-        function (err) {
-            alert(err);
-        });
+            },
+            function (err) {
+                alert(err);
+            });
+    }
 }
