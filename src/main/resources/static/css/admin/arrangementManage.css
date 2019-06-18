@@ -28,7 +28,6 @@ ul{
     align-items: center;
     color: #fff;
     position: absolute;
-    overflow-y: scroll;
 }
 
 .arrangement-date-container {

@@ -65,13 +65,12 @@ public class ArrangementImpl
 
     @Override
     public Response getByMovieID(int movieID) {
-        Response response;
         List<Arrangement> arrangements = arrangementMapper.selectByMovieID(movieID);
         if (arrangements == null) {
-            response = Response.fail();
-            response.setMessage(arrangementMsg.getWrongParam());
-            return response;
+            return Response.fail(arrangementMsg.getWrongParam());
         } else {
+            Date now = new Date();
+            arrangements.removeIf(arrangement -> arrangement.getVisibleDate().after(now));
             List<ArrangementVO> arrangementVOs = new ArrayList<>();
             arrangements.forEach(arrangement -> arrangementVOs.add(new ArrangementVO(arrangement)));
             Map<Date, List<ArrangementVO>> map = new HashMap<>();
@@ -94,7 +93,7 @@ public class ArrangementImpl
             for (Map.Entry<Date, List<ArrangementVO>> entry : reMap.entrySet()) {
                 reList.add(entry.getValue());
             }
-            response = Response.success();
+            Response response = Response.success();
             response.setContent(reList);
             return response;
         }
