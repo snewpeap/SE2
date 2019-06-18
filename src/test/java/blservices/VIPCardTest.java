@@ -2,7 +2,7 @@ package blservices;
 
 
 import edu.nju.cinemasystem.Application;
-import edu.nju.cinemasystem.blservices.vip.VIPCard;
+import edu.nju.cinemasystem.blservices.vip.VIPCardService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +17,11 @@ import static org.junit.Assert.*;
 public class VIPCardTest {
 
     @Autowired
-    VIPCard vipCard;
+    VIPCardService vipCardService;
 
     @Test
     @Transactional
     public void testDeposit(){
-        assertTrue(vipCard.deposit(5,50).isSuccess());
+        assertTrue(vipCardService.deposit(5,50).isSuccess());
     }
 }
