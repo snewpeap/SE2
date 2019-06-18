@@ -18,8 +18,8 @@ function getVIP() {
                 $("#member-card").css("display", "");
                 //$("#nonmember-card").css("display", "none");
 
-                vipCardId = res.content.id;
-                $("#member-id").append(vipCardId);
+                vipCardId = res.content.userId;
+                $("#member-id").text(vipCardId);
                 $("#member-balance").text("¥" + res.content.balance.toFixed(2));
                 //$("#member-joinDate").text(res.content.joinDate.substring(0, 10));
             } else {
@@ -40,8 +40,7 @@ function getVIP() {
             if (res.success) {
                 let str = "";
                 res.content.forEach(function (one) {
-                    str += "<div class=\"price\"><b>20!看看在哪</b>" +
-                        "<div class='description'>充值优惠：满"+ one.targetAmount + "减"+ one.discountAmount +"</div>" +
+                    str += "<div class='description'>充值优惠：满"+ one.targetAmount + "减"+ one.discountAmount +"</div>" +
                         "<button onclick=\"buyClick()\">立即购买</button>"
                 });
                 $("#toBuy").append(str);
@@ -94,13 +93,27 @@ function confirmCommit() {
                         alert(error);
                     });
             } else {
-                postRequest(
-                    '/user/vip/deposit?=userId' + getCookie('id'),
-                    parseInt($('#userMember-amount').val()),
+                let orderId;
+                getRequest(
+                    '/user/vip/deposit?amount=' + parseInt($('#userMember-amount').val()),
                     function (res) {
-                        $('#buyModal').modal('hide');
-                        alert("充值成功");
-                        getVIP();
+                        orderId = res.content.id;
+                        postRequest(
+                            '/user/vip/deposit/'+ orderId,
+                            null,
+                            function (res) {
+                                if (res.success){
+                                    $('#buyModal').modal('hide');
+                                    alert("充值成功");
+                                    getVIP();
+                                } else {
+                                    alert(res.message)
+                                }
+                            },
+                            function (error) {
+                                alert(error)
+                            }
+                        )
                     },
                     function (error) {
                         alert(error);

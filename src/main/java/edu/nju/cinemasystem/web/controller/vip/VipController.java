@@ -62,7 +62,7 @@ public class VipController {
      * @return 成功或失败的结果
      */
     @GetMapping("/user/vip/deposit")
-    public Response depositVIPCard(HttpSession session, @RequestBody float amount) {
+    public Response depositVIPCard(HttpSession session, @RequestParam float amount) {
         int userId = (int) session.getAttribute("id");
         return vipCardService.depositable(userId, amount);
     }
