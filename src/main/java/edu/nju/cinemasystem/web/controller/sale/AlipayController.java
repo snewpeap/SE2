@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,7 +32,8 @@ public class AlipayController {
 
     @RequestMapping("/user/alipay/pay/{orderID}")
     //TODO 去掉优惠券的注释
-    public @ResponseBody Response alipay(@PathVariable long orderID/*, @RequestBody int couponID*/, HttpSession session, HttpServletResponse servletResponse) throws AlipayApiException {
+    public @ResponseBody
+    Response alipay(@PathVariable long orderID/*, @RequestBody int couponID*/, HttpSession session, HttpServletResponse servletResponse) throws AlipayApiException {
         int userID = (Integer) session.getAttribute(CustomWebSecurityConfiguration.KEY_ID);
         Response response = ticketService.payable(orderID, 0/* couponID*/, userID);
         if (response.isSuccess()) {
@@ -43,17 +43,19 @@ public class AlipayController {
     }
 
     @RequestMapping("/alipay/return")
-    public String alipay_return(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public String alipay_return(HttpServletRequest request) throws Exception {
         boolean signVerify = verifySign(request);
         if (signVerify) {
             //我们自己的订单号
             String out_trade_no = new String(request.getParameter("out_trade_no").getBytes("ISO-8859-1"), "UTF-8");
-            //付款金额
-            String total_amount = new String(request.getParameter("total_amount").getBytes("ISO-8859-1"), "UTF-8");
+            if (ticketService.getOrderStatus(Long.parseLong(out_trade_no)).isSuccess()) {
+                return "user/paySuccess";
+            } else {
+                return "user/payWaiting";
+            }
         } else {
-            System.out.println("fail");
+            return "user/payFailed";
         }
-        return "user/paySuccess";
     }
 
     @ResponseBody
@@ -86,7 +88,7 @@ public class AlipayController {
         return "user/testAli";
     }
 
-    private boolean verifySign(HttpServletRequest request) throws UnsupportedEncodingException, AlipayApiException {
+    private boolean verifySign(HttpServletRequest request) throws AlipayApiException {
         Map<String, String> params = new HashMap<>();
         Map<String, String[]> requestParams = request.getParameterMap();
         for (String name : requestParams.keySet()) {
@@ -97,7 +99,6 @@ public class AlipayController {
                         : valueStr + values[i] + ",";
             }
             //乱码解决，这段代码在出现乱码时使用
-            //TODO 注释掉这句
             //valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
             params.put(name, valueStr);
         }

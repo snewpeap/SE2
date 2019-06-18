@@ -14,13 +14,6 @@ public interface TicketService {
      */
     Response lockSeat(List<Integer> seatID, int userID, int arrangementID);
 
-    /**
-     * 不通过会员卡完成购票，并且给用户送优惠券
-     * 
-     * @return 是否成功
-     */
-    //Response payOrder(long orderID, int userID, int couponID);
-
     Response payable(long orderID, int couponID, int userID);
 
     String requestAlipay(long orderID) throws AlipayApiException;
@@ -33,6 +26,13 @@ public interface TicketService {
      * @return 是否成功
      */
     Response payOrderByVIPCard(long orderID, int userID);
+
+    /**
+     * 用户支付宝同步返回时检查订单完成状态
+     * @param orderID
+     * @return
+     */
+    Response getOrderStatus(long orderID);
 
     /**
      * 取消订单

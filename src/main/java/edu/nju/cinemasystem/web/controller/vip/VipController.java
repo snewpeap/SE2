@@ -26,9 +26,16 @@ public class VipController {
         return vipCardService.getVIPCard(userId);
     }
 
-    @PostMapping("/user/vip/card/add")
-    public Response addVIPCard(@RequestParam int userId) {
-        return vipCardService.addVIPCard(userId);
+    @GetMapping("/user/vip/card/add")
+    public Response buyable(HttpSession session){
+        int userId = (int) session.getAttribute("id");
+        return vipCardService.buyable(userId);
+    }
+
+    @PostMapping("/user/vip/card/add/{orderID}")
+    public Response addVIPCard(@PathVariable String orderID,HttpSession session) {
+        int userId = (int) session.getAttribute("id");
+        return vipCardService.addVIPCard(userId, orderID);
     }
 
     /**

@@ -10,12 +10,14 @@ public interface VIPCardService {
      */
     Response getVIPCard(int userID);
 
+    Response buyable(int userID);
+
     /**
      * 添加会员卡，调用这个方法的前提是第三方支付已经成功了，不成功请勿调用
      * @param userID 购买用户
      * @return 买成功的VIP卡VO
      */
-    Response addVIPCard(int userID);
+    Response addVIPCard(int userID, String orderID);
 
     /**
      * 获得充值优惠策略，满减这些的

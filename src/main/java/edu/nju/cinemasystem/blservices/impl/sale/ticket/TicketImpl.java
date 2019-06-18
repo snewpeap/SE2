@@ -213,6 +213,16 @@ public class TicketImpl
     }
 
     @Override
+    public Response getOrderStatus(long orderID) {
+        Order order = orderMapper.selectByPrimaryKey(orderID);
+        if (order.getStatus() >= 2) {
+            return Response.fail();
+        } else {
+            return Response.success();
+        }
+    }
+
+    @Override
     @Transactional
     public Response cancelOrder(int userID, long orderID) {
         Order order = orderMapper.selectByPrimaryKey(orderID);
@@ -286,7 +296,7 @@ public class TicketImpl
         refundModel.setRefundAmount(new DecimalFormat("0.00").format(refundAmount));
         AlipayTradeRefundRequest refundRequest = new AlipayTradeRefundRequest();
         refundRequest.setBizModel(refundModel);
-        AlipayTradeRefundResponse refundResponse = null;
+        AlipayTradeRefundResponse refundResponse;
         try {
             refundResponse = alipayClient.execute(refundRequest);
         } catch (AlipayApiException e) {
@@ -303,8 +313,8 @@ public class TicketImpl
     public Response getOrderByScheduleIdAndUserId(int userId, int scheduleId) {
         List<Ticket> tickets = ticketsMapper.selectByUserID(userId);
         List<Ticket> needTickets = new ArrayList<>();
-        long orderID = 0L;
-        float totalAmount = 0;
+        long orderID;
+        float totalAmount;
         for (Ticket ticket : tickets) {
             if (ticket.getArrangementId() == scheduleId && ticket.getStatus() == (byte) 0) {
                 needTickets.add(ticket);
@@ -317,7 +327,7 @@ public class TicketImpl
             OrderWithCouponVO orderWithCouponVO = assembleOrderWithCouponVO(needTickets, userId, orderID, totalAmount);
             response.setContent(orderWithCouponVO);
         }
-       return response;
+        return response;
     }
 
     @Override
@@ -479,7 +489,7 @@ public class TicketImpl
             });
         }
 
-        public void addTask(DelayedTask delayedTask) {
+        void addTask(DelayedTask delayedTask) {
             delayQueue.add(delayedTask);
         }
 
@@ -489,7 +499,7 @@ public class TicketImpl
          * @param delayedTask 延时任务
          */
         @Transactional
-        public void invalidateOrder(DelayedTask delayedTask) {
+        void invalidateOrder(DelayedTask delayedTask) {
             long orderID = delayedTask.getID();
             Order order = orderMapper.selectByPrimaryKey(orderID);
             if (order.getStatus() == 2) {
@@ -507,7 +517,7 @@ public class TicketImpl
             }
         }
 
-        public void removeTask(long orderID) {
+        void removeTask(long orderID) {
             for (DelayedTask task : delayQueue) {
                 if (task.getID() == orderID) {
                     delayQueue.remove(task);
@@ -522,7 +532,7 @@ public class TicketImpl
          * @param order
          */
         @Transactional
-        public void completeOrder(List<Ticket> tickets, Order order, boolean useVIP) {
+        void completeOrder(List<Ticket> tickets, Order order, boolean useVIP) {
             for (Ticket ticket : tickets) {
                 ticket.setStatus((byte) 1);
                 ticket.setDate(new Date());

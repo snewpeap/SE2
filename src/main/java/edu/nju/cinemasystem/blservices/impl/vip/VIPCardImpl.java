@@ -54,12 +54,33 @@ public class VIPCardImpl implements VIPCardService {
         return response;
     }
 
-    public Response buyable(){
-        return null;
+    @Override
+    public Response buyable(int userID) {
+        if (vipcardMapper.selectByPrimaryKey(userID) != null) {
+            return Response.fail(vipMsg.getHasVIPCard());
+        }
+        DelayedTask delayedTask = orderHolder.getTask(userID, false);
+        if (delayedTask != null) {
+            Response response = Response.fail();
+            response.setStatusCode(777);
+            response.setContent(delayedTask);
+            return response;
+        }
+        Date now = new Date();
+        delayedTask = new DelayedTask(
+                "B" + now.getTime(),
+                userID,
+                now,
+                20
+        );
+        orderHolder.addTask(delayedTask);
+        Response response = Response.success();
+        response.setContent(delayedTask);
+        return response;
     }
 
     @Override
-    public Response addVIPCard(int userID) {
+    public Response addVIPCard(int userID, String orderID) {
         Response response = Response.success();
         if (vipcardMapper.selectByPrimaryKey(userID) != null) {
             return Response.fail(vipMsg.getHasVIPCard());
@@ -70,6 +91,7 @@ public class VIPCardImpl implements VIPCardService {
             response = Response.fail();
             response.setMessage(vipMsg.getAddFailed());
         } else {
+            orderHolder.removeTask(orderID);
             response.setContent(vipcardMapper.selectByPrimaryKey(userID));
         }
         return response;
