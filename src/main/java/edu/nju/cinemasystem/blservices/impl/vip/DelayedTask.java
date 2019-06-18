@@ -10,12 +10,14 @@ public class DelayedTask implements Delayed {
     private int userID;
     private Date startTime;
     private float amount;
+    private float realAmount;
 
-    public DelayedTask(String ID, int userID, Date startTime, float amount) {
+    public DelayedTask(String ID, int userID, Date startTime, float amount, float realAmount) {
         this.ID = ID;
         this.userID = userID;
         this.startTime = startTime;
         this.amount = amount;
+        this.realAmount = realAmount;
     }
 
     public String getID() {
@@ -52,6 +54,14 @@ public class DelayedTask implements Delayed {
 
     public void setAmount(float amount) {
         this.amount = amount;
+    }
+
+    public float getRealAmount() {
+        return realAmount;
+    }
+
+    public void setRealAmount(float realAmount) {
+        this.realAmount = realAmount;
     }
 
     @Override
