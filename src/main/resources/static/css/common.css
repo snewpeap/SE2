@@ -12,6 +12,9 @@ input {
 ul {
     list-style: none;
 }
+th, td{
+    text-align: center;
+}
 .card {
     background: #fff;
     border-radius: 2px;

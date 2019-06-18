@@ -6,6 +6,7 @@ $(document).ready(function () {
         function (res) {
             if (res.success){
                 rechargeRecord = res.content;
+                renderRecord();
             } else {
                 alert(res.message)
             }
@@ -14,15 +15,16 @@ $(document).ready(function () {
             alert(error)
         }
     );
+});
 
-    let str = '';
+function renderRecord() {
+    var str = '';
     rechargeRecord.forEach(function (record) {
-        str += "<tr>" + "<td style='width: 195px'>"+ (record.date).substring(0,10) + "</td>" +
+        str += "<tr>" + "<td style='width: 195px'>"+ record.date.replace('T',' ').substring(0,19) + "</td>" +
             "<td style='width: 100px'>" + record.delta +"</td>" +
             "<td style='width: 100px'>" + (record.originalAmount + record.delta)+"</td>" +
             "</tr>"
     });
 
     $("#tbody0").append(str)
-
-});
+}

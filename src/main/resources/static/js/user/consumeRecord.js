@@ -23,7 +23,7 @@ $(document).ready(function () {
         recordStr +=
             "<tr>"+
             "<td style=\"width: 115px\">"+ record.movieName+"</td>" +
-            "<td style=\"width: 195px\">"+ (record.startTime).substring(0,10)+"</td>" +
+            "<td style=\"width: 195px\">"+ record.startTime.replace('T',' ').substring(0,19)+"</td>" +
             "<td style=\"width: 80px\">"+ record.ticketVOs.length +"张</td>" +
             "<td style='width: 120px'>" + record.originalSpend + "元</td>" +
             "<td style='width: 120px'>" + record.realSpend + "元</td>" +
