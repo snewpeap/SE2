@@ -2,14 +2,93 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" href="/images/favicon.ico" type="image/ico" />
     <title>支付失败</title>
+    <!-- Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.css"/>
+    <!-- fonts-asesome图标库 -->
+    <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css"/>
+
+    <!-- 引入css样式文件 -->
+    <link rel="stylesheet" type="text/css" href="/css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/admin/movieDetail.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/admin/hallManage.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/user/buy.css"/>
+    <!-- 引入js脚本文件 -->
+    <!-- jquery -->
+    <script src="/js/jquery.js"></script>
+    <!-- for-mobile-apps -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="" />
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLBar, 0); }, false);
+    function hideURLBar(){ window.scrollTo(0,1); } </script>
+    <!-- //for-mobile-apps -->
+    <link href="/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+    <!-- pop-up -->
+    <link href="/css/popuo-box.css" rel="stylesheet" type="text/css" media="all" />
+    <!-- //pop-up -->
+    <link href="/css/easy-responsive-tabs.css" rel='stylesheet' type='text/css'/>
+    <link rel="stylesheet" type="text/css" href="/css/zoomslider.css" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <link href="/css/font-awesome.css" rel="stylesheet">
+    <script type="text/javascript" src="/js/user/modernizr-2.6.2.min.js"></script>
+    <!--/web-fonts-->
+    <link href='http://fonts.googleapis.com/css?family=Tangerine:400,700' rel='stylesheet' type='text/css'>
+    <link href="http://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <!--//web-fonts-->
 </head>
 <body>
-<p>支付失败</p>
+<div id="demo-1" class="banner-inner">
+    <div class="banner-inner-dott">
+        <div class="header-w3-agileits" id="home">
+            <div class="inner-header-agile">
+                <nav class="navbar navbar-default">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <h1><a  href="/user/home"><span>M</span>ovies <span>P</span>ro</a></h1>
+                    </div>
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            <li><a href="/user/home">首页</a></li>
+                            <li><a href="/user/movie">电影列表</a></li>
+                            <li><a href="/user/ticket">我的电影票</a></li>
+                            <li><a href="/user/cardPocket">卡包</a></li>
+                            <li><a href="/user/consumeRecord">订单记录</a></li>
+                            <li><a href="/user/rechargeRecord">充值记录</a></li>
+                            <li><a href="/logout">登出</a></li>
+                        </ul>
+                    </div>
+                    <div class="clearfix"> </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content-container">
+    <div class="card col-md-12">
+        <div class="col-md-10 col-md-offset-1" id="success-state">
+            <ol class="breadcrumb col-md-12">
+                <li class="col-md-4">1. 选座</li>
+                <li class="col-md-4">2. 确认订单，支付</li>
+                <li class="col-md-4"><a href="#" class="active">3. 支付失败</a></li>
+            </ol>
+
+            <div class="success-notice" style="text-align: center">
+                <div class="hint">支付失败，<a class="hint" href="/user/home">重新购票</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/request.js"></script>
+<script src="/js/user/buy.js"></script>
 </body>
-<script type="text/javascript">
-    $(document).ready(function () {
-        console.log("ready")
-    })
-</script>
 </html>

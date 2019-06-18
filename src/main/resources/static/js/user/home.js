@@ -84,8 +84,9 @@ function renderMovie() {
     //判断是否参加了活动 如果参加了添加小标签
     function joinedPromotion(List,n) {
         if (List[n].joinedPromotions!==null && List[n].joinedPromotions.length!==0){
-            if(List[n].joinedPromotions.length >1){
-                return "<div class=\"ribben one\"><p>活动:"+List[n].joinedPromotions[0]+",...</p></div>";
+            var promotionLength = List[n].joinedPromotions.length;
+            if(promotionLength >1){
+                return "<div class=\"ribben one\"><p>活动:"+List[n].joinedPromotions[promotionLength-1]+",...</p></div>";
             }else{
                 return "<div class=\"ribben one\"><p>活动:"+List[n].joinedPromotions[0]+"</p></div>";
             }
