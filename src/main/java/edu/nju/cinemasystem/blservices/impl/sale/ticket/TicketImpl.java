@@ -80,11 +80,7 @@ public class TicketImpl
     @Override
     @Transactional
     public Response lockSeat(List<Integer> seatIDs, int userID, int arrangementID) {
-        for (Ticket ticket : ticketsMapper.selectByArrangementID(arrangementID)) {
-            if (ticket.getUserId() == userID) {
-                return Response.fail(ticketMsg.getHasOrder());
-            }
-        }
+
         if (arrangementService.isArrangementStart(arrangementID)) {
             return Response.fail(ticketMsg.getArrangementStart());
         }
@@ -321,7 +317,7 @@ public class TicketImpl
             OrderWithCouponVO orderWithCouponVO = assembleOrderWithCouponVO(needTickets, userId, orderID, totalAmount);
             response.setContent(orderWithCouponVO);
         }
-        return response;
+       return response;
     }
 
     @Override
