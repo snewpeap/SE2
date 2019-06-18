@@ -16,12 +16,4 @@ import static org.junit.Assert.*;
 @SpringBootTest(classes = Application.class)
 public class VIPCardTest {
 
-    @Autowired
-    VIPCardService vipCardService;
-
-    @Test
-    @Transactional
-    public void testDeposit(){
-        assertTrue(vipCardService.deposit(5,50).isSuccess());
-    }
 }
