@@ -262,7 +262,7 @@ public class TicketImpl
         if (!refundStrategy.canRefund()) {
             return Response.fail(ticketMsg.getRefundDisable());
         }
-        float refundAmount = ticket.getRealAmount() * refundStrategy.getPercentage();
+        float refundAmount = ticket.getRealAmount() * refundStrategy.getPercentage() / (float)100;
         Response refundResponse;
         if (order.getStatus() == 1) {
             refundResponse = vipCardService.addVIPBalance(ticket.getUserId(), refundAmount);
