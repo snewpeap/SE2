@@ -11,7 +11,8 @@
     <!-- 引入css样式文件 -->
     <link rel="stylesheet" type="text/css" href="/css/common.css"/>
     <link rel="stylesheet" type="text/css" href="/css/admin/movieDetail.css"/>
-    <link rel="stylesheet" type="text/css" href="/css/user/viewMovieDetail.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/admin/hallManage.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/user/buy.css"/>
     <!-- 引入js脚本文件 -->
     <!-- jquery -->
     <script src="/js/jquery.js"></script>
@@ -86,13 +87,13 @@
                         <div class="name img-wrapper" id="movie-img">
 <!--                            <img id="movie-img">-->
                         </div>
-                        <div class="info">
-                            <div id="movie-name"></div>
-                            <div>语言：<span id="movie-language"></span></div>
-                            <div>类型：<span id="movie-type"></span></div>
-                            <div>片长：<span id="movie-length"></span>分钟</div>
-                            <div>票价：<span id="schedule-fare"></span>元/张</div>
-                        </div>
+<!--                        <div class="info">-->
+<!--                            <div id="movie-name"></div>-->
+<!--                            <div>语言：<span id="movie-language"></span></div>-->
+<!--                            <div>类型：<span id="movie-type"></span></div>-->
+<!--                            <div>片长：<span id="movie-length"></span>分钟</div>-->
+<!--                            <div>票价：<span id="schedule-fare"></span>元/张</div>-->
+<!--                        </div>-->
                     </div>
                     <hr/>
                     <div class="line">
@@ -184,7 +185,7 @@
 
             <div class="success-notice" style="text-align: center">
                 <img src="/images/success.png"/>
-                <div class="hint">支付成功，至<a class="hint" href="/user/buy">“我的电影票”</a>页面查看</div>
+                <div class="hint">支付成功，至<a class="hint" href="/user/ticket">“我的电影票”</a>页面查看</div>
             </div>
         </div>
     </div>
@@ -201,24 +202,11 @@
             <div class="modal-body">
                 <ul class="nav nav-tabs" style="margin-bottom: 20px;">
                     <li role="presentation" class="active" id="member-pay" onclick="switchPay(0)"><a href="#">会员卡支付</a></li>
-                    <li role="presentation" id="nonmember-pay" onclick="switchPay(1)"><a href="#">银行卡支付</a></li>
+                    <li role="presentation" id="nonmember-pay" onclick="switchPay(1)"><a href="#">支付宝支付</a></li>
                 </ul>
 
                 <div id="modal-body-member" style="margin-bottom: 20px;">
                     <div id="member-balance"><b>会员卡余额：</b>&nbsp;&nbsp;元</div>
-                </div>
-
-                <div id="modal-body-nonmember" style="display: none;">
-                    <div class="form-group">
-                        <label for="userBuy-cardNum">银行卡号</label>
-                        <input class="form-control" id="userBuy-cardNum" placeholder="请输入银行卡号">
-                        <p id="userBuy-cardNum-error" class="notice">银行卡号不能为空</p>
-                    </div>
-                    <div class="form-group">
-                        <label for="userBuy-cardPwd">密码</label>
-                        <input type="password" class="form-control" id="userBuy-cardPwd" placeholder="请输入密码">
-                        <p id="userBuy-cardPwd-error" class="notice">密码不能为空</p>
-                    </div>
                 </div>
 
                 <div id="pay-amount"><b>金额</b> 元</div>

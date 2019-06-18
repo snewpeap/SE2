@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="/images/favicon.ico" type="image/ico" />
+    <link rel="icon" href="/images/favicon.ico" type="image/ico">
     <title>赠送优惠券</title>
 
     <!-- Bootstrap -->
@@ -21,12 +21,16 @@
     <!-- bootstrap-progressbar -->
     <link href="/webjars/gentelella/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
     <!-- JQVMap -->
-    <link href="/webjars/gentelella/vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet"/>
+    <link href="/webjars/gentelella/vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet">
     <!-- bootstrap-daterangepicker -->
     <link href="/webjars/gentelella/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
     <link href="/webjars/gentelella/build/css/custom.min.css" rel="stylesheet">
+    <!-- Personal Theme Style -->
+<!--    <link href="/css/common.css" rel="stylesheet" type="text/css">-->
+    <link href="/css/admin/handOutCoupon.css" rel="stylesheet" type="text/css">
+    <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 </head>
 <body class="nav-md">
 <div class="container body">
@@ -138,8 +142,41 @@
         <div class="right_col" role="main">
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="col-md-6 col-xs-12">
-
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>输入需达到的金额：</h2>
+                                <input type="number" min="0" class="form-control" id="moneyInput" value="0" onchange="getVips()" style='display: inline-block;width: 100px;'>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-striped jambo_table bulk_action">
+                                    <thead>
+                                    <tr class="headings">
+                                        <th>
+                                            <input type="checkbox" id="check-all" class="flat">
+                                        </th>
+                                        <th class="column-title">序号</th>
+                                        <th class="column-title">名称</th>
+                                        <th class="column-title">消费总金额（元）</th>
+                                        <th class="bulk-actions" colspan="7">
+                                            <a class="antoo" style="color:#fff; font-weight:500;">已选择( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="tbody">
+                                        <tr class="even pointer">
+                                            <td class="a-center ">
+                                                <input type="checkbox" class="flat" name="table_records">
+                                            </td>
+                                            <td class=" ">12</td>
+                                            <td class=" ">John Blank L</td>
+                                            <td class=" ">121000040</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -162,12 +199,39 @@
 <script src="/webjars/gentelella/vendors/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap -->
 <script src="/webjars/gentelella/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- Custom Theme Scripts -->
+<script src="/webjars/gentelella/build/js/custom.min.js"></script>
+<script src="/js/request.js"></script>
+<script src="/js/admin/common.js"></script>
+<script src="/js/admin/handOutCoupon.js"></script>
+<script>
+    getRequest(
+        '/admin/vip/get',
+        function (res) {
+            if(res.success){
+                vips = res.content;
+                var tableDom = "";
+                vips.forEach(function (vip) {
+                    tableDom += "<tr class='even pointer'>" +
+                        "<td class='a-center'><input type='checkbox' class='flat' name='table_records'></td>" +
+                        "<td>"+vip.vipcardID+"</td>" +
+                        "<td>"+vip.user.name+"</td>" +
+                        "<td>"+vip.consumption+"</td>" +
+                        "</tr>";
+                });
+                $('tbody').append(tableDom);
+            }else{
+                alert(res.message);
+            }
+        },
+        function (res) {
+            alert(res.message);}
+    )
+</script>
 <!-- FastClick -->
 <script src="/webjars/gentelella/vendors/fastclick/lib/fastclick.js"></script>
 <!-- NProgress -->
 <script src="/webjars/gentelella/vendors/nprogress/nprogress.js"></script>
-<!-- Chart.js -->
-<script src="/webjars/gentelella/vendors/Chart.js/dist/Chart.min.js"></script>
 <!-- gauge.js -->
 <script src="/webjars/gentelella/vendors/gauge.js/dist/gauge.min.js"></script>
 <!-- bootstrap-progressbar -->
@@ -196,10 +260,6 @@
 <script src="/webjars/gentelella/vendors/moment/min/moment.min.js"></script>
 <script src="/webjars/gentelella/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
 
-<!-- Custom Theme Scripts -->
-<script src="/webjars/gentelella/build/js/custom.min.js"></script>
-<script src="/js/request.js"></script>
-<script src="/js/admin/common.js"></script>
-<script src="/js/admin/handOutCoupon.js"></script>
+
 </body>
 </html>

@@ -101,6 +101,7 @@ $(document).on('click','.confirm-modify',function (e) {
     staffId = e.target.id;
     set(staffId);
     var form = {
+        id: staffId,
         name: $(nameId).val(),
         password: '',
         role: $(roleId).children('option:selected').val()

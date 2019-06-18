@@ -24,7 +24,7 @@ public class TicketController {
     }
 
     @PostMapping("/user/vip/pay/{orderID}")
-    public Response payOrderByVIP(@PathVariable long orderID, HttpSession session, @RequestParam int couponID) {
+    public Response payOrderByVIP(@PathVariable long orderID, HttpSession session, @RequestBody int couponID) {
         int userID = (Integer) session.getAttribute("id");
         Response response = ticketService.payable(orderID, couponID, userID);
         if (response.isSuccess()) {
