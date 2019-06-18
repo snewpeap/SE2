@@ -1,6 +1,7 @@
 package edu.nju.cinemasystem.blservices.impl.movie;
 
-import edu.nju.cinemasystem.blservices.movie.MovieLike;
+import edu.nju.cinemasystem.blservices.movie.MovieLikeService;
+import edu.nju.cinemasystem.blservices.movie.MovieService;
 import edu.nju.cinemasystem.blservices.movie.PromotionInfo;
 import edu.nju.cinemasystem.blservices.movie.StatisticsInfo;
 import edu.nju.cinemasystem.data.po.Movie;
@@ -17,16 +18,16 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class MovieImpl implements edu.nju.cinemasystem.blservices.movie.Movie {
+public class MovieImpl implements MovieService {
     private MovieMapper movieMapper;
-    private MovieLike movieLikeInfo;
+    private MovieLikeService movieLikeServiceInfo;
     private PromotionInfo promotionInfo;
     private StatisticsInfo statisticsInfo;
 
     @Autowired
-    public MovieImpl(MovieMapper movieMapper, MovieLike movieLikeInfo) {
+    public MovieImpl(MovieMapper movieMapper, MovieLikeService movieLikeServiceInfo) {
         this.movieMapper = movieMapper;
-        this.movieLikeInfo = movieLikeInfo;
+        this.movieLikeServiceInfo = movieLikeServiceInfo;
     }
 
     @Autowired
@@ -63,7 +64,7 @@ public class MovieImpl implements edu.nju.cinemasystem.blservices.movie.Movie {
                 response.setStatusCode(404);
             } else {
                 AudienceMovieVO movieVO = assembleAudienceMovieVO(movie);
-                movieVO.setLiked(movieLikeInfo.getIsLike(userID, movieID));
+                movieVO.setLiked(movieLikeServiceInfo.getIsLike(userID, movieID));
                 response.setContent(movieVO);
             }
         }
@@ -114,7 +115,7 @@ public class MovieImpl implements edu.nju.cinemasystem.blservices.movie.Movie {
         BaseMovieVO.assembleMovieVO(movie, movieVO);
         int movieID = movieVO.getId();
         movieVO.setJoinedPromotions(promotionInfo.getJoinedPromotionOf(movieID));
-        movieVO.setLikeNum(movieLikeInfo.getLikeAmount(movieID));
+        movieVO.setLikeNum(movieLikeServiceInfo.getLikeAmount(movieID));
         movieVO.setHeat(statisticsInfo.getHeatOf(movieID));
         movieVO.setStatus(movie.getStatus());
         return movieVO;

@@ -14,7 +14,7 @@ import java.util.Date;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = Application.class)
-public class ArrangementMapperTest {
+public class ArrangementServiceMapperTest {
 
     @Autowired
     ArrangementMapper arrangementMapper;

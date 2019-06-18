@@ -1,7 +1,7 @@
 package edu.nju.cinemasystem.blservices.impl.movie;
 
 import edu.nju.cinemasystem.blservices.movie.ArrangementInfo;
-import edu.nju.cinemasystem.blservices.movie.MovieLike;
+import edu.nju.cinemasystem.blservices.movie.MovieLikeService;
 import edu.nju.cinemasystem.blservices.movie.MovieManagement;
 import edu.nju.cinemasystem.data.po.Movie;
 import edu.nju.cinemasystem.data.vo.BaseMovieVO;
@@ -21,14 +21,14 @@ import java.util.List;
 @Service
 public class MovieManagementImpl implements MovieManagement {
     private final MovieMapper movieMapper;
-    private final MovieLike movieLike;
+    private final MovieLikeService movieLikeService;
     private final ArrangementInfo arrangementInfo;
     private final MovieMsg movieMsg;
 
     @Autowired
-    public MovieManagementImpl(MovieMapper movieMapper, MovieLike movieLike, ArrangementInfo arrangementInfo, MovieMsg movieMsg) {
+    public MovieManagementImpl(MovieMapper movieMapper, MovieLikeService movieLikeService, ArrangementInfo arrangementInfo, MovieMsg movieMsg) {
         this.movieMapper = movieMapper;
-        this.movieLike = movieLike;
+        this.movieLikeService = movieLikeService;
         this.arrangementInfo = arrangementInfo;
         this.movieMsg = movieMsg;
     }
@@ -119,9 +119,9 @@ public class MovieManagementImpl implements MovieManagement {
         ManagerMovieVO movieVO = new ManagerMovieVO();
         BaseMovieVO.assembleMovieVO(movie, movieVO);
         movieVO.setReleaseDate(movie.getReleaseDate());
-        movieVO.setLikeNum(movieLike.getLikeAmount(movieVO.getId()));
+        movieVO.setLikeNum(movieLikeService.getLikeAmount(movieVO.getId()));
         movieVO.setStatus(movie.getStatus());
-        movieVO.setLikeData(movieLike.getLikeDataOf(movie.getId()));
+        movieVO.setLikeData(movieLikeService.getLikeDataOf(movie.getId()));
         return movieVO;
     }
 

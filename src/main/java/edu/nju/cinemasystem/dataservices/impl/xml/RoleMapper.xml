@@ -17,7 +17,7 @@
         where id = #{id,jdbcType=INTEGER}
     </select>
 
-    <select id="selectRoleByName" parameterType="java.lang.String" resultType="java.lang.Integer">
+    <select id="selectRoleByName" parameterType="java.lang.String" resultType="BaseResultMap">
         select *
         from role
         where role_name = #{role_name}

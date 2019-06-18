@@ -5,7 +5,7 @@ import edu.nju.cinemasystem.data.vo.Response;
 import java.util.List;
 import java.util.Map;
 
-public interface MovieLike {
+public interface MovieLikeService {
     Response like(int userID, int movieID);
 
     Response unlike(int userID, int movieID);

@@ -1,35 +1,34 @@
 package edu.nju.cinemasystem.web.controller.vip;
 
-import edu.nju.cinemasystem.blservices.vip.VIPCard;
+import edu.nju.cinemasystem.blservices.vip.VIPCardService;
 import edu.nju.cinemasystem.blservices.vip.VIPManagement;
 import edu.nju.cinemasystem.data.vo.RechargeReductionVO;
 import edu.nju.cinemasystem.data.vo.Response;
 import edu.nju.cinemasystem.data.vo.form.PresentCouponForm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
 @RestController
 public class VipController {
-    private final VIPCard vipCard;
+    private final VIPCardService vipCardService;
     private final VIPManagement vipManagement;
 
     @Autowired
-    public VipController(VIPCard vipCard, VIPManagement vipManagement) {
-        this.vipCard = vipCard;
+    public VipController(VIPCardService vipCardService, VIPManagement vipManagement) {
+        this.vipCardService = vipCardService;
         this.vipManagement = vipManagement;
     }
 
     @GetMapping("/user/vip/card/get")
     public Response getVIPCard(@RequestParam int userId) {
-        return vipCard.getVIPCard(userId);
+        return vipCardService.getVIPCard(userId);
     }
 
     @PostMapping("/user/vip/card/add")
     public Response addVIPCard(@RequestParam int userId){
-        return vipCard.addVIPCard(userId);
+        return vipCardService.addVIPCard(userId);
     }
 
     /**
@@ -39,18 +38,18 @@ public class VipController {
      */
     @GetMapping("/user/vip/rechargeReduction")
     public Response getRechargeReduction() {
-        return vipCard.getRechargeReduction();
+        return vipCardService.getRechargeReduction();
     }
 
     @GetMapping("/user/vip/history")
     public Response getRechargeHistory(@RequestParam int userId) {
-        return vipCard.getRechargeHistory(userId);
+        return vipCardService.getRechargeHistory(userId);
     }
 
     @PostMapping("/user/vip/deposit")
     public Response depositVIPCard(HttpSession session, @RequestBody float amount) {
         int userId = (int) session.getAttribute("id");
-        return vipCard.deposit(userId, amount);
+        return vipCardService.deposit(userId, amount);
     }
 
     @GetMapping("/admin/vip/get")
@@ -85,6 +84,6 @@ public class VipController {
 
     @GetMapping("/admin/vip/reduction/get")
     public Response getReduction() {
-        return vipCard.getRechargeReduction();
+        return vipCardService.getRechargeReduction();
     }
 }

@@ -1,7 +1,7 @@
 package edu.nju.cinemasystem.web.controller.cinema;
 
-import edu.nju.cinemasystem.blservices.cinema.arrangement.Arrangement;
 import edu.nju.cinemasystem.blservices.cinema.arrangement.ArrangementManage;
+import edu.nju.cinemasystem.blservices.cinema.arrangement.ArrangementService;
 import edu.nju.cinemasystem.data.vo.Response;
 import edu.nju.cinemasystem.data.vo.form.ArrangementForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,18 +13,18 @@ import java.util.List;
 @RestController
 public class ArrangementController {
     @Autowired
-    private Arrangement arrangement;
+    private ArrangementService arrangementService;
     @Autowired
     private ArrangementManage arrangementManage;
 
     @GetMapping("/user/arrangement/get")
     public Response getArrangement(@RequestParam int movieId){
-        return arrangement.getByMovieID(movieId);
+        return arrangementService.getByMovieID(movieId);
     }
 
     @GetMapping("/user/seat/get")
     public Response getSeatMap(@RequestParam int arrangementId){
-        return arrangement.getSeatMap(arrangementId);
+        return arrangementService.getSeatMap(arrangementId);
     }
 
     @PostMapping("/manage/arrangement/add")

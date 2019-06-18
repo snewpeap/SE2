@@ -2,7 +2,7 @@ package blservices;
 
 
 import edu.nju.cinemasystem.Application;
-import edu.nju.cinemasystem.blservices.sale.promotion.Promotion;
+import edu.nju.cinemasystem.blservices.sale.promotion.PromotionService;
 import edu.nju.cinemasystem.data.vo.form.PromotionForm;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,21 +11,21 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.constraints.AssertTrue;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = Application.class)
-public class PromotionTest {
+public class PromotionServiceTest {
 
     @Autowired
-    Promotion promotion;
+    PromotionService promotionService;
 
     @Test
     @Transactional
@@ -42,7 +42,7 @@ public class PromotionTest {
         promotionForm.setCouponAmount((float)20);
         promotionForm.setCouponExpiration(10);
         promotionForm.setDescription("农夫山泉有点甜");
-        assertTrue(promotion.publishPromotion(promotionForm).isSuccess());
+        assertTrue(promotionService.publishPromotion(promotionForm).isSuccess());
     }
 
     @Test
@@ -63,7 +63,7 @@ public class PromotionTest {
         promotionForm.setCouponAmount((float)21);
         promotionForm.setCouponExpiration(8);
         promotionForm.setDescription("大家好才是真的好");
-        assertTrue(promotion.publishPromotion(promotionForm).isSuccess());
+        assertTrue(promotionService.publishPromotion(promotionForm).isSuccess());
     }
 
     @Test
@@ -79,7 +79,7 @@ public class PromotionTest {
         promotionForm.setSpecifyMovies(true);
         promotionForm.setCouponExpiration(8);
         promotionForm.setDescription("大家好才是真的好");
-        assertFalse(promotion.publishPromotion(promotionForm).isSuccess());
+        assertFalse(promotionService.publishPromotion(promotionForm).isSuccess());
     }
 
 

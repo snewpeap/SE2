@@ -1,7 +1,7 @@
 package blservices;
 
 import edu.nju.cinemasystem.Application;
-import edu.nju.cinemasystem.blservices.movie.MovieLike;
+import edu.nju.cinemasystem.blservices.movie.MovieLikeService;
 import edu.nju.cinemasystem.data.vo.Response;
 import edu.nju.cinemasystem.dataservices.movie.MovieLikeMapper;
 import org.junit.Test;
@@ -14,16 +14,16 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = Application.class)
-public class MovieLikeTest {
+public class MovieServiceLikeTest {
 
     @Autowired
-    private MovieLike movieLike;
+    private MovieLikeService movieLikeService;
     @Autowired
     private MovieLikeMapper movieLikeMapper;
 
     @Test
     public void testLike1(){
-        Response response = movieLike.like(1,1);
+        Response response = movieLikeService.like(1,1);
         assertTrue(response.isSuccess());
         edu.nju.cinemasystem.data.po.MovieLike po = movieLikeMapper.selectByUserAndMovie(edu.nju.cinemasystem.data.po.MovieLike.assembleMovieLikePO(1,1));
         assertNotNull(po);
@@ -33,6 +33,6 @@ public class MovieLikeTest {
 
     @Test
     public void testLikeData1(){
-        movieLike.getLikeDataOf(1);
+        movieLikeService.getLikeDataOf(1);
     }
 }

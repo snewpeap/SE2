@@ -1,7 +1,9 @@
 package edu.nju.cinemasystem.blservices.impl.cinema;
 
 import edu.nju.cinemasystem.blservices.cinema.arrangement.ArrangementManage;
+import edu.nju.cinemasystem.blservices.cinema.arrangement.ArrangementService;
 import edu.nju.cinemasystem.blservices.movie.ArrangementInfo;
+import edu.nju.cinemasystem.blservices.movie.MovieService;
 import edu.nju.cinemasystem.data.po.*;
 import edu.nju.cinemasystem.data.vo.ArrangementDetailVO;
 import edu.nju.cinemasystem.data.vo.ArrangementSeatVO;
@@ -23,14 +25,13 @@ import java.util.*;
 
 @Service
 public class ArrangementImpl
-        implements edu.nju.cinemasystem.blservices.cinema.arrangement.Arrangement,
-        ArrangementManage, ArrangementInfo {
+        implements ArrangementService, ArrangementManage, ArrangementInfo {
     private final ArrangementMapper arrangementMapper;
     private final ArrangementSeatMapper arrangementSeatMapper;
     private final SeatMapper seatMapper;
     private final ArrangementMsg arrangementMsg;
     private final HallMapper hallMapper;
-    private edu.nju.cinemasystem.blservices.movie.Movie movieService;
+    private MovieService movieService;
 
     @Autowired
     public ArrangementImpl(ArrangementMapper arrangementMapper, ArrangementSeatMapper arrangementSeatMapper, SeatMapper seatMapper, ArrangementMsg arrangementMsg, HallMapper hallMapper) {
@@ -42,7 +43,7 @@ public class ArrangementImpl
     }
 
     @Autowired
-    public void setMovieService(edu.nju.cinemasystem.blservices.movie.Movie movieService) {
+    public void setMovieService(MovieService movieService) {
         this.movieService = movieService;
     }
 

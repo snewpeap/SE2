@@ -1,6 +1,6 @@
 package edu.nju.cinemasystem.util.security;
 
-import edu.nju.cinemasystem.blservices.user.Account;
+import edu.nju.cinemasystem.blservices.user.AccountService;
 import edu.nju.cinemasystem.data.vo.UserVO;
 import edu.nju.cinemasystem.util.properties.RoleProperty;
 import edu.nju.cinemasystem.web.config.CustomWebSecurityConfiguration;
@@ -21,7 +21,7 @@ import java.util.Collection;
 @Component
 public class GlobalAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
     @Autowired
-    private Account account;
+    private AccountService accountService;
     @Autowired
     private RoleProperty roleProperty;
 
@@ -29,7 +29,7 @@ public class GlobalAuthenticationSuccessHandler extends SavedRequestAwareAuthent
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
         HttpSession session = request.getSession();
         String username = authentication.getName();
-        UserVO userVO = account.getUserVOByName(username);
+        UserVO userVO = accountService.getUserVOByName(username);
         session.setAttribute(CustomWebSecurityConfiguration.KEY_ID, userVO.getID());
         session.setAttribute(CustomWebSecurityConfiguration.KEY_NAME, username);
         System.out.println(username + "登录成功");

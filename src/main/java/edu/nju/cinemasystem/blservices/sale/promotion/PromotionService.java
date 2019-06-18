@@ -3,7 +3,7 @@ package edu.nju.cinemasystem.blservices.sale.promotion;
 import edu.nju.cinemasystem.data.vo.Response;
 import edu.nju.cinemasystem.data.vo.form.PromotionForm;
 
-public interface Promotion {
+public interface PromotionService {
 
     /**
      * 发布优惠活动

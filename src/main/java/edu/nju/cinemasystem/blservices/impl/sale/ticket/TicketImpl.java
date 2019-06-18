@@ -8,12 +8,13 @@ import com.alipay.api.domain.AlipayTradeRefundModel;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.alipay.api.request.AlipayTradeRefundRequest;
 import com.alipay.api.response.AlipayTradeRefundResponse;
-import edu.nju.cinemasystem.blservices.cinema.arrangement.Arrangement;
+import edu.nju.cinemasystem.blservices.cinema.arrangement.ArrangementService;
 import edu.nju.cinemasystem.blservices.cinema.hall.HallManage;
-import edu.nju.cinemasystem.blservices.movie.Movie;
-import edu.nju.cinemasystem.blservices.sale.promotion.Coupon;
+import edu.nju.cinemasystem.blservices.movie.MovieService;
+import edu.nju.cinemasystem.blservices.sale.promotion.CouponService;
+import edu.nju.cinemasystem.blservices.sale.ticket.TicketService;
 import edu.nju.cinemasystem.blservices.vip.SalesInfo;
-import edu.nju.cinemasystem.blservices.vip.VIPCard;
+import edu.nju.cinemasystem.blservices.vip.VIPCardService;
 import edu.nju.cinemasystem.data.po.Order;
 import edu.nju.cinemasystem.data.po.RefundStrategy;
 import edu.nju.cinemasystem.data.po.Ticket;
@@ -37,15 +38,15 @@ import java.util.concurrent.Executors;
 
 @Service
 public class TicketImpl
-        implements edu.nju.cinemasystem.blservices.sale.ticket.Ticket, SalesInfo {
+        implements TicketService, SalesInfo {
 
     private static final Logger LOG = LoggerFactory.getLogger(TicketImpl.class);
 
-    private final Arrangement arrangement; //这个是业务逻辑层的接口
-    private final Coupon coupon;//这个是业务逻辑层的接口
-    private final VIPCard vipCard;//这个是业务逻辑层的接口
+    private final ArrangementService arrangementService; //这个是业务逻辑层的接口
+    private final CouponService couponService;//这个是业务逻辑层的接口
+    private final VIPCardService vipCardService;//这个是业务逻辑层的接口
     private final HallManage hallManage;
-    private final Movie movie;
+    private final MovieService movieService;
     private final OrderMapper orderMapper;
     private final TicketsMapper ticketsMapper;
     private final RefundStrategyMapper refundStrategyMapper;
@@ -54,16 +55,16 @@ public class TicketImpl
     private OrderHolder orderHolder;
 
     @Autowired
-    public TicketImpl(TicketsMapper ticketsMapper, Arrangement arrangement, Coupon coupon, VIPCard vipCard, TicketMsg ticketMsg, OrderMapper orderMapper, RefundStrategyMapper refundStrategyMapper, HallManage hallManage, Movie movie, AlipayProperties alipayProperties) {
+    public TicketImpl(TicketsMapper ticketsMapper, ArrangementService arrangementService, CouponService couponService, VIPCardService vipCardService, TicketMsg ticketMsg, OrderMapper orderMapper, RefundStrategyMapper refundStrategyMapper, HallManage hallManage, MovieService movieService, AlipayProperties alipayProperties) {
         this.ticketsMapper = ticketsMapper;
-        this.arrangement = arrangement;
-        this.coupon = coupon;
-        this.vipCard = vipCard;
+        this.arrangementService = arrangementService;
+        this.couponService = couponService;
+        this.vipCardService = vipCardService;
         this.ticketMsg = ticketMsg;
         this.orderMapper = orderMapper;
         this.refundStrategyMapper = refundStrategyMapper;
         this.hallManage = hallManage;
-        this.movie = movie;
+        this.movieService = movieService;
         this.alipayProperties = alipayProperties;
         orderHolder = new OrderHolder();
     }
@@ -84,11 +85,11 @@ public class TicketImpl
                 return Response.fail(ticketMsg.getHasOrder());
             }
         }
-        if (arrangement.isArrangementStart(arrangementID)) {
+        if (arrangementService.isArrangementStart(arrangementID)) {
             return Response.fail(ticketMsg.getArrangementStart());
         }
         Date date = new Date();
-        float realAmount = arrangement.getFareByID(arrangementID);
+        float realAmount = arrangementService.getFareByID(arrangementID);
         float totalAmount = realAmount * seatIDs.size();
         long orderID = Long.parseLong(date.getTime() + String.valueOf(1 + (long) (Math.random() * 100)));
 
@@ -96,11 +97,11 @@ public class TicketImpl
         orderMapper.insertSelective(order);
         List<Ticket> tickets = new ArrayList<>();
         for (int seatID : seatIDs) {
-            if (arrangement.isSeatBeenLocked(arrangementID, seatID)) {
+            if (arrangementService.isSeatBeenLocked(arrangementID, seatID)) {
                 orderMapper.deleteByPrimaryKey(orderID);
                 return Response.fail(ticketMsg.getSeatBeenLocked());
             }
-            arrangement.changeArrangementSeatStatus(arrangementID, seatID, true);
+            arrangementService.changeArrangementSeatStatus(arrangementID, seatID, true);
             Ticket ticket = Ticket.assembleTicketPO(userID, arrangementID, seatID, date, (byte) 0, realAmount, orderID);
             ticketsMapper.insertSelective(ticket);
             tickets.add(ticket);
@@ -121,7 +122,7 @@ public class TicketImpl
             return Response.fail(ticketMsg.getOrderInvalid());
         }
         if (couponID > 0) {
-            List<CouponVO> coupons = coupon.getAvailableCouponsByUserAndTickets(userID, order.getOriginalAmount());
+            List<CouponVO> coupons = couponService.getAvailableCouponsByUserAndTickets(userID, order.getOriginalAmount());
             CouponVO thecoupon = null;
             for (CouponVO couponVO : coupons) {
                 if (couponVO.getID() == couponID) {
@@ -133,7 +134,7 @@ public class TicketImpl
                 order.setRealAmount(order.getOriginalAmount() - thecoupon.getDiscountAmount());
                 orderMapper.updateByPrimaryKeySelective(order);
                 List<Ticket> tickets = ticketsMapper.selectByOrderID(orderID);
-                float original = arrangement.getFareByID(tickets.get(0).getArrangementId());
+                float original = arrangementService.getFareByID(tickets.get(0).getArrangementId());
                 float minus = thecoupon.getDiscountAmount() / (float) tickets.size();
                 tickets.forEach(
                         ticket -> {
@@ -188,13 +189,13 @@ public class TicketImpl
         }
         int couponID = orderHolder.getCouponID(orderID);
         if (couponID > 0) {
-            coupon.removeCouponByID(couponID);
+            couponService.removeCouponByID(couponID);
         }
         List<Ticket> tickets = ticketsMapper.selectByOrderID(orderID);
         orderHolder.completeOrder(tickets, order, false);
-        int movieID = arrangement.getMovieIDbyID(tickets.get(0).getArrangementId());
+        int movieID = arrangementService.getMovieIDbyID(tickets.get(0).getArrangementId());
         int userID = order.getUserId();
-        coupon.sendCouponsToUser(userID, movieID);
+        couponService.sendCouponsToUser(userID, movieID);
         return Response.success();
     }
 
@@ -202,13 +203,13 @@ public class TicketImpl
     @Transactional
     public Response payOrderByVIPCard(long orderID, int userID) {
         Order order = orderMapper.selectByPrimaryKey(orderID);
-        Response payResult = vipCard.pay(userID, order.getRealAmount());
+        Response payResult = vipCardService.pay(userID, order.getRealAmount());
         if (payResult.isSuccess()) {
             List<Ticket> tickets = ticketsMapper.selectByOrderID(orderID);
             int arrangementID = tickets.get(0).getArrangementId();
-            int movieID = arrangement.getMovieIDbyID(arrangementID);
+            int movieID = arrangementService.getMovieIDbyID(arrangementID);
             orderHolder.completeOrder(tickets, order, true);
-            coupon.sendCouponsToUser(userID, movieID);
+            couponService.sendCouponsToUser(userID, movieID);
             return Response.success(ticketMsg.getOperationSuccess());
         } else {
             return payResult;
@@ -225,7 +226,7 @@ public class TicketImpl
         List<Ticket> tickets = ticketsMapper.selectByOrderID(orderID);
         for (Ticket ticket : tickets) {
             ticketsMapper.deleteByPrimaryKey(ticket.getId());
-            arrangement.changeArrangementSeatStatus(ticket.getArrangementId(), ticket.getSeatId(), false);
+            arrangementService.changeArrangementSeatStatus(ticket.getArrangementId(), ticket.getSeatId(), false);
         }
         orderMapper.deleteByPrimaryKey(orderID);
         orderHolder.removeTask(orderID);
@@ -245,7 +246,7 @@ public class TicketImpl
         if (order.getStatus() > 1) {
             return Response.fail(ticketMsg.getOrderInvalid());
         }
-        Date arrangementStartTime = arrangement.getStartDateAndEndDate(ticket.getArrangementId())[0];
+        Date arrangementStartTime = arrangementService.getStartDateAndEndDate(ticket.getArrangementId())[0];
         Date currentTime = new Date();
         if (arrangementStartTime.before(currentTime)) {
             return Response.fail(ticketMsg.getArrangementStart());
@@ -258,7 +259,7 @@ public class TicketImpl
         float refundAmount = ticket.getRealAmount() * refundStrategy.getPercentage();
         Response refundResponse;
         if (order.getStatus() == 1) {
-            refundResponse = vipCard.addVIPBalance(ticket.getUserId(), refundAmount);
+            refundResponse = vipCardService.addVIPBalance(ticket.getUserId(), refundAmount);
         } else {
             refundResponse = aliRefund(order.getId(), ticketID, refundAmount);
         }
@@ -266,7 +267,7 @@ public class TicketImpl
             ticket.setStatus((byte) 3);
             ticketsMapper.updateByPrimaryKeySelective(ticket);
             int seatID = ticket.getSeatId();
-            arrangement.changeArrangementSeatStatus(ticket.getArrangementId(), seatID, false);
+            arrangementService.changeArrangementSeatStatus(ticket.getArrangementId(), seatID, false);
             return Response.success();
         } else {
             return refundResponse;
@@ -367,10 +368,10 @@ public class TicketImpl
             List<TicketVO> oneTicketVOs = entry.getValue();
             float realSpend = oneTicketVOs.size() * oneTicketVOs.get(0).getRealAmount();
             int arrangementID = oneTicketVOs.get(0).getArrangementId();
-            float originalSpend = oneTicketVOs.size() * (arrangement.getFareByID(arrangementID));
-            Date[] dates = arrangement.getStartDateAndEndDate(arrangementID);
-            String movieName = movie.getMovieNameByID(arrangement.getMovieIDbyID(arrangementID));
-            String hallName = arrangement.getHallNameByArrangementID(arrangementID);
+            float originalSpend = oneTicketVOs.size() * (arrangementService.getFareByID(arrangementID));
+            Date[] dates = arrangementService.getStartDateAndEndDate(arrangementID);
+            String movieName = movieService.getMovieNameByID(arrangementService.getMovieIDbyID(arrangementID));
+            String hallName = arrangementService.getHallNameByArrangementID(arrangementID);
             orderVOS.add(new OrderVO(entry.getKey(), oneTicketVOs, realSpend, originalSpend, date, dates[0], dates[1], movieName, hallName));
         }
         response = Response.success();
@@ -401,11 +402,11 @@ public class TicketImpl
      */
     private OrderWithCouponVO assembleOrderWithCouponVO(List<Ticket> tickets, int userID, long orderID, float totalAmount) {
         List<TicketVO> ticketVOs = new ArrayList<>();
-        List<CouponVO> couponVOs = coupon.getAvailableCouponsByUserAndTickets(userID, totalAmount);
+        List<CouponVO> couponVOs = couponService.getAvailableCouponsByUserAndTickets(userID, totalAmount);
         int arrangementID = tickets.get(0).getArrangementId();
-        Date[] dates = arrangement.getStartDateAndEndDate(arrangementID);
-        String movieName = movie.getMovieNameByID(arrangement.getMovieIDbyID(arrangementID));
-        String hallName = arrangement.getHallNameByArrangementID(arrangementID);
+        Date[] dates = arrangementService.getStartDateAndEndDate(arrangementID);
+        String movieName = movieService.getMovieNameByID(arrangementService.getMovieIDbyID(arrangementID));
+        String hallName = arrangementService.getHallNameByArrangementID(arrangementID);
         for (Ticket ticket : tickets) {
             TicketVO ticketVO = assembleTicketVO(ticket);
             ticketVOs.add(ticketVO);
@@ -500,7 +501,7 @@ public class TicketImpl
                 for (Ticket ticket : tickets) {
                     ticket.setStatus((byte) 2);
                     ticketsMapper.updateByPrimaryKeySelective(ticket);
-                    arrangement.changeArrangementSeatStatus(ticket.getArrangementId(), ticket.getSeatId(), false);
+                    arrangementService.changeArrangementSeatStatus(ticket.getArrangementId(), ticket.getSeatId(), false);
                 }
                 order.setUseVipcard((byte) 3);
                 orderMapper.updateByPrimaryKeySelective(order);

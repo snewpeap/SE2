@@ -1,5 +1,6 @@
 package edu.nju.cinemasystem.blservices.impl.vip;
 
+import edu.nju.cinemasystem.blservices.vip.VIPCardService;
 import edu.nju.cinemasystem.data.po.TradeRecord;
 import edu.nju.cinemasystem.data.po.Vipcard;
 import edu.nju.cinemasystem.data.po.VipcardRechargeReduction;
@@ -15,7 +16,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Service
-public class VIPCardImpl implements edu.nju.cinemasystem.blservices.vip.VIPCard {
+public class VIPCardImpl implements VIPCardService {
     private final VipcardMapper vipcardMapper;
     private final VIPMsg vipMsg;
     private final VipcardRechargeReductionMapper reductionMapper;

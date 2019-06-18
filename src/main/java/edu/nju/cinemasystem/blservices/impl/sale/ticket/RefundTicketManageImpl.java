@@ -6,9 +6,8 @@ import edu.nju.cinemasystem.data.vo.Response;
 import edu.nju.cinemasystem.data.vo.form.RefundStrategyForm;
 import edu.nju.cinemasystem.data.vo.statisticsVO.RefundStrategyVO;
 import edu.nju.cinemasystem.dataservices.sale.ticket.RefundStrategyMapper;
-import edu.nju.cinemasystem.util.properties.message.TicketMsg;
 import edu.nju.cinemasystem.util.properties.message.GlobalMsg;
-
+import edu.nju.cinemasystem.util.properties.message.TicketMsg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,12 +18,9 @@ import java.util.List;
 @Service
 public class RefundTicketManageImpl implements RefundTicketManage {
 
-    private final
-    RefundStrategyMapper refundStrategyMapper;
-    private final
-    TicketMsg ticketMsg;
-    private final
-    GlobalMsg globalMsg;
+    private final RefundStrategyMapper refundStrategyMapper;
+    private final TicketMsg ticketMsg;
+    private final GlobalMsg globalMsg;
 
     @Autowired
     public RefundTicketManageImpl(RefundStrategyMapper refundStrategyMapper, TicketMsg ticketMsg, GlobalMsg globalMsg) {
