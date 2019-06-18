@@ -17,13 +17,12 @@ $(document).ready(function () {
 
     let str = '';
     rechargeRecord.forEach(function (record) {
-        str += "<tr>" + "<td style='width: 195px'>"+ record.getDate() + "</td>" +
-            "<td style='width: 100px'>" + record.getPay() +"</td>" +
-            "<td style='width: 100px'>" + record.getRealAmount() +"</td>" +
-            "<td style='width: 100px'>" + record.getBalance() +"</td>" +
+        str += "<tr>" + "<td style='width: 195px'>"+ (record.date).substring(0,10) + "</td>" +
+            "<td style='width: 100px'>" + record.delta +"</td>" +
+            "<td style='width: 100px'>" + (record.originalAmount + record.delta)+"</td>" +
             "</tr>"
     });
 
-    $('.table tbody').append(str)
+    $("#tbody0").append(str)
 
 });
