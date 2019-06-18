@@ -5,7 +5,7 @@ import edu.nju.cinemasystem.data.vo.Response;
 
 import java.util.List;
 
-public interface Ticket {
+public interface TicketService {
 
     /**
      * 锁座

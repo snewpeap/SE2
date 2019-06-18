@@ -24,4 +24,6 @@ public interface MovieManagement {
      * @return 所有已上映和已下架的电影
      */
     List<Movie> getReleasedMovies();
+
+    Movie getMovieByID(int movieID);
 }

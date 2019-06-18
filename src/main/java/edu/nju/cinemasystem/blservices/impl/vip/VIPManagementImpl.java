@@ -1,6 +1,6 @@
 package edu.nju.cinemasystem.blservices.impl.vip;
 
-import edu.nju.cinemasystem.blservices.user.Account;
+import edu.nju.cinemasystem.blservices.user.AccountService;
 import edu.nju.cinemasystem.blservices.vip.SalesInfo;
 import edu.nju.cinemasystem.blservices.vip.VIPCouponBusiness;
 import edu.nju.cinemasystem.data.po.Vipcard;
@@ -24,16 +24,16 @@ public class VIPManagementImpl implements edu.nju.cinemasystem.blservices.vip.VI
     private final VipcardMapper vipcardMapper;
     private final VipcardRechargeReductionMapper reductionMapper;
     private final SalesInfo salesInfo;
-    private final Account account;
+    private final AccountService accountService;
     private final VIPCouponBusiness vipCouponBusiness;
     private final VIPMsg vipMsg;
 
     @Autowired
-    public VIPManagementImpl(VipcardMapper vipcardMapper, VipcardRechargeReductionMapper reductionMapper, SalesInfo salesInfo, Account account, VIPCouponBusiness vipCouponBusiness, VIPMsg vipMsg) {
+    public VIPManagementImpl(VipcardMapper vipcardMapper, VipcardRechargeReductionMapper reductionMapper, SalesInfo salesInfo, AccountService accountService, VIPCouponBusiness vipCouponBusiness, VIPMsg vipMsg) {
         this.vipcardMapper = vipcardMapper;
         this.reductionMapper = reductionMapper;
         this.salesInfo = salesInfo;
-        this.account = account;
+        this.accountService = accountService;
         this.vipCouponBusiness = vipCouponBusiness;
         this.vipMsg = vipMsg;
     }
@@ -46,7 +46,7 @@ public class VIPManagementImpl implements edu.nju.cinemasystem.blservices.vip.VI
         cards.forEach(
                 card -> {
                     int id = card.getUserId();
-                    UserVO userVO = UserVO.assembleUserVO(account.getUserByID(id));
+                    UserVO userVO = UserVO.assembleUserVO(accountService.getUserByID(id));
                     vips.add(new VipUserVO(userVO, id, salesInfo.getConsumption(id)));
                 }
         );

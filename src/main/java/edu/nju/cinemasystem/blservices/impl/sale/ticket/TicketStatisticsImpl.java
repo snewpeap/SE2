@@ -1,8 +1,9 @@
 package edu.nju.cinemasystem.blservices.impl.sale.ticket;
 
-import edu.nju.cinemasystem.blservices.cinema.arrangement.Arrangement;
 import edu.nju.cinemasystem.blservices.cinema.arrangement.ArrangementManage;
+import edu.nju.cinemasystem.blservices.cinema.arrangement.ArrangementService;
 import edu.nju.cinemasystem.blservices.sale.ticket.TicketStatistics;
+import edu.nju.cinemasystem.data.po.Arrangement;
 import edu.nju.cinemasystem.data.po.Ticket;
 import edu.nju.cinemasystem.dataservices.sale.ticket.TicketsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,23 +16,20 @@ import java.util.List;
 @Service
 public class TicketStatisticsImpl implements TicketStatistics {
 
-    private final
-    TicketsMapper ticketsMapper;
-    private final
-    Arrangement arrangement;
-    private final
-    ArrangementManage arrangementManage;
+    private final TicketsMapper ticketsMapper;
+    private final ArrangementService arrangementService;
+    private final ArrangementManage arrangementManage;
 
     @Autowired
-    public TicketStatisticsImpl(TicketsMapper ticketsMapper, Arrangement arrangement, ArrangementManage arrangementManage) {
+    public TicketStatisticsImpl(TicketsMapper ticketsMapper, ArrangementService arrangementService, ArrangementManage arrangementManage) {
         this.ticketsMapper = ticketsMapper;
-        this.arrangement = arrangement;
+        this.arrangementService = arrangementService;
         this.arrangementManage = arrangementManage;
     }
 
     @Override
     public float getAudiencePriceByDay(Date startDate, Date endDate) {
-        List<edu.nju.cinemasystem.data.po.Arrangement> arrangements = arrangementManage.getArrangementsByDay(startDate, endDate);
+        List<Arrangement> arrangements = arrangementManage.getArrangementsByDay(startDate, endDate);
         List<Ticket> tickets = new ArrayList<>();
         arrangements.forEach(arrangement1 -> tickets.addAll(ticketsMapper.selectByArrangementID(arrangement1.getId())));
         List<Ticket> effectiveTickets = new ArrayList<>();
@@ -63,13 +61,13 @@ public class TicketStatisticsImpl implements TicketStatistics {
 
     @Override
     public float getBoxOfficeByMovieIDAndDay(int movieID, Date startDate, Date endDate) {
-        List<edu.nju.cinemasystem.data.po.Arrangement> arrangements = arrangementManage.getArrangementsByDay(startDate, endDate);
+        List<Arrangement> arrangements = arrangementManage.getArrangementsByDay(startDate, endDate);
         List<Ticket> tickets = new ArrayList<>();
         arrangements.forEach(arrangement1 -> tickets.addAll(ticketsMapper.selectByArrangementID(arrangement1.getId())));
         float totalBoxOffice = 0;
         for (Ticket ticket : tickets) {
-            if (ticket.getStatus() == (byte) 1 && arrangement.getMovieIDbyID(ticket.getArrangementId()) == movieID) {
-                totalBoxOffice += arrangement.getFareByID(ticket.getArrangementId());
+            if (ticket.getStatus() == (byte) 1 && arrangementService.getMovieIDbyID(ticket.getArrangementId()) == movieID) {
+                totalBoxOffice += arrangementService.getFareByID(ticket.getArrangementId());
             }
         }
         return totalBoxOffice;
@@ -80,7 +78,7 @@ public class TicketStatisticsImpl implements TicketStatistics {
         List<Ticket> tickets = ticketsMapper.selectByMovieID(movieID);
         float totalBoxOffice = 0;
         for (Ticket ticket : tickets) {
-            totalBoxOffice += arrangement.getFareByID(ticket.getArrangementId());
+            totalBoxOffice += arrangementService.getFareByID(ticket.getArrangementId());
         }
         return totalBoxOffice;
     }

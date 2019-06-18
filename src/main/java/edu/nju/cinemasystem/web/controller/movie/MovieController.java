@@ -1,8 +1,8 @@
 package edu.nju.cinemasystem.web.controller.movie;
 
-import edu.nju.cinemasystem.blservices.movie.Movie;
-import edu.nju.cinemasystem.blservices.movie.MovieLike;
+import edu.nju.cinemasystem.blservices.movie.MovieLikeService;
 import edu.nju.cinemasystem.blservices.movie.MovieManagement;
+import edu.nju.cinemasystem.blservices.movie.MovieService;
 import edu.nju.cinemasystem.data.vo.Response;
 import edu.nju.cinemasystem.data.vo.form.MovieForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,44 +14,44 @@ import javax.servlet.http.HttpSession;
 @RestController
 public class MovieController {
     @Autowired
-    private Movie movie;
+    private MovieService movieService;
     @Autowired
-    private MovieLike movieLike;
+    private MovieLikeService movieLikeService;
     @Autowired
     private MovieManagement movieManagement;
 
     @GetMapping("/user/movie/all")
     public Response getAllMovie(HttpSession session, HttpServletResponse response) {
         int userID = (Integer) session.getAttribute("id");
-        Response res = movie.getMovie(0,userID);
+        Response res = movieService.getMovie(0,userID);
         if (!res.isSuccess()){
             response.setStatus(res.getStatusCode());
         }
-        return movie.getMovie(0, userID);
+        return movieService.getMovie(0, userID);
     }
 
     @GetMapping("/user/movie/{movieId}")
     public Response getOneMovie(@PathVariable int movieId, HttpSession session) {
         int userID = (Integer) session.getAttribute("id");
-        return movie.getMovie(movieId, userID);
+        return movieService.getMovie(movieId, userID);
     }
 
     @GetMapping("/user/movie/search")
     public Response searchMovies(@RequestParam String query, HttpSession session) {
         int userID = (Integer) session.getAttribute("id");
-        return movie.searchMovies(query, userID);
+        return movieService.searchMovies(query, userID);
     }
 
     @PostMapping("/user/movie/like/{movieId}")
     public Response likeMovie(@PathVariable int movieId, HttpSession session) {
         int userId = Integer.parseInt(String.valueOf(session.getAttribute("id")));
-        return movieLike.like(userId, movieId);
+        return movieLikeService.like(userId, movieId);
     }
 
     @PostMapping("/user/movie/unlike/{movieId}")
     public Response unlikeMovie(HttpSession session, @PathVariable int movieId) {
         int userId = Integer.parseInt(String.valueOf(session.getAttribute("id")));
-        return movieLike.unlike(userId, movieId);
+        return movieLikeService.unlike(userId, movieId);
     }
 
     @PostMapping("/manage/movie/add")

@@ -5,7 +5,7 @@ import edu.nju.cinemasystem.data.vo.Response;
 import java.util.Date;
 
 
-public interface Movie {
+public interface MovieService {
     /**
      * 非整数代表查询所有电影
      * @param movieID 电影ID

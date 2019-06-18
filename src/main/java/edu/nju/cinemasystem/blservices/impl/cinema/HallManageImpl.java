@@ -1,6 +1,6 @@
 package edu.nju.cinemasystem.blservices.impl.cinema;
 
-import edu.nju.cinemasystem.blservices.cinema.arrangement.Arrangement;
+import edu.nju.cinemasystem.blservices.cinema.arrangement.ArrangementService;
 import edu.nju.cinemasystem.blservices.cinema.hall.HallManage;
 import edu.nju.cinemasystem.data.po.Hall;
 import edu.nju.cinemasystem.data.po.Seat;
@@ -22,21 +22,18 @@ import java.util.List;
 @Service
 public class HallManageImpl implements HallManage {
 
-    private final
-    HallMapper hallMapper;
-    private final
-    GlobalMsg globalMsg;
-    private final
-    SeatMapper seatMapper;
-    private final Arrangement arrangement;
+    private final HallMapper hallMapper;
+    private final GlobalMsg globalMsg;
+    private final SeatMapper seatMapper;
+    private final ArrangementService arrangementService;
     private final ArrangementMsg arrangementMsg;
 
     @Autowired
-    public HallManageImpl(HallMapper hallMapper, GlobalMsg globalMsg, SeatMapper seatMapper, Arrangement arrangement, ArrangementMsg arrangementMsg) {
+    public HallManageImpl(HallMapper hallMapper, GlobalMsg globalMsg, SeatMapper seatMapper, ArrangementService arrangementService, ArrangementMsg arrangementMsg) {
         this.hallMapper = hallMapper;
         this.globalMsg = globalMsg;
         this.seatMapper = seatMapper;
-        this.arrangement = arrangement;
+        this.arrangementService = arrangementService;
         this.arrangementMsg = arrangementMsg;
     }
 
@@ -96,7 +93,7 @@ public class HallManageImpl implements HallManage {
     @Transactional
     public Response modifyHallInfo(HallForm hallForm, int ID) {
         Response response;
-        if (arrangement.haveArrangementAfterCurrentTime(ID, new Date())) {
+        if (arrangementService.haveArrangementAfterCurrentTime(ID, new Date())) {
             return Response.fail(arrangementMsg.getIsStillHaveArrangement());
         }
         if (!censorHallForm(hallForm)) {

@@ -1,11 +1,11 @@
 package edu.nju.cinemasystem.blservices.sale.promotion;
 
-import java.util.List;
-
 import edu.nju.cinemasystem.data.vo.CouponVO;
 import edu.nju.cinemasystem.data.vo.Response;
 
-public interface Coupon {
+import java.util.List;
+
+public interface CouponService {
 
     /**
      * 获取用户可用的所有优惠券

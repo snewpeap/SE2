@@ -1,7 +1,7 @@
 package blservices;
 
 import edu.nju.cinemasystem.Application;
-import edu.nju.cinemasystem.blservices.user.Account;
+import edu.nju.cinemasystem.blservices.user.AccountService;
 import edu.nju.cinemasystem.data.po.User;
 import edu.nju.cinemasystem.data.vo.Response;
 import edu.nju.cinemasystem.data.vo.UserVO;
@@ -21,10 +21,10 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = Application.class)
-public class AccountTest {
+public class AccountServiceTest {
 
     @Autowired
-    private Account account;
+    private AccountService accountService;
     @Autowired
     private UserMapper userMapper;
     @Autowired
@@ -37,7 +37,7 @@ public class AccountTest {
     public void testRegister1() {
         System.out.println(alipayProperties.getNotifyUrl());
         RegistryForm registryForm = generateRF("123","123","123");
-        Response response = account.register(registryForm);
+        Response response = accountService.register(registryForm);
         assertTrue(response.isSuccess());
         assertEquals(accountMsg.getRegistrySuccess(), response.getMessage());
         UserVO userVO = (UserVO) response.getContent();
@@ -50,7 +50,7 @@ public class AccountTest {
     @Transactional
     public void testRegisterFail_passwordNotConfirmed(){
         RegistryForm registryForm = generateRF("qwe","qwe","ewq");
-        Response response = account.register(registryForm);
+        Response response = accountService.register(registryForm);
         UserVO userVO = (UserVO) response.getContent();
         assertFalse(response.isSuccess());
         assertEquals(accountMsg.getPasswordNotConfirmed(),response.getMessage());
@@ -63,7 +63,7 @@ public class AccountTest {
     public void testRegisterFail_accountExist(){
         User sim = userMapper.selectByName("audience");
         RegistryForm registryForm = generateRF(sim.getName(),"123","123");
-        Response response = account.register(registryForm);
+        Response response = accountService.register(registryForm);
         UserVO userVO = (UserVO) response.getContent();
         assertFalse(response.isSuccess());
         assertEquals(accountMsg.getRegistryNameAlreadyExist(),response.getMessage());

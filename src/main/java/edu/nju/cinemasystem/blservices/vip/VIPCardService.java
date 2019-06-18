@@ -2,7 +2,7 @@ package edu.nju.cinemasystem.blservices.vip;
 
 import edu.nju.cinemasystem.data.vo.Response;
 
-public interface VIPCard {
+public interface VIPCardService {
     /**
      * 获得VIP卡信息，用户没有会员卡的时候提示购买会员卡
      * @param userID 用户ID也是卡ID

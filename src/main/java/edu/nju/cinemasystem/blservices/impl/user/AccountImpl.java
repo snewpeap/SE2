@@ -1,6 +1,6 @@
 package edu.nju.cinemasystem.blservices.impl.user;
 
-import edu.nju.cinemasystem.blservices.user.Account;
+import edu.nju.cinemasystem.blservices.user.AccountService;
 import edu.nju.cinemasystem.data.po.User;
 import edu.nju.cinemasystem.data.vo.Response;
 import edu.nju.cinemasystem.data.vo.UserVO;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.validation.constraints.NotNull;
 
 @Service
-public class AccountImpl implements Account {
+public class AccountImpl implements AccountService {
     private UserMapper userMapper;
     private AccountMsg accountMsg;
 

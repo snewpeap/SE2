@@ -7,7 +7,7 @@ import edu.nju.cinemasystem.data.vo.form.RegistryForm;
 
 import javax.validation.constraints.NotNull;
 
-public interface Account {
+public interface AccountService {
     /**
      * 注册，检查是否有重名和密码是否一致，成功注册
      * @param registryForm 注册表单

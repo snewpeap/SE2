@@ -4,7 +4,7 @@ import edu.nju.cinemasystem.data.vo.Response;
 
 import java.util.Date;
 
-public interface Arrangement {
+public interface ArrangementService {
     /**
      * 用排片ID查找排片，排片是不可见状态的时候返回一个错误码401
      * 不用我先留着备用

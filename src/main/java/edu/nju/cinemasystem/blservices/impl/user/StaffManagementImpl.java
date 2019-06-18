@@ -26,12 +26,12 @@ public class StaffManagementImpl implements StaffManagement {
     private final RoleProperty roleProperty;
 
     @Autowired
-    public StaffManagementImpl
-            (StaffMsg staffMsg,
-             UserMapper userMapper,
-             RoleMapper roleMapper,
-             UserHasRoleMapper userHasRoleMapper,
-             RoleProperty roleProperty) {
+    public StaffManagementImpl(
+            StaffMsg staffMsg,
+            UserMapper userMapper,
+            RoleMapper roleMapper,
+            UserHasRoleMapper userHasRoleMapper,
+            RoleProperty roleProperty) {
         this.staffMsg = staffMsg;
         this.userMapper = userMapper;
         this.roleMapper = roleMapper;

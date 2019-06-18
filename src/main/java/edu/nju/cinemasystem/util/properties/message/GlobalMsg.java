@@ -3,7 +3,7 @@ package edu.nju.cinemasystem.util.properties.message;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component(value = "globalMsg")
 @ConfigurationProperties(prefix = "global-msg")
 public class GlobalMsg {
     private String WrongParam;

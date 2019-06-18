@@ -2,7 +2,7 @@ package edu.nju.cinemasystem.web.controller.sale;
 
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
-import edu.nju.cinemasystem.blservices.sale.ticket.Ticket;
+import edu.nju.cinemasystem.blservices.sale.ticket.TicketService;
 import edu.nju.cinemasystem.data.vo.Response;
 import edu.nju.cinemasystem.util.properties.AlipayProperties;
 import edu.nju.cinemasystem.web.config.CustomWebSecurityConfiguration;
@@ -22,12 +22,12 @@ import java.util.Map;
 
 @Controller
 public class AlipayController {
-    private final Ticket ticket;
+    private final TicketService ticketService;
     private final AlipayProperties alipayProperties;
 
     @Autowired
-    public AlipayController(Ticket ticket, AlipayProperties alipayProperties) {
-        this.ticket = ticket;
+    public AlipayController(TicketService ticketService, AlipayProperties alipayProperties) {
+        this.ticketService = ticketService;
         this.alipayProperties = alipayProperties;
     }
 
@@ -35,9 +35,9 @@ public class AlipayController {
     //TODO 去掉优惠券的注释
     public @ResponseBody Response alipay(@PathVariable long orderID/*, @RequestBody int couponID*/, HttpSession session, HttpServletResponse servletResponse) throws AlipayApiException {
         int userID = (Integer) session.getAttribute(CustomWebSecurityConfiguration.KEY_ID);
-        Response response = ticket.payable(orderID, 0/* couponID*/, userID);
+        Response response = ticketService.payable(orderID, 0/* couponID*/, userID);
         if (response.isSuccess()) {
-            response.setContent(ticket.requestAlipay(orderID));
+            response.setContent(ticketService.requestAlipay(orderID));
         }
         return response;
     }
@@ -70,7 +70,7 @@ public class AlipayController {
             if (trade_status.equals("TRADE_FINISHED")) {
                 return "success";
             } else if (trade_status.equals("TRADE_SUCCESS")) {
-                return ticket.payOrder(Long.parseLong(out_trade_no), Float.parseFloat(total_amount)).isSuccess() ?
+                return ticketService.payOrder(Long.parseLong(out_trade_no), Float.parseFloat(total_amount)).isSuccess() ?
                         "success" : "fail";
             } else {
                 return "fail";

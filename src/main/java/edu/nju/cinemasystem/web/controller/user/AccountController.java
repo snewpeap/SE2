@@ -1,6 +1,6 @@
 package edu.nju.cinemasystem.web.controller.user;
 
-import edu.nju.cinemasystem.blservices.user.Account;
+import edu.nju.cinemasystem.blservices.user.AccountService;
 import edu.nju.cinemasystem.data.vo.Response;
 import edu.nju.cinemasystem.data.vo.form.RegistryForm;
 import edu.nju.cinemasystem.util.properties.RoleProperty;
@@ -24,12 +24,12 @@ import java.util.Collection;
  */
 @RestController
 public class AccountController {
-    private final Account account;
+    private final AccountService accountService;
     private final RoleProperty roleProperty;
 
     @Autowired
-    public AccountController(Account account, RoleProperty roleProperty) {
-        this.account = account;
+    public AccountController(AccountService accountService, RoleProperty roleProperty) {
+        this.accountService = accountService;
         this.roleProperty = roleProperty;
     }
 
@@ -48,6 +48,6 @@ public class AccountController {
 
     @PostMapping("/register")
     public Response register(@RequestBody @Valid RegistryForm registryForm, HttpServletResponse servletResponse) throws IOException {
-        return account.register(registryForm);
+        return accountService.register(registryForm);
     }
 }

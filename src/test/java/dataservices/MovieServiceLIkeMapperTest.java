@@ -11,10 +11,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertFalse;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = Application.class)
-public class MovieLIkeMapperTest {
+public class MovieServiceLIkeMapperTest {
 
     @Autowired
     MovieLikeMapper movieLikeMapper;

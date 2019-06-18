@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = Application.class)
-public class MovieTest {
+public class MovieServiceTest {
 
     @Autowired
     private MovieMapper movieMapper;

@@ -1,5 +1,6 @@
 package edu.nju.cinemasystem.blservices.impl.movie;
 
+import edu.nju.cinemasystem.blservices.movie.MovieLikeService;
 import edu.nju.cinemasystem.data.po.Movie;
 import edu.nju.cinemasystem.data.po.MovieLike;
 import edu.nju.cinemasystem.data.vo.Response;
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class MovieLikeImpl implements edu.nju.cinemasystem.blservices.movie.MovieLike {
+public class MovieLikeImpl implements MovieLikeService {
     private final MovieLikeMapper movieLikeMapper;
     private final MovieMapper movieMapper;
     private final GlobalMsg globalMsg;
