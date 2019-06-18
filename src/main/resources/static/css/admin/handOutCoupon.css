@@ -1,3 +1,25 @@
 h2{
     margin: 10px 0 6px !important;
 }
+input[type=checkbox]{
+    height: 20px;
+    width: 20px;
+}
+th,td{
+    text-align: center;
+}
+.vip-content{
+    padding: 6px 8px 5px;
+}
+
+.handOut{
+    text-align: center !important;
+    padding: 80px 0 40px;
+}
+
+.handOutButton{
+    height: 70px;
+    width: 160px;
+    font-size: 40px;
+    border-radius: 12px
+}

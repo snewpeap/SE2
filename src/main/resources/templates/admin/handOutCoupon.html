@@ -147,6 +147,7 @@
                             <div class="x_title">
                                 <h2>输入需达到的金额：</h2>
                                 <input type="number" min="0" class="form-control" id="moneyInput" value="0" onchange="getVips()" style='display: inline-block;width: 100px;'>
+                                <h2>（元）</h2>
                                 <div class="clearfix"></div>
                             </div>
                             <div class="table-responsive">
@@ -154,28 +155,46 @@
                                     <thead>
                                     <tr class="headings">
                                         <th>
-                                            <input type="checkbox" id="check-all" class="flat">
+                                            <input type="checkbox" id="check-all">
                                         </th>
-                                        <th class="column-title">序号</th>
-                                        <th class="column-title">名称</th>
-                                        <th class="column-title">消费总金额（元）</th>
-                                        <th class="bulk-actions" colspan="7">
-                                            <a class="antoo" style="color:#fff; font-weight:500;">已选择( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
-                                        </th>
+                                        <th><div class="vip-content">序号</div></th>
+                                        <th><div class="vip-content">名称</div></th>
+                                        <th><div class="vip-content">消费总金额（元）</div></th>
                                     </tr>
                                     </thead>
-                                    <tbody class="tbody">
-                                        <tr class="even pointer">
-                                            <td class="a-center ">
-                                                <input type="checkbox" class="flat" name="table_records">
-                                            </td>
-                                            <td class=" ">12</td>
-                                            <td class=" ">John Blank L</td>
-                                            <td class=" ">121000040</td>
-                                        </tr>
+                                    <tbody class="vipTbody">
                                     </tbody>
                                 </table>
                             </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>所有优惠券</h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-striped jambo_table bulk_action">
+                                    <thead>
+                                    <tr class="headings">
+                                        <th>
+                                        </th>
+                                        <th><div class="vip-content">活动名称</div></th>
+                                        <th><div class="vip-content">满（元）</div></th>
+                                        <th><div class="vip-content">减（元）</div></th>
+                                        <th><div class="vip-content">有效期（天）</div></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="couponTbody">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="handOut">
+                            <button type="button" class="handOutButton btn btn-primary" disabled="disabled">赠送</button>
                         </div>
                     </div>
                 </div>
@@ -199,35 +218,6 @@
 <script src="/webjars/gentelella/vendors/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap -->
 <script src="/webjars/gentelella/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
-<!-- Custom Theme Scripts -->
-<script src="/webjars/gentelella/build/js/custom.min.js"></script>
-<script src="/js/request.js"></script>
-<script src="/js/admin/common.js"></script>
-<script src="/js/admin/handOutCoupon.js"></script>
-<script>
-    getRequest(
-        '/admin/vip/get',
-        function (res) {
-            if(res.success){
-                vips = res.content;
-                var tableDom = "";
-                vips.forEach(function (vip) {
-                    tableDom += "<tr class='even pointer'>" +
-                        "<td class='a-center'><input type='checkbox' class='flat' name='table_records'></td>" +
-                        "<td>"+vip.vipcardID+"</td>" +
-                        "<td>"+vip.user.name+"</td>" +
-                        "<td>"+vip.consumption+"</td>" +
-                        "</tr>";
-                });
-                $('tbody').append(tableDom);
-            }else{
-                alert(res.message);
-            }
-        },
-        function (res) {
-            alert(res.message);}
-    )
-</script>
 <!-- FastClick -->
 <script src="/webjars/gentelella/vendors/fastclick/lib/fastclick.js"></script>
 <!-- NProgress -->
@@ -259,7 +249,11 @@
 <!-- bootstrap-daterangepicker -->
 <script src="/webjars/gentelella/vendors/moment/min/moment.min.js"></script>
 <script src="/webjars/gentelella/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
-
+<!-- Custom Theme Scripts -->
+<script src="/webjars/gentelella/build/js/custom.min.js"></script>
+<script src="/js/request.js"></script>
+<script src="/js/admin/common.js"></script>
+<script src="/js/admin/handOutCoupon.js"></script>
 
 </body>
 </html>
