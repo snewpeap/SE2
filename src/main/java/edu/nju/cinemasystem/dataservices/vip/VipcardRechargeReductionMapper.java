@@ -5,7 +5,6 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 
 @Mapper
 @Repository
@@ -36,7 +35,7 @@ public interface VipcardRechargeReductionMapper {
      * @param targetAmount 起点金额
      * @return 满减策略
      */
-    List<VipcardRechargeReduction> selectByPrimaryKey(@Param("targetAmount") Integer targetAmount);
+    VipcardRechargeReduction selectByPrimaryKey(@Param("targetAmount") Integer targetAmount);
 
     /**
      * 通过起点金额来唯一更新一条满减策略

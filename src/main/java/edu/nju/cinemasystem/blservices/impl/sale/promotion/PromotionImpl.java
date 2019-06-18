@@ -28,7 +28,7 @@ import java.util.List;
 
 @Service
 public class PromotionImpl
-        implements PromotionService, CouponService, VIPCouponBusiness,PromotionInfo {
+        implements PromotionService, CouponService, VIPCouponBusiness, PromotionInfo {
 
     private final PromotionMapper promotionMapper;
     private final PromotionHasMovieMapper promotionHasMovieMapper;
@@ -127,10 +127,13 @@ public class PromotionImpl
         Date date = new Date();
         for (Coupon coupon : coupons) {
             if (date.compareTo(coupon.getEndTime()) < 0) {
-                CouponVO couponVO = new CouponVO(coupon.getId());
+                CouponVO couponVO = new CouponVO(coupon);
                 Promotion promotion = promotionMapper.selectByPrimaryKey(coupon.getPromotionId());
                 couponVO.setTargetAmount(promotion.getTargetAmount());
                 couponVO.setDiscountAmount(promotion.getCouponAmount());
+                couponVO.setStartDay(new Date(coupon.getEndTime().getTime() - (promotion.getCouponExpiration() * 24 * 60 * 60 * 1000)));
+                couponVO.setPromotionDescription(promotion.getDescription());
+                couponVO.setPromotionName(promotion.getName());
                 couponVOs.add(couponVO);
             }
         }
@@ -204,8 +207,8 @@ public class PromotionImpl
         List<PromotionHasMovie> promotionHasMovies = promotionHasMovieMapper.selectByMovieID(movieID);
         List<Promotion> allPromotions = promotionMapper.selectAll();
         List<String> promotionNames = new ArrayList<>();
-        for(Promotion promotion:allPromotions){
-            if(promotion.getSpecifyMovies()==(byte)0 && promotion.getEndTime().after(movieService.getReleaseTimeByID(movieID))){
+        for (Promotion promotion : allPromotions) {
+            if (promotion.getSpecifyMovies() == (byte) 0 && promotion.getEndTime().after(movieService.getReleaseTimeByID(movieID))) {
                 promotionNames.add(promotion.getName());
             }
         }
