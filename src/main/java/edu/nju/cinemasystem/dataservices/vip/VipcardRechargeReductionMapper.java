@@ -32,11 +32,11 @@ public interface VipcardRechargeReductionMapper {
     int insertSelective(VipcardRechargeReduction record);
 
     /**
-     * 通过起点金额来查询一个满减策略
+     * 通过起点金额来查询一个满减策略，当targetAmount为null的时候查询所有
      * @param targetAmount 起点金额
      * @return 满减策略
      */
-    List<VipcardRechargeReduction> selectByPrimaryKey(@Param("targetAmount") Integer targetAmount);
+    List<VipcardRechargeReduction> select(@Param("targetAmount") Integer targetAmount);
 
     /**
      * 通过起点金额来唯一更新一条满减策略
