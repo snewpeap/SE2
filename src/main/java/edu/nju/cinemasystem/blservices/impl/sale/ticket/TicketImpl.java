@@ -31,6 +31,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.DelayQueue;
@@ -263,6 +264,8 @@ public class TicketImpl
             return Response.fail(ticketMsg.getRefundDisable());
         }
         float refundAmount = ticket.getRealAmount() * refundStrategy.getPercentage() / (float)100;
+        BigDecimal b = new BigDecimal(refundAmount);
+        refundAmount = b.setScale(2,BigDecimal.ROUND_HALF_UP).floatValue();
         Response refundResponse;
         if (order.getStatus() == 1) {
             refundResponse = vipCardService.addVIPBalance(ticket.getUserId(), refundAmount);
