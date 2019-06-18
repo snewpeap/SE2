@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.DelayQueue;
 import java.util.concurrent.Executors;
 
@@ -71,6 +72,7 @@ public class VIPCardImpl implements VIPCardService {
                 "B" + now.getTime(),
                 userID,
                 now,
+                20,
                 20
         );
         orderHolder.addTask(delayedTask);
@@ -102,7 +104,7 @@ public class VIPCardImpl implements VIPCardService {
         Response response = Response.success();
         Integer allReduction = null;
         response.setContent(reductionMapper.selectByPrimaryKey(allReduction));
-        //TODO
+        //TODO what
         return response;
     }
 
@@ -112,15 +114,19 @@ public class VIPCardImpl implements VIPCardService {
         if (vipcardMapper.selectByPrimaryKey(userID) == null) {
             return Response.fail(vipMsg.getNoVIPCard());
         }
-        response.setContent(recordMapper.selectByUserID(userID));
+        List<TradeRecord> tradeRecords = recordMapper.selectByUserID(userID);
+        if (tradeRecords != null) {
+            tradeRecords.removeIf(tradeRecord -> tradeRecord.getDelta() <= 0);
+        }
+        response.setContent(tradeRecords);
         return response;
     }
 
     @Override
-    public Response depositable(int userID, float amount) {
+    public Response depositable(int userID, float realAmount) {
         if (vipcardMapper.selectByPrimaryKey(userID) == null) {
             return Response.fail(vipMsg.getNoVIPCard());
-        } else if (amount <= 0) {
+        } else if (realAmount <= 0) {
             return Response.fail(vipMsg.getWrongParam() + "金额需大于等于0");
         }
         DelayedTask delayedTask = orderHolder.getTask(userID, true);
@@ -130,18 +136,18 @@ public class VIPCardImpl implements VIPCardService {
             response.setContent(delayedTask);
             return response;
         }
-        VipcardRechargeReduction reduction = reductionMapper.selectByAmount(amount);
-        float discountAmount = amount;
+        VipcardRechargeReduction reduction = reductionMapper.selectByAmount(realAmount);
+        float amount = realAmount;
         if (reduction != null) {
-            discountAmount -= reduction.getDiscountAmount();
+            amount -= reduction.getDiscountAmount();
         }
         Date now = new Date();
         delayedTask = new DelayedTask(
                 "D" + now.getTime(),
                 userID,
                 now,
-                discountAmount
-        );
+                amount,
+                realAmount);
         orderHolder.addTask(delayedTask);
         Response response = Response.success();
         response.setContent(delayedTask);
@@ -157,15 +163,15 @@ public class VIPCardImpl implements VIPCardService {
         if (delayedTask == null || !delayedTask.getID().equals(orderID)) {
             return Response.fail("订单不存在");
         }
-        float amount = delayedTask.getAmount();
+        float realAmount = delayedTask.getRealAmount();
         float balanceBeforeDeposit = vipcardMapper.selectByPrimaryKey(userID).getBalance();
-        Response response = addVIPBalance(userID, amount);
+        Response response = addVIPBalance(userID, realAmount);
         if (response.isSuccess()) {
             TradeRecord tradeRecord = new TradeRecord();
             tradeRecord.setDate(new Date());
             tradeRecord.setUserId(userID);
             tradeRecord.setOriginalAmount(balanceBeforeDeposit);
-            tradeRecord.setDelta(amount);
+            tradeRecord.setDelta(realAmount);
             recordMapper.insertSelective(tradeRecord);
             orderHolder.removeTask(orderID);
         }
@@ -189,7 +195,6 @@ public class VIPCardImpl implements VIPCardService {
             tradeRecord.setUserId(userID);
             tradeRecord.setOriginalAmount(vipcard.getBalance());
             tradeRecord.setDelta(0 - amount);
-
             vipcard.setBalance(balanceAfterPayment);
             vipcardMapper.updateByPrimaryKeySelective(vipcard);
             recordMapper.insertSelective(tradeRecord);
