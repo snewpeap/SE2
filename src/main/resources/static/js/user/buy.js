@@ -327,7 +327,7 @@ function payConfirmClick() {
     var payMethod = useVIP ? 'vip' : 'alipay';
     //postPayRequest();
     if (payMethod === 'vip'){
-        if (actualTotal >= VIPCardBalance){
+        if (parseInt(actualTotal) >= parseInt(VIPCardBalance)){
             alert("会员卡余额不足！请使用支付宝支付或充值后重新支付！")
         } else {
             postRequest('/user/vip/pay/' + orderId,
