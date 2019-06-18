@@ -103,8 +103,7 @@ public class VIPCardImpl implements VIPCardService {
     public Response getRechargeReduction() {
         Response response = Response.success();
         Integer allReduction = null;
-        response.setContent(reductionMapper.selectByPrimaryKey(allReduction));
-        //TODO what
+        response.setContent(reductionMapper.select(allReduction));
         return response;
     }
 

@@ -112,7 +112,7 @@ public class VIPManagementImpl implements edu.nju.cinemasystem.blservices.vip.VI
 
     @Override
     public Response removeReduction(int id) {
-        if (reductionMapper.selectByPrimaryKey(id)==null){
+        if (reductionMapper.select(id)==null){
             return Response.fail(vipMsg.getReductionInexist());
         }
         reductionMapper.deleteByPrimaryKey(id);

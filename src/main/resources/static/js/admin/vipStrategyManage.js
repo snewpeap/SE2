@@ -30,7 +30,7 @@ function renderStrategy() {
     strategyAll.forEach(function (strategy) {
         tableDom += "<tr>" +
             "<td class='td-target-"+strategy.targetAmount+"'>"+strategy.targetAmount+"</td>" +
-            "<td class='td-type-"+strategy.targetAmount+"'>满送</td>" +
+            "<td class='td-type-"+strategy.targetAmount+"'>满减</td>" +
             "<td class='td-discount-"+strategy.targetAmount+"'>"+strategy.discountAmount+"</td>" +
             "<td class='td-discount-"+strategy.targetAmount+"-edit' style='display: none;'><input class='form-control' type='number' min='1' id='discount_"+strategy.targetAmount+"' value='"+strategy.discountAmount+"' style='display: inline-block;width: 100px;'></td> " +
             "<td class='td-action-"+strategy.targetAmount+"'><a class='modifyStrategy' id='"+strategy.targetAmount+"'>修改</a>|<a class='deleteStrategy' id='"+strategy.targetAmount+"'>删除</a></td>" +
