@@ -87,7 +87,7 @@ public class StatisticsImpl implements Statistics, StatisticsInfo {
         Map<Integer, List<Arrangement>> arrangementsByMovie = new HashMap<>();
         arrangements.forEach(arrangement -> {
             Integer movieID = arrangement.getMovieId();
-            if (arrangementsByMovie.containsKey(movieID)) {
+            if (!arrangementsByMovie.containsKey(movieID)) {
                 arrangementsByMovie.put(movieID, new ArrayList<>());
             }
             arrangementsByMovie.get(movieID).add(arrangement);

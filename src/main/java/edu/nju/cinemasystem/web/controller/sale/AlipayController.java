@@ -8,10 +8,7 @@ import edu.nju.cinemasystem.util.properties.AlipayProperties;
 import edu.nju.cinemasystem.web.config.CustomWebSecurityConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,10 +29,9 @@ public class AlipayController {
     }
 
     @RequestMapping("/user/alipay/pay/{orderID}")
-    //TODO 去掉优惠券的注释
-    public @ResponseBody Response alipay(@PathVariable long orderID/*, @RequestBody int couponID*/, HttpSession session, HttpServletResponse servletResponse) throws AlipayApiException {
+    public @ResponseBody Response alipay(@PathVariable long orderID, @RequestBody int couponID, HttpSession session, HttpServletResponse servletResponse) throws AlipayApiException {
         int userID = (Integer) session.getAttribute(CustomWebSecurityConfiguration.KEY_ID);
-        Response response = ticketService.payable(orderID, 0/* couponID*/, userID);
+        Response response = ticketService.payable(orderID, couponID, userID);
         if (response.isSuccess()) {
             response.setContent(ticketService.requestAlipay(orderID));
         }
