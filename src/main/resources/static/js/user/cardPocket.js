@@ -16,7 +16,7 @@ function getVIP() {
                 // 是会员
                 //$("#member-card").css("visibility", "visible");
                 $("#member-card").css("display", "");
-                //$("#nonmember-card").css("display", "none");
+                $("#nonmember-card").css("display", "none");
 
                 vipCardId = res.content.userId;
                 $("#member-id").text(vipCardId);
@@ -24,7 +24,7 @@ function getVIP() {
                 //$("#member-joinDate").text(res.content.joinDate.substring(0, 10));
             } else {
                 // 非会员
-                //$("#member-card").css("display", "none");
+                $("#member-card").css("display", "none");
                 $("#nonmember-card").css("display", "");
                 //$("#nonmember-card").css("visibility", "visible");
             }
@@ -38,12 +38,13 @@ function getVIP() {
         '/user/vip/rechargeReduction',
         function (res) {
             if (res.success) {
-                let str = "";
+                var str = "<div>";
                 res.content.forEach(function (one) {
-                    str += "<div class='description'>充值优惠：满"+ one.targetAmount + "减"+ one.discountAmount +"</div>" +
-                        "<button onclick=\"buyClick()\">立即购买</button>"
+                    str += "<div>满"+ one.targetAmount + "送"+ one.discountAmount +"</div>";
                 });
-                $("#toBuy").append(str);
+                str += "</div>";
+                $("#member-buy-description").html("<div class='description'>充值优惠：</div>"+str);
+                $("#member-description").html(str);
             } else {
                 alert(res.content);
             }
@@ -77,34 +78,49 @@ function confirmCommit() {
     if (validateForm()) {
         if ($('#userMember-cardNum').val() === "123123123" && $('#userMember-cardPwd').val() === "123123") {
             if (isBuyState) {
-                postRequest(
+                getRequest(
                     '/user/vip/card/add?userId=' + getCookie('id'),
-                    null,
                     function (res) {
                         if (res.success){
                             $('#buyModal').modal('hide');
-                            alert("购买会员卡成功");
                             getVIP();
                         } else {
-                            alert(res.messsage);
+                            if(res.statusCode===777){
+                                postRequest(
+                                    '/user/vip/card/add/'+res.content.id,
+                                    {},
+                                    function (res) {
+                                        if(res.success){
+                                            $('#buyModal').modal('hide');
+                                            alert("购买会员卡成功");
+                                            getVIP();
+                                        }else{
+                                            alert(res.message);
+                                        }
+                                    },
+                                    function (res) {
+                                        alert(res.message);
+                                    }
+                                );
+                            }
                         }
                     },
                     function (error) {
-                        alert(error);
+                        alert(error.message);
                     });
             } else {
-                let orderId;
+                var orderId;
                 getRequest(
                     '/user/vip/deposit?amount=' + parseInt($('#userMember-amount').val()),
                     function (res) {
                         orderId = res.content.id;
                         postRequest(
                             '/user/vip/deposit/'+ orderId,
-                            null,
+                            {},
                             function (res) {
                                 if (res.success){
                                     $('#buyModal').modal('hide');
-                                    alert("充值成功");
+                                    alert("充值成功！");
                                     getVIP();
                                 } else {
                                     alert(res.message)
@@ -126,7 +142,7 @@ function confirmCommit() {
 }
 
 function validateForm() {
-    let isValidate = true;
+    var isValidate = true;
     if (!$('#userMember-cardNum').val()) {
         isValidate = false;
         $('#userMember-cardNum').parent('.form-group').addClass('has-error');
@@ -150,16 +166,16 @@ function getCoupon() {
         '/user/coupon/get?userId=' + getCookie('id'),
         function (res) {
             if (res.success) {
-                let couponList = res.content;
-                let couponListContent = '';
+                var couponList = res.content;
+                var couponListContent = '';
                 for (let coupon of couponList) {
                     couponListContent += '<div class="col-md-6 coupon-wrapper"><div class="coupon"><div class="content">' +
                         '<div class="col-md-8 left">' +
                         '<div class="name">' +
-                        coupon.name +
+                        coupon.promotionName +
                         '</div>' +
                         '<div class="description">' +
-                        coupon.description +
+                        coupon.promotionDescription +
                         '</div>' +
                         '<div class="price">' +
                         '满' + coupon.targetAmount + '减' + coupon.discountAmount +
@@ -167,7 +183,7 @@ function getCoupon() {
                         '</div>' +
                         '<div class="col-md-4 right">' +
                         '<div>有效日期：</div>' +
-                        '<div>' + formatDate(coupon.startTime) + ' ~ ' + formatDate(coupon.endTime) + '</div>' +
+                        '<div>' + formatDate(coupon.startDay) + ' ~ ' + formatDate(coupon.endDay) + '</div>' +
                         '</div></div></div></div>'
                 }
                 $('#coupon-list').html(couponListContent);
