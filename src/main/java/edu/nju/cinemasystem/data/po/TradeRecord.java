@@ -7,7 +7,7 @@ public class TradeRecord {
 
     private Float originalAmount;
 
-    private Float discountAmount;
+    private Float delta;
 
     private Date date;
 
@@ -29,12 +29,12 @@ public class TradeRecord {
         this.originalAmount = originalAmount;
     }
 
-    public Float getDiscountAmount() {
-        return discountAmount;
+    public Float getDelta() {
+        return delta;
     }
 
-    public void setDiscountAmount(Float discountAmount) {
-        this.discountAmount = discountAmount;
+    public void setDelta(Float delta) {
+        this.delta = delta;
     }
 
     public Date getDate() {

@@ -38,6 +38,19 @@ public interface VIPCardService {
      */
     Response addVIPBalance(int userID, float amount);
 
+    /**
+     * 检查是否能进行本次充值
+     * 检查项：
+     * 1. 是否有会员卡
+     * 2. amount非负
+     * 3. 之前没有未支付的订单
+     * 若检查通过会返回带有实付金额的vip.DelayedTask对象
+     * 若检查失败，若有未支付的订单，会返回未支付订单的DelayedTask对象
+     *
+     * @param userID 用户id
+     * @param amount 要充值的原始金额
+     * @return 检查的结果
+     */
     Response depositable(int userID, float amount);
 
     Response deposit(int userID, String orderID);

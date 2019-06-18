@@ -54,6 +54,10 @@ public class VIPCardImpl implements VIPCardService {
         return response;
     }
 
+    public Response buyable(){
+        return null;
+    }
+
     @Override
     public Response addVIPCard(int userID) {
         Response response = Response.success();
@@ -139,7 +143,7 @@ public class VIPCardImpl implements VIPCardService {
             tradeRecord.setDate(new Date());
             tradeRecord.setUserId(userID);
             tradeRecord.setOriginalAmount(balanceBeforeDeposit);
-            tradeRecord.setDiscountAmount(amount);
+            tradeRecord.setDelta(amount);
             recordMapper.insertSelective(tradeRecord);
             orderHolder.removeTask(orderID);
         }
@@ -162,7 +166,8 @@ public class VIPCardImpl implements VIPCardService {
             tradeRecord.setDate(new Date());
             tradeRecord.setUserId(userID);
             tradeRecord.setOriginalAmount(vipcard.getBalance());
-            tradeRecord.setDiscountAmount(amount);
+            tradeRecord.setDelta(0 - amount);
+
             vipcard.setBalance(balanceAfterPayment);
             vipcardMapper.updateByPrimaryKeySelective(vipcard);
             recordMapper.insertSelective(tradeRecord);

@@ -4,13 +4,13 @@
     <resultMap id="BaseResultMap" type="edu.nju.cinemasystem.data.po.TradeRecord">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="original_amount" jdbcType="REAL" property="originalAmount"/>
-        <result column="discount_amount" jdbcType="REAL" property="discountAmount"/>
+        <result column="delta" jdbcType="REAL" property="delta"/>
         <result column="date" jdbcType="TIMESTAMP" property="date"/>
         <result column="user_id" jdbcType="INTEGER" property="userId"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, original_amount, discount_amount, `date`, user_id
+        id, original_amount, delta, `date`, user_id
     </sql>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -35,9 +35,9 @@
 
     <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.TradeRecord"
             useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        insert into vip_trade_record (id, original_amount, discount_amount,
+        insert into vip_trade_record (id, original_amount, delta,
                                      `date`, user_id)
-        values (#{id,jdbcType=INTEGER}, #{originalAmount,jdbcType=REAL}, #{discountAmount,jdbcType=REAL},
+        values (#{id,jdbcType=INTEGER}, #{originalAmount,jdbcType=REAL}, #{delta,jdbcType=REAL},
                 #{date,jdbcType=TIMESTAMP}, #{userId,jdbcType=INTEGER})
     </insert>
 
@@ -51,8 +51,8 @@
             <if test="originalAmount != null">
                 original_amount,
             </if>
-            <if test="discountAmount != null">
-                discount_amount,
+            <if test="delta != null">
+                delta,
             </if>
             <if test="date != null">
                 `date`,
@@ -68,8 +68,8 @@
             <if test="originalAmount != null">
                 #{originalAmount,jdbcType=REAL},
             </if>
-            <if test="discountAmount != null">
-                #{discountAmount,jdbcType=REAL},
+            <if test="delta != null">
+                #{delta,jdbcType=REAL},
             </if>
             <if test="date != null">
                 #{date,jdbcType=TIMESTAMP},

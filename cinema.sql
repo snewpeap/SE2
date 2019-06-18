@@ -294,7 +294,7 @@ CREATE TABLE IF NOT EXISTS `cinema`.`vip_trade_record`
 (
     `id`              INT(11)        NOT NULL AUTO_INCREMENT,
     `original_amount` FLOAT UNSIGNED NOT NULL,
-    `discount_amount` FLOAT          NOT NULL,
+    `delta`           FLOAT          NOT NULL,
     `date`            TIMESTAMP      NOT NULL,
     `user_id`         INT(11)        NOT NULL,
     PRIMARY KEY (`id`),
