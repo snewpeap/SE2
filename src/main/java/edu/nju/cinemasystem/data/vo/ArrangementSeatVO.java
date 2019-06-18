@@ -48,6 +48,4 @@ public class ArrangementSeatVO{
         this.isLocked = arrangementSeat.getIsLocked() != 0;
         this.seatId = arrangementSeat.getSeatId();
     }
-
-    
 }

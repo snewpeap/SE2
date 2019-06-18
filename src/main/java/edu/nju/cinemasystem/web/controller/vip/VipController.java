@@ -27,7 +27,7 @@ public class VipController {
     }
 
     @PostMapping("/user/vip/card/add")
-    public Response addVIPCard(@RequestParam int userId){
+    public Response addVIPCard(@RequestParam int userId) {
         return vipCardService.addVIPCard(userId);
     }
 
@@ -46,10 +46,31 @@ public class VipController {
         return vipCardService.getRechargeHistory(userId);
     }
 
-    @PostMapping("/user/vip/deposit")
+    /**
+     * 向后端请求支付金额，方法是GET，后端会进行检查，如果成功会返回一个vip.DelayedTask对象，代表目前的订单
+     * 如果失败且状态码为 777，则意味着有未支付的订单，这时Response里会带有一个vip.DelayedTask对象，代表未支付订单
+     *
+     * @param session session
+     * @param amount  原始的充值金额
+     * @return 成功或失败的结果
+     */
+    @GetMapping("/user/vip/deposit")
     public Response depositVIPCard(HttpSession session, @RequestBody float amount) {
         int userId = (int) session.getAttribute("id");
-        return vipCardService.deposit(userId, amount);
+        return vipCardService.depositable(userId, amount);
+    }
+
+    /**
+     * 真正的支付，方法是POST
+     *
+     * @param session session
+     * @param orderID 订单id，在上一个方法中已经给了
+     * @return 成功或失败的结果
+     */
+    @PostMapping("/user/vip/deposit/{orderID}")
+    public Response payDeposit(HttpSession session, @PathVariable String orderID) {
+        int userId = (int) session.getAttribute("id");
+        return vipCardService.deposit(userId, orderID);
     }
 
     @GetMapping("/admin/vip/get")

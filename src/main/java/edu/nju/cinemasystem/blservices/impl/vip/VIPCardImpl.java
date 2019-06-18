@@ -9,11 +9,16 @@ import edu.nju.cinemasystem.dataservices.vip.TradeRecordMapper;
 import edu.nju.cinemasystem.dataservices.vip.VipcardMapper;
 import edu.nju.cinemasystem.dataservices.vip.VipcardRechargeReductionMapper;
 import edu.nju.cinemasystem.util.properties.message.VIPMsg;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.concurrent.DelayQueue;
+import java.util.concurrent.Executors;
 
 @Service
 public class VIPCardImpl implements VIPCardService {
@@ -21,6 +26,7 @@ public class VIPCardImpl implements VIPCardService {
     private final VIPMsg vipMsg;
     private final VipcardRechargeReductionMapper reductionMapper;
     private final TradeRecordMapper recordMapper;
+    private OrderHolder orderHolder;
 
     @Autowired
     public VIPCardImpl(VipcardMapper vipcardMapper, VIPMsg vipMsg, VipcardRechargeReductionMapper reductionMapper, TradeRecordMapper recordMapper) {
@@ -28,6 +34,12 @@ public class VIPCardImpl implements VIPCardService {
         this.vipMsg = vipMsg;
         this.reductionMapper = reductionMapper;
         this.recordMapper = recordMapper;
+        this.orderHolder = new OrderHolder();
+    }
+
+    @PostConstruct
+    public void startDQ() {
+        orderHolder.run();
     }
 
     @Override
@@ -79,25 +91,57 @@ public class VIPCardImpl implements VIPCardService {
     }
 
     @Override
-    public Response deposit(int userID, float amount) {
+    public Response depositable(int userID, float amount) {
         if (vipcardMapper.selectByPrimaryKey(userID) == null) {
             return Response.fail(vipMsg.getNoVIPCard());
         } else if (amount <= 0) {
             return Response.fail(vipMsg.getWrongParam() + "金额需大于等于0");
+        }
+        DelayedTask delayedTask = orderHolder.getTask(userID, true);
+        if (delayedTask != null) {
+            Response response = Response.fail();
+            response.setStatusCode(777);
+            response.setContent(delayedTask);
+            return response;
         }
         VipcardRechargeReduction reduction = reductionMapper.selectByAmount(amount);
         float discountAmount = amount;
         if (reduction != null) {
             discountAmount -= reduction.getDiscountAmount();
         }
+        Date now = new Date();
+        delayedTask = new DelayedTask(
+                "D" + now.getTime(),
+                userID,
+                now,
+                discountAmount
+        );
+        orderHolder.addTask(delayedTask);
+        Response response = Response.success();
+        response.setContent(delayedTask);
+        return response;
+    }
+
+    @Override
+    public Response deposit(int userID, String orderID) {
+        if (vipcardMapper.selectByPrimaryKey(userID) == null) {
+            return Response.fail(vipMsg.getNoVIPCard());
+        }
+        DelayedTask delayedTask = orderHolder.getTask(userID, true);
+        if (delayedTask == null || !delayedTask.getID().equals(orderID)) {
+            return Response.fail("订单不存在");
+        }
+        float amount = delayedTask.getAmount();
+        float balanceBeforeDeposit = vipcardMapper.selectByPrimaryKey(userID).getBalance();
         Response response = addVIPBalance(userID, amount);
         if (response.isSuccess()) {
             TradeRecord tradeRecord = new TradeRecord();
             tradeRecord.setDate(new Date());
             tradeRecord.setUserId(userID);
-            tradeRecord.setOriginalAmount(amount);
-            tradeRecord.setDiscountAmount(discountAmount);
+            tradeRecord.setOriginalAmount(balanceBeforeDeposit);
+            tradeRecord.setDiscountAmount(amount);
             recordMapper.insertSelective(tradeRecord);
+            orderHolder.removeTask(orderID);
         }
         return response;
     }
@@ -142,5 +186,56 @@ public class VIPCardImpl implements VIPCardService {
             response.setContent(vipcardMapper.selectByPrimaryKey(userID));
         }
         return response;
+    }
+
+    private class OrderHolder implements Runnable {
+
+        private final Logger LOG = LoggerFactory.getLogger(OrderHolder.class);
+        DelayQueue<DelayedTask> delayQueue;
+
+        OrderHolder() {
+            this.delayQueue = new DelayQueue<>();
+        }
+
+        @Override
+        public void run() {
+            Executors.newSingleThreadExecutor().execute(() -> {
+                DelayedTask delayedTask;
+                while (true) {
+                    try {
+                        delayedTask = delayQueue.take();
+                        LOG.info("将超时订单" + delayedTask.getID() + "移除");
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+
+        void addTask(DelayedTask task) {
+            delayQueue.add(task);
+        }
+
+        void removeTask(String id) {
+            for (DelayedTask task : delayQueue) {
+                if (task.getID().equals(id)) {
+                    delayQueue.remove(task);
+                    LOG.info("将订单" + id + "主动移除");
+                }
+            }
+        }
+
+        DelayedTask getTask(int userID, boolean isDeposit) {
+            for (DelayedTask task : delayQueue) {
+                if (task.getUserID() == userID) {
+                    if (task.getID().startsWith("D") && isDeposit) {
+                        return task;
+                    } else if (task.getID().startsWith("B") && !isDeposit) {
+                        return task;
+                    }
+                }
+            }
+            return null;
+        }
     }
 }

@@ -121,7 +121,10 @@ public class ArrangementImpl
         }
         for (ArrangementSeat as : arrangementSeats) {
             Seat seat = seatMapper.selectByPrimaryKey(as.getSeatId());
-            seatMap.get(seat.getRow()-1)[seat.getColumn()-1] = new ArrangementSeatVO(as);
+            ArrangementSeatVO vo = new ArrangementSeatVO(as);
+            vo.setRow(seat.getRow());
+            vo.setColumn(seat.getColumn());
+            seatMap.get(seat.getRow()-1)[seat.getColumn()-1] = vo;
         }
         ArrangementDetailVO detailVO = new ArrangementDetailVO();
         detailVO.setSeatMap(seatMap);

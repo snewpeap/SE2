@@ -38,7 +38,9 @@ public interface VIPCardService {
      */
     Response addVIPBalance(int userID, float amount);
 
-    Response deposit(int userID, float amount);
+    Response depositable(int userID, float amount);
+
+    Response deposit(int userID, String orderID);
 
     Response pay(int userID, float amount);
 }
