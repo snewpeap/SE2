@@ -69,4 +69,10 @@ public class MovieTest {
         int i = movieMapper.insertSelective(movie);
         assertEquals(i,0);
     }
+
+    @Test
+    @Transactional
+    public void movieShowingTest(){
+        movieMapper.makeMovieShowing();
+    }
 }
