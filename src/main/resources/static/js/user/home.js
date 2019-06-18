@@ -33,6 +33,22 @@ function renderMovie() {
     getMostLikes();
     console.log(mostList);
 
+    // 改主题浮动海报但没用
+    // var headImage = [];
+    // if(newestList.length <= 4){
+    //     newestList.forEach(function (movie) {
+    //         headImage.push((movie.poster||"/images/defaultPoster.jpg"));
+    //         headImage.push((movie.poster||"/images/defaultPoster.jpg"));
+    //     });
+    // }else{
+    //     for(var i = 0;i < newestList.length;i++){
+    //         headImage.push((newestList[i].poster||"/images/defaultPoster.jpg"));
+    //         headImage.push((movie.poster||"/images/defaultPoster.jpg"));
+    //     }
+    // }
+    // $('#demo-1')[0].dataset.zsSrc = '["'+headImage.join('", "')+'"]';
+    // console.log($('#demo-1'));
+
     firstImageStr = "<a href='/user/movie/detail?movieId="+newestList[0].id+"' class='hvr-sweep-to-bottom'><img src='"+ (newestList[0].poster||"/images/defaultPoster.jpg") + "' title=\"Movies Pro\"  alt='' class='img-responsive' />" +
         "<div class=\"w3l-action-icon\"><i class=\"fa fa-play-circle-o\" aria-hidden=\"true\"></i></div></a>";
     $('#video').append(firstImageStr);
@@ -83,47 +99,45 @@ function renderMovie() {
 
     //按电影的id排序
     function getNewest() {
-        for (var i = 0;i<allMovieList.size-1;i++){
-            for (var j = 0; j<allMovieList.size-i-1;j++){
-                if (allMovieList[j].id<allMovieList[j+1].id){
-                    var temp = allMovieList[j];
-                    allMovieList[j] = allMovieList[j+1];
-                    allMovieList[j+1] = temp;
+        for (var i = 0;i<allMovieList.size;i++){
+            for (var j = i + 1; j<allMovieList.size;j++){
+                if (allMovieList[i].id<allMovieList[j].id){
+                    var temp = allMovieList[i];
+                    allMovieList[i] = allMovieList[j];
+                    allMovieList[j] = temp;
                 }
             }
         }
         for (var x = 0;x<allMovieList.length;x++){
             newestList.push(allMovieList[x]);
         }
-        console.log(newestList);
     }
 
     //按想看人数排序
     getMostLikes();
     function getMostLikes() {
-        for (var i = 0;i<allMovieList.size-1;i++){
-            for (var j = 0; j<allMovieList.size-i-1;j++){
-                if (allMovieList[j].likeNum<allMovieList[j+1].likeNum){
-                    var temp = allMovieList[j];
-                    allMovieList[j] = allMovieList[j+1];
-                    allMovieList[j+1] = temp;
-                }
+        var mostListTemp = allMovieList;
+        mostListTemp.sort(function (a,b) {
+            if(a['likeNum'] > b['likeNum']){
+                return 1;
+            }else if(a['likeNum'] < b['likeNum']){
+                return -1;
+            }else{
+                return 0;
             }
-        }
-        for (var x = 0;x<allMovieList.length;x++){
-            mostList.push(allMovieList[x]);
-        }
+        });
+        mostList = mostListTemp;
     }
 
     //按票房排序
     getHighestBox();
     function getHighestBox() {
-        for (var i = 0;i<allMovieList.size-1;i++){
-            for (var j = 0; j<allMovieList.size-i-1;j++){
-                if (allMovieList[j].box<allMovieList[j+1].box){
-                    var temp = allMovieList[j];
-                    allMovieList[j] = allMovieList[j+1];
-                    allMovieList[j+1] = temp;
+        for (var i = 0;i<allMovieList.size;i++){
+            for (var j = i + 1; j<allMovieList.size;j++){
+                if (allMovieList[i].heat<allMovieList[j].heat){
+                    var temp = allMovieList[i];
+                    allMovieList[i] = allMovieList[j];
+                    allMovieList[j] = temp;
                 }
             }
         }

@@ -262,7 +262,7 @@ public class TicketImpl
         if (!refundStrategy.canRefund()) {
             return Response.fail(ticketMsg.getRefundDisable());
         }
-        float refundAmount = ticket.getRealAmount() * refundStrategy.getPercentage();
+        float refundAmount = ticket.getRealAmount() * refundStrategy.getPercentage() / (float)100;
         Response refundResponse;
         if (order.getStatus() == 1) {
             refundResponse = vipCardService.addVIPBalance(ticket.getUserId(), refundAmount);
@@ -528,8 +528,8 @@ public class TicketImpl
         /**
          * 把订单上的票的状态改为已完成并且将其移出延时队列,并且返回订单里的所有票（为了知道是什么电影和算钱）
          *
-         * @param tickets
-         * @param order
+         * @param tickets 票的list
+         * @param order 订单
          */
         @Transactional
         void completeOrder(List<Ticket> tickets, Order order, boolean useVIP) {
