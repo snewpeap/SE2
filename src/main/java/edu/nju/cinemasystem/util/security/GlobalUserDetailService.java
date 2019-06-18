@@ -1,6 +1,7 @@
 package edu.nju.cinemasystem.util.security;
 
 import edu.nju.cinemasystem.data.po.User;
+import edu.nju.cinemasystem.data.po.UserHasRoleKey;
 import edu.nju.cinemasystem.dataservices.user.RoleMapper;
 import edu.nju.cinemasystem.dataservices.user.UserHasRoleMapper;
 import edu.nju.cinemasystem.dataservices.user.UserMapper;
@@ -38,7 +39,8 @@ public class GlobalUserDetailService implements UserDetailsService {
             throw new UsernameNotFoundException(accountMsg.getAccountNotExist());
         }
         List<SimpleGrantedAuthority> auth = new ArrayList<>(3);
-        String role = roleMapper.selectByPrimaryKey(userHasRoleMapper.selectByUserID(user.getId()).getRoleId()).getRoleName();
+        UserHasRoleKey uhr = userHasRoleMapper.selectByUserID(user.getId());
+        String role = uhr == null ? roleProperty.getAudience() : roleMapper.selectByPrimaryKey(uhr.getRoleId()).getRoleName();
         SimpleGrantedAuthority staffAuth = new SimpleGrantedAuthority(prefix + roleProperty.getStaff());
         SimpleGrantedAuthority managerAuth = new SimpleGrantedAuthority(prefix + roleProperty.getManager());
         if (roleProperty.getRoot().equals(role)) {
