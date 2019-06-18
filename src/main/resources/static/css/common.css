@@ -12,12 +12,20 @@ input {
 ul {
     list-style: none;
 }
-th, td{
+th{
     text-align: center;
+    border-bottom: 3px solid #dddddd;
+}
+td{
+    text-align: center;
+    border-bottom: 1px solid #dddddd;
 }
 .card {
     background: #fff;
     border-radius: 2px;
+}
+.myCard{
+    background-color: #dddddd;
 }
 .title {
     font-size: 24px;

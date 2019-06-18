@@ -23,7 +23,11 @@ $(document).ready(function () {
     function addRecord(record) {
         let recordStr = '';
         recordStr +=
-            "<tr id='"+record.orderID+"'>"+
+            "<tr id='"+record.orderID+"' title='";
+        record.ticketVOs.forEach(function (ticket) {
+            recordStr += '电影名称：'+record.movieName + '          座位：' + ticket.row + '排' + ticket.column + '座' + '          电影票状态：' + ticket.status + '&#10;'
+        });
+        recordStr += "'>"+
             "<td id='"+record.orderID+"' style=\"width: 115px\">"+ record.movieName+"</td>" +
             "<td id='"+record.orderID+"' style=\"width: 195px\">"+ record.startTime.replace('T',' ').substring(0,19)+"</td>" +
             "<td id='"+record.orderID+"' style=\"width: 80px\">"+ record.ticketVOs.length +"张</td>" +
@@ -47,14 +51,3 @@ $(document).ready(function () {
 //         }
 //     )
 // }
-
-$(document).on('click','td',function (e) {
-    let orderId = e.target.id;
-    let tickets = order.ticketVOs;
-    let str = "<ul>";
-    tickets.forEach(function (t) {
-      str += "<li>" + t.row + "排" + t.column + "座" + t.status + "</li>";
-    });
-    str += "</ul>";
-    $("#"+orderId).append()
-});

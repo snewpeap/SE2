@@ -27,11 +27,8 @@ $(document).ready(function () {
 
 function renderMovie() {
     getNewest();
-    console.log(newestList);
     getHighestBox();
-    console.log(highestList);
     getMostLikes();
-    console.log(mostList);
 
     // 改主题浮动海报但没用
     // var headImage = [];
@@ -99,32 +96,19 @@ function renderMovie() {
 
     //按电影的id排序
     function getNewest() {
-        for (var i = 0;i<allMovieList.size;i++){
-            for (var j = i + 1; j<allMovieList.size;j++){
-                if (allMovieList[i].id<allMovieList[j].id){
-                    var temp = allMovieList[i];
-                    allMovieList[i] = allMovieList[j];
-                    allMovieList[j] = temp;
-                }
-            }
-        }
-        for (var x = 0;x<allMovieList.length;x++){
-            newestList.push(allMovieList[x]);
-        }
+        var newestListTemp = allMovieList.slice(0);
+        newestListTemp.sort(function (a,b) {
+            return b.id-a.id;
+        });
+        newestList = newestListTemp;
     }
 
     //按想看人数排序
     getMostLikes();
     function getMostLikes() {
-        var mostListTemp = allMovieList;
+        var mostListTemp = allMovieList.slice(0);
         mostListTemp.sort(function (a,b) {
-            if(a['likeNum'] > b['likeNum']){
-                return 1;
-            }else if(a['likeNum'] < b['likeNum']){
-                return -1;
-            }else{
-                return 0;
-            }
+            return b.likeNum-a.likeNum;
         });
         mostList = mostListTemp;
     }
@@ -132,18 +116,11 @@ function renderMovie() {
     //按票房排序
     getHighestBox();
     function getHighestBox() {
-        for (var i = 0;i<allMovieList.size;i++){
-            for (var j = i + 1; j<allMovieList.size;j++){
-                if (allMovieList[i].heat<allMovieList[j].heat){
-                    var temp = allMovieList[i];
-                    allMovieList[i] = allMovieList[j];
-                    allMovieList[j] = temp;
-                }
-            }
-        }
-        for (var x = 0;x<allMovieList.length;x++){
-            highestList.push(allMovieList[x]);
-        }
+        var highestListTemp = allMovieList.slice(0);
+        highestListTemp.sort(function (a,b) {
+            return b.heat-a.heat;
+        });
+        highestList = highestListTemp;
     }
 
     //拼接最。。电影的信息字符串（不包括图片）

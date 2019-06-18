@@ -40,7 +40,7 @@ function getVIP() {
             if (res.success) {
                 var str = "<div>";
                 res.content.forEach(function (one) {
-                    str += "<div>满"+ one.targetAmount + "送"+ one.discountAmount +"</div>";
+                    str += "<div>满"+ one.targetAmount + "减"+ one.discountAmount +"</div>";
                 });
                 str += "</div>";
                 $("#member-buy-description").html("<div class='description'>充值优惠：</div>"+str);
