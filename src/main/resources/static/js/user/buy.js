@@ -13,6 +13,7 @@ var movieId;
 let fare;
 let hall;
 let movie;
+let chosenSeatId = [];
 
 $(document).ready(function () {
     // $(".gray-text")[0].innerText = sessionStorage.getItem("username");
@@ -70,7 +71,6 @@ function getInfo() {
                             tempStr += "<button class='cinema-hall-seat-choose' id='" + seats[i][j].seatId + "' onclick='seatClick(\"" + seats[i][j].seatId  + "\"," + i + "," + j + ")'></button>";
                         }
                     }
-
                     seat += "<div>" + tempStr + "</div>";
                 }
                 let hallDom =
@@ -101,12 +101,14 @@ function getExistingTicket() {
         function (res) {
             if (res.success){
                 let tickets = res.content;
-                if(tickets.length !== 0){
-                    let r = confirm("您之前选的座位还未付款，点击确认继续购买");
-                    if(r){
-                        getOrder();
-                    }else{
-                        cancelTickets(tickets);
+                if(tickets != null){
+                    if (tickets.length !==0 ){
+                        let r = confirm("您之前选的座位还未付款，点击确认继续购买");
+                        if(r){
+                            getOrder();
+                        }else{
+                            cancelTickets(tickets);
+                        }
                     }
                 }
             }
@@ -136,6 +138,7 @@ function cancelTickets() {
 
 
 function seatClick(id, i, j) {
+    chosenSeatId.push(id);
     let seat = $('#' + id);
     if (seat.hasClass("cinema-hall-seat-choose")) {
         seat.removeClass("cinema-hall-seat-choose");
@@ -168,20 +171,20 @@ function seatClick(id, i, j) {
     }
     $('#seat-detail').html(seatDetailStr);
 }
-//todo 获得活动列表？
-function getActivity(){
-    getRequest(
-        '/activity/get',
-        function (res) {
-            if (res.success){
-                activities = res.content;
-            }
-        },
-        function (error) {
-            alert(error);
-        }
-    )
-}
+// todo 获得活动列表？
+// function getActivity(){
+//     getRequest(
+//         '/activity/get',
+//         function (res) {
+//             if (res.success){
+//                 activities = res.content;
+//             }
+//         },
+//         function (error) {
+//             alert(error);
+//         }
+//     )
+// }
 
 function getCoupon() {
     getRequest(
@@ -223,8 +226,8 @@ function getTicket() {
         '/user/ticket/get/existing?scheduleId=' + scheduleId + "&userId=" + getCookie('id'),
         function (res) {
             if (res.success){
-                res.content.forEach(function (ticket) {
-                        if (ticket.state==="未完成" && ticket.schedule.id === scheduleId){
+                res.content.tickets.forEach(function (ticket) {
+                        if (ticket.status === "未完成" && ticket.arrangementId === scheduleId){
                             ticketId.push(ticket.id);
                             let ticketStr="";
                             ticketStr += "<div>" + (ticket.rowIndex + 1) + "排" + (ticket.columnIndex + 1) + "座</div>";
@@ -263,12 +266,11 @@ function orderConfirmClick() {
 
     postRequest(
         '/user/ticket/lockSeats/' + scheduleId + "?userId=" + getCookie('id'),
-        {
-            seats: seats
-        },function (res) {
+        chosenSeatId
+        ,function (res) {
             if (res.success){
                 getOrder();
-                orderId = (res.content).getID();
+                orderId = (res.content).ID;
             }
             else{
                 alert(res.message);
@@ -283,7 +285,7 @@ function getOrder() {
     $('#seat-state').css("display", "none");
     $('#order-state').css("display", "");
 
-    getActivity();
+    // getActivity();
     getTicket();
 
     getRequest(
@@ -334,34 +336,25 @@ function changeCoupon(couponIndex) {
 
 //todo 主要在支付
 function payConfirmClick() {
-    if (useVIP) {
-        //postPayRequest();
-        postRequest('/user/ticket/payByVIP?userId=' + getCookie('id') + "&couponId=" + order.couponId,
-            {
-                ticketId:ticketId
-            },
-            function(res){
-                if (res.success === true ){
+    let payMethod = useVIP ? 'vip' : 'alipay';
+    //postPayRequest();
+    postRequest('/user/' + payMethod + '/pay/' + orderId,
+        function (res) {
+            if (res.success) {
+                if (useVIP){
                     $('#order-state').css("display", "none");
                     $('#success-state').css("display", "");
                     $('#buyModal').modal('hide');
+                } else {
+                    document.write(res.content);
                 }
-                else{
-                    alert(res.message);
-                }
-            },
-            function (err) {
-                alert(err);
-            });
-    } else {
-        if (validateForm()) {
-            if ($('#userBuy-cardNum').val() === "123123123" && $('#userBuy-cardPwd').val() === "123123") {
-                postPayRequest();
             } else {
-                alert("银行卡号或密码错误");
+                alert(res.message);
             }
-        }
-    }
+        },
+        function (err) {
+            alert(err);
+        });
 }
 
 function postPayRequest() {

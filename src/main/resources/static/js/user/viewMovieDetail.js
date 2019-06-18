@@ -99,22 +99,19 @@ function getTabs(i) {
     var dateContent = "";
     var index = 0;
     allArrangement.forEach(function (arrangements) {
-        for (var date in arrangements){
-            var dateStr = date.substring(5,7)+ "月" + date.substring(8,10) + "日";
-            if(date.substring(0,10)===formatDate(new Date())){
-                dateStr += '（今天）';
-            }else if(date.substring(0,10)===plusDateByDay(new Date(),1)){
-                dateStr += '（明天）';
-            }else if(date.substring(0,10)===plusDateByDay(new Date(),2)){
-                dateStr += '（后天）';
-            }
-            dateContent += '<li role="presentation" class="arrangement-date'+index+'"><a onclick="getTabs('+index+')">' + dateStr + '</a></li>';
-            if(index===i){
-                renderArrangements(date);
-            }
-            index += 1;
+        var dateStr = formatDate(new Date(arrangements[0].startTime)).substring(5,7)+ "月" + formatDate(new Date(arrangements[0].startTime)).substring(8,10) + "日";
+        if(formatDate(new Date(arrangements[0].startTime)).substring(0,10)===formatDate(new Date())){
+            dateStr += '（今天）';
+        }else if(formatDate(new Date(arrangements[0].startTime)).substring(0,10)===plusDateByDay(new Date(),1)){
+            dateStr += '（明天）';
+        }else if(formatDate(new Date(arrangements[0].startTime)).substring(0,10)===plusDateByDay(new Date(),2)){
+            dateStr += '（后天）';
         }
-
+        dateContent += '<li role="presentation" class="arrangement-date'+index+'"><a onclick="getTabs('+index+')">' + dateStr + '</a></li>';
+        if(index===i){
+            renderArrangements(index);
+        }
+        index += 1;
     });
     $('#schedule-date').html(dateContent);
     $('.arrangement-date'+i).addClass('active');
@@ -144,15 +141,8 @@ function getTabs(i) {
 //     repaintScheduleBody(curDateLoc);
 // }
 
-function renderArrangements(date) {
-    var scheduleItems = [];
-    allArrangement.forEach(function (arrangements) {
-       for(var key in arrangements){
-           if(key===date){
-               scheduleItems = arrangements[date];
-           }
-       }
-    });
+function renderArrangements(index) {
+    var scheduleItems = allArrangement[index];
     if (scheduleItems.length === 0) {
         $('#date-none-hint').css("display", "");
     } else {

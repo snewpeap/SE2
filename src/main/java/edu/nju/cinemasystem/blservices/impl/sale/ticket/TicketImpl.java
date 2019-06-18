@@ -79,8 +79,8 @@ public class TicketImpl
     @Override
     @Transactional
     public Response lockSeat(List<Integer> seatIDs, int userID, int arrangementID) {
-        for (Ticket ticket:ticketsMapper.selectByArrangementID(arrangementID)){
-            if (ticket.getUserId()==userID){
+        for (Ticket ticket : ticketsMapper.selectByArrangementID(arrangementID)) {
+            if (ticket.getUserId() == userID) {
                 return Response.fail(ticketMsg.getHasOrder());
             }
         }
@@ -308,17 +308,15 @@ public class TicketImpl
         List<Ticket> needTickets = new ArrayList<>();
         long orderID = 0L;
         float totalAmount = 0;
-        if (tickets.size() != 0) {
-            for (Ticket ticket : tickets) {
-                if (ticket.getArrangementId() == scheduleId && ticket.getStatus() == (byte) 0) {
-                    needTickets.add(ticket);
-                }
+        for (Ticket ticket : tickets) {
+            if (ticket.getArrangementId() == scheduleId && ticket.getStatus() == (byte) 0) {
+                needTickets.add(ticket);
             }
-            orderID = needTickets.get(0).getOrderID();
-            totalAmount = needTickets.size() * needTickets.get(0).getRealAmount();
         }
         Response response = Response.success();
         if (needTickets.size() > 0) {
+            orderID = needTickets.get(0).getOrderID();
+            totalAmount = needTickets.size() * needTickets.get(0).getRealAmount();
             OrderWithCouponVO orderWithCouponVO = assembleOrderWithCouponVO(needTickets, userId, orderID, totalAmount);
             response.setContent(orderWithCouponVO);
         }
