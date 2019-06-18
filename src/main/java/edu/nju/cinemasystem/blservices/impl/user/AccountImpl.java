@@ -5,7 +5,6 @@ import edu.nju.cinemasystem.data.po.User;
 import edu.nju.cinemasystem.data.vo.Response;
 import edu.nju.cinemasystem.data.vo.UserVO;
 import edu.nju.cinemasystem.data.vo.form.RegistryForm;
-import edu.nju.cinemasystem.data.vo.form.UserForm;
 import edu.nju.cinemasystem.dataservices.user.UserMapper;
 import edu.nju.cinemasystem.util.properties.message.AccountMsg;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,26 +41,6 @@ public class AccountImpl implements Account {
             user = userMapper.selectByPrimaryKey(user.getId());
             response.setMessage(accountMsg.getRegistrySuccess());
             response.setContent(UserVO.assembleUserVO(user));
-        }
-        return response;
-    }
-
-    @Override
-    public Response login(@NotNull UserForm userForm) {
-        System.out.println("1");
-        Response response = Response.success();
-        User targetUser = userMapper.selectByName(userForm.getName());
-        if (targetUser == null) {
-            Response.fail(accountMsg.getAccountNotExist());
-            System.out.println("2");
-        } else if (!targetUser.getPassword().equals(userForm.getPassword())) {
-            Response.fail(accountMsg.getWrongPassword());
-            System.out.println("3");
-        } else {
-            UserVO user = UserVO.assembleUserVO(targetUser);
-            response.setMessage(accountMsg.getLoginSuccess());
-            response.setContent(user);
-            System.out.println("4");
         }
         return response;
     }

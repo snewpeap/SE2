@@ -95,7 +95,10 @@ public class StaffManagementImpl implements StaffManagement {
                 response = Response.fail(staffMsg.getAddFailed());
             } else {
                 response.setMessage(staffMsg.getAddSuccess());
-                response.setContent(assembleStaffVO(userMapper.selectStaffByName(staffAccount.getName())));
+                response.setContent(new StaffVO(
+                        staffAccount.getId(),
+                        staffAccount.getName()
+                ));
             }
         }
         return response;
@@ -126,14 +129,17 @@ public class StaffManagementImpl implements StaffManagement {
                 response = Response.fail(staffMsg.getAddFailed());
             } else {
                 response.setMessage(staffMsg.getAddSuccess());
-                response.setContent(assembleManagerVO(userMapper.selectManagerByName(managerAccount.getName())));
+                response.setContent(new StaffVO(
+                        managerAccount.getId(),
+                        managerAccount.getName(),
+                        roleProperty.getManager()
+                ));
             }
         }
         return response;
     }
 
     @Override
-    @Transactional
     public Response removeStaff(int staffID) {
         if (userHasRoleMapper.selectByUserID(staffID) == null) {
             return Response.fail(staffMsg.getStaffNotExist());
@@ -146,7 +152,6 @@ public class StaffManagementImpl implements StaffManagement {
     }
 
     @Override
-    @Transactional
     public Response changeRole(StaffForm staffForm) {
         String roleName = staffForm.getRole();
         if (!roleName.equals(roleProperty.getManager()) && !roleName.equals(roleProperty.getStaff())) {
@@ -154,6 +159,9 @@ public class StaffManagementImpl implements StaffManagement {
         }
         Role role = roleMapper.selectRoleByName(staffForm.getRole());
         UserHasRoleKey uhr = userHasRoleMapper.selectByUserID(staffForm.getId());
+        if (uhr == null) {
+            return Response.fail(staffMsg.getOperationFailed() + " : 数据库用户角色缺少记录");
+        }
         uhr.setRoleId(role.getId());
         userHasRoleMapper.updateByUserID(uhr);
         Response response = Response.success(staffMsg.getOperationSuccess());
