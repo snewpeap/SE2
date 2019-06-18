@@ -86,7 +86,7 @@ public class VIPCardImpl implements edu.nju.cinemasystem.blservices.vip.VIPCard 
         }
         VipcardRechargeReduction reduction = reductionMapper.selectByAmount(amount);
         float discountAmount = amount;
-        if(reduction!=null) {
+        if (reduction != null) {
             discountAmount -= reduction.getDiscountAmount();
         }
         Response response = addVIPBalance(userID, amount);

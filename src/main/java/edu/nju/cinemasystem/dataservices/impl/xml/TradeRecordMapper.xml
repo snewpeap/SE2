@@ -16,26 +16,26 @@
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from recharge_record
+        from vip_trade_record
         where id = #{id,jdbcType=INTEGER}
     </select>
 
     <select id="selectByUserID" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from recharge_record
+        from vip_trade_record
         where user_id = #{userID,jdbcType=INTEGER}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
-        from recharge_record
+        from vip_trade_record
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
     <insert id="insert" parameterType="edu.nju.cinemasystem.data.po.TradeRecord"
             useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        insert into recharge_record (id, original_amount, discount_amount,
+        insert into vip_trade_record (id, original_amount, discount_amount,
                                      `date`, user_id)
         values (#{id,jdbcType=INTEGER}, #{originalAmount,jdbcType=REAL}, #{discountAmount,jdbcType=REAL},
                 #{date,jdbcType=TIMESTAMP}, #{userId,jdbcType=INTEGER})
@@ -43,7 +43,7 @@
 
     <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.TradeRecord"
             useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        insert into recharge_record
+        insert into vip_trade_record
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,

@@ -1,5 +1,6 @@
 package edu.nju.cinemasystem.blservices.cinema.arrangement;
 
+import edu.nju.cinemasystem.data.po.Arrangement;
 import edu.nju.cinemasystem.data.vo.Response;
 import edu.nju.cinemasystem.data.vo.form.ArrangementForm;
 
@@ -50,5 +51,5 @@ public interface ArrangementManage {
      * @param endDate 结束时间
      * @return 排片List
      */
-    List<edu.nju.cinemasystem.data.po.Arrangement> getArrangementsByDay(Date startDate, Date endDate);
+    List<Arrangement> getArrangementsByDay(Date startDate, Date endDate);
 }

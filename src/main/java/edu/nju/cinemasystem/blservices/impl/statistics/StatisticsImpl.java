@@ -14,32 +14,35 @@ import edu.nju.cinemasystem.data.vo.Response;
 import edu.nju.cinemasystem.data.vo.statisticsVO.*;
 import edu.nju.cinemasystem.util.properties.message.GlobalMsg;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
-public class StatisticsImpl implements Statistics, StatisticsInfo{
+public class StatisticsImpl implements Statistics, StatisticsInfo {
 
-    private final
-    TicketStatistics ticketStatistics;
-    private final
-    GlobalMsg globalMsg;
-    private final
-    ArrangementManage arrangementManage;
-    private final
-    MovieManagement movieManagement;
-    private final
-    HallManage hallManage;
+    private final TicketStatistics ticketStatistics;
+    private GlobalMsg globalMsg;
+    private final ArrangementManage arrangementManage;
+    private final MovieManagement movieManagement;
+    private final HallManage hallManage;
 
     @Autowired
-    public StatisticsImpl(TicketStatistics ticketStatistics, GlobalMsg globalMsg, ArrangementManage arrangementManage, MovieManagement movieManagement, HallManage hallManage) {
+    public StatisticsImpl(TicketStatistics ticketStatistics, ArrangementManage arrangementManage, MovieManagement movieManagement, HallManage hallManage) {
         this.ticketStatistics = ticketStatistics;
-        this.globalMsg = globalMsg;
         this.arrangementManage = arrangementManage;
         this.movieManagement = movieManagement;
         this.hallManage = hallManage;
+    }
+
+    @Qualifier(value = "globalMsg")
+    @Autowired
+    public void setGlobalMsg(GlobalMsg globalMsg) {
+        this.globalMsg = globalMsg;
     }
 
     @Override
@@ -68,126 +71,116 @@ public class StatisticsImpl implements Statistics, StatisticsInfo{
 
     @Override
     public Response getMoviePlacingRateByDate(Date date) {
-        Response response;
-        try {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Date formatDate = simpleDateFormat.parse(simpleDateFormat.format(date));
-            List<Arrangement> arrangements = arrangementManage.getArrangementsByDay(formatDate, getNumDayAfterDate(formatDate, 1));
-            List<Movie> allMovie = movieManagement.getReleasedMovies();
-            Map<Integer, List> arrangementsByMovie = new HashMap<>();
-            List<MoviePlacingRateVO> moviePlacingRateVOS = new ArrayList<>();
-            for (Movie movie : allMovie) {
-                List arrangementAndMovieName = new ArrayList();
-                arrangementAndMovieName.add(movie.getName());
-                arrangementAndMovieName.add(new ArrayList<Arrangement>());
-                arrangementsByMovie.put(movie.getId(), arrangementAndMovieName);
-            }
-            arrangements.stream().forEach(arrangement -> {
-                List arr = (List) arrangementsByMovie.get(arrangement.getMovieId()).get(1);
-                arr.add(arrangement);
-                arrangementsByMovie.get(arrangement.getMovieId()).set(1, arr);
-            });
-            for (Map.Entry<Integer, List> entry : arrangementsByMovie.entrySet()) {
-                int movieID = entry.getKey();
-                List value = entry.getValue();
-                String movieName = (String) value.get(0);
-                int audienceNum = 0;
-                List<Arrangement> oneArrangementList = (List<Arrangement>) value.get(1);
-                int seatNum = 0;
-                for (Arrangement arrangement : oneArrangementList) {
-                    int aID = arrangement.getId();
-                    audienceNum += ticketStatistics.getNumOfTicketsByArrangement(aID);
-                    seatNum += hallManage.getSeatNumByHallID(arrangement.getHallId());
-                }
-                double averageSeatNum = (double) seatNum / (double) oneArrangementList.size();
-                //Double rate = audienceNum/oneArrangementList.size()/hallManage.getAverageSeatNum();
-                Double rate = (double)0;
-                if(oneArrangementList.size()!=0 && averageSeatNum!=0) {
-                    rate = audienceNum / oneArrangementList.size() / averageSeatNum;
-                }
-                moviePlacingRateVOS.add(new MoviePlacingRateVO(date, movieID, rate, movieName));
-            }
-            response = Response.success();
-            response.setContent(moviePlacingRateVOS);
-        } catch (Exception e) {
-            e.printStackTrace();
-            response = Response.fail();
-            response.setMessage(e.getMessage());
+        Date defaultToday = new Date();
+        if (date.after(defaultToday)) {
+            return Response.fail(globalMsg.getWrongParam() + " : 未来的时间");
         }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date formatDate;
+        try {
+            formatDate = simpleDateFormat.parse(simpleDateFormat.format(date));
+        } catch (ParseException e) {
+            return Response.fail(globalMsg.getWrongParam() + " : 时间格式错误");
+        }
+
+        List<Arrangement> arrangements = arrangementManage.getArrangementsByDay(formatDate, getNumDayAfterDate(formatDate, 1));
+        Map<Integer, List<Arrangement>> arrangementsByMovie = new HashMap<>();
+        arrangements.forEach(arrangement -> {
+            Integer movieID = arrangement.getMovieId();
+            if (arrangementsByMovie.containsKey(movieID)) {
+                arrangementsByMovie.put(movieID, new ArrayList<>());
+            }
+            arrangementsByMovie.get(movieID).add(arrangement);
+        });
+
+        List<MoviePlacingRateVO> moviePlacingRateVOS = new ArrayList<>();
+        for (Map.Entry<Integer, List<Arrangement>> entry : arrangementsByMovie.entrySet()) {
+            int movieID = entry.getKey();
+            List<Arrangement> arrangementList = entry.getValue();
+            int audienceNum = 0;
+            int seatNum = 0;
+            for (Arrangement arrangement : arrangementList) {
+                int aID = arrangement.getId();
+                audienceNum += ticketStatistics.getNumOfTicketsByArrangement(aID);
+                seatNum += hallManage.getSeatNumByHallID(arrangement.getHallId());
+            }
+            double averageSeatNum
+                    = new BigDecimal(seatNum).divide(new BigDecimal(arrangementList.size()), 2).doubleValue();
+            double rate = 0.0;
+            if (arrangementList.size() != 0 && averageSeatNum != 0) {
+                BigDecimal relativeSeatNum = new BigDecimal(arrangementList.size()).multiply(new BigDecimal(averageSeatNum));
+                rate = new BigDecimal(audienceNum).divide(relativeSeatNum, 2).doubleValue();
+            }
+            Movie movie = movieManagement.getMovieByID(movieID);
+            String movieName = movie.getName();
+            moviePlacingRateVOS.add(new MoviePlacingRateVO(date, movieID, rate, movieName));
+        }
+        Response response = Response.success();
+        response.setContent(moviePlacingRateVOS);
         return response;
     }
 
     @Override
     public Response getPopularMovies(int days, int movieNum) {
-        Response response;
+        Date today = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Date today = simpleDateFormat.parse(simpleDateFormat.format(new Date()));
-            Date startDate = getNumDayAfterDate(today, -(days - 1));
-            List<Movie> movies = movieManagement.getReleasedMovies();
-            List<MoviePopularityVO> moviePopularityVOS = new ArrayList<>();
-            for (Movie movie : movies) {
-                ManagerMovieVO movieVO = new ManagerMovieVO();
-                BaseMovieVO.assembleMovieVO(movie, movieVO);
-                float boxOffice = ticketStatistics.getBoxOfficeByMovieIDAndDay(movie.getId(), startDate, today);
-                moviePopularityVOS.add(new MoviePopularityVO(movieVO, boxOffice));
-            }
-            moviePopularityVOS.sort((MoviePopularityVO m1, MoviePopularityVO m2) -> (int) m2.getBoxOffice() - (int) m1.getBoxOffice());
-            List<MoviePopularityVO> resultVOs = new ArrayList<>();
-            if(moviePopularityVOS.size() > movieNum) {
-                for (int i = 0; i < movieNum; i++) {
-                    resultVOs.add(moviePopularityVOS.get(i));
-                }
-            }else {
-                resultVOs.addAll(moviePopularityVOS);
-            }
-            response = Response.success();
-            response.setContent(resultVOs);
-        } catch (Exception e) {
-            e.printStackTrace();
-            response = Response.fail(e.getMessage());
+            today = simpleDateFormat.parse(simpleDateFormat.format(new Date()));
+        } catch (ParseException ignored) {
         }
+        Date startDate = getNumDayAfterDate(today, -(days - 1));
+        List<Movie> movies = movieManagement.getReleasedMovies();
+        List<MoviePopularityVO> moviePopularityVOS = new ArrayList<>();
+        for (Movie movie : movies) {
+            ManagerMovieVO movieVO = new ManagerMovieVO();
+            BaseMovieVO.assembleMovieVO(movie, movieVO);
+            float boxOffice = ticketStatistics.getBoxOfficeByMovieIDAndDay(movie.getId(), startDate, today);
+            moviePopularityVOS.add(new MoviePopularityVO(movieVO, boxOffice));
+        }
+        moviePopularityVOS.sort((MoviePopularityVO m1, MoviePopularityVO m2) -> (int) m2.getBoxOffice() - (int) m1.getBoxOffice());
+        List<MoviePopularityVO> resultVOs = new ArrayList<>();
+        if (moviePopularityVOS.size() > movieNum) {
+            for (int i = 0; i < movieNum; i++) {
+                resultVOs.add(moviePopularityVOS.get(i));
+            }
+        } else {
+            resultVOs.addAll(moviePopularityVOS);
+        }
+        Response response = Response.success();
+        response.setContent(resultVOs);
         return response;
     }
 
     @Override
     public Response getScheduleRateByDate(Date date) {
-        Response response;
+        Date startDate = (date == null) ? new Date() : date;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            Date startDate = date;
-            if (startDate == null) {
-                startDate = new Date();
-            }
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             startDate = simpleDateFormat.parse(simpleDateFormat.format(startDate));
-            Date endDate = getNumDayAfterDate(startDate, 1);
-            List<Movie> movies = movieManagement.getReleasedMovies();
-            List<Arrangement> arrangements = arrangementManage.getArrangementsByDay(startDate, endDate);
-            Map<Integer, List> scheduleMapByMovie = new HashMap<>();
-            movies.forEach(movie -> {
-                List movieNameAndTimes = new ArrayList();
-                movieNameAndTimes.add(movie.getName());
-                movieNameAndTimes.add(0);
-                scheduleMapByMovie.put(movie.getId(), movieNameAndTimes);
-            });
-            arrangements.forEach(arrangement -> {
-                int t = (int) scheduleMapByMovie.get(arrangement.getMovieId()).get(1);
-                t++;
-                scheduleMapByMovie.get(arrangement.getMovieId()).set(1, t);
-            });
-            List<MovieScheduleTimesVO> movieScheduleTimesVOS = new ArrayList<>();
-            for (Map.Entry<Integer, List> entry : scheduleMapByMovie.entrySet()) {
-                int movieID = entry.getKey();
-                int times = (int) entry.getValue().get(1);
-                String movieName = (String) entry.getValue().get(0);
-                movieScheduleTimesVOS.add(new MovieScheduleTimesVO(movieID, times, movieName));
-            }
-            response = Response.success();
-            response.setContent(movieScheduleTimesVOS);
-        } catch (Exception e) {
-            e.printStackTrace();
-            response = Response.fail(e.getMessage());
+        } catch (ParseException e) {
+            return Response.fail(globalMsg.getWrongParam() + " : 时间格式错误");
         }
+        Date endDate = getNumDayAfterDate(startDate, 1);
+        List<Arrangement> arrangements = arrangementManage.getArrangementsByDay(startDate, endDate);
+        Map<Integer, List<Arrangement>> scheduleMapByMovie = new HashMap<>();
+
+        arrangements.forEach(arrangement -> {
+            Integer movieID = arrangement.getMovieId();
+            if (!scheduleMapByMovie.containsKey(arrangement.getMovieId())) {
+                scheduleMapByMovie.put(movieID, new ArrayList<>());
+            }
+            scheduleMapByMovie.get(movieID).add(arrangement);
+        });
+        List<MovieScheduleTimesVO> movieScheduleTimesVOS = new ArrayList<>();
+        for (Map.Entry<Integer, List<Arrangement>> entry : scheduleMapByMovie.entrySet()) {
+            int movieID = entry.getKey();
+            int times = entry.getValue().size();
+            String movieName = movieManagement.getMovieByID(movieID).getName();
+            movieScheduleTimesVOS.add(new MovieScheduleTimesVO(movieID, times, movieName));
+        }
+
+        Response response = Response.success();
+        response.setContent(movieScheduleTimesVOS);
         return response;
     }
 
@@ -209,10 +202,10 @@ public class StatisticsImpl implements Statistics, StatisticsInfo{
                 break;
             }
         }
-        if(movieTotalBoxOfficeVOS.size()!=0) {
+        if (movieTotalBoxOfficeVOS.size() != 0) {
             double maxBoxOffice = movieTotalBoxOfficeVOS.get(0).getBoxOffice() == 0 ? 1 : movieTotalBoxOfficeVOS.get(0).getBoxOffice();
             return movieBoxOffice / maxBoxOffice;
-        }else {
+        } else {
             return 0;
         }
     }
@@ -236,7 +229,7 @@ public class StatisticsImpl implements Statistics, StatisticsInfo{
      *
      * @return List<MovieTotalBoxOfficeVO>
      */
-    List<MovieTotalBoxOfficeVO> getDescendingMovieTotalBoxOffices() {
+    private List<MovieTotalBoxOfficeVO> getDescendingMovieTotalBoxOffices() {
         List<Movie> movies = movieManagement.getReleasedMovies();
         List<MovieTotalBoxOfficeVO> movieTotalBoxOfficeVOS = new ArrayList<>();
         for (Movie movie : movies) {

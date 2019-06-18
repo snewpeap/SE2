@@ -158,4 +158,9 @@ public class MovieManagementImpl implements MovieManagement {
         }
         return response;
     }
+
+    @Override
+    public Movie getMovieByID(int movieID) {
+        return movieMapper.selectByPrimaryKey(movieID);
+    }
 }

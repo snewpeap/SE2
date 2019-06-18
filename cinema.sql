@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `cinema`.`hall`
     DEFAULT CHARACTER SET = utf8;
 
 insert into cinema.hall
-    values (1,'小小小小厅',3,2,2,0,0);
+values (1, '小小小小厅', 3, 2, 2, 0, 0);
 
 -- -----------------------------------------------------
 -- Table `cinema`.`movie`
@@ -72,9 +72,9 @@ CREATE TABLE IF NOT EXISTS `cinema`.`movie`
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
 
-INSERT INTO movie (`name`, director, screen_writer, starring, type, country, `language`, duration, start_date,
-                   `description`)
-VALUES ('随便', '赖宝光', '赖宝光', '赖宝光', '赖宝光', '日本', '日语', 123, '2019-6-20', '农夫山泉始终坚持水源地建厂的理念，以确保天然品质');
+INSERT INTO movie (`name`, director, screen_writer, starring, type, country, `language`, duration, release_date,
+                   start_date, `description`)
+VALUES ('随便', '赖宝光', '赖宝光', '赖宝光', '赖宝光', '日本', '日语', 123, '2019-6-17 13:13:13','2019-6-20', '农夫山泉始终坚持水源地建厂的理念，以确保天然品质');
 
 -- -----------------------------------------------------
 -- Table `cinema`.`arrangement`
@@ -109,7 +109,7 @@ CREATE TABLE IF NOT EXISTS `cinema`.`arrangement`
     DEFAULT CHARACTER SET = utf8;
 
 INSERT INTO `arrangement`(id, start_time, end_time, fare, hall_id, movie_id, visible_date)
-    VALUES (1, '2019-06-21 14:00:00','2019-06-21 17:00:00', 40, 1, 1, '2019-06-14');
+VALUES (1, '2019-06-21 14:00:00', '2019-06-21 17:00:00', 40, 1, 1, '2019-06-14');
 
 -- -----------------------------------------------------
 -- Table `cinema`.`seat`
@@ -135,12 +135,12 @@ CREATE TABLE IF NOT EXISTS `cinema`.`seat`
     DEFAULT CHARACTER SET = utf8;
 
 insert into cinema.seat
-    values (1,1,1,1),
-        (2,2,1,1),
-        (3,3,1,1),
-        (4,1,2,1),
-        (5,2,2,1),
-        (6,3,2,1);
+values (1, 1, 1, 1),
+       (2, 2, 1, 1),
+       (3, 3, 1, 1),
+       (4, 1, 2, 1),
+       (5, 2, 2, 1),
+       (6, 3, 2, 1);
 
 -- -----------------------------------------------------
 -- Table `cinema`.`arrangement_seat`
@@ -170,7 +170,12 @@ CREATE TABLE IF NOT EXISTS `cinema`.`arrangement_seat`
     DEFAULT CHARACTER SET = utf8;
 
 INSERT INTO `arrangement_seat`(arrangement_id, seat_id)
-    VALUES (1,1),(1,2),(1,3),(1,4),(1,5),(1,6);
+VALUES (1, 1),
+       (1, 2),
+       (1, 3),
+       (1, 4),
+       (1, 5),
+       (1, 6);
 
 
 -- -----------------------------------------------------
@@ -194,8 +199,9 @@ CREATE TABLE IF NOT EXISTS `cinema`.`promotion`
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
 
-insert into cinema.promotion (`name`, `description`, `start_time`,`end_time`, `specify_movies`, `target_amount`, `coupon_amount`, `coupon_expiration`)
-values ('东东开业大酬宾','全都送','2019-6-1','2019-7-3',0,20,19,6);
+insert into cinema.promotion (`name`, `description`, `start_time`, `end_time`, `specify_movies`, `target_amount`,
+                              `coupon_amount`, `coupon_expiration`)
+values ('东东开业大酬宾', '全都送', '2019-6-1', '2019-7-3', 0, 20, 19, 6);
 
 -- -----------------------------------------------------
 -- Table `cinema`.`user`
@@ -277,23 +283,23 @@ CREATE TABLE IF NOT EXISTS `cinema`.`movie_like`
     DEFAULT CHARACTER SET = utf8;
 
 INSERT INTO movie_like
-    VALUES (1,1,'2019-06-20');
+VALUES (1, 1, '2019-06-20');
 
 -- -----------------------------------------------------
--- Table `cinema`.`recharge_record`
+-- Table `cinema`.`vip_trade_record`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `cinema`.`recharge_record`;
+DROP TABLE IF EXISTS `cinema`.`vip_trade_record`;
 
-CREATE TABLE IF NOT EXISTS `cinema`.`recharge_record`
+CREATE TABLE IF NOT EXISTS `cinema`.`vip_trade_record`
 (
-    `id`              INT(11)        NOT NULL,
+    `id`              INT(11)        NOT NULL AUTO_INCREMENT,
     `original_amount` FLOAT UNSIGNED NOT NULL,
     `discount_amount` FLOAT          NOT NULL,
     `date`            TIMESTAMP      NOT NULL,
     `user_id`         INT(11)        NOT NULL,
     PRIMARY KEY (`id`),
-    INDEX `fk_recharge_record_user1_idx` (`user_id` ASC),
-    CONSTRAINT `fk_recharge_record_user1`
+    INDEX `fk_vip_trade_record_user1_idx` (`user_id` ASC),
+    CONSTRAINT `fk_vip_trade_record_user1`
         FOREIGN KEY (`user_id`)
             REFERENCES `cinema`.`user` (`id`)
             ON DELETE CASCADE
@@ -344,7 +350,7 @@ CREATE TABLE IF NOT EXISTS `cinema`.`order`
     DEFAULT CHARACTER SET = utf8;
 
 INSERT INTO `order`
-    VALUES (1561089984,40,40,'2019-06-21 12:06:24',1,1);
+VALUES (1561089984, 40, 40, '2019-06-21 12:06:24', 1, 1);
 
 -- -----------------------------------------------------
 -- Table `cinema`.`tickets`
@@ -390,7 +396,7 @@ CREATE TABLE IF NOT EXISTS `cinema`.`tickets`
     DEFAULT CHARACTER SET = utf8;
 
 INSERT INTO tickets
-    VALUES (1,1,1,1,'2019-06-21 12:06:24',1,40,1561089984);
+VALUES (1, 1, 1, 1, '2019-06-21 12:06:24', 1, 40, 1561089984);
 
 -- -----------------------------------------------------
 -- Table `cinema`.`vipcard`
@@ -412,7 +418,8 @@ CREATE TABLE IF NOT EXISTS `cinema`.`vipcard`
     DEFAULT CHARACTER SET = utf8;
 
 insert into cinema.vipcard
-    values (3000,5),(1000,1);
+values (3000, 5),
+       (1000, 1);
 
 -- -----------------------------------------------------
 -- Table `cinema`.`vipcard_recharge_reduction`
