@@ -38,7 +38,7 @@ public interface ArrangementSeatMapper {
     int delete(ArrangementSeat record);
 
     /**
-     * 通过排片ID批量删除记录
+     * 通过排片ID获取记录
      * @param arrangementId 排片id
      * @return 此排片id对应的所有记录
      */

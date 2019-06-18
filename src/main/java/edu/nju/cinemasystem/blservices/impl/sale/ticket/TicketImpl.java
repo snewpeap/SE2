@@ -81,7 +81,7 @@ public class TicketImpl
     @Transactional
     public Response lockSeat(List<Integer> seatIDs, int userID, int arrangementID) {
         for (Ticket ticket : ticketsMapper.selectByArrangementID(arrangementID)) {
-            if (ticket.getUserId() == userID) {
+            if (ticket.getUserId() == userID && ticket.getStatus() == (byte)0) {
                 return Response.fail(ticketMsg.getHasOrder());
             }
         }
@@ -321,7 +321,7 @@ public class TicketImpl
             OrderWithCouponVO orderWithCouponVO = assembleOrderWithCouponVO(needTickets, userId, orderID, totalAmount);
             response.setContent(orderWithCouponVO);
         }
-        return response;
+       return response;
     }
 
     @Override
