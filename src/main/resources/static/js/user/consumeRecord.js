@@ -2,7 +2,7 @@ var consumeRecord = [];
 $(document).ready(function () {
     let userID = getCookie('id');
     getRequest(
-        '/user/ticket/purchaseRecord?userId=' + getCookie('id'),
+        '/user/purchaseRecord?userId=' + getCookie('id'),
         function (res) {
             if (res.success){
                 consumeRecord = res.content;
@@ -22,8 +22,8 @@ $(document).ready(function () {
         let recordStr = '';
         recordStr +=
             "<tr>"+
-            "<td style=\"width: 115px\">"+ record.ticketVOs[0].name+"</td>" +
-            "<td style=\"width: 195px\">"+ record.date+"</td>" +
+            "<td style=\"width: 115px\">"+ record.movieName+"</td>" +
+            "<td style=\"width: 195px\">"+ (record.startTime).substring(0,10)+"</td>" +
             "<td style=\"width: 80px\">"+ record.ticketVOs.length +"张</td>" +
             "<td style='width: 120px'>" + record.originalSpend + "元</td>" +
             "<td style='width: 120px'>" + record.realSpend + "元</td>" +

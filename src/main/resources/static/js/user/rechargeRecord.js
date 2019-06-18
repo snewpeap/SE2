@@ -2,7 +2,7 @@ var rechargeRecord =[];
 
 $(document).ready(function () {
     getRequest(
-        '/user/vip/rechargeHistory?userId=' + getCookie('id'),
+        '/user/vip/history?userId=' + getCookie('id'),
         function (res) {
             if (res.success){
                 rechargeRecord = res.content;

@@ -18,9 +18,9 @@ function getVIP() {
                 $("#member-card").css("display", "");
                 //$("#nonmember-card").css("display", "none");
 
-                vipCardId = res.content.getId();
-                $("#member-id").text(vipCardId);
-                $("#member-balance").text("¥" + res.content.getBalance().toFixed(2));
+                vipCardId = res.content.id;
+                $("#member-id").append(vipCardId);
+                $("#member-balance").text("¥" + res.content.balance.toFixed(2));
                 //$("#member-joinDate").text(res.content.joinDate.substring(0, 10));
             } else {
                 // 非会员
@@ -40,8 +40,8 @@ function getVIP() {
             if (res.success) {
                 let str = "";
                 res.content.forEach(function (one) {
-                    str += "<div class=\"price\"><b>" + one.getPrice() + "</b>" +
-                        "<div class='description'>充值优惠：满"+ one.getTargetAmount() + "减"+ one.getDiscountAmount +"</div>" +
+                    str += "<div class=\"price\"><b>20!看看在哪</b>" +
+                        "<div class='description'>充值优惠：满"+ one.targetAmount + "减"+ one.discountAmount +"</div>" +
                         "<button onclick=\"buyClick()\">立即购买</button>"
                 });
                 $("#toBuy").append(str);
@@ -95,8 +95,8 @@ function confirmCommit() {
                     });
             } else {
                 postRequest(
-                    '/user/vip/card/deposit?=userId' + getCookie('id'),
-                    {amount: parseInt($('#userMember-amount').val())},
+                    '/user/vip/deposit?=userId' + getCookie('id'),
+                    parseInt($('#userMember-amount').val()),
                     function (res) {
                         $('#buyModal').modal('hide');
                         alert("充值成功");

@@ -6,7 +6,7 @@ var useVIP = true;
 var price = 0.0;
 var totalVO;
 var coupons = [];
-var activities = [];
+// var activities = [];
 var ticketId = [];
 var orderId;
 var movieId;
@@ -39,11 +39,7 @@ function getMovie() {
         }
     )
 }
-// function getSchedule() {
-//     getRequest(
-//         '/user/'
-//     )
-// }
+
 function getInfo() {
     getRequest(
         '/user/seat/get?arrangementId=' + scheduleId,
@@ -55,23 +51,23 @@ function getInfo() {
                 movie = res.content.movie;
                 hall = res.content.hall;
                 $('#schedule-hall-name').text(hall);
+                $('#order-movie-name').text(movie);
                 $('#order-schedule-hall-name').text(hall);
                 $('#schedule-fare').text(fare.toFixed(2));
                 $('#order-schedule-fare').text(fare.toFixed(2));
                 $('#schedule-time').text(startTime.substring(5, 7) + "月" + startTime.substring(8, 10) + "日 " + startTime.substring(11, 16) + "场");
                 $('#order-schedule-time').text(startTime.substring(5, 7) + "月" + startTime.substring(8, 10) + "日 " + startTime.substring(11, 16) + "场");
                 let hallDomStr = "";
-                let seat = "";
+                let seat = "<div>";
                 for (let i = 0;i<seats.length;i++){
-                    let tempStr = "";
                     for (let j = 0;j<seats.length;j++){
                         if (seats[i][j].isLocked){
-                            tempStr += "<button class='cinema-hall-seat-lock'></button>";
+                            seat += "<button class='cinema-hall-seat-lock'></button>";
                         } else {
-                            tempStr += "<button class='cinema-hall-seat-choose' id='" + seats[i][j].seatId + "' onclick='seatClick(\"" + seats[i][j].seatId  + "\"," + i + "," + j + ")'></button>";
+                            seat += "<button class='cinema-hall-seat-choose' id='" + seats[i][j].seatId + "' onclick='seatClick(\"" + seats[i][j].seatId  + "\"," + i + "," + j + ")'></button>";
                         }
                     }
-                    seat += "<div>" + tempStr + "</div>";
+                    seat += "</div>";
                 }
                 let hallDom =
                     "<div class='cinema-hall'>" +
@@ -137,41 +133,42 @@ function cancelTickets() {
 }
 
 
-function seatClick(id, i, j) {
-    chosenSeatId.push(id);
+function seatClick(id,i,j) {
+    // chosenSeatId.push(id);
     let seat = $('#' + id);
     if (seat.hasClass("cinema-hall-seat-choose")) {
         seat.removeClass("cinema-hall-seat-choose");
         seat.addClass("cinema-hall-seat");
-
-        selectedSeats[selectedSeats.length] = [i, j]
+        chosenSeatId.push(id);
+        selectedSeats[selectedSeats.length] = [i,j]
     } else {
         seat.removeClass("cinema-hall-seat");
         seat.addClass("cinema-hall-seat-choose");
-
+        chosenSeatId = chosenSeatId.filter(function (value) {
+            return value!==id;
+        });
         selectedSeats = selectedSeats.filter(function (value) {
-            return value[0] != i || value[1] != j;
+            return value[0]!==i || value[1]!==j;
         })
     }
-
-    selectedSeats.sort(function (x, y) {
-        var res = x[0] - y[0];
-        return res === 0 ? x[1] - y[1] : res;
-    });
+    // selectedSeats.sort(function (x, y) {
+    //     var res = x[0] - y[0];
+    //     return res === 0 ? x[1] - y[1] : res;
+    // });
 
     let seatDetailStr = "";
-    if (selectedSeats.length === 0) {
+    if (chosenSeatId.length === 0) {
         seatDetailStr += "还未选择座位";
         $('#order-confirm-btn').attr("disabled", "disabled")
     } else {
         for (let seatLoc of selectedSeats) {
-            seatDetailStr += "<span>" + (seatLoc[0] + 1) + "排" + (seatLoc[1] + 1) + "座</span>";
+            seatDetailStr += "<span>" + (seatLoc[0]) + "排" + (seatLoc[1]) + "座</span>";
         }
         $('#order-confirm-btn').removeAttr("disabled");
     }
     $('#seat-detail').html(seatDetailStr);
 }
-// todo 获得活动列表？
+// 获得活动列表？
 // function getActivity(){
 //     getRequest(
 //         '/activity/get',
@@ -230,7 +227,7 @@ function getTicket() {
                         if (ticket.status === "未完成" && ticket.arrangementId === scheduleId){
                             ticketId.push(ticket.id);
                             let ticketStr="";
-                            ticketStr += "<div>" + (ticket.rowIndex + 1) + "排" + (ticket.columnIndex + 1) + "座</div>";
+                            ticketStr += "<div>" + (ticket.row) + "排" + (ticket.column) + "座</div>";
                             order.ticketId.push(ticket.id);
                             $('#order-tickets').append(ticketStr);
                         }
@@ -255,14 +252,14 @@ function getTicket() {
 }
 
 function orderConfirmClick() {
-    let seats = [];
-    selectedSeats.forEach(function (seat) {
-        let seatData = {
-            columnIndex: seat[1],
-            rowIndex: seat[0]
-        };
-        seats.push(seatData);
-    });
+    // let seats2 = [];
+    // selectedSeats.forEach(function (seat) {
+    //     let seatData = {
+    //         columnIndex: seat[1],
+    //         rowIndex: seat[0]
+    //     };
+    //     seats2.push(seatData);
+    // });
 
     postRequest(
         '/user/ticket/lockSeats/' + scheduleId + "?userId=" + getCookie('id'),
