@@ -80,11 +80,7 @@ public class TicketImpl
     @Override
     @Transactional
     public Response lockSeat(List<Integer> seatIDs, int userID, int arrangementID) {
-        for (Ticket ticket : ticketsMapper.selectByArrangementID(arrangementID)) {
-            if (ticket.getUserId() == userID && ticket.getStatus() == (byte)0) {
-                return Response.fail(ticketMsg.getHasOrder());
-            }
-        }
+
         if (arrangementService.isArrangementStart(arrangementID)) {
             return Response.fail(ticketMsg.getArrangementStart());
         }
