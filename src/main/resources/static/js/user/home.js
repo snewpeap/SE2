@@ -10,7 +10,12 @@ $(document).ready(function () {
             '/user/movie/all',
             function (res) {
                 if (res.success) {
-                    allMovieList = res.content;
+                    allMovieList = [];
+                    res.content.forEach(function (movie) {
+                        if(movie.status < 2){
+                            allMovieList.push(movie);
+                        }
+                    });
                     renderMovie();
                 } else {
                     alert(res.message);
