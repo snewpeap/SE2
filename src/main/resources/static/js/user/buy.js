@@ -105,7 +105,6 @@ function getExistingTicket() {
                         var r = confirm("您之前选的座位还未付款，点击确认继续购买");
                         if(r){
                             orderId = orderWithCoupon.id;
-                            coupons = orderWithCoupon.coupons;
                             getOrder();
                         }else{
                             cancelTickets(orderWithCoupon.id);
@@ -185,16 +184,17 @@ function seatClick(id,i,j) {
 //     )
 // }
 
-function renderCoupon() {
+function renderCoupon(couponsAll) {
     var couponTicketStr = "";
-    if (coupons.length === 0) {
+    if (couponsAll.length === 0) {
         $('#order-discount').text("优惠金额：无");
         $('#order-actual-total').text(" ¥" + totalVO);
         $('#pay-amount').html("<div><b>金额：</b>" + totalVO + "元</div>");
     } else {
-        for (let coupon of coupons) {
+        for (let coupon of couponsAll) {
             if(price * ticketId.length >= coupon.targetAmount){
                 couponTicketStr += "<option>满" + coupon.targetAmount + "减" + coupon.discountAmount + "</option>"
+                coupons.push(coupon);
             }
         }
         $('#order-coupons').html(couponTicketStr);
@@ -234,8 +234,7 @@ function getTicket() {
                 $('#order-total').text(totalVO);
                 $('#order-footer-total').text("总金额： ¥" + totalVO);
 
-                coupons = orderWithCoupon.coupons;
-                renderCoupon();
+                renderCoupon(orderWithCoupon.coupons);
 
             }else {
                 alert(res.message);
