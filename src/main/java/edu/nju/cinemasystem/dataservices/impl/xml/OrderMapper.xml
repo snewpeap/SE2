@@ -6,7 +6,7 @@
         <result column="real_amount" jdbcType="REAL" property="realAmount"/>
         <result column="original_amount" jdbcType="REAL" property="originalAmount"/>
         <result column="date" jdbcType="TIMESTAMP" property="date"/>
-        <result column="use_VIPcard" jdbcType="TINYINT" property="useVipcard"/>
+        <result column="use_VIPcard" jdbcType="TINYINT" property="status"/>
         <result column="user_id" jdbcType="INTEGER" property="userId"/>
     </resultMap>
 
@@ -42,7 +42,7 @@
         insert into `order` (id, real_amount, original_amount,
                              `date`, use_VIPcard, user_id)
         values (#{id,jdbcType=BIGINT}, #{realAmount,jdbcType=REAL}, #{originalAmount,jdbcType=REAL},
-                #{date,jdbcType=TIMESTAMP}, #{useVipcard,jdbcType=TINYINT}, #{userId,jdbcType=INTEGER})
+                #{date,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{userId,jdbcType=INTEGER})
     </insert>
 
     <insert id="insertSelective" parameterType="edu.nju.cinemasystem.data.po.Order">
@@ -60,7 +60,7 @@
             <if test="date != null">
                 `date`,
             </if>
-            <if test="useVipcard != null">
+            <if test="status != null">
                 use_VIPcard,
             </if>
             <if test="userId != null">
@@ -80,8 +80,8 @@
             <if test="date != null">
                 #{date,jdbcType=TIMESTAMP},
             </if>
-            <if test="useVipcard != null">
-                #{useVipcard,jdbcType=TINYINT},
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
             </if>
             <if test="userId != null">
                 #{userId,jdbcType=INTEGER}
@@ -101,8 +101,8 @@
             <if test="date != null">
                 `date` = #{date,jdbcType=TIMESTAMP},
             </if>
-            <if test="useVipcard != null">
-                use_VIPcard = #{useVipcard,jdbcType=TINYINT},
+            <if test="status != null">
+                use_VIPcard = #{status,jdbcType=TINYINT},
             </if>
             <if test="userId != null">
                 user_id = #{userId,jdbcType=INTEGER}
@@ -116,7 +116,7 @@
         set real_amount     = #{realAmount,jdbcType=REAL},
             original_amount = #{originalAmount,jdbcType=REAL},
             `date`          = #{date,jdbcType=TIMESTAMP},
-            use_VIPcard     = #{useVipcard,jdbcType=TINYINT},
+            use_VIPcard     = #{status,jdbcType=TINYINT},
             user_id         = #{userId,jdbcType=INTEGER}
         where id = #{id,jdbcType=BIGINT}
     </update>
