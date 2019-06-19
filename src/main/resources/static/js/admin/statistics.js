@@ -222,7 +222,7 @@ function getPopularMovie() {
             });
             var option = {
                 title : {
-                    subtext: favoriteMovieDays+'天内最受欢迎的'+favoriteMovieNumber+'个电影',
+                    subtext: favoriteMovieDays+'天内最受欢迎的'+favoriteMovieNumber+'个电影，截至昨日',
                     x:'center'
                 },
                 tooltip : {
@@ -252,7 +252,7 @@ function getPopularMovie() {
                     {
                         name:'影片',
                         type:'pie',
-                        radius : [30, 110],
+                        radius : [50, 110],
                         // center : ['50%', '50%'],
                         // roseType : 'area',
                         data:tableData
