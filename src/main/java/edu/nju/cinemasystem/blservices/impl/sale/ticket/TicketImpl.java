@@ -287,7 +287,7 @@ public class TicketImpl
             } else {
                 return refundResponse;
             }
-        }catch (ParseException e){
+        } catch (ParseException e) {
             e.printStackTrace();
             return Response.fail(e.getMessage());
         }
@@ -368,7 +368,7 @@ public class TicketImpl
         //tickets.sort((Ticket t1, Ticket t2)->(int)((t2.getDate().getTime() - t1.getDate().getTime())/1000));
         List<TicketVO> ticketVOS = new ArrayList<>();
         for (Ticket ticket : tickets) {
-            if (!(ticket.getStatus() == (byte) 0 || ticket.getStatus() == (byte) 2)) {
+            if (ticket.getStatus() != (byte) 2) {
                 ticketVOS.add(assembleTicketVO(ticket));
             }
         }
@@ -485,7 +485,7 @@ public class TicketImpl
         int row = seats[0];
         int column = seats[1];
         Date date = ticket.getDate();
-        return new TicketVO(id, orderID, userID, arrangementId, status, realAmount, row, column,date);
+        return new TicketVO(id, orderID, userID, arrangementId, status, realAmount, row, column, date);
     }
 
 
@@ -548,7 +548,7 @@ public class TicketImpl
          * 把订单上的票的状态改为已完成并且将其移出延时队列,并且返回订单里的所有票（为了知道是什么电影和算钱）
          *
          * @param tickets 票的list
-         * @param order 订单
+         * @param order   订单
          */
         @Transactional
         void completeOrder(List<Ticket> tickets, Order order, boolean useVIP) {
