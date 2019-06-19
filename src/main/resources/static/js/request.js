@@ -65,6 +65,7 @@ function plusDateByDay(date,days) {
     day.length===1 && (day = '0'+day);
     return year+'-'+month+'-'+day;
 }
+
 function formatTime(date){
     var hour = date.getHours()+'';
     var minutes = date.getMinutes()+'';
