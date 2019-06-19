@@ -45,8 +45,22 @@ function getTicketList() {
                 orderVOList = res.content;
                 orderVOList.forEach( function (orderVO) {
                     var ticketList = orderVO.ticketVOs;
+                    // ticketList.sort(function (a,b) {
+                    //     return a.date - b.date;
+                    // });
+                    // console.log(ticketList);
                     ticketList.forEach(function (ticketVO) {
-                        var str = "<tr>"+ "<td style=\"width: 115px\">"+orderVO.movieName+"</td>" +
+                        let str = "";
+                        if (ticketVO.status === "已完成"){
+                            str += "<tr style='background-color: #ffffff'>"
+                        } else if (ticketVO.status === "未完成"){
+                            str += "<tr style='background-color: #e1f7e7'>"
+                        } else if (ticketVO.status === "已失效") {
+                            str += "<tr style='background-color: #dcf4f5'>"
+                        } else if (ticketVO.status === "已退票") {
+                            str += "<tr style='background-color: #e8eaee'>"
+                        }
+                        str += "<td style=\"width: 115px\">"+orderVO.movieName+"</td>" +
                             "<td style=\"width: 70px\">"+ orderVO.hallName+"</td>" +
                             "<td style=\"width: 80px\">"+(ticketVO.row)+"排"+(ticketVO.column)+"座</td>" +
                             "<td style=\"width: 195px\">"+ orderVO.startTime.replace('T',' ').substring(0,19) +"</td>" +
@@ -61,6 +75,7 @@ function getTicketList() {
                         } else {
                             str += "<td style='width: 80px'><a id='@ticketId' style='color: #ed5565'>不可退票</a></td>";
                         }
+
                         $("tbody").append(str);
                     })
                 });
