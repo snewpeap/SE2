@@ -77,9 +77,9 @@ $(document).ready(function () {
                     $("#movie-name").append(movie.name);
                     if(movie.status===0){
                         $('.firstLine').append("<span class='label label-default'>未上映</span>");
-                    }else if(movie.status===0){
+                    }else if(movie.status===1){
                         $('.firstLine').append("<span class='label label-success'>热映中</span>");
-                    }else if(movie.status===0){
+                    }else if(movie.status===2){
                         $('.firstLine').append("<span class='label label-warning'>已下映</span>");
                     }else{
                         $('.firstLine').append("<span class='label label-danger'>已下架</span>");
