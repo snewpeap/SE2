@@ -237,3 +237,32 @@ function renderMovie() {
         return res;
     }
 }
+
+function searchMovie() {
+    var query = $('.search').val();
+    if(query!=null&&query!==''){
+        getRequest(
+            '/user/movie/search?query='+query,
+            function (res) {
+                if(res.success){
+                    if(res.content!=null&&res.content.length!==0){
+                        var dom = '';
+                        res.content.forEach(function (movie) {
+                            dom += '<a href="/user/movie/detail?movieId='+movie.id+'"><div style="padding: 0 40px 10px">'+movie.name+'</div></a>';
+                        });
+                        $('.search-result').html(dom);
+                    }else{
+                        $('.search-result').html('<div style="padding: 0 40px 10px;color: #FFFFFF;">未搜索到对应结果...</div>')
+                    }
+                }else{
+                    alert(res.message);
+                }
+            },
+            function (res) {
+                alert(res.message);
+            }
+        );
+    }else{
+        $('.search-result').html('');
+    }
+}
