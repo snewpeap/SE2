@@ -88,18 +88,7 @@ function getBoxOffice() {
         function (res) {
             var data = res.content || [];
             var tableData = data.map(function (item) {
-                if(item.boxOffice === 0){
-                    return {
-                        value: item.boxOffice,
-                        name: item.name,
-                        label : {
-                            show : false
-                        },
-                        labelLine : {
-                            show : false
-                        }
-                    };
-                }else{
+                if(item.boxOffice > 0){
                     return {
                         value: item.boxOffice,
                         name: item.name,
@@ -113,7 +102,9 @@ function getBoxOffice() {
                 }
             });
             var nameList = data.map(function (item) {
-                return item.name;
+                if(item.boxOffice > 0){
+                    return item.name;
+                }
             });
             var option = {
                 title : {
@@ -210,10 +201,14 @@ function getPlacingRate() {
         function (res) {
             var data = res.content || [];
             var tableData = data.map(function (item) {
-                return item.rate;
+                if(item.rate > 0){
+                    return item.rate;
+                }
             });
             var nameList = data.map(function (item) {
-                return item.movieName;
+                if(item.rate > 0){
+                    return item.movieName;
+                }
             });
             var option = {
                 title : {
@@ -233,7 +228,7 @@ function getPlacingRate() {
                 series: [{
                     data: tableData,
                     type: 'bar',
-                    barMinHeight:0.005
+                    barWidth:'12.5'
                 }]
             };
             var scheduleRateChart = echarts.init($("#place-rate-container")[0]);
