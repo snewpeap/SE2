@@ -21,10 +21,12 @@ function getSchedule() {
                     allArrangement = res.content;
                     getTabs(0);
                 }else{
-                    $('#none-hint').css("display", "");
+                    $('#schedule').css("display", "");
+                    $('#date-none-hint').css("display", "");
                 }
             } else {
-                $('#none-hint').css("display", "");
+                $('#schedule').css("display", "");
+                $('#date-none-hint').css("display", "");
                 alert(res.message);
             }
         },

@@ -1,3 +1,7 @@
+html{
+    background-color: #e4e7ea !important;
+}
+
 .table-wrapper {
     padding: 20px;
 }
@@ -10,4 +14,9 @@
 .table-wrapper .table td{
     height: 60px;
     vertical-align: middle;
+}
+
+#date-none-hint{
+    text-align: center;
+    padding: 0 0 50px;
 }
