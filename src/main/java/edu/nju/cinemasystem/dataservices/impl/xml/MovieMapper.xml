@@ -51,6 +51,12 @@
         from movie
         where name like concat('%',#{query},'%')
             or description like concat('%',#{query},'%')
+            or director like concat('%',#{query},'%')
+            or screen_writer like concat('%',#{query},'%')
+            or starring like concat('%',#{query},'%')
+            or type like concat('%',#{query},'%')
+            or country like concat('%',#{query},'%')
+            or language like concat('%',#{query},'%')
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">

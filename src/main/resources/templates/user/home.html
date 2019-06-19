@@ -65,9 +65,8 @@
                         </ul> <!-- cd-header-buttons -->
                     </div>
                     <div id="cd-search" class="cd-search">
-                        <form action="" method="post">
-                            <input name="Search" type="search" placeholder="Search...">
-                        </form>
+                        <input class="search" type="text" placeholder="Search..." oninput="searchMovie()">
+                        <div class="search-result" style="background: rgba(0, 0, 0, 0.75);"></div>
                     </div>
                 </div>
             </div>
@@ -220,7 +219,7 @@
 
 <!-- pop-up-box -->
 <script src="/js/user/jquery.magnific-popup.js" type="text/javascript"></script>
-//pop-up-box
+<!--pop-up-box-->
 <div id="small-dialog1" class="mfp-hide">
     <iframe src="//player.bilibili.com/player.html?aid=18736140&cid=30559251&page=1" allowfullscreen="true"> </iframe>
 </div>
