@@ -87,7 +87,10 @@ function getBoxOffice() {
         function (res) {
             var data = res.content || [];
             var tableData = data.map(function (item) {
-                return item.boxOffice;
+                return {
+                    value: item.boxOffice,
+                    name: item.name
+                };
             });
             var nameList = data.map(function (item) {
                 return item.name;
@@ -95,23 +98,42 @@ function getBoxOffice() {
             var option = {
                 title : {
                     text: '所有电影票房',
-                    subtext: '截止至'+new Date().toLocaleDateString(),
+                    subtext: '截至'+new Date().toLocaleDateString(),
                     x:'center'
                 },
-                xAxis: {
-                    type: 'category',
-                    data: nameList,
-                    axisLabel:{
-                        interval: 0
+                tooltip : {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                legend: {
+                    x : 'center',
+                    y : 'bottom',
+                    data:nameList
+                },
+                toolbox: {
+                    show : true,
+                    feature : {
+                        mark : {show: true},
+                        dataView : {show: true, readOnly: false},
+                        magicType : {
+                            show: true,
+                            type: ['pie', 'funnel']
+                        },
+                        restore : {show: true},
+                        saveAsImage : {show: true}
                     }
                 },
-                yAxis: {
-                    type: 'value'
-                },
-                series: [{
-                    data: tableData,
-                    type: 'bar'
-                }]
+                calculable : true,
+                series : [
+                    {
+                        name:'影片',
+                        type:'pie',
+                        radius : [50, 110],
+                        // center : ['50%', '50%'],
+                        // roseType : 'area',
+                        data:tableData
+                    }
+                ]
             };
             var scheduleRateChart = echarts.init($("#box-office-container")[0]);
             scheduleRateChart.setOption(option);
