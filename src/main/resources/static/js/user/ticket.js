@@ -25,7 +25,9 @@ function getRefundStrategy() {
 }
 
 function getMaxRefundable(dateStr) {
-    var dateStamp = new Date(dateStr).getTime();
+    var date1 = new Date(dateStr.substring(0,10));
+    date1.setDate(date1.getDate()+1);
+    var dateStamp = date1.getTime();
     var todayStamp = new Date().getTime();
     var dayInterval = (dateStamp-todayStamp)/86400000;
     for(var i = allRefundStrategy.length-1;i>=0;i--) {
