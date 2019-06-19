@@ -11,7 +11,7 @@ public class Order {
 
     private Date date;
 
-    private Byte useVipcard; //0，1，2，3分别代表银行卡支付，会员卡支付，未支付，已失效
+    private Byte status; //0，1，2，3分别代表银行卡支付，会员卡支付，未支付，已失效
 
     private Integer userId;
 
@@ -48,11 +48,11 @@ public class Order {
     }
 
     public Byte getStatus() {
-        return useVipcard;
+        return status;
     }
 
-    public void setUseVipcard(Byte useVipcard) {
-        this.useVipcard = useVipcard;
+    public void setStatus(Byte status) {
+        this.status = status;
     }
 
     public Integer getUserId() {
@@ -69,7 +69,7 @@ public class Order {
         order.realAmount = realAmount;
         order.originalAmount = originalAmount;
         order.date = date;
-        order.useVipcard = useVipcard;
+        order.status = useVipcard;
         order.userId = userId;
         return order;
     }

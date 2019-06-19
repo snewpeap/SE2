@@ -365,7 +365,6 @@ public class TicketImpl
         if (tickets.isEmpty()) {
             return Response.success();
         }
-        //tickets.sort((Ticket t1, Ticket t2)->(int)((t2.getDate().getTime() - t1.getDate().getTime())/1000));
         List<TicketVO> ticketVOS = new ArrayList<>();
         for (Ticket ticket : tickets) {
             if (ticket.getStatus() != (byte) 2) {
@@ -385,7 +384,6 @@ public class TicketImpl
             Order order = orderMapper.selectByPrimaryKey(entry.getKey());
             List<TicketVO> oneTicketVOs = entry.getValue();
             int arrangementID = oneTicketVOs.get(0).getArrangementId();
-            //float originalSpend = oneTicketVOs.size() * (arrangementService.getFareByID(arrangementID));
             Date[] dates = arrangementService.getStartDateAndEndDate(arrangementID);
             String movieName = movieService.getMovieNameByID(arrangementService.getMovieIDbyID(arrangementID));
             String hallName = arrangementService.getHallNameByArrangementID(arrangementID);
@@ -436,20 +434,6 @@ public class TicketImpl
             ticketVOs.add(ticketVO);
         }
         return new OrderWithCouponVO(orderID, ticketVOs, couponVOs, dates[0], dates[1], movieName, hallName);
-    }
-
-    /**
-     * 给指定的日期加上天数
-     *
-     * @param date 指定的日期
-     * @param day  天数
-     * @return 加上天数后的日期
-     */
-    private Date addDate(Date date, int day) {
-        long time = date.getTime();
-        long delayTime = day * 24 * 60 * 60 * 1000L;
-        time += delayTime;
-        return new Date(time);
     }
 
     /**
@@ -528,7 +512,7 @@ public class TicketImpl
                     ticketsMapper.updateByPrimaryKeySelective(ticket);
                     arrangementService.changeArrangementSeatStatus(ticket.getArrangementId(), ticket.getSeatId(), false);
                 }
-                order.setUseVipcard((byte) 3);
+                order.setStatus((byte) 3);
                 orderMapper.updateByPrimaryKeySelective(order);
                 LOG.info("将订单 " + orderID + " 失效");
             } else {
@@ -559,7 +543,7 @@ public class TicketImpl
                 ticketsMapper.updateByPrimaryKeySelective(ticket);
             }
             order.setDate(now);
-            order.setUseVipcard(useVIP ? (byte) 1 : (byte) 0);
+            order.setStatus(useVIP ? (byte) 1 : (byte) 0);
             orderMapper.updateByPrimaryKeySelective(order);
             removeTask(order.getId());
         }

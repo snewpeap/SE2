@@ -60,7 +60,11 @@ public class StaffManagementImpl implements StaffManagement {
                 );
             } else if (roleProperty.getManager().equals(queryString)) {
                 userMapper.selectAllManager().forEach(
-                        manager -> staffList.add(assembleManagerVO(manager))
+                        manager -> {
+                            if (!manager.isRootManager()) {
+                                staffList.add(assembleManagerVO(manager));
+                            }
+                        }
                 );
             } else {
                 return Response.fail(staffMsg.getWrongParam() + ':' + queryString);
@@ -154,10 +158,15 @@ public class StaffManagementImpl implements StaffManagement {
     @Override
     public Response changeRole(StaffForm staffForm) {
         String roleName = staffForm.getRole();
-        if (!roleName.equals(roleProperty.getManager()) && !roleName.equals(roleProperty.getStaff())) {
-            return Response.fail(staffMsg.getWrongParam());
+        if (roleName.equals(roleProperty.getAudience())) {
+            return Response.fail(staffMsg.getWrongParam() + " : 不能将员工变成观众");
+        } else if (roleName.equals(roleProperty.getRoot())) {
+            return Response.fail(staffMsg.getWrongParam() + " : 铜锣湾只能有一个浩南");
         }
         Role role = roleMapper.selectRoleByName(staffForm.getRole());
+        if (role == null) {
+            return Response.fail(staffMsg.getWrongParam() + " : 角色不存在");
+        }
         UserHasRoleKey uhr = userHasRoleMapper.selectByUserID(staffForm.getId());
         if (uhr == null) {
             return Response.fail(staffMsg.getOperationFailed() + " : 数据库用户角色缺少记录");
