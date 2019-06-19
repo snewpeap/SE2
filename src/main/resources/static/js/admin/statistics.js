@@ -88,10 +88,29 @@ function getBoxOffice() {
         function (res) {
             var data = res.content || [];
             var tableData = data.map(function (item) {
-                return {
-                    value: item.boxOffice,
-                    name: item.name
-                };
+                if(item.boxOffice === 0){
+                    return {
+                        value: item.boxOffice,
+                        name: item.name,
+                        label : {
+                            show : false
+                        },
+                        labelLine : {
+                            show : false
+                        }
+                    };
+                }else{
+                    return {
+                        value: item.boxOffice,
+                        name: item.name,
+                        label : {
+                            show : true
+                        },
+                        labelLine : {
+                            show : true
+                        }
+                    }
+                }
             });
             var nameList = data.map(function (item) {
                 return item.name;
