@@ -231,7 +231,7 @@ function getPlacingRate() {
                 series: [{
                     data: tableData,
                     type: 'bar',
-                    barWidth:'12.5'
+                    barWidth:50
                 }]
             };
             var scheduleRateChart = echarts.init($("#place-rate-container")[0]);
