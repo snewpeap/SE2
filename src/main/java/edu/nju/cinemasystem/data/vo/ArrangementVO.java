@@ -4,6 +4,16 @@ import java.util.Date;
 
 import edu.nju.cinemasystem.data.po.Arrangement;
 
+/**
+ * 排片基本信息 和 详细信息主要差别在没有座位图和有可见日期
+ * id 排片号
+ * startTime 开始时间
+ * endTime 结束时间
+ * fare 场次票价
+ * hallId 影厅号
+ * movieId 电影号
+ * visibleDate 可见日期
+ */
 public class ArrangementVO {
     private Integer id;
 
