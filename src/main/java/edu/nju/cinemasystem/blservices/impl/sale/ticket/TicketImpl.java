@@ -33,6 +33,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.DelayQueue;
 import java.util.concurrent.Executors;
@@ -258,28 +260,36 @@ public class TicketImpl
         if (arrangementStartTime.before(currentTime)) {
             return Response.fail(ticketMsg.getArrangementStart());
         }
-        long datToCome = (arrangementStartTime.getTime() - currentTime.getTime()) / (1000 * 3600 * 24);
-        RefundStrategy refundStrategy = refundStrategyMapper.selectByDay(datToCome);
-        if (!refundStrategy.canRefund()) {
-            return Response.fail(ticketMsg.getRefundDisable());
-        }
-        float refundAmount = ticket.getRealAmount() * refundStrategy.getPercentage() / (float)100;
-        BigDecimal b = new BigDecimal(refundAmount);
-        refundAmount = b.setScale(2,BigDecimal.ROUND_HALF_UP).floatValue();
-        Response refundResponse;
-        if (order.getStatus() == 1) {
-            refundResponse = vipCardService.addVIPBalance(ticket.getUserId(), refundAmount);
-        } else {
-            refundResponse = aliRefund(order.getId(), ticketID, refundAmount);
-        }
-        if (refundResponse.isSuccess()) {
-            ticket.setStatus((byte) 3);
-            ticketsMapper.updateByPrimaryKeySelective(ticket);
-            int seatID = ticket.getSeatId();
-            arrangementService.changeArrangementSeatStatus(ticket.getArrangementId(), seatID, false);
-            return Response.success();
-        } else {
-            return refundResponse;
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date arrangementStartDate = simpleDateFormat.parse(simpleDateFormat.format(arrangementStartTime));
+            Date today = simpleDateFormat.parse(simpleDateFormat.format(currentTime));
+            long datToCome = (arrangementStartDate.getTime() - today.getTime()) / (1000 * 3600 * 24);
+            RefundStrategy refundStrategy = refundStrategyMapper.selectByDay(datToCome);
+            if (!refundStrategy.canRefund()) {
+                return Response.fail(ticketMsg.getRefundDisable());
+            }
+            float refundAmount = ticket.getRealAmount() * refundStrategy.getPercentage() / (float) 100;
+            BigDecimal b = new BigDecimal(refundAmount);
+            refundAmount = b.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
+            Response refundResponse;
+            if (order.getStatus() == 1) {
+                refundResponse = vipCardService.addVIPBalance(ticket.getUserId(), refundAmount);
+            } else {
+                refundResponse = aliRefund(order.getId(), ticketID, refundAmount);
+            }
+            if (refundResponse.isSuccess()) {
+                ticket.setStatus((byte) 3);
+                ticketsMapper.updateByPrimaryKeySelective(ticket);
+                int seatID = ticket.getSeatId();
+                arrangementService.changeArrangementSeatStatus(ticket.getArrangementId(), seatID, false);
+                return Response.success();
+            } else {
+                return refundResponse;
+            }
+        }catch (ParseException e){
+            e.printStackTrace();
+            return Response.fail(e.getMessage());
         }
     }
 
@@ -359,6 +369,9 @@ public class TicketImpl
             return response;
         }
         Date date = tickets.get(0).getDate();
+        if(tickets.size()>0){
+            tickets.sort((Ticket t1, Ticket t2)->(int)((t2.getDate().getTime() - t1.getDate().getTime())/1000));
+        }
         List<TicketVO> ticketVOS = new ArrayList<>();
         for (Ticket ticket : tickets) {
             if (!(ticket.getStatus() == (byte) 0 && ticket.getStatus() == (byte) 2)) {
@@ -469,7 +482,8 @@ public class TicketImpl
         int[] seats = hallManage.getSeatBySeatID(ticket.getSeatId());
         int row = seats[0];
         int column = seats[1];
-        return new TicketVO(id, orderID, userID, arrangementId, status, realAmount, row, column);
+        Date date = ticket.getDate();
+        return new TicketVO(id, orderID, userID, arrangementId, status, realAmount, row, column,date);
     }
 
 

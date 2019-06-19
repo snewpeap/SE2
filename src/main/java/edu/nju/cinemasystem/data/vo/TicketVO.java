@@ -1,5 +1,7 @@
 package edu.nju.cinemasystem.data.vo;
 
+import java.util.Date;
+
 public class TicketVO {
 
     private Integer id;
@@ -18,8 +20,9 @@ public class TicketVO {
 
     private int column;
 
+    private Date date;
 
-    public TicketVO(Integer id, long orderID, Integer userId, Integer arrangementId, String status, Float realAmount, int row, int column) {
+    public TicketVO(Integer id, long orderID, Integer userId, Integer arrangementId, String status, Float realAmount, int row, int column, Date date) {
         this.id = id;
         this.orderID = orderID;
         this.userId = userId;
@@ -28,6 +31,7 @@ public class TicketVO {
         this.realAmount = realAmount;
         this.row = row;
         this.column = column;
+        this.date = date;
     }
 
     public Integer getId() {
@@ -92,5 +96,13 @@ public class TicketVO {
 
     public void setColumn(int column) {
         this.column = column;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }
