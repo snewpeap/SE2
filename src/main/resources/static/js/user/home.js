@@ -46,20 +46,20 @@ function renderMovie() {
     // $('#demo-1')[0].dataset.zsSrc = '["'+headImage.join('", "')+'"]';
     // console.log($('#demo-1'));
 
-    firstImageStr = "<a href='/user/movie/detail?movieId="+newestList[0].id+"' class='hvr-sweep-to-bottom'><img src='"+ (newestList[0].poster||"/images/defaultPoster.jpg") + "' title=\"Movies Pro\"  alt='' class='img-responsive' />" +
+    firstImageStr = "<a href='/user/movie/detail?movieId="+newestList[0].id+"' class='hvr-sweep-to-bottom'><img src='"+ (newestList[0].poster||"/images/defaultPoster.jpg") + "' title=\"Movies Pro\"  alt='' class='img-big' />" +
         "<div class=\"w3l-action-icon\"><i class=\"fa fa-link\" aria-hidden=\"true\"></i></div></a>";
     $('#video').append(firstImageStr);
     var newestMovieInfo = getFirstInfoStr(newestList);
     $('#newest-movie-info').append(newestMovieInfo);
     $('#newest-movie-other').append(getNextInfoStr(newestList));
 
-    firstImageStr = "<a href='/user/movie/detail?movieId="+highestList[0].id+"' class='hvr-sweep-to-bottom'><img src='"+ (highestList[0].poster||"/images/defaultPoster.jpg") + "' alt='' class='img-responsive' /></a>";
+    firstImageStr = "<a href='/user/movie/detail?movieId="+highestList[0].id+"' class='hvr-sweep-to-bottom'><img src='"+ (highestList[0].poster||"/images/defaultPoster.jpg") + "' alt='' class='img-big' /></a>";
     $('#video1').append(firstImageStr);
     var highestMovieInfo = getFirstInfoStr(highestList);
     $('#highest-movie-info').append(highestMovieInfo);
     $('#highest-movie-other').append(getNextInfoStr(highestList));
 
-    firstImageStr = "<a href='/user/movie/detail?movieId="+mostList[0].id+"' class='hvr-sweep-to-bottom'><img src='"+ (mostList[0].poster||"/images/defaultPoster.jpg") + "' alt='' class='img-responsive' /></a>";
+    firstImageStr = "<a href='/user/movie/detail?movieId="+mostList[0].id+"' class='hvr-sweep-to-bottom'><img src='"+ (mostList[0].poster||"/images/defaultPoster.jpg") + "' alt='' class='img-big' /></a>";
     $('#video2').append(firstImageStr);
     var mostMovieInfo = getFirstInfoStr(mostList);
     $('#most-movie-info').append(mostMovieInfo);
@@ -128,7 +128,7 @@ function renderMovie() {
     function getFirstInfoStr(List) {
         var firstMovieInfo = "";
         firstMovieInfo += "<p class=\"fexi_header\">"+ List[0].name+"</p>" +
-            "<p class=\"fexi_header_para\"><span>内容简介<label>:</label></span>"+ List[0].description+"</p>"+
+            "<p class=\"fexi_header_para description\"><span>内容简介<label>:</label></span>"+ List[0].description+"</p>"+
             "<p class=\"fexi_header_para\"><span>上映日期<label>:</label></span>"+ List[0].startDate.slice(0,10)+"</p>" +
             "<p class=\"fexi_header_para\"><span>类型<label>:</label></span>"+ List[0].type+"</p>" +
             "<p class=\"fexi_header_para\"><span>想看人数<label>:</label></span>"+ List[0].likeNum+"</p>" +
@@ -181,7 +181,7 @@ function renderMovie() {
 
     function getMostBoxForSlide() {
         var res = "";
-        for (var i = 0;i<=10 && i<highestList.length;i++){
+        for (var i = 0;i<10 && i<highestList.length;i++){
             res += "<div class=\"col-md-2 w3l-movie-gride-agile requested-movies\">" +
                         "<a href=\"/user/movie/detail?movieId="+highestList[i].id+"\" class=\"hvr-sweep-to-bottom\">" +
                             "<img src=\"" + (highestList[i].poster||"/images/defaultPoster.jpg") + "\" title=\"Movies Pro\" class=\"img-responsive\" alt=\" \">" +
@@ -221,7 +221,7 @@ function renderMovie() {
 
     function getTopMovieImage() {
         var res = '';
-        res += "<a href='/user/movie/detail?movieId="+mostList[0].id+"'><img src=\"" + (mostList[0].poster||"/images/defaultPoster.jpg") + "\" alt=\"\" class=\"img-responsive\" />" +
+        res += "<a href='/user/movie/detail?movieId="+mostList[0].id+"'><img src=\"" + (mostList[0].poster||"/images/defaultPoster.jpg") + "\" alt=\"\" class=\"img-big\" />" +
             "<div class=\"w3l-action-icon\"><i class=\"fa fa-link\" aria-hidden=\"true\"></i></div></a>";
         return res;
     }
@@ -229,7 +229,7 @@ function renderMovie() {
     function getTopMovieInfo() {
         var res = '';
         res += "<p class=\"fexi_header\">"+mostList[0].name+"</p>" +
-            "<p class=\"fexi_header_para\"><span>内容简介<label>:</label></span>"+mostList[0].description+"</p>" +
+            "<p class=\"fexi_header_para description\"><span>内容简介<label>:</label></span>"+mostList[0].description+"</p>" +
             "<p class=\"fexi_header_para\"><span>上映日期<label>:</label></span>" + mostList[0].startDate.slice(0,10) + "</p>" +
             "<p class=\"fexi_header_para\"><span>类型<label>:</label> </span>" + mostList[0].type +
             "<p class=\"fexi_header_para fexi_header_para1\"><span>想看人数<label>:</label></span>" + mostList[0].likeNum + "" +
