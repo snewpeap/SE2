@@ -362,41 +362,43 @@ public class TicketImpl
     @Override
     public Response getHistoricalConsumptionsByUserId(int userID) {
         List<Ticket> tickets = ticketsMapper.selectByUserID(userID);
-        Response response;
-        if (tickets.size() == 0) {
-            response = Response.success();
-            response.setContent(null);
-            return response;
+        if (tickets.isEmpty()) {
+            return Response.success();
         }
-        Date date = tickets.get(0).getDate();
-        if(tickets.size()>0){
-            tickets.sort((Ticket t1, Ticket t2)->(int)((t2.getDate().getTime() - t1.getDate().getTime())/1000));
-        }
+        //tickets.sort((Ticket t1, Ticket t2)->(int)((t2.getDate().getTime() - t1.getDate().getTime())/1000));
         List<TicketVO> ticketVOS = new ArrayList<>();
         for (Ticket ticket : tickets) {
-            if (!(ticket.getStatus() == (byte) 0 && ticket.getStatus() == (byte) 2)) {
+            if (!(ticket.getStatus() == (byte) 0 || ticket.getStatus() == (byte) 2)) {
                 ticketVOS.add(assembleTicketVO(ticket));
             }
         }
-        Map<Long, List<TicketVO>> ticketVOsMapByOrderID = new HashMap<>();
+        Map<Long, List<TicketVO>> ticketVOsMapByOrderID = new TreeMap<>();
         for (TicketVO ticketVO : ticketVOS) {
-            if (!ticketVOsMapByOrderID.containsKey(ticketVO.getOrderID())) {
-                ticketVOsMapByOrderID.put(ticketVO.getOrderID(), new ArrayList<>());
+            long orderID = ticketVO.getOrderID();
+            if (!ticketVOsMapByOrderID.containsKey(orderID)) {
+                ticketVOsMapByOrderID.put(orderID, new ArrayList<>());
             }
-            ticketVOsMapByOrderID.get(ticketVO.getOrderID()).add(ticketVO);
+            ticketVOsMapByOrderID.get(orderID).add(ticketVO);
         }
         List<OrderVO> orderVOS = new ArrayList<>();
         for (Map.Entry<Long, List<TicketVO>> entry : ticketVOsMapByOrderID.entrySet()) {
+            Order order = orderMapper.selectByPrimaryKey(entry.getKey());
             List<TicketVO> oneTicketVOs = entry.getValue();
-            float realSpend = oneTicketVOs.size() * oneTicketVOs.get(0).getRealAmount();
             int arrangementID = oneTicketVOs.get(0).getArrangementId();
-            float originalSpend = oneTicketVOs.size() * (arrangementService.getFareByID(arrangementID));
+            //float originalSpend = oneTicketVOs.size() * (arrangementService.getFareByID(arrangementID));
             Date[] dates = arrangementService.getStartDateAndEndDate(arrangementID);
             String movieName = movieService.getMovieNameByID(arrangementService.getMovieIDbyID(arrangementID));
             String hallName = arrangementService.getHallNameByArrangementID(arrangementID);
-            orderVOS.add(new OrderVO(entry.getKey(), oneTicketVOs, realSpend, originalSpend, date, dates[0], dates[1], movieName, hallName));
+            orderVOS.add(new OrderVO(
+                    entry.getKey(),
+                    oneTicketVOs,
+                    order.getRealAmount(),
+                    order.getOriginalAmount(),
+                    order.getDate(), dates[0], dates[1],
+                    movieName, hallName
+            ));
         }
-        response = Response.success();
+        Response response = Response.success();
         response.setContent(orderVOS);
         return response;
     }
@@ -550,12 +552,13 @@ public class TicketImpl
          */
         @Transactional
         void completeOrder(List<Ticket> tickets, Order order, boolean useVIP) {
+            Date now = new Date();
             for (Ticket ticket : tickets) {
                 ticket.setStatus((byte) 1);
-                ticket.setDate(new Date());
+                ticket.setDate(now);
                 ticketsMapper.updateByPrimaryKeySelective(ticket);
             }
-            order.setDate(new Date());
+            order.setDate(now);
             order.setUseVipcard(useVIP ? (byte) 1 : (byte) 0);
             orderMapper.updateByPrimaryKeySelective(order);
             removeTask(order.getId());

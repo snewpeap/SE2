@@ -38,6 +38,7 @@
         <include refid="Base_Column_List"/>
         from tickets
         where user_id = #{userID,jdbcType=INTEGER}
+        order by date,seat_id
     </select>
 
     <select id="selectByOrderID" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -170,8 +171,8 @@
         set user_id        = #{userId,jdbcType=INTEGER},
             arrangement_id = #{arrangementId,jdbcType=INTEGER},
             seat_id        = #{seatId,jdbcType=INTEGER},
-            `date`           = #{date,jdbcType=TIMESTAMP},
-            `status`         = #{status,jdbcType=TINYINT},
+            `date`         = #{date,jdbcType=TIMESTAMP},
+            `status`       = #{status,jdbcType=TINYINT},
             real_amount    = #{realAmount,jdbcType=REAL},
             orderID        = #{orderID,jdbcType=BIGINT}
         where id = #{id,jdbcType=INTEGER}
