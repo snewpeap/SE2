@@ -193,7 +193,7 @@ function renderCoupon() {
         $('#pay-amount').html("<div><b>金额：</b>" + totalVO + "元</div>");
     } else {
         for (let coupon of coupons) {
-            if(price * ticketId.length > coupon.targetAmount){
+            if(price * ticketId.length >= coupon.targetAmount){
                 couponTicketStr += "<option>满" + coupon.targetAmount + "减" + coupon.discountAmount + "</option>"
             }
         }
