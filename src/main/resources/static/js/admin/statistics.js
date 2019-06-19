@@ -199,16 +199,19 @@ function getPlacingRate() {
     getRequest(
         '/manage/statistics/placingRate?date='+placingRateDate.replace(/-/g,'/'),
         function (res) {
-            var data = res.content || [];
-            var tableData = data.map(function (item) {
-                if(item.rate > 0){
-                    return item.rate;
+            var datas = res.content || [];
+            var data = [];
+            datas.forEach(function (item) {
+                if(item.rate>0){
+                    data.push(item);
                 }
             });
+            var tableData = data.map(function (item) {
+                return item.rate;
+
+            });
             var nameList = data.map(function (item) {
-                if(item.rate > 0){
-                    return item.movieName;
-                }
+                return item.movieName;
             });
             var option = {
                 title : {
