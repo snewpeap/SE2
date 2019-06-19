@@ -12,7 +12,7 @@ $(document).ready(function () {
                 if (res.success) {
                     allMovieList = [];
                     res.content.forEach(function (movie) {
-                        if(movie.status < 2){
+                        if(movie.status < 3){
                             allMovieList.push(movie);
                         }
                     });
@@ -133,7 +133,7 @@ function renderMovie() {
     function getFirstInfoStr(List) {
         var firstMovieInfo = "";
         firstMovieInfo += "<p class=\"fexi_header\">"+ List[0].name+"</p>" +
-            "<p class=\"fexi_header_para description\"><span>内容简介<label>:</label></span>"+ List[0].description+"</p>"+
+            "<p class=\"fexi_header_para\"><span>内容简介<label>:</label></span>"+ List[0].description+"</p>"+
             "<p class=\"fexi_header_para\"><span>上映日期<label>:</label></span>"+ List[0].startDate.slice(0,10)+"</p>" +
             "<p class=\"fexi_header_para\"><span>类型<label>:</label></span>"+ List[0].type+"</p>" +
             "<p class=\"fexi_header_para\"><span>想看人数<label>:</label></span>"+ List[0].likeNum+"</p>" +
@@ -149,7 +149,7 @@ function renderMovie() {
                 "<div class=\"w3l-movie-gride-agile\">" + "<a href=\"/user/movie/detail?movieId="+List[i].id+"\" class=\"hvr-sweep-to-bottom\"><img src=\"" + (List[i].poster||"/images/defaultPoster.jpg") +
                 "\" title=\"Movies Pro\" class=\"img-responsive\" alt=\" \" /><div class=\"w3l-action-icon\"><i class=\"fa fa-link\" aria-hidden=\"true\"></i></div></a>" +
                 "<div class=\"mid-1 agileits_w3layouts_mid_1_home\">" +
-                "<div class=\"w3l-movie-text\"><h6><a href=\"/user/movie/detail\">" + List[i].name + "</a></h6></div>" +
+                "<div class=\"w3l-movie-text\"><h6><a href=\"/user/movie/detail?movieId="+List[i].id+"\">" + List[i].name + "</a></h6></div>" +
                 "<div class=\"mid-2 agile_mid_2_home\"><p>想看人数："+ List[i].likeNum +"</p><div class=\"clearfix\"></div></div></div>" +
                 joinedPromotion(List,i) +
                 "</div>";
@@ -169,7 +169,7 @@ function renderMovie() {
                 "</a>" +
                 "<div class=\"mid-1 agileits_w3layouts_mid_1_home\">" +
                 "<div class=\"w3l-movie-text\">" +
-                "<h6><a href=\"/user/movie/detail\">" + newestList[i].name + "</a></h6>" +
+                "<h6><a href=\"/user/movie/detail?movieId="+newestList[i].id+"\">" + newestList[i].name + "</a></h6>" +
                 "</div>" +
                 "<div class=\"mid-2 agile_mid_2_home\">" +
                 "<p>" + newestList[i].startDate.slice(0,10) + "</p>"+
@@ -194,7 +194,7 @@ function renderMovie() {
                         "</a>" +
                         "<div class=\"mid-1 agileits_w3layouts_mid_1_home\">" +
                             "<div class=\"w3l-movie-text\">" +
-                                "<h6><a href=\"/user/movie/detail\">" + highestList[i].name + "</a></h6>" +
+                                "<h6><a href=\"/user/movie/detail?movieId="+highestList[i].id+"\">" + highestList[i].name + "</a></h6>" +
                             "</div>" +
                             "<div class=\"mid-2 agile_mid_2_home\"><p>" + highestList[i].startDate.slice(0,10) + "</p>" +
                                 "<div>想看人数：" + highestList[i].likeNum + "</div>" +
@@ -215,7 +215,7 @@ function renderMovie() {
                 "<div class=\"w3l-action-icon\"><i class=\"fa fa-link\" aria-hidden=\"true\"></i></div></a>" +
                 "<div class=\"mid-1 agileits_w3layouts_mid_1_home\">" +
                 "<div class=\"w3l-movie-text\">" +
-                "<h6><a href=\"/user/movie/detail\">" + mostList[i].name + "</a></h6></div>" +
+                "<h6><a href=\"/user/movie/detail?movieId="+mostList[i].id+"\">" + mostList[i].name + "</a></h6></div>" +
                 "<div class=\"mid-2 agile_mid_2_home\"><p>" + mostList[i].startDate.slice(0,10) + "</p><div>想看人数:" + mostList[i].likeNum +
                 "</div><div class=\"clearfix\"></div></div></div>" +
                 joinedPromotion(mostList,i) +
@@ -234,7 +234,7 @@ function renderMovie() {
     function getTopMovieInfo() {
         var res = '';
         res += "<p class=\"fexi_header\">"+mostList[0].name+"</p>" +
-            "<p class=\"fexi_header_para description\"><span>内容简介<label>:</label></span>"+mostList[0].description+"</p>" +
+            "<p class=\"fexi_header_para\"><span>内容简介<label>:</label></span>"+mostList[0].description+"</p>" +
             "<p class=\"fexi_header_para\"><span>上映日期<label>:</label></span>" + mostList[0].startDate.slice(0,10) + "</p>" +
             "<p class=\"fexi_header_para\"><span>类型<label>:</label> </span>" + mostList[0].type +
             "<p class=\"fexi_header_para fexi_header_para1\"><span>想看人数<label>:</label></span>" + mostList[0].likeNum + "" +

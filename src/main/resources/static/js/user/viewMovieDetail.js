@@ -75,6 +75,16 @@ $(document).ready(function () {
                     $("#movie-img").append(imgStr);
                     // console.log($("#movie-img"));
                     $("#movie-name").append(movie.name);
+                    if(movie.status===0){
+                        $('.firstLine').append("<span class='label label-default'>未上映</span>");
+                    }else if(movie.status===0){
+                        $('.firstLine').append("<span class='label label-success'>热映中</span>");
+                    }else if(movie.status===0){
+                        $('.firstLine').append("<span class='label label-warning'>已下映</span>");
+                    }else{
+                        $('.firstLine').append("<span class='label label-danger'>已下架</span>");
+                    }
+
                     $("#movie-description").append(movie.description);
                     $("#movie-startDate").append((movie.startDate).substring(0,10));
                     $("#movie-type").append(movie.type);
