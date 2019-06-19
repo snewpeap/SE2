@@ -71,10 +71,6 @@ public class StatisticsImpl implements Statistics, StatisticsInfo {
 
     @Override
     public Response getMoviePlacingRateByDate(Date date) {
-        Date defaultToday = new Date();
-        if (date.after(defaultToday)) {
-            return Response.fail(globalMsg.getWrongParam() + " : 未来的时间");
-        }
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date formatDate;
         try {
@@ -105,11 +101,11 @@ public class StatisticsImpl implements Statistics, StatisticsInfo {
                 seatNum += hallManage.getSeatNumByHallID(arrangement.getHallId());
             }
             double averageSeatNum
-                    = new BigDecimal(seatNum).divide(new BigDecimal(arrangementList.size()), 2).doubleValue();
+                    = new BigDecimal(seatNum).divide(new BigDecimal(arrangementList.size()), 2,BigDecimal.ROUND_HALF_UP).doubleValue();
             double rate = 0.0;
             if (arrangementList.size() != 0 && averageSeatNum != 0) {
                 BigDecimal relativeSeatNum = new BigDecimal(arrangementList.size()).multiply(new BigDecimal(averageSeatNum));
-                rate = new BigDecimal(audienceNum).divide(relativeSeatNum, 2).doubleValue();
+                rate = new BigDecimal(audienceNum).divide(relativeSeatNum,2,BigDecimal.ROUND_HALF_UP).doubleValue();
             }
             Movie movie = movieManagement.getMovieByID(movieID);
             String movieName = movie.getName();
