@@ -38,13 +38,19 @@ function getVIP() {
         '/user/vip/rechargeReduction',
         function (res) {
             if (res.success) {
-                var str = "<div>";
-                res.content.forEach(function (one) {
-                    str += "<div>满"+ one.targetAmount + "减"+ one.discountAmount +"</div>";
-                });
-                str += "</div>";
-                $("#member-buy-description").html("<div class='description'>充值优惠：</div>"+str);
-                $("#member-description").html(str);
+                if(res.content.length > 0){
+                    var str = "<div>";
+                    res.content.forEach(function (one) {
+                        str += "<div>满"+ one.targetAmount + "减"+ one.discountAmount +"</div>";
+                    });
+                    str += "</div>";
+                    $("#member-buy-description").html("<div class='description'>充值优惠：</div>"+str);
+                    $("#member-description").html(str);
+                }else {
+                    var str = "<div> 无 </div>";
+                    $("#member-buy-description").html("<div class='description'>充值优惠：</div>"+str);
+                    $("#member-description").html(str);
+                }
             } else {
                 alert(res.content);
             }
