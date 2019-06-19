@@ -201,7 +201,10 @@
                             </delimiters>
                             <resources>
                                 <resource>
-                                    <directory>src/main/resources/</directory>
+                                    <directory>src/main/resources</directory>
+                                    <includes>
+                                        <include>**/*.yml</include>
+                                    </includes>
                                     <filtering>true</filtering>
                                 </resource>
 
@@ -216,14 +219,14 @@
                                 <resource>
                                     <directory>src/main/resources</directory>
                                     <includes>
-                                        <include>**/*.yml</include>
                                         <include>**/*.xml</include>
                                         <include>static/**</include>
                                         <include>templates/**</include>
+                                        <include>**/*.woff</include>
+                                        <include>**/*.woff2</include>
+                                        <include>**/*.ttf</include>
+                                        <include>**/*.eot</include>
                                     </includes>
-                                    <excludes>
-                                        <exclude>generatorConfig.xml</exclude>
-                                    </excludes>
                                     <filtering>false</filtering>
                                 </resource>
                             </resources>
@@ -235,6 +238,14 @@
 
         <resources>
             <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.yml</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+
+            <resource>
                 <directory>src/main/java</directory>
                 <includes>
                     <include>**/*.xml</include>
@@ -245,14 +256,14 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <includes>
-                    <include>**/*.yml</include>
                     <include>**/*.xml</include>
                     <include>static/**</include>
                     <include>templates/**</include>
+                    <include>**/*.woff</include>
+                    <include>**/*.woff2</include>
+                    <include>**/*.ttf</include>
+                    <include>**/*.eot</include>
                 </includes>
-                <excludes>
-                    <exclude>generatorConfig.xml</exclude>
-                </excludes>
                 <filtering>false</filtering>
             </resource>
         </resources>
