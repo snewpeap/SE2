@@ -68,7 +68,8 @@ function getArrangementRate() {
                         radius : [50, 110],
                         // center : ['50%', '50%'],
                         // roseType : 'area',
-                        data:tableData
+                        data:tableData,
+                        minShowLabelAngle:5
                     }
                 ]
             };
@@ -131,7 +132,8 @@ function getBoxOffice() {
                         radius : [50, 110],
                         // center : ['50%', '50%'],
                         // roseType : 'area',
-                        data:tableData
+                        data:tableData,
+                        minShowLabelAngle:5
                     }
                 ]
             };
@@ -211,7 +213,8 @@ function getPlacingRate() {
                 },
                 series: [{
                     data: tableData,
-                    type: 'bar'
+                    type: 'bar',
+                    barMinHeight:0.005
                 }]
             };
             var scheduleRateChart = echarts.init($("#place-rate-container")[0]);
@@ -277,7 +280,8 @@ function getPopularMovie() {
                         radius : [50, 110],
                         // center : ['50%', '50%'],
                         // roseType : 'area',
-                        data:tableData
+                        data:tableData,
+                        minShowLabelAngle:5
                     }
                 ]
             };
