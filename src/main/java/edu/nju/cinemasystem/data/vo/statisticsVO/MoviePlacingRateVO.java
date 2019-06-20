@@ -2,6 +2,13 @@ package edu.nju.cinemasystem.data.vo.statisticsVO;
 
 import java.util.Date;
 
+/**
+ * 排片率信息 包括：
+ * date 日期
+ * movieId 电影序号
+ * rate 排片率
+ * movieName 电影名字
+ */
 public class MoviePlacingRateVO {
     private Date date;
     private Integer movieId;

@@ -1,0 +1,21 @@
+.img-responsive{
+    height: 246px;
+}
+
+.img-big{
+    height: 550px;
+}
+
+h6{
+    height: 36px;
+}
+
+.description{
+    max-height: 60px;
+    min-height: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:3;
+}

@@ -1,5 +1,11 @@
 package edu.nju.cinemasystem.data.vo.statisticsVO;
 
+/**
+ * 电影排片次数信息 包括：
+ * movieId 电影序号
+ * times 次数
+ * name 电影名字
+ */
 public class MovieScheduleTimesVO {
 
     private Integer movieId;

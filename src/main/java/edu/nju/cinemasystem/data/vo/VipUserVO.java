@@ -1,5 +1,11 @@
 package edu.nju.cinemasystem.data.vo;
 
+/**
+ * 会员用户信息 包括：
+ * user 用户信息 是一个UserVO
+ * VIPcardID 会员卡号
+ * consumption 历史消费金额
+ */
 public class VipUserVO {
     private UserVO user;
     private int VIPcardID;

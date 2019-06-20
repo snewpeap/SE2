@@ -2,6 +2,13 @@ package edu.nju.cinemasystem.data.vo;
 
 import edu.nju.cinemasystem.data.po.ArrangementSeat;
 
+/**
+ * 排片中的座位信息 包含：
+ * isLocked 是否已经被锁
+ * seatId 座位编号
+ * row 第几排
+ * column 第几列（座）
+ */
 public class ArrangementSeatVO{
     
     private boolean isLocked;

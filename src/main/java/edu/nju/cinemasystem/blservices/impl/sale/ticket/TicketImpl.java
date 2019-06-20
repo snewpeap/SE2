@@ -90,7 +90,7 @@ public class TicketImpl
         Date date = new Date();
         float realAmount = arrangementService.getFareByID(arrangementID);
         float totalAmount = realAmount * seatIDs.size();
-        long orderID = Long.parseLong(date.getTime() + String.valueOf(1 + (long) (Math.random() * 100)));
+        long orderID = Long.parseLong(date.getTime() + String.valueOf((long) ((Math.random()*9 + 1)* 100)));
 
         Order order = Order.assembleOrderPO(orderID, totalAmount, totalAmount, date, (byte) 2, userID);
         orderMapper.insertSelective(order);
@@ -379,13 +379,15 @@ public class TicketImpl
             }
             ticketVOsMapByOrderID.get(orderID).add(ticketVO);
         }
+        ticketVOsMapByOrderID = ((TreeMap<Long, List<TicketVO>>) ticketVOsMapByOrderID).descendingMap();
         List<OrderVO> orderVOS = new ArrayList<>();
         for (Map.Entry<Long, List<TicketVO>> entry : ticketVOsMapByOrderID.entrySet()) {
             Order order = orderMapper.selectByPrimaryKey(entry.getKey());
             List<TicketVO> oneTicketVOs = entry.getValue();
             int arrangementID = oneTicketVOs.get(0).getArrangementId();
             Date[] dates = arrangementService.getStartDateAndEndDate(arrangementID);
-            String movieName = movieService.getMovieNameByID(arrangementService.getMovieIDbyID(arrangementID));
+            int movieID = arrangementService.getMovieIDbyID(arrangementID);
+            String movieName = movieService.getMovieNameByID(movieID);
             String hallName = arrangementService.getHallNameByArrangementID(arrangementID);
             orderVOS.add(new OrderVO(
                     entry.getKey(),
@@ -393,7 +395,7 @@ public class TicketImpl
                     order.getRealAmount(),
                     order.getOriginalAmount(),
                     order.getDate(), dates[0], dates[1],
-                    movieName, hallName
+                    movieName, hallName, movieID
             ));
         }
         Response response = Response.success();
@@ -405,12 +407,13 @@ public class TicketImpl
     public float getConsumption(int userID) {
         List<Ticket> tickets = ticketsMapper.selectByUserID(userID);
         float amount = 0;
+        BigDecimal amountDecimal = new BigDecimal(amount);
         for (Ticket ticket : tickets) {
             if (ticket.getStatus() == (byte) 1) {
-                amount += ticket.getRealAmount();
+                amountDecimal = amountDecimal.add(new BigDecimal(ticket.getRealAmount()));
             }
         }
-        return amount;
+        return amountDecimal.setScale(2,BigDecimal.ROUND_HALF_UP).floatValue();
     }
 
     /**

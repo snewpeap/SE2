@@ -1,5 +1,9 @@
 package edu.nju.cinemasystem.data.vo;
 
+/**
+ * 员工信息 继承自 UserVO 包括：
+ * role 角色 staff:普通员工 manager:经理 root:管理员
+ */
 public class StaffVO extends UserVO {
     private String role;
 

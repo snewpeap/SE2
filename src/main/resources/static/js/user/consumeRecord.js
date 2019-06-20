@@ -21,8 +21,12 @@ $(document).ready(function () {
 
     function addRecord(record) {
         var recordStr = '';
-        recordStr +=
-            "<tr id='"+record.orderID+"' title='";
+        if(record.ticketVOs[0].status === "未完成"){
+            recordStr += "<tr style='background-color: #e1f7e7' id='"+record.orderID+"' title='";
+        } else {
+            recordStr +=
+                "<tr id='"+record.orderID+"' title='";
+        }
         record.ticketVOs.forEach(function (ticket) {
             recordStr += '电影名称：'+record.movieName + '          座位：' + ticket.row + '排' + ticket.column + '座' + '          电影票状态：' + ticket.status + '&#10;'
         });
@@ -31,9 +35,14 @@ $(document).ready(function () {
             "<td>"+ record.startTime.replace('T',' ').substring(0,19)+"</td>" +
             "<td>"+ record.ticketVOs.length +"张</td>" +
             "<td>" + record.originalSpend + "元</td>" +
-            "<td>" + (record.realSpend).toFixed(2) + "元</td>" +
-            "<td>"+record.completeTime.replace('T',' ').substring(0,19)+"</td>" +
+            "<td>" + (record.realSpend).toFixed(2) + "元</td>";
+        if(record.ticketVOs[0].status === '未完成'){
+            recordStr += "<td><a href='/user/buy?id="+record.movieId+"&arrangementId="+record.ticketVOs[0].arrangementId+"' style='text-decoration: underline;color: #4381ff'>未完成</a></td>" +
+                "</tr>" ;
+        }else{
+            recordStr += "<td>"+record.completeTime.replace('T',' ').substring(0,19)+"</td>" +
             "</tr>" ;
+        }
         $(".table tbody").append(recordStr);
     }
     }

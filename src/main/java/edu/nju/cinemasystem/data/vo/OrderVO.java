@@ -3,6 +3,19 @@ package edu.nju.cinemasystem.data.vo;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 订单信息 包含：
+ * orderID 序号
+ * ticketVOs 电影票列表 里面是TicketVO
+ * realSpend 实付金额
+ * originalSpend 原始金额
+ * completeTime 订单完成时间
+ * startTime 电影开始放映的时间
+ * endTime 电影结束放映的时间
+ * movieName 电影名字
+ * hallName 影厅名字
+ * movieId 电影序号
+ */
 public class OrderVO {
 
     private Long orderID;
@@ -14,6 +27,7 @@ public class OrderVO {
     private Date endTime;
     private String movieName;
     private String hallName;
+    private int movieId;
 
     public Long getOrderID() {
         return orderID;
@@ -87,7 +101,15 @@ public class OrderVO {
         this.hallName = hallName;
     }
 
-    public OrderVO(Long orderID, List<TicketVO> ticketVOs, float realSpend, float originalSpend, Date completeTime, Date startTime, Date endTime, String movieName, String hallName) {
+    public int getMovieId() {
+        return movieId;
+    }
+
+    public void setMovieId(int movieId) {
+        this.movieId = movieId;
+    }
+
+    public OrderVO(Long orderID, List<TicketVO> ticketVOs, float realSpend, float originalSpend, Date completeTime, Date startTime, Date endTime, String movieName, String hallName,int movieId) {
         this.orderID = orderID;
         this.ticketVOs = ticketVOs;
         this.realSpend = realSpend;
@@ -97,5 +119,6 @@ public class OrderVO {
         this.endTime = endTime;
         this.movieName = movieName;
         this.hallName = hallName;
+        this.movieId = movieId;
     }
 }

@@ -3,6 +3,16 @@ package edu.nju.cinemasystem.data.vo;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 包含优惠券的订单信息 包括：
+ * ID 订单序号
+ * tickets 电影票列表 里面是TicketVO
+ * coupons 优惠券列表 里面是CouponVO
+ * startTime 电影开始时间
+ * endTime 电影结束时间
+ * movieName 电影名字
+ * hallName 影厅名字
+ */
 public class OrderWithCouponVO {
 
     private Long ID;

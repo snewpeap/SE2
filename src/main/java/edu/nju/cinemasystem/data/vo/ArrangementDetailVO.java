@@ -3,6 +3,16 @@ package edu.nju.cinemasystem.data.vo;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 排片详细信息 包含：
+ * seatMap 座位图 是一个由排片座位信息构成的二维数组
+ * id 排片号
+ * startTime 开始时间
+ * endTime 结束时间
+ * fare 本场次的票价
+ * hall 影厅名字
+ * movie 电影的名字
+ */
 public class ArrangementDetailVO {
     private List<ArrangementSeatVO[]> seatMap;
 

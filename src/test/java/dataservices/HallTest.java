@@ -10,6 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -31,7 +33,7 @@ public class HallTest {
         hall.setSize((byte) 0);
         hall.setIs3d((byte) 1);
         hall.setIsImax((byte) 1);
-        int i = hallMapper.insertSelective(hall);
+        hallMapper.insertSelective(hall);
         assertTrue(hall.getId()!=0);
     }
 
@@ -49,7 +51,7 @@ public class HallTest {
         assertTrue(i!=0);
     }
 
-    @Test
+    @Test(expected = Exception.class)
     @Transactional
     public void insertSelectiveTestNull() {
         Hall hall = new Hall();
@@ -61,11 +63,5 @@ public class HallTest {
         hall.setIsImax(null);
         int i = hallMapper.insertSelective(hall);
         assertEquals(0, i);
-    }
-
-    @Test
-    @Transactional
-    public void deleteByHallID(){
-        assertTrue(hallMapper.deleteByPrimaryKey(2)!=0);
     }
 }

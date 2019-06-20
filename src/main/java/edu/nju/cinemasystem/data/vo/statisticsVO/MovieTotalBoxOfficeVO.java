@@ -1,5 +1,11 @@
 package edu.nju.cinemasystem.data.vo.statisticsVO;
 
+/**
+ * 电影总票房 包括：
+ * movieId 电影序号
+ * boxOffice 票房 单位为元
+ * name 电影名字
+ */
 public class MovieTotalBoxOfficeVO {
     private Integer movieId;
     /**

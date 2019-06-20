@@ -56,10 +56,11 @@ public class MovieImpl implements MovieService {
             response.setContent(allMovieVOs);
         } else {
             Movie movie = movieMapper.selectByPrimaryKey(movieID);
+            //电影存在但观众不可见的时候返回403
             if (movie != null && !movie.audienceVisible()) {
                 response = Response.fail();
                 response.setStatusCode(403);
-            } else if (movie == null) {
+            } else if (movie == null) { //电影不存在时返回404
                 response = Response.fail();
                 response.setStatusCode(404);
             } else {
@@ -74,6 +75,7 @@ public class MovieImpl implements MovieService {
     @Override
     public Response searchMovies(String query, int userID) {
         Response response = Response.success();
+        //搜索关键词是空时返回全部电影
         if (query.isEmpty()) {
             return getMovie(0, userID);
         }
@@ -110,6 +112,7 @@ public class MovieImpl implements MovieService {
         return movieMapper.selectByPrimaryKey(movieID).getDuration();
     }
 
+    //封装AudienceMovieVO的方法
     private AudienceMovieVO assembleAudienceMovieVO(Movie movie) {
         AudienceMovieVO movieVO = new AudienceMovieVO();
         BaseMovieVO.assembleMovieVO(movie, movieVO);

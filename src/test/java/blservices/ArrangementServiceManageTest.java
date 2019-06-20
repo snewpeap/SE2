@@ -25,8 +25,6 @@ public class ArrangementServiceManageTest {
 
     @Autowired
     ArrangementManage arrangementManage;
-    @Autowired
-    private ArrangementService arrangementService;
 
     @Test
     @Transactional
@@ -43,7 +41,7 @@ public class ArrangementServiceManageTest {
         arrangementForm.setVisibleDate(dates[2]);
         Response response = arrangementManage.addArrangement(arrangementForm);
         System.out.println(response.getMessage());
-        assertTrue(response.isSuccess());
+        assertFalse(response.isSuccess());
 
     }
 
@@ -62,7 +60,7 @@ public class ArrangementServiceManageTest {
         arrangementForm.setVisibleDate(dates[2]);
         Response response = arrangementManage.addArrangement(arrangementForm);
         System.out.println(response.getMessage());
-        assertTrue(response.isSuccess());
+        assertFalse(response.isSuccess());
 
     }
 
@@ -100,15 +98,8 @@ public class ArrangementServiceManageTest {
         arrangementForm.setVisibleDate(dates[2]);
         Response response = arrangementManage.modifyArrangement(arrangementForm,id);
         System.out.println(response.getMessage());
-        assertTrue(response.isSuccess());
+        assertFalse(response.isSuccess());
     }
-
-    @Test
-    @Transactional
-    public void removeArrangementTest1(){
-        assertTrue(arrangementManage.removeArrangement(5).isSuccess());
-    }
-
 
     private Date[] conversionTime(String string1, String string2, String string3){
         Date[] dates = new Date[3];

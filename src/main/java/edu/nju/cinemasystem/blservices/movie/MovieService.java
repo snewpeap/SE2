@@ -7,7 +7,7 @@ import java.util.Date;
 
 public interface MovieService {
     /**
-     * 非整数代表查询所有电影
+     * 非正数代表查询所有电影
      * @param movieID 电影ID
      * @param userID 用户id
      * @return 为正整数返回一部电影；为非正数返回所有电影列表

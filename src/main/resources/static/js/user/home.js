@@ -10,7 +10,12 @@ $(document).ready(function () {
             '/user/movie/all',
             function (res) {
                 if (res.success) {
-                    allMovieList = res.content;
+                    allMovieList = [];
+                    res.content.forEach(function (movie) {
+                        if(movie.status < 3){
+                            allMovieList.push(movie);
+                        }
+                    });
                     renderMovie();
                 } else {
                     alert(res.message);
@@ -46,20 +51,20 @@ function renderMovie() {
     // $('#demo-1')[0].dataset.zsSrc = '["'+headImage.join('", "')+'"]';
     // console.log($('#demo-1'));
 
-    firstImageStr = "<a href='/user/movie/detail?movieId="+newestList[0].id+"' class='hvr-sweep-to-bottom'><img src='"+ (newestList[0].poster||"/images/defaultPoster.jpg") + "' title=\"Movies Pro\"  alt='' class='img-responsive' />" +
+    firstImageStr = "<a href='/user/movie/detail?movieId="+newestList[0].id+"' class='hvr-sweep-to-bottom'><img src='"+ (newestList[0].poster||"/images/defaultPoster.jpg") + "' title=\"Movies Pro\"  alt='' class='img-big' />" +
         "<div class=\"w3l-action-icon\"><i class=\"fa fa-link\" aria-hidden=\"true\"></i></div></a>";
     $('#video').append(firstImageStr);
     var newestMovieInfo = getFirstInfoStr(newestList);
     $('#newest-movie-info').append(newestMovieInfo);
     $('#newest-movie-other').append(getNextInfoStr(newestList));
 
-    firstImageStr = "<a href='/user/movie/detail?movieId="+highestList[0].id+"' class='hvr-sweep-to-bottom'><img src='"+ (highestList[0].poster||"/images/defaultPoster.jpg") + "' alt='' class='img-responsive' /></a>";
+    firstImageStr = "<a href='/user/movie/detail?movieId="+highestList[0].id+"' class='hvr-sweep-to-bottom'><img src='"+ (highestList[0].poster||"/images/defaultPoster.jpg") + "' alt='' class='img-big' /></a>";
     $('#video1').append(firstImageStr);
     var highestMovieInfo = getFirstInfoStr(highestList);
     $('#highest-movie-info').append(highestMovieInfo);
     $('#highest-movie-other').append(getNextInfoStr(highestList));
 
-    firstImageStr = "<a href='/user/movie/detail?movieId="+mostList[0].id+"' class='hvr-sweep-to-bottom'><img src='"+ (mostList[0].poster||"/images/defaultPoster.jpg") + "' alt='' class='img-responsive' /></a>";
+    firstImageStr = "<a href='/user/movie/detail?movieId="+mostList[0].id+"' class='hvr-sweep-to-bottom'><img src='"+ (mostList[0].poster||"/images/defaultPoster.jpg") + "' alt='' class='img-big' /></a>";
     $('#video2').append(firstImageStr);
     var mostMovieInfo = getFirstInfoStr(mostList);
     $('#most-movie-info').append(mostMovieInfo);
@@ -144,7 +149,7 @@ function renderMovie() {
                 "<div class=\"w3l-movie-gride-agile\">" + "<a href=\"/user/movie/detail?movieId="+List[i].id+"\" class=\"hvr-sweep-to-bottom\"><img src=\"" + (List[i].poster||"/images/defaultPoster.jpg") +
                 "\" title=\"Movies Pro\" class=\"img-responsive\" alt=\" \" /><div class=\"w3l-action-icon\"><i class=\"fa fa-link\" aria-hidden=\"true\"></i></div></a>" +
                 "<div class=\"mid-1 agileits_w3layouts_mid_1_home\">" +
-                "<div class=\"w3l-movie-text\"><h6><a href=\"/user/movie/detail\">" + List[i].name + "</a></h6></div>" +
+                "<div class=\"w3l-movie-text\"><h6><a href=\"/user/movie/detail?movieId="+List[i].id+"\">" + List[i].name + "</a></h6></div>" +
                 "<div class=\"mid-2 agile_mid_2_home\"><p>想看人数："+ List[i].likeNum +"</p><div class=\"clearfix\"></div></div></div>" +
                 joinedPromotion(List,i) +
                 "</div>";
@@ -164,7 +169,7 @@ function renderMovie() {
                 "</a>" +
                 "<div class=\"mid-1 agileits_w3layouts_mid_1_home\">" +
                 "<div class=\"w3l-movie-text\">" +
-                "<h6><a href=\"/user/movie/detail\">" + newestList[i].name + "</a></h6>" +
+                "<h6><a href=\"/user/movie/detail?movieId="+newestList[i].id+"\">" + newestList[i].name + "</a></h6>" +
                 "</div>" +
                 "<div class=\"mid-2 agile_mid_2_home\">" +
                 "<p>" + newestList[i].startDate.slice(0,10) + "</p>"+
@@ -181,7 +186,7 @@ function renderMovie() {
 
     function getMostBoxForSlide() {
         var res = "";
-        for (var i = 0;i<=10 && i<highestList.length;i++){
+        for (var i = 0;i<10 && i<highestList.length;i++){
             res += "<div class=\"col-md-2 w3l-movie-gride-agile requested-movies\">" +
                         "<a href=\"/user/movie/detail?movieId="+highestList[i].id+"\" class=\"hvr-sweep-to-bottom\">" +
                             "<img src=\"" + (highestList[i].poster||"/images/defaultPoster.jpg") + "\" title=\"Movies Pro\" class=\"img-responsive\" alt=\" \">" +
@@ -189,7 +194,7 @@ function renderMovie() {
                         "</a>" +
                         "<div class=\"mid-1 agileits_w3layouts_mid_1_home\">" +
                             "<div class=\"w3l-movie-text\">" +
-                                "<h6><a href=\"/user/movie/detail\">" + highestList[i].name + "</a></h6>" +
+                                "<h6><a href=\"/user/movie/detail?movieId="+highestList[i].id+"\">" + highestList[i].name + "</a></h6>" +
                             "</div>" +
                             "<div class=\"mid-2 agile_mid_2_home\"><p>" + highestList[i].startDate.slice(0,10) + "</p>" +
                                 "<div>想看人数：" + highestList[i].likeNum + "</div>" +
@@ -210,7 +215,7 @@ function renderMovie() {
                 "<div class=\"w3l-action-icon\"><i class=\"fa fa-link\" aria-hidden=\"true\"></i></div></a>" +
                 "<div class=\"mid-1 agileits_w3layouts_mid_1_home\">" +
                 "<div class=\"w3l-movie-text\">" +
-                "<h6><a href=\"/user/movie/detail\">" + mostList[i].name + "</a></h6></div>" +
+                "<h6><a href=\"/user/movie/detail?movieId="+mostList[i].id+"\">" + mostList[i].name + "</a></h6></div>" +
                 "<div class=\"mid-2 agile_mid_2_home\"><p>" + mostList[i].startDate.slice(0,10) + "</p><div>想看人数:" + mostList[i].likeNum +
                 "</div><div class=\"clearfix\"></div></div></div>" +
                 joinedPromotion(mostList,i) +
@@ -221,7 +226,7 @@ function renderMovie() {
 
     function getTopMovieImage() {
         var res = '';
-        res += "<a href='/user/movie/detail?movieId="+mostList[0].id+"'><img src=\"" + (mostList[0].poster||"/images/defaultPoster.jpg") + "\" alt=\"\" class=\"img-responsive\" />" +
+        res += "<a href='/user/movie/detail?movieId="+mostList[0].id+"'><img src=\"" + (mostList[0].poster||"/images/defaultPoster.jpg") + "\" alt=\"\" class=\"img-big\" />" +
             "<div class=\"w3l-action-icon\"><i class=\"fa fa-link\" aria-hidden=\"true\"></i></div></a>";
         return res;
     }
