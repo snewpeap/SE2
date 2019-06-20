@@ -90,7 +90,7 @@ public class TicketImpl
         Date date = new Date();
         float realAmount = arrangementService.getFareByID(arrangementID);
         float totalAmount = realAmount * seatIDs.size();
-        long orderID = Long.parseLong(date.getTime() + String.valueOf(1 + (long) (Math.random() * 100)));
+        long orderID = Long.parseLong(date.getTime() + String.valueOf((long) ((Math.random()*9 + 1)* 100)));
 
         Order order = Order.assembleOrderPO(orderID, totalAmount, totalAmount, date, (byte) 2, userID);
         orderMapper.insertSelective(order);
@@ -386,7 +386,8 @@ public class TicketImpl
             List<TicketVO> oneTicketVOs = entry.getValue();
             int arrangementID = oneTicketVOs.get(0).getArrangementId();
             Date[] dates = arrangementService.getStartDateAndEndDate(arrangementID);
-            String movieName = movieService.getMovieNameByID(arrangementService.getMovieIDbyID(arrangementID));
+            int movieID = arrangementService.getMovieIDbyID(arrangementID);
+            String movieName = movieService.getMovieNameByID(movieID);
             String hallName = arrangementService.getHallNameByArrangementID(arrangementID);
             orderVOS.add(new OrderVO(
                     entry.getKey(),
@@ -394,7 +395,7 @@ public class TicketImpl
                     order.getRealAmount(),
                     order.getOriginalAmount(),
                     order.getDate(), dates[0], dates[1],
-                    movieName, hallName
+                    movieName, hallName, movieID
             ));
         }
         Response response = Response.success();

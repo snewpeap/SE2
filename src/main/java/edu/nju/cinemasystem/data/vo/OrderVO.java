@@ -14,6 +14,7 @@ public class OrderVO {
     private Date endTime;
     private String movieName;
     private String hallName;
+    private int movieId;
 
     public Long getOrderID() {
         return orderID;
@@ -87,7 +88,15 @@ public class OrderVO {
         this.hallName = hallName;
     }
 
-    public OrderVO(Long orderID, List<TicketVO> ticketVOs, float realSpend, float originalSpend, Date completeTime, Date startTime, Date endTime, String movieName, String hallName) {
+    public int getMovieId() {
+        return movieId;
+    }
+
+    public void setMovieId(int movieId) {
+        this.movieId = movieId;
+    }
+
+    public OrderVO(Long orderID, List<TicketVO> ticketVOs, float realSpend, float originalSpend, Date completeTime, Date startTime, Date endTime, String movieName, String hallName,int movieId) {
         this.orderID = orderID;
         this.ticketVOs = ticketVOs;
         this.realSpend = realSpend;
@@ -97,5 +106,6 @@ public class OrderVO {
         this.endTime = endTime;
         this.movieName = movieName;
         this.hallName = hallName;
+        this.movieId = movieId;
     }
 }
