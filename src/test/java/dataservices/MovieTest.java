@@ -27,14 +27,14 @@ public class MovieTest {
         assertEquals(movie.getName(),"随便");
     }
 
-    @Test(expected = Exception.class)
+    @Test
     @Transactional
     public void testSelectByIDFail_NoSuch(){
         Movie movie = movieMapper.selectByPrimaryKey(0);
         assertNull(movie);
     }
 
-    @Test(expected = Exception.class)
+    @Test
     @Transactional
     public void testSelectByIDFail_Null(){
         Movie movie = movieMapper.selectByPrimaryKey(null);
@@ -47,16 +47,6 @@ public class MovieTest {
         movie.setName("TestNull");
         int i = movieMapper.insertSelective(movie);
         assertEquals(0,i);
-        throw new RuntimeException();
-    }
-
-    @Test
-    @Transactional
-    public void testInsert(){
-        Movie movie = movieMapper.selectByPrimaryKey(1);
-        movie.setName("都行");
-        int i = movieMapper.insertSelective(movie);
-        assertEquals(i,1);
         throw new RuntimeException();
     }
 
