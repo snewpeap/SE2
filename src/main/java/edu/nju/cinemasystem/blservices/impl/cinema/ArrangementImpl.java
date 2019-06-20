@@ -348,7 +348,7 @@ public class ArrangementImpl
      */
     private Response censorTimeConflict(ArrangementForm arrangementForm, int ID) {
         int hallID = arrangementForm.getHallId();
-        List<Arrangement> arrangements = arrangementMapper.selectByDay(arrangementForm.getStartTime(), arrangementForm.getEndTime());
+        List<Arrangement> arrangements = arrangementMapper.selectTimeConflict(arrangementForm.getStartTime(), arrangementForm.getEndTime());
         for (Arrangement arrangement : arrangements) {
             if (arrangement.getHallId() == hallID && ((ID != 0 && arrangement.getId() != ID) || ID == 0)) {
                 return Response.fail(arrangementMsg.getIsAlreadyHaveArrangement());

@@ -101,4 +101,6 @@ public interface ArrangementMapper {
      * @return 匹配的排片
      */
     List<Arrangement> selectByDay(@Param("startDay") Date startDay, @Param("endDay") Date endDay);
+
+    List<Arrangement> selectTimeConflict(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
 }
