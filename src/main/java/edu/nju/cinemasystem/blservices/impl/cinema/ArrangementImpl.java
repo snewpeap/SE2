@@ -53,6 +53,7 @@ public class ArrangementImpl
         Arrangement arrangement = arrangementMapper.selectByPrimaryKey(aID);
         if (arrangement != null) {
             ArrangementVO arrangementVO = new ArrangementVO(arrangement);
+            arrangementVO.setHallName(hallMapper.selectByPrimaryKey(arrangement.getHallId()).getName());
             response = Response.success();
             response.setContent(arrangementVO);
             return response;
@@ -77,7 +78,12 @@ public class ArrangementImpl
             Date now = new Date();
             arrangements.removeIf(arrangement -> arrangement.getVisibleDate().after(now));
             List<ArrangementVO> arrangementVOs = new ArrayList<>();
-            arrangements.forEach(arrangement -> arrangementVOs.add(new ArrangementVO(arrangement)));
+            arrangements.forEach(arrangement -> {
+                        ArrangementVO arrangementVO = new ArrangementVO(arrangement);
+                        arrangementVO.setHallName(hallMapper.selectByPrimaryKey(arrangement.getHallId()).getName());
+                        arrangementVOs.add(arrangementVO);
+                    }
+            );
             Map<Date, List<ArrangementVO>> map = new HashMap<>();
             for (ArrangementVO arrangementVO : arrangementVOs) {
                 Date date = convertDateToDay(arrangementVO.getStartTime());
@@ -137,7 +143,7 @@ public class ArrangementImpl
             ArrangementSeatVO vo = new ArrangementSeatVO(as);
             vo.setRow(seat.getRow());
             vo.setColumn(seat.getColumn());
-            seatMap.get(seat.getRow()-1)[seat.getColumn()-1] = vo;
+            seatMap.get(seat.getRow() - 1)[seat.getColumn() - 1] = vo;
         }
         ArrangementDetailVO detailVO = new ArrangementDetailVO();
         detailVO.setSeatMap(seatMap);
@@ -256,7 +262,9 @@ public class ArrangementImpl
         }
         for (Arrangement arrangement : arrangements) {
             int day = (int) ((arrangement.getStartTime().getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
-            daySeparatedVOs.get(day).add(new ArrangementVO(arrangement));
+            ArrangementVO arrangementVO = new ArrangementVO(arrangement);
+            arrangementVO.setHallName(hallMapper.selectByPrimaryKey(arrangement.getHallId()).getName());
+            daySeparatedVOs.get(day).add(arrangementVO);
         }
         Response response = Response.success();
         response.setContent(daySeparatedVOs);
@@ -362,7 +370,7 @@ public class ArrangementImpl
      */
     private Response censorTimeConflict(ArrangementForm arrangementForm, int ID) {
         int hallID = arrangementForm.getHallId();
-        List<Arrangement> arrangements = arrangementMapper.selectByDay(arrangementForm.getStartTime(), arrangementForm.getEndTime());
+        List<Arrangement> arrangements = arrangementMapper.selectTimeConflict(arrangementForm.getStartTime(), arrangementForm.getEndTime());
         for (Arrangement arrangement : arrangements) {
             if (arrangement.getHallId() == hallID && ((ID != 0 && arrangement.getId() != ID) || ID == 0)) {
                 return Response.fail(arrangementMsg.getIsAlreadyHaveArrangement());

@@ -56,6 +56,14 @@
         and end_time between #{startDay,jdbcType=TIMESTAMP} and #{endDay,jdbcType=TIMESTAMP}
     </select>
 
+    <select id="selectTimeConflict" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from arrangement
+        where start_time between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+        or end_time between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
         from arrangement
