@@ -121,7 +121,6 @@ public class HallManageImpl implements HallManage {
 
             //如果行列都变大
             if (hallForm.getColumn() >= oldHall.getColumn() && hallForm.getRow() >= oldHall.getRow()) {
-                //先填满行 新加的部分的列个数=修改后的列数
                 for (int r = 1; r <= hallForm.getRow(); r++) {
                     if(r <= oldHall.getRow()){
                         for (int c = oldHall.getColumn()+1; c <= hallForm.getColumn(); c++){
@@ -135,13 +134,6 @@ public class HallManageImpl implements HallManage {
                         }
                     }
                 }
-                /*添加剩下的座位
-                for (int r = 1; r <= oldHall.getRow(); r++) {
-                    for (int c = oldHall.getColumn() + 1; c <= hallForm.getColumn(); c++) {
-                        Seat seat = Seat.assembleSeatPO(c, r, ID);
-                        seatMapper.insertSelective(seat);
-                    }
-                }*/
             } else {
                 //变小的全部删掉重加
                 seatMapper.deleteByHallID(ID);
