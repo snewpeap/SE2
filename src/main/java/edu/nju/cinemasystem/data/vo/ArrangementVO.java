@@ -13,6 +13,7 @@ import edu.nju.cinemasystem.data.po.Arrangement;
  * hallId 影厅号
  * movieId 电影号
  * visibleDate 可见日期
+ * hallName 影厅名称
  */
 public class ArrangementVO {
     private Integer id;
@@ -28,6 +29,8 @@ public class ArrangementVO {
     private Integer movieId;
 
     private Date visibleDate;
+
+    private String hallName;
 
     public Integer getId() {
         return id;
@@ -83,6 +86,14 @@ public class ArrangementVO {
 
     public void setVisibleDate(Date visibleDate) {
         this.visibleDate = visibleDate;
+    }
+
+    public String getHallName() {
+        return hallName;
+    }
+
+    public void setHallName(String hallName) {
+        this.hallName = hallName;
     }
 
     public ArrangementVO(Arrangement arrangement) {
