@@ -2,6 +2,18 @@ package edu.nju.cinemasystem.data.vo;
 
 import java.util.Date;
 
+/**
+ * 电影票的信息 包括：
+ * id 序号
+ * orderID订单号
+ * userId用户号
+ * arrangementId 排片号
+ * status 状态
+ * realAmount 实付金额
+ * row 第几排
+ * column 第几座
+ * date 购买完成的日期
+ */
 public class TicketVO {
 
     private Integer id;
