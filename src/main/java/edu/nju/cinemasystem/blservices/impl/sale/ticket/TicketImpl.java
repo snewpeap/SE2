@@ -405,12 +405,13 @@ public class TicketImpl
     public float getConsumption(int userID) {
         List<Ticket> tickets = ticketsMapper.selectByUserID(userID);
         float amount = 0;
+        BigDecimal amountDecimal = new BigDecimal(amount);
         for (Ticket ticket : tickets) {
             if (ticket.getStatus() == (byte) 1) {
-                amount += ticket.getRealAmount();
+                amountDecimal = amountDecimal.add(new BigDecimal(ticket.getRealAmount()));
             }
         }
-        return amount;
+        return amountDecimal.setScale(2,BigDecimal.ROUND_HALF_UP).floatValue();
     }
 
     /**
