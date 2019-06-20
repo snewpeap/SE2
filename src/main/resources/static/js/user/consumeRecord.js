@@ -21,8 +21,12 @@ $(document).ready(function () {
 
     function addRecord(record) {
         var recordStr = '';
-        recordStr +=
-            "<tr id='"+record.orderID+"' title='";
+        if(record.ticketVOs[0].status === "未完成"){
+            recordStr += "<tr style='background-color: #e1f7e7' id='"+record.orderID+"' title='";
+        } else {
+            recordStr +=
+                "<tr id='"+record.orderID+"' title='";
+        }
         record.ticketVOs.forEach(function (ticket) {
             recordStr += '电影名称：'+record.movieName + '          座位：' + ticket.row + '排' + ticket.column + '座' + '          电影票状态：' + ticket.status + '&#10;'
         });
