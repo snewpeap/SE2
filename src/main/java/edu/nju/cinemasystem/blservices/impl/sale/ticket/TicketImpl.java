@@ -379,6 +379,7 @@ public class TicketImpl
             }
             ticketVOsMapByOrderID.get(orderID).add(ticketVO);
         }
+        ticketVOsMapByOrderID = ((TreeMap<Long, List<TicketVO>>) ticketVOsMapByOrderID).descendingMap();
         List<OrderVO> orderVOS = new ArrayList<>();
         for (Map.Entry<Long, List<TicketVO>> entry : ticketVOsMapByOrderID.entrySet()) {
             Order order = orderMapper.selectByPrimaryKey(entry.getKey());
