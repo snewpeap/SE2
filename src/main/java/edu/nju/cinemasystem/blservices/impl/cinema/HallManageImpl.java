@@ -40,7 +40,7 @@ public class HallManageImpl implements HallManage {
     /**
      * 录入影厅信息
      * @param hallForm 影厅信息表单
-     * @return
+     * @return 是否成功
      */
     @Override
     @Transactional
@@ -98,7 +98,7 @@ public class HallManageImpl implements HallManage {
      * 修改影厅信息
      * @param hallForm 影厅信息表单
      * @param ID 影厅号
-     * @return
+     * @return 是否成功
      */
     @Override
     @Transactional
