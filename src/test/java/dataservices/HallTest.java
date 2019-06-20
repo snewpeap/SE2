@@ -51,7 +51,7 @@ public class HallTest {
         assertTrue(i!=0);
     }
 
-    @Test(expected = SQLException.class)
+    @Test(expected = Exception.class)
     @Transactional
     public void insertSelectiveTestNull() {
         Hall hall = new Hall();
