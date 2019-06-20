@@ -121,7 +121,7 @@ function renderArrangements(index) {
     for (var i = 0; i < scheduleItems.length; i++) {
         bodyContent += "<tr><td>" + scheduleItems[i].startTime.substring(11, 16) + "</td>" +
             "<td>预计" + scheduleItems[i].endTime.substring(11, 16) + "散场</td>" +
-            "<td>" + scheduleItems[i].hallId + "</td>" +
+            "<td>" + scheduleItems[i].hallName + "</td>" +
             "<td><b>" + scheduleItems[i].fare.toFixed(2) + "</b></td>" +
             "<td><a class='btn btn-primary' href='/user/buy?id=" + movieId + "&arrangementId=" + scheduleItems[i].id + "' role='button'>选座购票</a></td></tr>";
     }

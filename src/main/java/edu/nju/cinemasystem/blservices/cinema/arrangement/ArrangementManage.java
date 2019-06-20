@@ -43,6 +43,7 @@ public interface ArrangementManage {
      * @param date 日期
      * @return 是否成功
      */
+    @Deprecated
     Response modifyVisibleDay(List<Integer> IDs, Date date);
 
     /**
