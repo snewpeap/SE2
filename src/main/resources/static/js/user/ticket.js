@@ -72,10 +72,12 @@ function getTicketList() {
                             if (getMaxRefundable(orderVO.startTime)!=null){
                                 str += "<td style='width: 80px'><a class='ticket' id='"+ticketVO.id+"' data-order='"+JSON.stringify(orderVO)+"' style='text-decoration: underline;color: #4381ff;'>退票</a></td>";
                             } else {
-                                str += "<td style='width: 80px'><a id='@ticketId' style='color: #ed5565'>不可退票</a></td>"
+                                str += "<td style='width: 80px'><a style='color: #ed5565'>不可退票</a></td>"
                             }
-                        } else {
-                            str += "<td style='width: 80px'><a id='@ticketId' style='color: #ed5565'>不可退票</a></td>";
+                        } else if(ticketVO.status === '未完成'){
+                            str += "<td style='width: 80px'><a href='/user/buy?id="+orderVO.movieId+"&arrangementId="+ticketVO.arrangementId+"' style='text-decoration: underline;color: #4381ff;'>去完成</a></td>"
+                        }else {
+                            str += "<td style='width: 80px'><a style='color: #ed5565'>不可退票</a></td>";
                         }
 
                         $("tbody").append(str);
