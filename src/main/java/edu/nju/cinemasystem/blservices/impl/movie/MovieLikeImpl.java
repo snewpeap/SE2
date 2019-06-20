@@ -96,7 +96,7 @@ public class MovieLikeImpl implements MovieLikeService {
 
         rawDate.removeIf(perDayData -> {
             Date date = (Date) perDayData.get("date");
-            return date == null || date.before(theStart) || date.after(theEnd);
+            return date == null || date.before(theStart) || date.compareTo(theEnd) >= 0;
         });
         return rawDate;
     }
