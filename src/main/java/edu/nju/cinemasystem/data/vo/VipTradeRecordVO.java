@@ -2,6 +2,14 @@ package edu.nju.cinemasystem.data.vo;
 
 import java.util.Date;
 
+/**
+ * 会员卡交易记录信息 包括：
+ * id 交易序号
+ * originalAmount 交易前的原始金额
+ * delta 变动金额
+ * date 交易日期
+ * userId 用户号 相当于卡号
+ */
 public class VipTradeRecordVO {
     private Integer id;//交易号
 
