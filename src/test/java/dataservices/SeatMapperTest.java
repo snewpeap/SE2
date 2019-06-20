@@ -23,7 +23,7 @@ public class SeatMapperTest {
     @Test
     @Transactional
     public void deleteByIDTest1(){
-        assertTrue(seatMapper.deleteByPrimaryKey(31)!=0);
+        assertTrue(seatMapper.deleteByPrimaryKey(1)!=0);
     }
 
     @Test
@@ -55,8 +55,8 @@ public class SeatMapperTest {
     @Test
     @Transactional
     public void updateSelectiveTestBySeat(){
-        Seat seat = Seat.assembleSeatPO(2,2,2);
-        seat.setId(31);
+        Seat seat = Seat.assembleSeatPO(2,2,1);
+        seat.setId(1);
         assertTrue(seatMapper.updateByPrimaryKeySelective(seat)!=0);
     }
 
@@ -69,6 +69,6 @@ public class SeatMapperTest {
     @Test
     @Transactional
     public void deleteByHallIDTest(){
-        assertTrue(seatMapper.deleteByHallID(2)!=0);
+        assertTrue(seatMapper.deleteByHallID(1)!=0);
     }
 }

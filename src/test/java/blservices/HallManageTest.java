@@ -47,7 +47,7 @@ public class HallManageTest {
         hallForm.setIs3d(false);
         hallForm.setIsImax(false);
         Response response = hallManage.inputHallInfo(hallForm);
-        assert response.isSuccess();
+        assertTrue(response.isSuccess());
     }
 
     @Test
@@ -61,7 +61,7 @@ public class HallManageTest {
         hallForm.setIs3d(true);
         hallForm.setIsImax(true);
         Response response = hallManage.modifyHallInfo(hallForm,1);
-        assert response.isSuccess();
+        assertTrue(response.isSuccess());
     }
 
     @Test

@@ -1,23 +1,28 @@
 package dataservices;
 
+
 import edu.nju.cinemasystem.Application;
-import edu.nju.cinemasystem.dataservices.user.RoleMapper;
-import edu.nju.cinemasystem.dataservices.user.UserMapper;
+import edu.nju.cinemasystem.data.po.MovieLike;
+import edu.nju.cinemasystem.dataservices.movie.MovieLikeMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.List;
+
+import static org.junit.Assert.assertFalse;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = Application.class)
-public class StaffTest {
+public class MovieLikeMapperTest {
+
     @Autowired
-    private UserMapper userMapper;
-    @Autowired
-    private RoleMapper roleMapper;
+    MovieLikeMapper movieLikeMapper;
 
     @Test
-    public void test1(){
+    public void testSelectByMovieID(){
+        List<MovieLike> movieLikes = movieLikeMapper.selectByMovieID(2);
+        assertFalse(movieLikes.isEmpty());
     }
 }

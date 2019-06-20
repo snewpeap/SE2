@@ -1534,7 +1534,7 @@ div#home {
     border-top: none !important;
 }
 .btn {
-    border-radius: 0px;
+    border-radius: 3px !important;
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
     -ms-border-radius: 0px;

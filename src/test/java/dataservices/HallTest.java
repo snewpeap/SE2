@@ -31,7 +31,7 @@ public class HallTest {
         hall.setSize((byte) 0);
         hall.setIs3d((byte) 1);
         hall.setIsImax((byte) 1);
-        int i = hallMapper.insertSelective(hall);
+        hallMapper.insertSelective(hall);
         assertTrue(hall.getId()!=0);
     }
 
@@ -66,6 +66,6 @@ public class HallTest {
     @Test
     @Transactional
     public void deleteByHallID(){
-        assertTrue(hallMapper.deleteByPrimaryKey(2)!=0);
+        assertTrue(hallMapper.deleteByPrimaryKey(1)!=0);
     }
 }

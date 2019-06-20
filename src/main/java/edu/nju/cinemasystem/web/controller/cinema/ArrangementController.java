@@ -84,6 +84,7 @@ public class ArrangementController {
      * @param arrangementIds 排片号的list
      * @return 是否成功
      */
+    @Deprecated
     @PostMapping("/manage/arrangement/visibleDay")
     public Response ModifyVisibleDay(@RequestParam Date day, @RequestBody List<Integer> arrangementIds){
         return arrangementManage.modifyVisibleDay(arrangementIds,day);
