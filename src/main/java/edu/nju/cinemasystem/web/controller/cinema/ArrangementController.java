@@ -48,7 +48,7 @@ public class ArrangementController {
     }
 
     @PostMapping("/manage/arrangement/visibleDay")
-    public Response ModifyVisibleDay(@RequestParam Date day, @RequestBody List<Integer> arrangementIds){
+    public Response modifyVisibleDay(@RequestParam Date day, @RequestBody List<Integer> arrangementIds){
         return arrangementManage.modifyVisibleDay(arrangementIds,day);
     }
 }

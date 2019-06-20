@@ -22,7 +22,11 @@ public class VipController {
     }
 
     @GetMapping("/user/vip/card/get")
-    public Response getVIPCard(@RequestParam int userId) {
+    public Response getVIPCard(@RequestParam int userId,HttpSession session) {
+        int realUserID = (int) session.getAttribute("id");
+        if(userId!=realUserID){
+            return Response.fail("雨女无瓜");
+        }
         return vipCardService.getVIPCard(userId);
     }
 
@@ -49,7 +53,11 @@ public class VipController {
     }
 
     @GetMapping("/user/vip/history")
-    public Response getRechargeHistory(@RequestParam int userId) {
+    public Response getRechargeHistory(@RequestParam int userId, HttpSession session) {
+        int realUserID = (int) session.getAttribute("id");
+        if(userId!=realUserID){
+            return Response.fail("雨女无瓜");
+        }
         return vipCardService.getRechargeHistory(userId);
     }
 
@@ -62,7 +70,7 @@ public class VipController {
      * @return 成功或失败的结果
      */
     @GetMapping("/user/vip/deposit")
-    public Response depositVIPCard(HttpSession session, @RequestParam float amount) {
+    public Response depositable(HttpSession session, @RequestParam float amount) {
         int userId = (int) session.getAttribute("id");
         return vipCardService.depositable(userId, amount);
     }
@@ -85,6 +93,7 @@ public class VipController {
         return vipManagement.getVIPs();
     }
 
+    @Deprecated
     @GetMapping("/admin/vip/get/{money}")
     public Response getVIPs(@PathVariable double money) {
         return vipManagement.getVIPs(money);
