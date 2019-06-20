@@ -37,6 +37,11 @@ public class HallManageImpl implements HallManage {
         this.arrangementMsg = arrangementMsg;
     }
 
+    /**
+     * 录入影厅信息
+     * @param hallForm 影厅信息表单
+     * @return
+     */
     @Override
     @Transactional
     public Response inputHallInfo(HallForm hallForm) {
@@ -89,27 +94,41 @@ public class HallManageImpl implements HallManage {
         return response;
     }
 
+    /**
+     * 修改影厅信息
+     * @param hallForm 影厅信息表单
+     * @param ID 影厅号
+     * @return
+     */
     @Override
     @Transactional
     public Response modifyHallInfo(HallForm hallForm, int ID) {
         Response response;
+        //如果当前时间之后还有排片就返回fail
         if (arrangementService.haveArrangementAfterCurrentTime(ID, new Date())) {
             return Response.fail(arrangementMsg.getIsStillHaveArrangement());
         }
+        //信息不合法
         if (!censorHallForm(hallForm)) {
             response = Response.fail();
             response.setMessage(globalMsg.getWrongParam());
             return response;
         }
         Hall oldHall = hallMapper.selectByPrimaryKey(ID);
+
+        //行列至少有一个和原来的不一样
         if (!hallForm.getColumn().equals(oldHall.getColumn()) || !hallForm.getRow().equals(oldHall.getRow())) {
-            if (hallForm.getColumn() >= oldHall.getColumn() || hallForm.getRow() >= oldHall.getRow()) {
+
+            //如果行列都变大
+            if (hallForm.getColumn() >= oldHall.getColumn() && hallForm.getRow() >= oldHall.getRow()) {
+                //先填满行 新加的部分的列个数=修改后的列数
                 for (int r = oldHall.getRow() + 1; r <= hallForm.getRow(); r++) {
                     for (int c = 1; c <= hallForm.getColumn(); c++) {
                         Seat seat = Seat.assembleSeatPO(c, r, ID);
-                        seatMapper.insert(seat);
+                        seatMapper.insertSelective(seat);
                     }
                 }
+                //添加剩下的座位
                 for (int r = 1; r <= oldHall.getRow(); r++) {
                     for (int c = oldHall.getColumn() + 1; c <= hallForm.getColumn(); c++) {
                         Seat seat = Seat.assembleSeatPO(c, r, ID);
@@ -117,6 +136,7 @@ public class HallManageImpl implements HallManage {
                     }
                 }
             } else {
+                //变小的全部删掉重加
                 seatMapper.deleteByHallID(ID);
                 for (int i = 1; i <= hallForm.getRow(); i++) {
                     for (int j = 1; j <= hallForm.getColumn(); j++) {

@@ -63,6 +63,11 @@ public class ArrangementImpl
         }
     }
 
+    /**
+     * 根据电影ID查全部的排片 并把日期近的放在前面
+     * @param movieID 电影ID
+     * @return
+     */
     @Override
     public Response getByMovieID(int movieID) {
         List<Arrangement> arrangements = arrangementMapper.selectByMovieID(movieID);
@@ -81,6 +86,7 @@ public class ArrangementImpl
                 }
                 map.get(date).add(arrangementVO);
             }
+            //排序 按日期 日期近的排在前面
             Map<Date, List<ArrangementVO>> reMap = new HashMap<>();
             Object[] objects = map.keySet().toArray();
             Arrays.sort(objects);
@@ -99,6 +105,12 @@ public class ArrangementImpl
         }
     }
 
+    /**
+     * 获得座位分布，排片不可见的时候返回response.fail,包含一个错误码401 没有排片的时候也返回response.fail
+     *
+     * @param aID 排片ID
+     * @return
+     */
     @Override
     public Response getSeatMap(int aID) {
         Response response;
@@ -112,6 +124,8 @@ public class ArrangementImpl
             response.setStatusCode(401);
             return response;
         }
+        //没有排片或者排片还不可见
+
         List<ArrangementSeat> arrangementSeats = arrangementSeatMapper.selectByArrangementID(aID);
         Hall hall = hallMapper.selectByPrimaryKey(arrangement.getHallId());
         List<ArrangementSeatVO[]> seatMap = new ArrayList<>(hall.getRow());
@@ -234,7 +248,7 @@ public class ArrangementImpl
 
     @Override
     public Response getArrangementsByHallID(int hallID, Date startDate) {
-        int duration = 7; //TODO 数据层接口可能会变
+        int duration = 7;
         List<Arrangement> arrangements = arrangementMapper.selectByHallIDAndStartDate(hallID, startDate, duration);
         List<List<ArrangementVO>> daySeparatedVOs = new ArrayList<>(7);
         for (int i = 0; i < duration; i++) {
