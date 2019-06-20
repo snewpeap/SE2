@@ -90,7 +90,7 @@ public class TicketImpl
         Date date = new Date();
         float realAmount = arrangementService.getFareByID(arrangementID);
         float totalAmount = realAmount * seatIDs.size();
-        long orderID = Long.parseLong(date.getTime() + String.valueOf((long) ((Math.random()*9 + 1)* 100)));
+        long orderID = Long.parseLong(date.getTime() + String.valueOf((long) ((Math.random() * 9 + 1) * 100)));
 
         Order order = Order.assembleOrderPO(orderID, totalAmount, totalAmount, date, (byte) 2, userID);
         orderMapper.insertSelective(order);
@@ -315,7 +315,8 @@ public class TicketImpl
         } catch (AlipayApiException e) {
             return Response.fail("支付宝异常");
         }
-        if (refundResponse.isSuccess()) {
+        String fund_change = refundResponse.getFundChange();
+        if (fund_change != null && fund_change.equals("Y")) {
             return Response.success();
         } else {
             return Response.fail(refundResponse.getSubMsg());
@@ -413,7 +414,7 @@ public class TicketImpl
                 amountDecimal = amountDecimal.add(new BigDecimal(ticket.getRealAmount()));
             }
         }
-        return amountDecimal.setScale(2,BigDecimal.ROUND_HALF_UP).floatValue();
+        return amountDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
     }
 
     /**
