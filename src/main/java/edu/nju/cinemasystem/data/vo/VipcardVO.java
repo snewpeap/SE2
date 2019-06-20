@@ -1,5 +1,10 @@
 package edu.nju.cinemasystem.data.vo;
 
+/**
+ * VIP卡的信息 包括：
+ * id 会员号
+ * balance 余额
+ */
 public class VipcardVO {
     private int id;
     private float balance;

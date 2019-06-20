@@ -2,6 +2,11 @@ package edu.nju.cinemasystem.data.vo;
 
 import edu.nju.cinemasystem.data.po.User;
 
+/**
+ * 用户信息 包括：
+ * ID 用户序号
+ * name 用户名
+ */
 public class UserVO {
     private int ID;
     private String name;

@@ -6,6 +6,22 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * MovieVO 基类 包含：
+ * id 序号
+ * name 名字
+ * poster 海报url
+ * director 导演
+ * screenWriter 编剧
+ * starring 主演
+ * type 电影类型
+ * country 国家地区
+ * language 语言
+ * duration 长度
+ * startDate 什么日期上映
+ * description 简介
+ *
+ */
 public abstract class BaseMovieVO {
     private Integer id;
 

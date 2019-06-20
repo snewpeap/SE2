@@ -3,6 +3,11 @@ package edu.nju.cinemasystem.data.vo.statisticsVO;
 import edu.nju.cinemasystem.data.vo.AudienceMovieVO;
 import edu.nju.cinemasystem.data.vo.BaseMovieVO;
 
+/**
+ * 电影受欢迎程度信息 包括：
+ * movie 是一个BaseMovieVO
+ * boxOffice 电影票房
+ */
 public class MoviePopularityVO {
     private BaseMovieVO movie;
     private float boxOffice;

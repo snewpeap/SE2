@@ -5,6 +5,18 @@ import java.util.List;
 
 import edu.nju.cinemasystem.data.po.Promotion;
 
+/**
+ * 优惠活动信息 包括：
+ * id 序号
+ * name 名称
+ * startTime 优惠活动开始时间
+ * endTime 结束时间
+ * movieList 参加此活动的电影的名字的列表
+ * targetAmount 目标金额
+ * couponAmount 优惠券金额
+ * couponExpiration 优惠券有效天数
+ * description 活动描述
+ */
 public class PromotionVO {
     private Integer id;
 

@@ -1,5 +1,10 @@
 package edu.nju.cinemasystem.data.vo;
 
+/**
+ * 充值记录信息 包括：
+ * targetAmount 充值金额
+ * discountAmount 折扣金额
+ */
 public class RechargeReductionVO {
     private int targetAmount;
     private float discountAmount;

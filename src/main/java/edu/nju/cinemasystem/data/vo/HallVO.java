@@ -2,6 +2,16 @@ package edu.nju.cinemasystem.data.vo;
 
 import edu.nju.cinemasystem.data.po.Hall;
 
+/**
+ * 影厅信息 包含：
+ * id 序号
+ * name 名字
+ * column 行数
+ * size 0-大 1-中 2-小
+ * isImax 是否Imax
+ * is3d 是否3D
+ *
+ */
 public class HallVO{
     private Integer id;
 

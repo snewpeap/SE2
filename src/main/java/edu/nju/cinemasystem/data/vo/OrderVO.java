@@ -3,6 +3,19 @@ package edu.nju.cinemasystem.data.vo;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 订单信息 包含：
+ * orderID 序号
+ * ticketVOs 电影票列表 里面是TicketVO
+ * realSpend 实付金额
+ * originalSpend 原始金额
+ * completeTime 订单完成时间
+ * startTime 电影开始放映的时间
+ * endTime 电影结束放映的时间
+ * movieName 电影名字
+ * hallName 影厅名字
+ * movieId 电影序号
+ */
 public class OrderVO {
 
     private Long orderID;

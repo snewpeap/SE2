@@ -4,6 +4,17 @@ import edu.nju.cinemasystem.data.po.Coupon;
 
 import java.util.Date;
 
+/**
+ * 优惠券信息 包含：
+ * ID 序号
+ * targetAmount 目标金额
+ * discountAmount 折扣金额
+ * startDay 可以开始用的日期
+ * endDay 过期的日期
+ * promotionName 优惠的名称
+ * promotionDescription 优惠描述
+ *
+ */
 public class CouponVO {
     private int ID;
     private Float targetAmount;
