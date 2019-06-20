@@ -21,6 +21,6 @@ public class MovieServiceTest {
     @Test
     @Transactional
     public void getMovieTest1(){
-        assertTrue(movieService.getMovie(-1,5).isSuccess());
+        assertTrue(movieService.getMovie(11,5).isSuccess());
     }
 }

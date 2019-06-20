@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = Application.class)
-public class MovieServiceTest {
+public class MovieTest {
 
     @Autowired
     private MovieMapper movieMapper;
@@ -27,20 +27,20 @@ public class MovieServiceTest {
         assertEquals(movie.getName(),"随便");
     }
 
-    @Test
+    @Test(expected = Exception.class)
     @Transactional
     public void testSelectByIDFail_NoSuch(){
         Movie movie = movieMapper.selectByPrimaryKey(0);
         assertNull(movie);
     }
 
-    @Test
+    @Test(expected = Exception.class)
     @Transactional
     public void testSelectByIDFail_Null(){
         Movie movie = movieMapper.selectByPrimaryKey(null);
     }
 
-    @Test
+    @Test(expected = Exception.class)
     @Transactional
     public void testInsertFail_hasNull(){
         Movie movie = new Movie();
@@ -60,7 +60,7 @@ public class MovieServiceTest {
         throw new RuntimeException();
     }
 
-    @Test
+    @Test(expected = Exception.class)
     @Transactional
     public void testInsertFail_MinusDuration(){
         Movie movie = movieMapper.selectByPrimaryKey(1);
