@@ -3,10 +3,13 @@ package edu.nju.cinemasystem.blservices.impl.sale.ticket;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.domain.AlipayTradeFastpayRefundQueryModel;
 import com.alipay.api.domain.AlipayTradePagePayModel;
 import com.alipay.api.domain.AlipayTradeRefundModel;
+import com.alipay.api.request.AlipayTradeFastpayRefundQueryRequest;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.alipay.api.request.AlipayTradeRefundRequest;
+import com.alipay.api.response.AlipayTradeFastpayRefundQueryResponse;
 import com.alipay.api.response.AlipayTradeRefundResponse;
 import edu.nju.cinemasystem.blservices.cinema.arrangement.ArrangementService;
 import edu.nju.cinemasystem.blservices.cinema.hall.HallManage;
@@ -319,7 +322,20 @@ public class TicketImpl
         if (fund_change != null && fund_change.equals("Y")) {
             return Response.success();
         } else {
-            return Response.fail(refundResponse.getSubMsg());
+            AlipayTradeFastpayRefundQueryModel queryModel = new AlipayTradeFastpayRefundQueryModel();
+            queryModel.setOutTradeNo(String.valueOf(orderID));
+            queryModel.setOutRequestNo(orderID + String.valueOf(ticketID));
+            AlipayTradeFastpayRefundQueryRequest queryRequest = new AlipayTradeFastpayRefundQueryRequest();
+            queryRequest.setBizModel(queryModel);
+            AlipayTradeFastpayRefundQueryResponse response;
+            try {
+                do {
+                    response = alipayClient.execute(queryRequest);
+                } while (response.getOutTradeNo() == null);
+            } catch (AlipayApiException e) {
+                e.printStackTrace();
+            }
+            return Response.success();
         }
     }
 

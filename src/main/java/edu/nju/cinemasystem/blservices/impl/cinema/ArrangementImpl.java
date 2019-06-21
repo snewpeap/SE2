@@ -84,7 +84,7 @@ public class ArrangementImpl
                         arrangementVOs.add(arrangementVO);
                     }
             );
-            Map<Date, List<ArrangementVO>> map = new HashMap<>();
+            Map<Date, List<ArrangementVO>> map = new TreeMap<>();
             for (ArrangementVO arrangementVO : arrangementVOs) {
                 Date date = convertDateToDay(arrangementVO.getStartTime());
                 if (!map.containsKey(date)) {
@@ -92,17 +92,9 @@ public class ArrangementImpl
                 }
                 map.get(date).add(arrangementVO);
             }
-            //排序 按日期 日期近的排在前面
-            Map<Date, List<ArrangementVO>> reMap = new HashMap<>();
-            Object[] objects = map.keySet().toArray();
-            Arrays.sort(objects);
-            for (Object o : objects) {
-                List<ArrangementVO> as = map.get(o);
-                as.sort((ArrangementVO a1, ArrangementVO a2) -> (int) ((a1.getStartTime().getTime() - a2.getStartTime().getTime()) / (1000 * 60)));
-                reMap.put((Date) o, map.get(o));
-            }
+
             List<List<ArrangementVO>> reList = new ArrayList<>();
-            for (Map.Entry<Date, List<ArrangementVO>> entry : reMap.entrySet()) {
+            for (Map.Entry<Date, List<ArrangementVO>> entry : map.entrySet()) {
                 reList.add(entry.getValue());
             }
             Response response = Response.success();
