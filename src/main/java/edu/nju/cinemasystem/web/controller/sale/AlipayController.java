@@ -27,6 +27,15 @@ public class AlipayController {
         this.alipayProperties = alipayProperties;
     }
 
+    /**
+     * 使用支付宝支付订单，跳转到支付宝的支付页面
+     * @param orderID 订单id
+     * @param couponID 要使用的优惠券id
+     * @param session session
+     * @param servletResponse servletResponse
+     * @return 支付宝支付页面html
+     * @throws AlipayApiException 支付宝异常
+     */
     @RequestMapping("/user/alipay/pay/{orderID}")
     public @ResponseBody Response alipay(@PathVariable long orderID, @RequestBody int couponID, HttpSession session, HttpServletResponse servletResponse) throws AlipayApiException {
         int userID = (Integer) session.getAttribute(CustomWebSecurityConfiguration.KEY_ID);
@@ -37,6 +46,12 @@ public class AlipayController {
         return response;
     }
 
+    /**
+     * 支付宝的同步通知接口，支付宝支付完成后会跳转到这个接口
+     * @param request request
+     * @return 跳转页面模板名字
+     * @throws Exception exception
+     */
     @RequestMapping("/alipay/return")
     public String alipay_return(HttpServletRequest request) throws Exception {
         boolean signVerify = verifySign(request);
@@ -53,6 +68,12 @@ public class AlipayController {
         }
     }
 
+    /**
+     * 支付宝的异步通知接口
+     * @param request request
+     * @return 回复给支付宝我方处理交易的结果
+     * @throws Exception exception
+     */
     @ResponseBody
     @PostMapping("/alipay/notify")
     public String alipay_notify(HttpServletRequest request) throws Exception {
@@ -78,6 +99,7 @@ public class AlipayController {
         }
     }
 
+    @Deprecated
     @RequestMapping("/user/testAli")
     public String testAli() {
         return "user/testAli";

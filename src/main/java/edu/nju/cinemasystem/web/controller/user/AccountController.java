@@ -45,9 +45,13 @@ public class AccountController {
         response.sendRedirect(redirect);
     }
 
-
+    /**
+     * 注册
+     * @param registryForm 注册表单
+     * @return 注册结果及注册的用户
+     */
     @PostMapping("/register")
-    public Response register(@RequestBody @Valid RegistryForm registryForm, HttpServletResponse servletResponse) throws IOException {
+    public Response register(@RequestBody @Valid RegistryForm registryForm) {
         return accountService.register(registryForm);
     }
 }

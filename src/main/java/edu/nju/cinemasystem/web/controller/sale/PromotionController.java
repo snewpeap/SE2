@@ -14,16 +14,30 @@ public class PromotionController {
     @Autowired
     private PromotionService promotionService;
 
+    /**
+     * 获取观众的所有可用优惠券
+     * @param userId 用户id
+     * @return 优惠券vo
+     */
     @GetMapping("/user/coupon/get")
     public Response getAvailableCoupon(@RequestParam int userId){
         return couponService.getAvailableCouponsByUser(userId);
     }
 
+    /**
+     * 发布优惠活动
+     * @param promotionForm 优惠活动表单
+     * @return 添加优惠活动的结果
+     */
     @PostMapping("/admin/promotion/add")
     public Response publishPromotion(@RequestBody PromotionForm promotionForm){
         return promotionService.publishPromotion(promotionForm);
     }
 
+    /**
+     * 获取所有优惠活动
+     * @return 所有优惠活动vo
+     */
     @GetMapping("/admin/promotion/get")
     public Response getAllPromotions(){
         return promotionService.getAllPromotions();
